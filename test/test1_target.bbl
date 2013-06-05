@@ -1,0 +1,56 @@
+\begin{thebibliography}{XX}
+\providecommand{\enquote}[1]{``#1''}
+\providecommand{\url}[1]{\verb|#1|}
+\providecommand{\href}[2]{#2}
+\setlength{\itemsep}{0pt}
+
+\providecommand{\um}{$\mu$m}
+
+\bibitem{initialize1}
+{Lord} Kelvin, ``On vortex motion'' (1869).
+\bibitem{initialize2}
+C.-I. Chang, ``Implementation scheme for recursion in spectral dimension'' (1992).
+\bibitem{titlepunctuation1}
+J. S. Bell, ``Are there quantum jumps?'' (1987).
+\bibitem{quotedelimits1}
+S. Else, ``Comments on `Filenames and Fonts'\:'' (0000).
+\bibitem{pagerange1}
+D. Stewart, ``Interview with Walter Stewart,'' \textit{Omni} \textbf{11}: 64--94 (1989).
+\bibitem{nesteditalics1}
+A. Aspect, P. Grangier, and G. Roger, \textit{Experimental realization of Einstein-Podolsky-Rosen-Bohm \textup{Gedenkenexperiment}: a new violation of Bell's inequalities} (1982).
+\bibitem{nesteditalics2}
+``z\textit{{{\textup{mm}}w\textup{{qq}}}}\textit{zz}y'', ``a\textit{\textup{\textit{bbb} cc}d}eee\textit{ff}g''.
+\bibitem{nestedbold1}
+``a\textbf{bb{\A}}c\textbf{d}ff\textbf{{g}}h{i}!'', ``a\textbf{b{c{\textmd{d}}e\textmd{f}g}h}i''.
+\bibitem{nestedquotes1}
+``\:`\:``This is'' ``quoted and `nested'.''\:'\:'', ``\:`This is ``quoted and `nested'.''\:'\:'', ``\:`\:``This is `quoted and ``nested''.'\:''\:'\:'', ``\:`This is ``\:`quoted and ``nested''.'\:''\:'\:'', ``\:`This is ``\:`qu\'oted and \"e ``nested''.'\:''\:'\:''.
+\bibitem{nameparsing1}
+AA, A. bb, A. bb CC, A. bb CC dd EE, A. bb CC dd EE, A. bb, BB, A. bb CC, XX, and A. BB, ``None'' (0000).
+\bibitem{nameparsing2}
+F. M. Prefix Last and F. M. Prefix Last, Suffix, ``None'' (0000).
+\bibitem{nameparsing3}
+W. {Thomson [Lord Kelvin]}, ``On an absolute thermometric scale, founded on Carnot's theory of the motive power of heat'' (1848).
+\bibitem{manyauthors1}
+B. Yanny, C. Rockosi, H. J. Newberg, G. R. Knapp, J. K. Adelman-McCarthy, B. Alcorn, S. Allam, \textit{et al.}, ``SEGUE: a spectroscopic survey of 240,000 stars with $g = 14$--20'' (2009).
+\bibitem{manyeditors1}
+M. M. Blouke, N. Sampat, G. M. Williams, Jr., \textit{et al.}, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications'' (2000).
+\bibitem{nameabbrev1}
+{JdlF.} du Bois Joli, ``Something'' (1234).
+\bibitem{nameabbrev2}
+J. {dlF.} du Joli, ``Something'' (1234).
+\bibitem{bracedelimitedquotes1}
+S. New, ``Comments on `Filenames and Fonts'\:'' (4321).
+\bibitem{procspieasjournal1}
+A. S. Alenin and J. S. Tyo, ``Task-specific snapshot Mueller matrix channeled spectropolarimeter optimization,'' \textit{Proc. SPIE} \textbf{8364}: 836402 (2012).
+\bibitem{crossref1}
+A. S. Alenin and J. S. Tyo, ``Task-specific snapshot Mueller matrix channeled spectropolarimeter optimization,'' in \textit{Polarization: Measurement, Analysis, and Remote Sensing X}, D. B. Chenault and D. H. Goldstein, eds, Proc. SPIE \textbf{8364}: 836402 (2012).
+\bibitem{japanese1}
+{乙部} 厳己 and P. Horton, ``jBibTEXの使用法,'' ソフトバンクパブリッシング (2006). [In Japanese.]
+\bibitem{trailingcomma1}
+B. Bunny, ``Looney tunes'' (2001).
+\bibitem{bibtextitling1}
+P. Stoica and B. C. Ng, ``On the {C}ram{\'e}r-{R}ao bound under parametric constraints'' (1998).
+\bibitem{frenchinitials1}
+A. Perot and Ch. Fabry, ``Sur l'application de ph{\'e}nom{\`e}nes d'interf{\'e}rence {\`a} la solution de divers probl{\`e}mes de spectroscopie et de m{\'e}trologie'' (1899).
+
+\end{thebibliography}

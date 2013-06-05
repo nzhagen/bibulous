@@ -1,0 +1,208 @@
+@STRING{procspie="Proc. SPIE"}
+
+%% Test that brace-delimited names are not initialized when using a style that would otherwise initial them.
+@INITIALIZE1{initialize1,
+  title = {On vortex motion},
+  author = {{Lord} Kelvin},
+  year = {1869}
+}
+
+%% Test the name initialization when a name ends in a period.
+@INITIALIZE2{initialize2,
+  title = {Implementation scheme for recursion in spectral dimension},
+  institution = {Chemical Research, Development and Engineering Center},
+  year = {1992},
+  author = {Chein-I. Chang}
+}
+
+%% Test whether a trailing comma after a title is removed when the title ends with '?'.
+@TITLEPUNCTUATION1{titlepunctuation1,
+  title = {Are there quantum jumps?},
+  author = {J.~S. Bell},
+  booktitle = {Speakable and Unspeakable in Quantum Mechanics},
+  publisher = {Cambridge University Press},
+  year = {1987},
+  pages = {201--212}
+}
+
+%% Test whether brace-delimited quotations in a quote-delimited entry are parsed correctly.
+@QUOTEDELIMITS1{quotedelimits1,
+  title = "Comments on {"}Filenames and Fonts{"}",
+  author = "Somebody Else",
+  year = "0000"
+}
+
+@PAGERANGE1{pagerange1,
+  title = {Interview with Walter Stewart},
+  author = {Doug Stewart},
+  journal = {Omni},
+  year = {1989},
+  volume = {11},
+  pages = {64--66, 87--92, 94}
+}
+
+%% Test the option 'force_sentence_case' to see if upper case letters are forced to lower case except when at brace level > 0.
+@SENTENCECASE1{sentencecase1,
+  title = {On the {C}ram{\'e}r-{R}ao Bound under Parametric Constraints},
+  author = {Petre Stoica and Boon Chong Ng},
+  year = {1998}
+}
+
+%% Test the ability to parse nested italics, so that even-order italics are written with \textup{} rather than \textit{}.
+@NESTEDITALICS1{nesteditalics1,
+  title = {Experimental realization of Einstein-Podolsky-Rosen-Bohm \textit{Gedenkenexperiment}: a new violation of Bell's inequalities},
+  author = {Alain Aspect and Philippe Grangier and G{\'e}rard Roger},
+  year = {1982}
+}
+
+%% Test the 'french_initials' option, where names with digraphs are truncated only after the digraph. That is, 'Charles' -> 'Ch.' not 'C.'.
+@FRENCHINITIALS1{frenchinitials1,
+  title = {Sur l'application de ph{\'e}nom{\`e}nes d'interf{\'e}rence {\`a} la solution de divers probl{\`e}mes de spectroscopie et de m{\'e}trologie},
+  author = {A. Perot and Charles Fabry},
+  year = {1899}
+}
+
+%% Test (1,2) that namedict['last'] cannot be empty; (3,4) that the prefix is correctly parsed in a space-delimited name, (5,6) that a comma-delimited
+%% name containing one comma is correctly parsed, (7) that empty name tokens do not raise errors, (8,9) that a comma-delimited name containing two
+%% commas is correctly parsed (even when the suffix part is empty). Also test that "name1, and name2" parses correctly as two names (one comma-
+%% delimited and one not).
+@NAMEPARSING1{nameparsing1,
+  title = {None},
+  author = {AA and AA bb and AA bb CC and AA bb CC dd EE and bb CC dd EE, AA and bb, AA and BB, and bb CC,XX, AA and BB,, AA},
+  year = {0000}
+}
+
+%% Test that the new formats of three-comma-delimited names and four-comma-delimited names are parsed correctly.
+@NAMEPARSING2{nameparsing2,
+  title = {None},
+  author = {First, Middle, Prefix, Last and First, Middle, Prefix, Last, Suffix},
+  year = {0000}
+}
+
+%% Test that brace-delimited compound names are parsed correctly.
+@NAMEPARSING3{nameparsing3,
+  title = {On an absolute thermometric scale, founded on Carnot's theory of the motive power of heat},
+  author = {W. {Thomson [Lord Kelvin]}},
+  year = {1848}
+}
+
+%% Test that for nested bold formatting, the even-order operators are converted to \textmd{}.
+@NESTEDBOLD1{nestedbold1,
+  title1 = {a\textbf{bb{\A}}c\textbf{d}ff\textbf{{g}}h{i}!},
+  title2 = {a\textbf{b{c{\textbf{d}}e\textbf{f}g}h}i}
+}
+
+%% Test the ability to parse nested italics, so that even-order italics are written with \textup{} rather than \textit{}.
+@NESTEDITALICS2{nesteditalics2,
+  title1 = {z\textit{{{\textit{mm}}w\textit{{qq}}}}\textit{zz}y},
+  title2 = {a\textit{\textit{\textit{bbb} cc}d}eee\textit{ff}g}
+}
+
+%% Test that nested quotes are properly parsed, and that special character markup like \"e and \'o is not mistaken
+%% for quotation marks.
+@NESTEDQUOTES1{nestedquotes1,
+  title1 = {"`This is' `quoted and ``nested''.'"},
+  title2 = {"This is `quoted and ``nested''.'"},
+  title3 = {`"This is `quoted and ``nested''.'"'},
+  title4 = {`This is "`quoted and ``nested''.'"'},
+  title5 = {`This is "`qu\'oted and \"e ``nested''.'"'}
+}
+
+%% Test that when there are more authors than "option.maxauthors", then the bibliography only shows "option.minauthors" number of names.
+@MANYAUTHORS1{manyauthors1,
+  title = {SEGUE: a spectroscopic survey of 240,000 stars with $g = 14$--20},
+  author = {Brian Yanny and Constance Rockosi and Heidi Jo Newberg and Gillian R. Knapp and Jennifer K. Adelman-McCarthy and Bonnie Alcorn and Sahar Allam and Carlos Allende Prieto and Deokkeun An and Kurt S.~J. Anderson and Scott Anderson and Coryn A.~L. Bailer-Jones and Steve Bastian and Timothy C. Beers and Eric Bell and Vasily Belokurov and Dmitry Bizyaev and Norm Blythe and John J. Bochanski and William N. Boroski and Jarle Brinchmann and J. Brinkmann and Howard Brewington and Larry Carey and Kyle M. Cudworth and Michael Evans and N.~W. Evans and Evalyn Gates and B.~T. G{\"a}nsicke and Bruce Gillespie and Gerald Gilmore and Ada Nebot Gomez-Moran and Eva K. Grebel and Jim Greenwell and James E. Gunn and Cathy Jordan and Wendell Jordan and Paul Harding and Hugh Harris and John S. Hendry and Diana Holder and Inese I. Ivans and {\v{Z}}eljko Ivezi{\v{c}} and Sebastian Jester and Jennifer A. Johnson and Stephen M. Kent and Scot Kleinman and Alexei Kniazev and Jurek Krzesinski and Richard Kron and Nikolay Kuropatkin and Svetlana Lebedeva and Young Sun Lee and R. French Leger and S{\'e}bastien L{\'e}pine and Steve Levine and Huan Lin and Daniel C. Long and Craig Loomis and Robert Lupton and Olena Malanushenko and Viktor Malanushenko and Bruce Margon and David Martinez-Delgado and Peregrine McGehee and Dave Monet and Heather L. Morrison and Jeffrey A. Munn and Eric H. Neilsen Jr and Atsuko Nitta and John E. Norris and Dan Oravetz and Russell Owen and Nikhil Padmanabhan and Kaike Pan and R.~S. Peterson and Jeffrey R. Pier and Jared Platson and Paola Re Fiorentin and Gordon T. Richards and Hans-Walter Rix and David J. Schlegel and Donald P. Schneider and Matthias R. Schreiber and Axel Schwope and Valena Sibley and Audrey Simmons and Stephanie A. Snedden and J. Allyn Smith and Larry Stark and Fritz Stauffer and M. Steinmetz and C. Stoughton and Mark SubbaRao and Alex Szalay and Paula Szkody and Aniruddha R. Thakar and Sivarani Thirupathi and Douglas Tucker and Alan Uomoto and Dan Vanden Berk and Simon Vidrih and Yogesh Wadadekar and Shannon Watters and Ron Wilhelm and Rosemary F.~G. Wyse and Jean Yarger and Dan Zucker},
+  journal = {Astron. J.},
+  year = {2009},
+  volume = {137},
+  pages = {4377--4399},
+  number = {5},
+  url = {http://stacks.iop.org/1538-3881/137/i=5/a=4377}
+}
+
+%% Test that when there are more editors than "options.maxeditors", then the bibliography only shows "option.mineditors" number of names.
+@MANYEDITORS1{manyeditors1,
+  title = {Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications},
+  year = {2000},
+  editor = {Morley M. Blouke and Nitin Sampat and Williams, Jr., George M. and Thomas Yeh}
+}
+
+%% Test that the "nameabbrev" field is properly used when formatting an author name.
+@NAMEABBREV1{nameabbrev1,
+  author = {Jean de la Fontaine du Bois Joli},
+  title = {Something},
+  year = {1234},
+  nameabbrev = {Jean de la Fontaine > {JdlF.}}
+}
+
+%% Test that multiple "nameabbrev" field entries are properly used when formatting an author name.
+@NAMEABBREV2{nameabbrev2,
+  author = {Jean de la Fontaine
+            du Bois Joli},
+  title = {Something},
+  year = {1234},
+  nameabbrev = {de la Fontaine > {dlF.}, du Bois > du}
+}
+
+%% Test that brace-delimited double-quotes inside a quote-delimited field are parsed correctly.
+@BRACEDELIMITEDQUOTES1{bracedelimitedquotes1,
+  title = "Comments on {"}Filenames and Fonts{"}",
+  author = "Someone New",
+  year = 4321
+}
+
+%% Test that when the "options.procspie_as_journal" option is True, then the INPROCEEDINGS entry type with "series=procspie" is
+%% converted to a ARTICLE type with journal name "Proc. SPIE".
+@INPROCEEDINGS{procspieasjournal1,
+  title = {Task-specific snapshot Mueller matrix channeled spectropolarimeter optimization},
+  author = {Andrey S. Alenin and J. Scott Tyo},
+  booktitle = {Polarization: Measurement, Analysis, and Remote Sensing X},
+  year = {2012},
+  eid = {836402},
+  volume = {8364},
+  series = procspie
+}
+
+%% Part one of testing that crossrefs are correctly applied.
+@CROSSREF1{crossref1,
+  title = {Task-specific snapshot Mueller matrix channeled spectropolarimeter optimization},
+  author = {Andrey S. Alenin and J. Scott Tyo},
+  year = {2012},
+  eid = {836402},
+  volume = {8364},
+  series = procspie,
+  crossref = {ProcSPIE8364}
+}
+
+%% Part two of testing that crossrefs are correctly applied.
+@PROCEEDINGS{ProcSPIE8364,
+  title = {Polarization: Measurement, Analysis, and Remote Sensing X},
+  year = {2012},
+  editor = {David B. Chenault and Dennis H. Goldstein},
+  volume = {8364},
+  series = {procspie}
+}
+
+%% Test that non-English characters are formatted correctly.
+@JAPANESE1{japanese1,
+  author = {{乙部} 厳己 and Paul Horton},
+  yomi = {よしき おとべ and ポール ホートン},
+  author-english = {Tominaga Daisuke and Paul Horton},
+  title = {jBibTEXの使用法},
+  title-english = {How to use JBibTeX},
+  publisher = {ソフトバンクパブリッシング},
+  publisher-english = {Soft Bank Publishing},
+  year = {2006},
+  pages = {17--24},
+  language = {Japanese}
+}
+
+%% Test whether a trailing comma at the end of the last field causes a parsing error.
+@TRAILINGCOMMA1{trailingcomma1,
+  title = {Looney tunes},
+  author = "Bugs Bunny",
+  year = {2001},
+}
+
+%% Test whether a "preamble" entrytype correctly places text into the BBL file preamble.
+@PREAMBLE{"\providecommand{\um}{$\mu$m}"}
