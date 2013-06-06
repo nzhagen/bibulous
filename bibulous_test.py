@@ -81,9 +81,9 @@ def run_test1():
 def run_test2():
     bstfile = './test/test2.bst'
     bibfiles = ['./test/journal.bib', './test/amstat.bib', './test/benfords-law.bib',
-               './test/cccuj2000.bib', './test/gutenberg.bib', './test/onlinealgs.bib'] #,
-               #'./test/python.bib', './test/random.bib', './test/sciam2000.bib',
-               #'./test/template.bib', './test/thiruv.bib', './test/tukey.bib']
+               './test/cccuj2000.bib', './test/gutenberg.bib', './test/onlinealgs.bib',
+               './test/python.bib', './test/random.bib', './test/sciam2000.bib',
+               './test/template.bib', './test/thiruv.bib']
     bblfile = './test/test2.bbl'
     target_bblfile = './test/test2_target.bbl'
 
@@ -125,9 +125,8 @@ def check_file_match(outputfile, targetfile):
     ftarget.close()
 
     diff = difflib.unified_diff(outputlines, targetlines, lineterm='')
-    print(list(diff))
-    diff_str = ''.join(list(diff))
-    return(diff_str)
+    diff = list(diff)
+    return(diff)
 
 
 ## ==================================================================================================
@@ -139,7 +138,9 @@ if (__name__ == '__main__'):
         print('TEST #1 PASSED')
     else:
         print('TEST #1 FAILED. FILE DIFFERENCES:')
-        print(diff)
+        for line in diff: print(line, end='')
+
+    raise ValueError('')
 
     ## Run test #1.
     (outputfile, targetfile) = run_test2()
@@ -148,7 +149,7 @@ if (__name__ == '__main__'):
 #        print('TEST #1 PASSED')
 #    else:
 #        print('TEST #1 FAILED. FILE DIFFERENCES:')
-#        print(diff)
+#        for line in diff: print(line, end='')
 
 
     print('DONE')
