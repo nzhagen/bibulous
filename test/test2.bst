@@ -13,6 +13,7 @@ patent = <authorliststr>, ``<title>,'' <nationality> patent <number> (<year>).[ 
 phdthesis = <authorliststr>, ``<title>,'' Ph.D. dissertation (<school>, <year>).[ <note>]
 proceedings = <editorliststr>, \textit{<title>}, [vol.~<volume>][, <edition_ordinal>~ed.] (<year>).[ <note>]
 techreport = [<authorliststr>, |<editorliststr>, ]``<title>,'' <institution>, Tech.\ Report <number> (<year>).[ <note>]
+unpublished = misc
 
 options.citation_order = citekey                                ## order the bibliography by "citekey" or "citenum" (or "nyt" etc.)
 options.maxauthors = 9                                          ## if more than 10 authors, then use "et al." format
