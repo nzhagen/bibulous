@@ -240,7 +240,7 @@ class Bibdata(object):
                           str(self.i) + ' of "' + self.filename + '". Skipping to next entry ...')
                     entry_brace_level = 0
                     continue
-                entrytype = line[1:brace_idx].lower()   ## extract string between "@" and "{"
+                entrytype = line[1:brace_idx].lower().strip()   ## extract string between "@" and "{"
                 line = line[brace_idx+1:]
                 entry_brace_level = 1
 
@@ -2100,7 +2100,7 @@ def enwrap_nested_quotes(s):
     ## flag these cases to inform the user that they need to modify the source to tell the parser
     ## what they want to do.
     if ("```" in s) or ("'''" in s):
-        print('Warning: the input string contains multiple unseparated quote characters. '
+        print('Warning: the input string ["' + s + '"] contains multiple unseparated quote characters. '
               'Bibulous cannot unnest the single and double quotes from this set, so the '
               'separate quotations must be physically separated like ``{\:}`, for example. '
               'Ignoring the quotation marks and continuing ...')

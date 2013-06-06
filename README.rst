@@ -2,7 +2,7 @@ Bibulous
 ========
 
 Bibulous is a drop-in replacement for BibTeX that makes use of style templates instead of BibTeX's
-BST language. And like BibTeX itself, it is open source.
+BST language. The code is written in Python and, like BibTeX itself, it is open source.
 
 Bibulous developed out of frustration with developing bibliography styles using BibTeX's obscure
 style file language, and from the realization that bibliographies are highly structured, so that
@@ -75,7 +75,7 @@ License
 
 Bibulous is released under the MIT/X11 license, meaning that it is free and open source, and that
 it can be used without restriction in other programs, commercial or not. The license is given in
-the file ``LICENSE.rst``, the text of which is reproduced below.
+the file ``LICENSE.txt``, the text of which is reproduced below.
 
 Copyright (c) 2013 Bibulous developers
 
