@@ -2,13 +2,12 @@
 # -*- coding: UTF-8 -*-
 # See the LICENSE.rst file for licensing information.
 '''
-    Bibulous_test.py is a script which runs through the entire suite of tests to check that the
-    code is working correctly.
+    Bibulous_test.py is a script which runs through the entire Bibulous regression testing suite.
 
     The basic approach of the tests is as follows:
     (1) Once a change is made to the code (to fix a bug or add functionality), the writer should
         add an entry to the /test/test1.bib file, where the "entrytype" gives an indication of
-        what the test is form. For example, the entry in the BIB file may start with
+        what the test is for. For example, the entry in the BIB file may start with
                 @test_initialize1{...
         and provide an "author" field where one or more authors have names which the code for
         generating initials can potentially break is not written carefully. Include a 1-line
@@ -21,7 +20,8 @@
         Then add a line in this file to define the entrytype template.
     (3) Add a line "\citation{key}" to the AUX file where "key" is the key given in the new entry
         of the BIB file you just put in (e.g. "test_initialize1")
-    (4) Add two lines to the test1_target.bbl file to say what the formatted result should look like.
+    (4) Add two lines to the test1_target.bbl file (one for the "bibentry" function call, and one
+        for the entry contents) to say what the formatted result should look like.
     (5) Finally, run this script to check the result. This script will load the modified BIB and
         BST files and will write out a formatted BBL file "test1.bbl". It will then try to run a
         "diff" program on these two files to see if there are any differences between the target
@@ -35,13 +35,17 @@ import os
 import sys
 import traceback    ## for getting full traceback info in exceptions
 import pdb          ## put "pdb.set_trace()" at any place you want to interact with pdb
-from bibulous import Bibdata
 import difflib      ## for comparing one string sequence with another
+from bibulous import Bibdata
 
 
 ## ==================================================================================================
-## Test #1 consists of various single tests of options and features.
 def run_test1():
+    '''
+    Test #1 consists of a suite of single tests of options and features that are valid with the
+    default template file.
+    '''
+
     bstfiles = ('./test/test1.bst', './test/test1_sentencecase.bst', './test/test1_frenchinitials.bst')
     bibfile = './test/test1.bib'
     bblfile = './test/test1.bbl'
@@ -75,16 +79,21 @@ def run_test1():
     return(bblfile, target_bblfile)
 
 ## =============================
-## Test #2 loads a number of large .bib database files to put the parser through a
-## thorough suite of tests. It also writes every entry to a BBL file to test the
-## entire process chain.
 def run_test2():
+    '''
+    Test #2 loads a number of large .bib database files to put the BibTeX parser and the BBL file
+    writer through a comprehensive set of conditions. Every entry in the BIB files is written to
+    the output BBL file to test as muh of the processing chain as possible.
+    '''
+
     bstfile = './test/test2.bst'
-    bibfiles = ['./test/journal.bib', './test/amstat.bib', './test/benfords-law.bib',
+    bibfiles = ['./test/master.bib',   './test/journal.bib',   './test/amstat.bib',
                './test/cccuj2000.bib', './test/gutenberg.bib', './test/onlinealgs.bib',
-               './test/python.bib', './test/random.bib', './test/sciam2000.bib',
-               './test/template.bib', './test/thiruv.bib']
+               './test/python.bib',    './test/random.bib',    './test/sciam2000.bib',
+               './test/template.bib',  './test/thiruv.bib',    './test/benfords-law.bib',
+               './test/texstuff.bib',  './test/karger.bib']
     bblfile = './test/test2.bbl'
+    auxfile = './test/test2.aux'
     target_bblfile = './test/test2_target.bbl'
 
     print('')
@@ -97,9 +106,7 @@ def run_test2():
     print('The current working directory is: ' + os.getcwd())
     print('The actual output BBL file: ' + bblfile)
 
-    filenames = bibfiles
-    filenames.append(bblfile)
-    filenames.append(bstfile)
+    filenames = bibfiles + [bblfile,bstfile]
     test2bib = Bibdata(filenames)
 
     ## Build a large citation dictionary using all of the bibliography database entries.
@@ -107,9 +114,53 @@ def run_test2():
     if ('abbrev' in citedict): del citedict['abbrev']
     if ('preamble' in citedict): del citedict['preamble']
     test2bib.citedict = citedict
+    f = open(auxfile, 'w')
+    for c in citedict:
+        f.write('\\citation{' + c + '}\n')
+    f.write('\\bibdata{')
+    for b in bibfiles[:-1]:
+        f.write(os.path.basename(b) + ',')
+    f.write(os.path.basename(bibfiles[-1]) + '}\n')
+    f.write('\\bibstyle{test2.bst}\n')
+    f.close()
     test2bib.write_bblfile()
 
     return(bblfile, target_bblfile)
+
+## =============================
+def run_test3():
+    '''
+    Test #3 calls the authorextract function and check that it is working correctly.
+    '''
+
+    import subprocess
+    auxfile = './test/test2.aux'
+    authorstr = 'John W. Tukey'
+    #authorstr = 'P.-J. Proudhon'
+    outputfile = './test/test3-authorextract.bib'
+    target_bibfile = './test/test3_target.bib'
+
+    print('============================================================================')
+    print('Running Bibulous-test3 for author "' + authorstr + '"')
+
+    bibdata = Bibdata(auxfile)
+    print('Writing BIB author extract file = ' + outputfile)
+    bibdata.write_authorextract(authorstr, outputfile, debug=False)
+
+#    cmd = 'python ../bibulous-authorextract.py "' + auxfile + '" "' + authorstr + '" "' + \
+#          output_bibfile + '"'
+#
+#    try:
+#        out = subprocess.check_output(cmd, stderr=subprocess.STDOUT)
+#    except Exception, output:
+#        print(output)
+
+
+    #bibdata = Bibdata(auxfile)
+    #bibextract_filename = outputfile[:-4] + '-authorextract.bib'
+    #print('Writing BIB author extract file = ' + outputfile)
+    #write_authorextract(authorstr, outputfile, debug=False)
+    return(outputfile, target_bibfile)
 
 ## =============================
 def check_file_match(outputfile, targetfile):
@@ -140,9 +191,9 @@ if (__name__ == '__main__'):
         print('TEST #1 FAILED. FILE DIFFERENCES:')
         for line in diff: print(line, end='')
 
-    raise ValueError('')
+    #raise ValueError('')
 
-    ## Run test #1.
+    ## Run test #2.
     (outputfile, targetfile) = run_test2()
 #    diff = check_file_match(outputfile, targetfile)
 #    if not diff:
@@ -150,6 +201,9 @@ if (__name__ == '__main__'):
 #    else:
 #        print('TEST #1 FAILED. FILE DIFFERENCES:')
 #        for line in diff: print(line, end='')
+
+    ## Run test #3.
+    (outputfile, targetfile) = run_test3()
 
 
     print('DONE')
