@@ -113,10 +113,6 @@ Python code to-do
 Python testing to-do
 --------------------
 
-#. I guess you will need to make some change to the description above in order to test
-    formatting options, since these are set once by the BST file and are not dynamic after
-    that.
-
 #. Add tests for each of the following::
         options.citation_order
         options.sort_case
@@ -145,7 +141,7 @@ Python testing to-do
         s4 = r'C{\'o}mo est{\'a}s? Est{\'a} bien as{\'\i} en espa{\~n}ol?'
         s5 = u'Smør brød på hytte taket'
         s6 = r'Sm{\o}r br{\oo}d p{\aa} hytte p{\aab} taket'
-        s7 = u"Keiyodashi Jun'ichiro"
+        s7 = u"Keiy{\=o}dashi Jun'ichiro"
         s8 = r'\{\{ $\left[.\left\lfloor \frac{5}{\frac{\left(3\right)}{4}} \right).\right]$ \}\}'
 
         print('s1 = ' + s1)
@@ -177,7 +173,7 @@ Python testing to-do
         print('p8 = ' + p8)
         print('')
 
-    Note that this also tests Unicode-compatibility.
+    Note that this also tests some Unicode-compatibility.
 
 #. Test the Unicode compatibility of ``generate_sortkey()``.
 
