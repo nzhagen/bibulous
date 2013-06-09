@@ -7,19 +7,23 @@ import string
 import re
 import os
 import sys
+import getopt
 import pdb          ## put "pdb.set_trace()" at any place you want to interact with pdb
-import bibulous
+from bibulous import Bibdata
 
 
 ## ==================================================================================================
 
 if (__name__ == '__main__'):
-    print(sys.argv)
+    print(list(sys.argv))
 
     try:
-        auxfile = sys.argv[2]
-        authorstr = sys.argv[3]
-        outputfile = sys.argv[4]
+        auxfile = sys.argv[1]
+        authorstr = sys.argv[2]
+        if (len(sys.argv) > 2):
+            outputfile = sys.argv[3]
+        else:
+            outputfile = auxfile[:-4] + '-authorextract.bib'
     except getopt.GetoptError as err:
         print(str(err)) ## will print something like "option -a not recognized"
         print('usage:')
@@ -31,6 +35,5 @@ if (__name__ == '__main__'):
         sys.exit(2)
 
     bibdata = Bibdata(auxfile)
-    bibextract_filename = outputfile[:-4] + '-authorextract.bib'
     print('Writing BIB author extract file = ' + outputfile)
-    write_authorextract(authorstr, outputfile, debug=False)
+    bibdata.write_authorextract(authorstr, outputfile, debug=False)
