@@ -58,8 +58,6 @@ Python code to-do
    The file you have works for Python2 and not Python3, but the package is compatible with
    both.
 
-#. Allow nesting of square brackets ``[|]`` --- i.e. options within options. Needed?
-
 #. Note that ``biblatex`` does *not* use ``\bibliography{...}`` to add a ``*.bib`` database.
    Rather, in the preamble, it uses ``\addbibresource{...}``. And it doesn't use
    ``\bibliographystyle{...}``
@@ -137,11 +135,11 @@ Python testing to-do
 
         s1 = r"Recherches exp{\'e}rimentales sur la g{\'e}n{\'e}ralisation de l'emploi du spectrom{\`e}tre {F}abry-{P}erot"
         s2 = r'Vorschl{\"a}ge zur {C}onstruction einiger optischer {V}orichtungen'
-        s3 = u'�Hola! �C�mo est�s? �Est� bien as� en espa�ol?'
-        s4 = r'C{\'o}mo est{\'a}s? Est{\'a} bien as{\'\i} en espa{\~n}ol?'
-        s5 = u'Sm�r br�d p� hytte taket'
-        s6 = r'Sm{\o}r br{\oo}d p{\aa} hytte p{\aab} taket'
-        s7 = u"Keiy{\=o}dashi Jun'ichiro"
+        s3 = u'¡Hola! ¿Cómo estás? ¿Está bien así en España?'
+        s4 = r'C{\'o}mo est{\'a}s? ?`Est{\'a} bien as{\'\i} en Espa{\~n}a?'
+        s5 = u'Smør brød på hytte paab'
+        s6 = r'Sm{\o}r br{\oo}d p{\aa} hytte p{\aab}'
+        s7 = u"Rōmaji (ローマ字), 漢字 (かんじ), hiragana (平仮名, ひらがな), katakana (片仮名, カタカナ)"
         s8 = r'\{\{ $\left[.\left\lfloor \frac{5}{\frac{\left(3\right)}{4}} \right).\right]$ \}\}'
 
         print('s1 = ' + s1)
@@ -177,10 +175,7 @@ Python testing to-do
 
 #. Test the Unicode compatibility of ``generate_sortkey()``.
 
-#. Add a test for ``bibulous-authorextract``. For example, for one test, try something like::
-       bibulous-authorextract.write_authorextract(texfile, auxfile, {'last':'Hagen', 'first':'Nathan'})
-
-#. Add a test for ``bibulous-citeextract``.
+#. Add a test for ``bibulous_citeextract``.
 
 #. Test that trying to import a BibTeX-format BST file generates an ``ImportError`` exception.
 
@@ -196,7 +191,7 @@ Python testing to-do
 Template files to-do
 --------------------
 
-#. Now that you have a ``bibulous-authorextract`` script, write a
+#. Now that you have a ``bibulous_authorextract`` script, write a
    ``cvpublications.bst`` style template file to go with it. Bibliography sections: "peer
    reviewed journal articles", "conference proceedings papers", "presentations".
 
