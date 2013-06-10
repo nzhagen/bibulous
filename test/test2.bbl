@@ -1,4 +1,4 @@
-\begin{thebibliography}{11991}
+\begin{thebibliography}{11992}
 \providecommand{\enquote}[1]{``#1''}
 \providecommand{\url}[1]{\verb|#1|}
 \providecommand{\href}[2]{#2}
@@ -9472,6 +9472,8 @@ B. Hassan, ``Examining data accuracy and authenticity with leading digit frequen
 R. Hassin and E. Zemel, ``On Shortest Paths in Graphs with Random Weights,'' \textit{Mathematics of Operations Research} \textbf{10}: 557--564 (1985).
 \bibitem[Hastad:CRCW]{Hastad:CRCW}
 Hastad, ``Almost Optimal Lower Bounds for Small Depth Circuits,'' \textit{Advances in Computing Research} \textbf{5}: 143--170 (1989). A preliminary version appeared inProceedings of the  {$28^{th}$} {ACM} Symposium on Theory of Computing
+\bibitem[Hastad:CRCW-conf]{Hastad:CRCW-conf}
+J. Hastad, ``Almost Optimal Lower Bounds for Small Depth Circuits,'' in \textit{Proceedings of the  {$18^{th}$} {ACM} Symposium on Theory of Computing}, pp.~6--20 (1986). 
 \bibitem[Hastie:1987:CLD]{Hastie:1987:CLD}
 T. Hastie, ``A closer look at the deviance,'' \textit{The American Statistician} \textbf{41}: 16--20 (1987).
 \bibitem[Hastings:1955:ADC]{Hastings:1955:ADC}

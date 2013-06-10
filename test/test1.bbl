@@ -23,7 +23,7 @@ A. Aspect, P. Grangier, and G. Roger, \textit{Experimental realization of Einste
 \bibitem{nestedbold1}
 ``a\textbf{bb{\A}}c\textbf{d}ff\textbf{{g}}h{i}!'', ``a\textbf{b{c{\textmd{d}}e\textmd{f}g}h}i''.
 \bibitem{nestedquotes1}
-``\:``This is' `quoted and ``nested''.'`', `'This is `quoted and ``nested''.'`', ``'This is `quoted and ``nested''.'`'\:'', ```This is ``quoted and ``nested''.'`'\:'', ```This is ``qu\'oted and \"e ``nested''.'`'\:''.
+``\:`\:``This is'' ``quoted and `nested'.''\:'\:'', ``\:`This is ``quoted and `nested'.''\:'\:'', ``\:`\:``This is `quoted and ``nested''.'\:''\:'\:'', ``\:`This is ``\:`quoted and ``nested''.'\:''\:'\:'', ``\:`This is ``\:`qu\'oted and \"e ``nested''.'\:''\:'\:''.
 \bibitem{nameparsing1}
 AA, A. bb, A. bb CC, A. bb CC dd EE, A. bb CC dd EE, A. bb, BB, A. bb CC, XX, and A. BB, ``None'' (0000).
 \bibitem{nameparsing2}
