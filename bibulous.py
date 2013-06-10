@@ -109,7 +109,7 @@ class Bibdata(object):
         self.abbrevs = {'jan':'1', 'feb':'2', 'mar':'3', 'apr':'4', 'may':'5', 'jun':'6',
                         'jul':'7', 'aug':'8', 'sep':'9', 'oct':'10', 'nov':'11', 'dec':'12'}
         self.bibdata = {'preamble':''}
-        self.filedict = get_bibfilenames(filename)
+        self.filedict = get_bibfilenames(filename, debug=debug)
         self.citedict = {}  ## the dictionary containing the original data from the AUX file
         self.citelist = []  ##citation keys in the ordered they will be printed in the final result
         self.bstdict = {}
@@ -702,9 +702,8 @@ class Bibdata(object):
 
             ## Before inserting entries into the BBL file, we do "difficult" BIB parsing jobs
             ## here: insert cross-reference data, format author and editor name lists, generate
-            ## the "edition_ordinal", and yyy
-            ## Doing it here means that we don't have to add lots of extra checks later, allowing
-            ## for simpler code.
+            ## the "edition_ordinal", etc. Doing it here means that we don't have to add lots of
+            ## extra checks later, allowing for simpler code.
             self.insert_crossref_data(c)
             self.create_namelist(c, 'author')
             self.create_namelist(c, 'editor')
@@ -1254,49 +1253,69 @@ class Bibdata(object):
         return
 
     ## =============================
-    def write_authorextract(self, name, outputfile=None):
+    def write_authorextract(self, searchname, outputfile=None, debug=False):
         '''
         Extract a sub-database from a large bibliography database, with the former containing only \
         those entries citing the given author/editor.
 
         Parameters
         ----------
-        auxfile : str
-            The "auxiliary" file, containing citation info, TOC info, etc.
-        name : str or dict
+        searchname : str or dict
             The string or dictionary for the author's name. This can be, for example, "Bugs E. Bunny"
             or {'first':'Bugs', 'last':'Bunny', 'middle':'E'}.
         outputfile : str, optional
             The filename of the extracted BIB file to write.
         '''
 
-        if isinstance(name, str):
-            name = bibulous.namestr_to_namedict(name)
-        nkeys = len(name.keys())
+        if not isinstance(searchname, basestring):
+            raise TypeError('The input search name ["' + str(searchname) + \
+                            '"] is not a valid string.')
+        if not outputfile:
+            outputfile = self.filedict['aux'][:-4] + '_authorextract.bib'
+
+        searchname = namestr_to_namedict(searchname)
+        nkeys = len(searchname.keys())
 
         ## This is the dictionary we will stuff extracted entries into.
         bibextract = {}
         nentries = 0        ## count the number of entries found
 
-        for k in bibdata:
+        for k in self.bibdata:
             ## Get the list of name dictionaries from the entry.
-            self.create_namelist(k, 'author')
-            name_list_of_dicts = self.bibdata[k]['authorlist']
-            self.create_namelist(k, 'editor')
-            name_list_of_dicts.append(self.bibdata[k]['editorlist'])
+            name_list_of_dicts = []
+            if ('author' in self.bibdata[k]):
+                self.create_namelist(k, 'author')
+                name_list_of_dicts = self.bibdata[k]['authorlist']
+            if ('editor' in self.bibdata[k]):
+                self.create_namelist(k, 'editor')
+                if not ('author' in self.bibdata[k]):
+                    name_list_of_dicts = self.bibdata[k]['editorlist']
+                else:
+                    ## If the entry has both authors and editors, then just merge the two name
+                    ## lists.
+                    name_list_of_dicts += self.bibdata[k]['editorlist']
+
+            if not name_list_of_dicts:
+                continue
 
             ## Compare each name dictionary in the entry with the input author's name dict.
             ## All of an author's name keys must equal an entry's name key to produce a match.
+            ## TODO: If the input name has initials but the database name does not, then you
+            ## should initialize the latter prior to trying to compare.
             for name in name_list_of_dicts:
+                if (searchname['last'] not in name['last']): continue
+
                 key_matches = 0
                 for namekey in name:
-                    if (namekey in name) and (name[namekey] == name[namekey]):
+                    if (namekey in searchname) and (name[namekey] == searchname[namekey]):
                         key_matches += 1
+                        if debug: print('Found match in entry "' + k + '": name[' + namekey + '] = ' + name[namekey])
 
                 if (key_matches == nkeys):
                     #print(k, bibdata[k]['author'])
-                    bibextract[k] = bibdata[k]
+                    bibextract[k] = self.bibdata[k]
                     nentries += 1
+                    if debug: print('Match FULL NAME in entry "' + k + '": ' + repr(name))
 
         export_bibfile(bibextract, outputfile)
 
@@ -1327,11 +1346,15 @@ def get_bibfilenames(filename, debug=False):
         A dictionary with keys 'bib' and 'bst', each entry of which contains a list of filenames.
     '''
 
-    if isinstance(filename, basestring) and filename.endswidth('.aux'):
-        auxfile = filename
+    bibfiles = []
+    bstfiles = []
+    auxfile = ''
+    bblfile = ''
+    texfile = ''
+
+    if isinstance(filename, basestring) and filename.endswith('.aux'):
+        auxfile = os.path.normpath(filename)
         path = os.path.dirname(filename) + '/'
-        bibfiles = []
-        bstfiles = []
 
         s = open(filename, 'rU')
         for line in s.readlines():
@@ -1403,14 +1426,14 @@ def get_bibfilenames(filename, debug=False):
         for i in range(len(bstfiles)):
             bstfiles[i] = os.path.normpath(bstfiles[i])
 
+    ## Or if the input is only a BIB file, then go off of that.
+    elif isinstance(filename, basestring) and filename.endswith('.bib'):
+        bibfiles = [os.path.normpath(filename)]
+
+    ## Or of the input is a list, then we can go through all the filenames in the list.
     elif isinstance(filename, (list, tuple)):
         ## All the work above was to locate the filenames from a single AUX file. However, if the
         ## input is a list of filenames, then constructing the filename dictionary is simple.
-        bibfiles = []
-        bstfiles = []
-        auxfile = ''
-        bblfile = ''
-        texfile = ''
         for f in filename:
             if f.endswith('.aux'): auxfile = os.path.normpath(f)
             elif f.endswith('.bib'): bibfiles.append(os.path.normpath(f))
@@ -1420,7 +1443,7 @@ def get_bibfilenames(filename, debug=False):
 
     if not bblfile:
         bblfile = auxfile[:-4] + '.bbl'
-    if not texfile:
+    if not texfile and auxfile:
         texfile = auxfile[:-4] + '.tex'
 
     ## Now that we have the filenames, build the dictionary of BibTeX-related files.
@@ -1431,8 +1454,7 @@ def get_bibfilenames(filename, debug=False):
     filedict['aux'] = auxfile
     filedict['bbl'] = bblfile
 
-    #yyy
-    if True: #debug:
+    if debug:
         print('bib files: ' + repr(bibfiles))
         print('bst files: ' + repr(bstfiles))
         print('tex file: "' + str(texfile) + '"')
@@ -1844,7 +1866,23 @@ def get_delim_levels(s, delims=('{','}'), operator=None):
         return(brlevels)
 
 ## ===================================
-def get_quote_levels(s):
+def show_levels_debug(s, levels):
+    '''
+    A debugging tool for showing delimiter levels and the input string next to one another.
+    '''
+    q = 0   ## counter for the character ending a line
+    if ('\n' in s):
+        for line in s.split('\n'):
+            print(line)
+            print(str(levels[q:q+len(line)])[2:-1].replace(',','').replace(' ',''))
+            q += len(line)
+    else:
+        print(s)
+        print(str(levels)[2:-1].replace(',','').replace(' ',''))
+    return
+
+## ===================================
+def get_quote_levels(s, debug=False):
     '''
     Return a list which gives the "quotation level" of each character in the string.
 
@@ -1867,45 +1905,29 @@ def get_quote_levels(s):
     When using double-quotes, it is easy to break the parser, so they should be used only sparingly.
     '''
 
-    def show_levels_debug(s, levels):
-        '''
-        Show delimiter levels and the input string next to one another for debugging.
-        '''
-        q = 0   ## counter for the character ending a line
-        if ('\n' in s):
-            for line in s.split('\n'):
-                print(line)
-                print(str(alevels[q:q+len(line)])[1:-1].replace(',','').replace(' ',''))
-                q += len(line) + 1
-        else:
-            print(s)
-            print(str(alevels)[1:-1].replace(',','').replace(' ',''))
-
-
     stack = []
     alevels = [0]*len(s)        ## double-quote level
     blevels = [0]*len(s)        ## single-quote level
     clevels = [0]*len(s)        ## neutral-quote level
-    #ccount = 0                  ## counter for neutral quotes
 
-    for j,c in enumerate(s):
-        if (c == '`') and (s[j-1] != '\\'):
+    for j,ch in enumerate(s):
+        if (ch == '`') and (s[j-1] != '\\'):
             ## Note: the '\\' case here is for detecting a grave accent markup.
             if (s[j:j+2] == '``'):
                 stack.append('a')       ## add a double-quote marker to the stack
-            elif (s[j-1] != '`') and (s[j-1].isspace() or (s[j-1] in ')]') or (j == 0)):
+            elif (s[j-1] != '`') and (s[j-1].isspace() or (s[j-1] in '()[]{}":;,<>') or (j == 0)):
                 ## The trouble with single-quotes is the clash with apostrophes. So, only increment
                 ## the single-quote counter if we think it is the start of a quote (not immediately
                 ## preceded by a non-whitespace character).
                 stack.append('b')       ## add a single-quote marker to the stack
-        elif (c == "'") and (alevels[j-1]+blevels[j-1]+clevels[j-1] > 0) and (s[j-1] != '\\'):
+        elif (ch == "'") and (alevels[j-1]+blevels[j-1]+clevels[j-1] > 0) and (s[j-1] != '\\'):
             ## Note: the '\\' case here is for detecting an accent markup.
             if (s[j:j+2] == "''"):
                 stack.pop()    ## remove double-quote marker from the stack
             elif (s[j-1] != "'"):
                 stack.pop()    ## remove single-quote marker from the stack
-        elif (c == '"') and (s[j-1] != '\\'):
-            ## Note: the '\\' here case is for detecting an umlaut markup.
+        elif (ch == '"') and (s[j-1] != '\\'):
+            ## Note: the '\\' here case is for not detecting an umlaut markup.
             if (len(stack) > 0) and (stack[-1] == 'c'):
                 stack.pop()
             else:
@@ -1915,21 +1937,24 @@ def get_quote_levels(s):
         blevels[j] = stack.count('b')
         clevels[j] = stack.count('c')
 
+
     if (alevels[-1] > 0):
         print('Warning: found mismatched "``"..."''" quote pairs in the input string "' + s + \
               '". Ignoring the problem and continuing on ...')
-        #show_levels_debug(s, alevels)
         alevels[-1] = 0
     if (blevels[-1] > 0):
         print('Warning: found mismatched "`"..."\'" quote pairs in the input string "' + s + \
               '". Ignoring the problem and continuing on ...')
-        #show_levels_debug(s, alevels)
         blevels[-1] = 0
     if (clevels[-1] > 0):
         print('Warning: found mismatched '"'...'"' quote pairs in the input string "' + s + \
               '". Ignoring the problem and continuing on ...')
-        #show_levels_debug(s, alevels)
         clevels[-1] = 0
+
+    if debug:
+        show_levels_debug(s, alevels)
+        show_levels_debug(s, blevels)
+        show_levels_debug(s, clevels)
 
     return(alevels, blevels, clevels)
 
@@ -2077,7 +2102,7 @@ def enwrap_nested_string(s, delims=('{','}'), odd_operator=r'\textbf', even_oper
     return(s)
 
 ## ===================================
-def enwrap_nested_quotes(s):
+def enwrap_nested_quotes(s, debug=False):
     '''
     Find nested quotes within strings and, if necessary, replace them with the proper nesting
     (i.e. outer quotes use ``...'' while inner quotes use `...').
@@ -2106,10 +2131,13 @@ def enwrap_nested_quotes(s):
               'Ignoring the quotation marks and continuing ...')
         return(s)
 
+    ## Note that a backtick preceded by a backslash, an explamation point, or a question mark,
+    ## indicates LaTeX markup for a grave accent, an inverted explamation point, and an inverted
+    ## question mark, respectively.
     #adelims = ('``',"''")
-    anum = len(re.findall(r'(?<!\\)``', s))
+    anum = len(re.findall(r'(?<!\!\?\\)``', s))
     #bdelims = ('`',"'")
-    bnum = len(re.findall(r'(?<!\\)`', s))
+    bnum = len(re.findall(r'(?<!\!\?\\)`', s))
     #cdelim = '"'
     cnum = len(re.findall(r'(?<!\\)"', s))
     if ((anum + bnum + cnum) <= 1) and (r'\enquote{' not in s):
@@ -2166,13 +2194,16 @@ def enwrap_nested_quotes(s):
     ## Next, we determine the nesting levels of quotations.
     qlevels = get_delim_levels(s, ('{','}'), r'\enquote')
 
-    ## Finally, replace odd levels of quotation with "``" and even levels with "`". This is the
-    ## American convention. Need to generalize this behavior for British convention, and, even
-    ## more broadly, to all locale-dependent quotation mark behavior. For now let's just try to
-    ## get the American version working.
+    ## Finally, replace odd levels of quotation with "``" and even levels with "`".
+    ## TODO: This approach is the American convention. Need to generalize this behavior for British
+    ## convention, and, even more broadly, to all locale-dependent quotation mark behavior. For
+    ## now let's just try to get the American version working.
     t = 0
     odd_operators = ("``","''")
     even_operators = ("`","'")
+
+    if debug:
+        show_levels_debug(s, qlevels)
 
     for i,level in enumerate(qlevels):
         if (qlevels[i-1] == 0) and (level == 0): continue
@@ -2328,7 +2359,7 @@ def latex_to_utf8(s):
         return(s)
 
     ## First, some easy replacements.
-    trans = {r'\$':'$', r'\%':'%', r'\_':'_', r'\&':'&', r'\#':'#'}
+    trans = {r'\$':'$', r'\%':'%', r'\_':'_', r'\&':'&', r'\#':'#', r'!`':'¡', r'?`':'¿'}
     for c in trans:
         if c in s: s = s.replace(c, trans[c])
 
@@ -2633,16 +2664,22 @@ def namestr_to_namedict(namestr):
     if (len(commapos) == 0):
         ## Allow nametokens to be split by spaces *or* word ties ('~' == unbreakable spaces),
         ## except when the '~' is preceded by a backslash, in which case we have the LaTeX markup
-        ## for the tilde accent on a character. We use "stringsplit()" rather than the standard
+        ## for the tilde accent. We use "stringsplit()" rather than the standard
         ## string object's "split()" function because we don't want the split to be applied when
         ## the separator is not at brace level zero.
         nametokens = stringsplit(namestr, r' |(?<!\\)~')
 
         for n in nametokens:
             n_temp = n.strip('{').strip('}')[:-1]
-            if ('.' in n_temp):
-                print('Warning: The name token "' + n + '" in namestring "' + namestr + \
-                      '" has a "." inside it, which may be a typo. Ignoring ...')
+            ## If we find a dot which is not preceded by a backslash and not succeeded by a dash.
+            ## Also, we shouldn't care about dots appearing within curle braces, so we have to
+            ## check for that as well.
+            z = get_delim_levels(namestr, ('{','}'))
+            for match in re.finditer(r'(?<!\\)\.(?!-)', n_temp):
+                i = match.start()
+                if (z[i] == 0):
+                    print('Warning: The name token "' + n + '" in namestring "' + namestr + \
+                          '" has a "." inside it, which may be a typo. Ignoring ...')
 
         namedict = {}
         if (len(nametokens) == 1):
@@ -2681,9 +2718,10 @@ def namestr_to_namedict(namestr):
         third_nametokens = thirdpart.strip().split(' ')
 
         if (len(second_nametokens) != 1):
-            raise ValueError('The BibTeX format for namestr="' + namestr + '" is malformed.' + \
-                             '\nThere should be only one name in the second part of the three ' \
-                             'comma-separated name elements.')
+            print('Warning: the BibTeX format for namestr="' + namestr + '" is malformed.' + \
+                  '\nThere should be only one name in the second part of the three comma-' \
+                  'separated name elements.')
+            return({'last':'???'})
 
         if (len(first_nametokens) == 1):
             namedict['last'] = first_nametokens[0]
@@ -2721,8 +2759,9 @@ def namestr_to_namedict(namestr):
         namedict['suffix'] = fifthpart.strip()
 
     else:
-        raise ValueError('The BibTeX format for namestr="' + namestr + \
-            '" is malformed. There should never be more than four commas in a given name.')
+        print('Warning: the BibTeX format for namestr="' + namestr + '" is malformed.' + \
+              '\nThere should never be more than four commas in a given name.')
+        return({'last':'???'})
 
     ## If any tokens in the middle name start with lower case, then move them, and any tokens after
     ## them, to the prefix. An important difference is that prefixes typically don't get converted
@@ -2820,9 +2859,10 @@ def create_edition_ordinal(bibentry, key, options):
     if not ('edition' in bibentry):
         #print('Warning: cannot find "edition" in entry "' + key + '"')
         return(options['undefstr'])
+    if not bibentry['edition'].isdigit():
+        return(bibentry['edition'])
 
     edition_number = bibentry['edition']
-
     trans = {'first':'1', 'second':'2', 'third':'3', 'fourth':'4', 'fifth':'5', 'sixth':'6',
              'seventh':'7', 'eighth':'8', 'ninth':'10', 'tenth':'10', 'eleventh':'11',
              'twelfth':'12', 'thirteenth':'13', 'fourteenth':'14', 'fifteenth':'15',
