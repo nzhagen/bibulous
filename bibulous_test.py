@@ -83,7 +83,11 @@ def run_test2():
     '''
     Test #2 loads a number of large .bib database files to put the BibTeX parser and the BBL file
     writer through a comprehensive set of conditions. Every entry in the BIB files is written to
-    the output BBL file to test as muh of the processing chain as possible.
+    the output BBL file to test as much of the processing chain as possible.
+
+    Rather than checking the output against a target file, this test really just makes sure that
+    no exceptions are emitted when processing the entire database through the full chain of
+    functions.
     '''
 
     bstfile = './test/test2.bst'
@@ -94,14 +98,12 @@ def run_test2():
                './test/texstuff.bib',  './test/karger.bib']
     bblfile = './test/test2.bbl'
     auxfile = './test/test2.aux'
-    target_bblfile = './test/test2_target.bbl'
 
     print('')
     print('============================================================================')
     print('Running Bibulous-test2 on: ' + bibfiles[0])
     for b in bibfiles[1:]:
         print('                           ' + b)
-    print('The target output BBL file: ' + target_bblfile)
     print('The testing template file is: ' + bstfile)
     print('The current working directory is: ' + os.getcwd())
     print('The actual output BBL file: ' + bblfile)
@@ -125,19 +127,20 @@ def run_test2():
     f.close()
     test2bib.write_bblfile()
 
-    return(bblfile, target_bblfile)
+    return(bblfile)
 
 ## =============================
 def run_test3():
     '''
-    Test #3 calls the authorextract function and check that it is working correctly.
+    Test #3 calls the authorextract function for
     '''
+
+    #TODO: if input name has initials, then so should the name we check against. Currently it's not doing that.
 
     import subprocess
     auxfile = './test/test2.aux'
     authorstr = 'John W. Tukey'
-    #authorstr = 'P.-J. Proudhon'
-    outputfile = './test/test3-authorextract.bib'
+    outputfile = './test/test3_authorextract.bib'
     target_bibfile = './test/test3_target.bib'
 
     print('============================================================================')
@@ -147,19 +150,6 @@ def run_test3():
     print('Writing BIB author extract file = ' + outputfile)
     bibdata.write_authorextract(authorstr, outputfile, debug=False)
 
-#    cmd = 'python ../bibulous-authorextract.py "' + auxfile + '" "' + authorstr + '" "' + \
-#          output_bibfile + '"'
-#
-#    try:
-#        out = subprocess.check_output(cmd, stderr=subprocess.STDOUT)
-#    except Exception, output:
-#        print(output)
-
-
-    #bibdata = Bibdata(auxfile)
-    #bibextract_filename = outputfile[:-4] + '-authorextract.bib'
-    #print('Writing BIB author extract file = ' + outputfile)
-    #write_authorextract(authorstr, outputfile, debug=False)
     return(outputfile, target_bibfile)
 
 ## =============================
@@ -191,19 +181,18 @@ if (__name__ == '__main__'):
         print('TEST #1 FAILED. FILE DIFFERENCES:')
         for line in diff: print(line, end='')
 
-    #raise ValueError('')
-
     ## Run test #2.
-    (outputfile, targetfile) = run_test2()
-#    diff = check_file_match(outputfile, targetfile)
-#    if not diff:
-#        print('TEST #1 PASSED')
-#    else:
-#        print('TEST #1 FAILED. FILE DIFFERENCES:')
-#        for line in diff: print(line, end='')
+    #outputfile = run_test2()
+    #print('Test #2 PASSED')
 
     ## Run test #3.
     (outputfile, targetfile) = run_test3()
+    diff = check_file_match(outputfile, targetfile)
+    if not diff:
+        print('TEST #3 PASSED')
+    else:
+        print('TEST #3 FAILED. FILE DIFFERENCES:')
+        for line in diff: print(line, end='')
 
 
     print('DONE')
