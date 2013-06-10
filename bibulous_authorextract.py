@@ -23,7 +23,7 @@ if (__name__ == '__main__'):
         if (len(sys.argv) > 2):
             outputfile = sys.argv[3]
         else:
-            outputfile = auxfile[:-4] + '-authorextract.bib'
+            outputfile = auxfile[:-4] + '_authorextract.bib'
     except getopt.GetoptError as err:
         print(str(err)) ## will print something like "option -a not recognized"
         print('usage:')
