@@ -108,6 +108,7 @@ class Bibdata(object):
         self.debug = debug
         self.abbrevs = {'jan':'1', 'feb':'2', 'mar':'3', 'apr':'4', 'may':'5', 'jun':'6',
                         'jul':'7', 'aug':'8', 'sep':'9', 'oct':'10', 'nov':'11', 'dec':'12'}
+        self.locale = locale.setlocale(locale.LC_ALL,'')    ## set the locale to the user's default
         self.bibdata = {'preamble':''}
         self.filedict = get_bibfilenames(filename, debug=debug)
         self.citedict = {}  ## the dictionary containing the original data from the AUX file
@@ -148,6 +149,7 @@ class Bibdata(object):
         self.options['bibitemsep'] = None
         self.options['bibextract'] = ''
         self.options['remove_abbrev_newlines'] = True
+        self.options['month_abbrev'] = True
 
         ## Compile some patterns for use in regex searches.
         self.anybrace_pattern = re.compile(r'(?<!\\)[{}]', re.UNICODE)
@@ -549,8 +551,9 @@ class Bibdata(object):
                 self.citedict[key] = q
 
         if debug:
-            ## When displaying the dictionary, show it in order-sorted form.
-            for key in sorted(self.citedict, key=self.citedict.get):
+            ## When displaying the dictionary, show it in order-sorted form. Remember to use
+            ## the user's locale for the sort.
+            for key in sorted(self.citedict, key=self.citedict.get, cmp=locale.strcoll):
                 print(key + ': ' + str(self.citedict[key]))
 
         return
@@ -634,7 +637,7 @@ class Bibdata(object):
 
         if debug:
             ## When displaying the bst dictionary, show it in sorted form.
-            for key in sorted(self.bstdict, key=self.bstdict.get):
+            for key in sorted(self.bstdict, key=self.bstdict.get, cmp=locale.strcoll):
                 print(key + ': ' + str(self.bstdict[key]))
 
     ## =============================
@@ -671,9 +674,14 @@ class Bibdata(object):
         else:
             filehandle = open(filename, 'w')
 
-        ## Create an inverse dictionary for the month names
-        monthname_dict = {'1':'jan', '2':'feb', '3':'mar', '4':'apr', '5':'may', '6':'jun',
-                          '7':'jul', '8':'aug', '9':'sep', '10':'oct', '11':'nov', '12':'dec'}
+        ## Create an inverse dictionary for the month names. The month names are determined by the
+        ## user's default locale.
+        monthname_dict = {}
+        for i in range(1,13):
+            if self.options['month_abbrev']:
+                monthname_dict[str(i)] = locale.nl_langinfo(locale.__dict__['ABMON_'+str(i)]).title()
+            else:
+                monthname_dict[str(i)] = locale.nl_langinfo(locale.__dict__['MON_'+str(i)]).title()
 
         if write_preamble:
             if not bibsize: bibsize = repr(len(self.citedict))
@@ -720,9 +728,7 @@ class Bibdata(object):
             ## The "month" is stored in the bibdata dictionary as a string representing an integer
             ## from 1 to 12. Here we need to translate it to a string name.
             if ('month' in self.bibdata[c]):
-                ## TODO: not only is this solution not internationalized, but it is also not
-                ## flexible enough to handle using abbreviated months vs. full month names, etc.
-                monthname = monthname_dict[self.bibdata[c]['month']].title()
+                monthname = monthname_dict[self.bibdata[c]['month']]
                 self.bibdata[c]['monthname'] = monthname
 
             s = self.format_bibitem(c)
@@ -755,7 +761,9 @@ class Bibdata(object):
             sortkey = self.generate_sortkey(c)
             self.citelist.append((sortkey,c))
 
-        ## Now that we have the sortkeys, sort the citation list in the proper order.
+        ## Now that we have the sortkeys, sort the citation list in numerical order. (Since each
+        ## element of citelist is a tuple whose first element is an integer, we need not use
+        ## locale-dependent sorting here.)
         self.citelist.sort()
 
         ## If using a citation order which is descending rather than ascending, then reverse the list.
@@ -978,7 +986,8 @@ class Bibdata(object):
 
         ## Extract the last name of the first author.
         if ('sortname' in bibentry):
-            namelist = namefield_to_namelist(bibentry['sortname'], key=citekey, nameabbrev=nameabbrev_dict)
+            namelist = namefield_to_namelist(bibentry['sortname'], key=citekey,
+                                             nameabbrev=nameabbrev_dict)
             name = namelist[0]['last']
             if ('first' in namelist[0]): name += namelist[0]['first']
             if ('middle' in namelist[0]): name += namelist[0]['middle']
@@ -1098,7 +1107,8 @@ class Bibdata(object):
 
         ## Convert the raw string containing author/editor names in the BibTeX field into a list
         ## of dictionaries --- one dict for each person.
-        namelist = namefield_to_namelist(self.bibdata[key][nametype], key=key, nameabbrev=nameabbrev_dict)
+        namelist = namefield_to_namelist(self.bibdata[key][nametype], key=key,
+                                         nameabbrev=nameabbrev_dict)
         self.bibdata[key][nametype+'list'] = namelist
 
         return

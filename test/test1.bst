@@ -44,6 +44,7 @@ options.sort_with_prefix = False                                ## whether or no
 options.period_after_initial = True                             ## whether to add a '.' after a person's initials.
 options.terseinits = False                                      ## whether to format initials as, for example, "DE" rather than "D. E."
 options.bibitemsep = 0pt                                        ## the extra vertical separation between each bibliography entry. Defining this option *overrides* LaTeX's existing definition for \bibitemsep.
+options.month_abbrev = True                                     ## whether to use abbreviated month names (i.e. "Jan" instead of "January").
 
 ## The remaining exceptions below are really for users rather than for the journal. Maybe put these someplace else?
 options.missing_data_exceptions = False                         ## whether to raise an exception when Bibulous finds a missing but required field.

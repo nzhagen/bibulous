@@ -27,9 +27,6 @@ Python code to-do
    ``anyt`` and ``anyvt`` citation order options, since these require alphabetic labels in the
    citation list given in the ``*.aux`` file.
 
-#. Try inserting ``test_locale_dependent_sorting.py`` into the ``monthname`` code for generating
-    locale-dependent month names using the ``locale`` module.
-
 #. Remember that the mandatory argument to ``\thebibliography`` in the preamble of the BBL
    file is the longest label occurring in the list. For numeric formats, this is simplify
    the largest number. For alpha-formats, it will be more complicated! This argument, if I
