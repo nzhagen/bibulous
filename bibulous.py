@@ -671,6 +671,10 @@ class Bibdata(object):
         else:
             filehandle = open(filename, 'w')
 
+        ## Create an inverse dictionary for the month names
+        monthname_dict = {'1':'jan', '2':'feb', '3':'mar', '4':'apr', '5':'may', '6':'jun',
+                          '7':'jul', '8':'aug', '9':'sep', '10':'oct', '11':'nov', '12':'dec'}
+
         if write_preamble:
             if not bibsize: bibsize = repr(len(self.citedict))
             filehandle.write('\\begin{thebibliography}{' + bibsize + '}\n'.encode('utf-8'))
@@ -712,6 +716,14 @@ class Bibdata(object):
                 (startpage,endpage) = parse_pagerange(self.bibdata[c]['pages'], c)
                 self.bibdata[c]['startpage'] = startpage
                 self.bibdata[c]['endpage'] = endpage
+
+            ## The "month" is stored in the bibdata dictionary as a string representing an integer
+            ## from 1 to 12. Here we need to translate it to a string name.
+            if ('month' in self.bibdata[c]):
+                ## TODO: not only is this solution not internationalized, but it is also not
+                ## flexible enough to handle using abbreviated months vs. full month names, etc.
+                monthname = monthname_dict[self.bibdata[c]['month']].title()
+                self.bibdata[c]['monthname'] = monthname
 
             s = self.format_bibitem(c)
             if (s != ''):
@@ -1276,6 +1288,13 @@ class Bibdata(object):
         searchname = namestr_to_namedict(searchname)
         nkeys = len(searchname.keys())
 
+        ## Find out if any of the tokens in the search name are initials. If so, then we need to
+        ## perform the search over initialized names and not full names. Save the set of booleans
+        ## (one for each name part) in a dictionary to use in the search loop below.
+        name_is_initialized = {}
+        for key in searchname:
+            name_is_initialized[key] = searchname[key].endswith('.')
+
         ## This is the dictionary we will stuff extracted entries into.
         bibextract = {}
         nentries = 0        ## count the number of entries found
@@ -1300,16 +1319,20 @@ class Bibdata(object):
 
             ## Compare each name dictionary in the entry with the input author's name dict.
             ## All of an author's name keys must equal an entry's name key to produce a match.
-            ## TODO: If the input name has initials but the database name does not, then you
-            ## should initialize the latter prior to trying to compare.
             for name in name_list_of_dicts:
                 if (searchname['last'] not in name['last']): continue
 
                 key_matches = 0
                 for namekey in name:
-                    if (namekey in searchname) and (name[namekey] == searchname[namekey]):
-                        key_matches += 1
-                        if debug: print('Found match in entry "' + k + '": name[' + namekey + '] = ' + name[namekey])
+                    if (namekey in searchname):
+                        if name_is_initialized[namekey]:
+                            thisname = initialize_name(name[namekey])
+                        else:
+                            thisname = name[namekey]
+
+                        if (thisname == searchname[namekey]):
+                            key_matches += 1
+                            if debug: print('Found match in entry "' + k + '": name[' + namekey + '] = ' + name[namekey])
 
                 if (key_matches == nkeys):
                     #print(k, bibdata[k]['author'])
