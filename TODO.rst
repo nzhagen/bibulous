@@ -5,12 +5,6 @@ Python code to-do
    code they come from. (Identical messages can come from different points in
    the code, such as when the code can't find an abbreviation key.)
 
-#. Since we've defined special fields ``<authorlist``> etc, we must have functions which
-   insert these fields into the main bibdata dictionary so that users can have direct access
-   to them in the template file. Also, note that we have not been consistent with ``<authorlist>``
-   and ``<editorlist>``, since you document that these are lists of dictionaries, whereas in the
-   template itself, you substitute ``<authorlist>`` as a simple string!
-
 #. TEMPLATE LANGUAGE: Add a *name template* to the BST file, so that the template can tell the
    software how to format names without using so many options settings. Test implementing the
    "last_name_then_first" option to authorlist/editorlist formatting. Then, write a template
@@ -33,11 +27,8 @@ Python code to-do
    ``anyt`` and ``anyvt`` citation order options, since these require alphabetic labels in the
    citation list given in the ``*.aux`` file.
 
-#. Add an option allowing the ``month`` field to be written out in full or in abbreviated form.
-   Also Allow the ``month`` field in an entry to be numeric and not just alpha? That is,
-   automatically convert a numeric value to a locale-based description of the month. I started
-   putting this in (see ``test_locale_dependent_sorting.py``), and it's clear that the best way to
-   do this is using the ``locale`` module.
+#. Try inserting ``test_locale_dependent_sorting.py`` into the ``monthname`` code for generating
+    locale-dependent month names using the ``locale`` module.
 
 #. Remember that the mandatory argument to ``\thebibliography`` in the preamble of the BBL
    file is the longest label occurring in the list. For numeric formats, this is simplify

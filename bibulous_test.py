@@ -135,8 +135,6 @@ def run_test3():
     Test #3 calls the authorextract function for
     '''
 
-    #TODO: if input name has initials, then so should the name we check against. Currently it's not doing that.
-
     import subprocess
     auxfile = './test/test2.aux'
     authorstr = 'John W. Tukey'

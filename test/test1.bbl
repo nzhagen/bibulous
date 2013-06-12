@@ -48,6 +48,12 @@ A. S. Alenin and J. S. Tyo, ``Task-specific snapshot Mueller matrix channeled sp
 {乙部} 厳己 and P. Horton, ``jBibTEXの使用法,'' ソフトバンクパブリッシング (2006). [In Japanese.]
 \bibitem{trailingcomma1}
 B. Bunny, ``Looney tunes'' (2001).
+\bibitem{monthformat1}
+B. Bunny, ``Looney tunes'' (Apr, 2001).
+\bibitem{monthformat2}
+B. Bunny, ``Looney tunes'' (Apr, 2001).
+\bibitem{monthformat3}
+B. Bunny, ``Looney tunes'' (4, 2001).
 \bibitem{sentencecase1}
 P. Stoica and B. C. Ng, ``On the {C}ram{\'e}r-{R}ao bound under parametric constraints'' (1998).
 \bibitem{frenchinitials1}

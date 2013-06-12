@@ -22,6 +22,9 @@ article = <authorliststr>, \enquote{<title>,} \textit{<journal>} \textbf{<volume
 crossref1 = <authorliststr>, \enquote{<title>,} in \textit{<booktitle>}, <editorliststr>, Proc. SPIE \textbf{<volume>}: <eid> (<year>).
 japanese1 = <authorliststr>, \enquote{<title>,} <publisher> (<year>). {\makeopenbracket}In <language>.{\makeclosebracket}
 trailingcomma1 = <authorliststr>, \enquote{<title>} (<year>).
+monthformat1 = <authorliststr>, \enquote{<title>} (<monthname>, <year>).
+monthformat2 = <authorliststr>, \enquote{<title>} (<monthname>, <year>).
+monthformat3 = <authorliststr>, \enquote{<title>} (<month>, <year>).
 
 
 options.citation_order = citenum                                ## order the bibliography by "citekey" or "citenum" (or "nyt" etc.)
