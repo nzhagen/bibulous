@@ -50,17 +50,6 @@ Python code to-do
    Maybe add a ``postnote`` field to the bibdata entry, and allow that field to be a list in case
    more than one citation uses different page references to the same document?
 
-#. Test the ``labelalpha`` field in ``.aux`` files for citation order options ``anyt`` and
-``anyvt``.
-
-#. From the Bibulus paper (the XML-based BibTeX replacement, not your Bibulous): BibTeX requires
-   us to write notes and annotations in the bibliographic database, but there are problems with
-   this approach. Annotations are typically unique to each bibliography (this is often true for
-   notes, too). The bibliographic database is therefore the wrong place to specify them -- it
-   should be done in the main text instead. Furthermore, these fields require translation when
-   the document is translated, something which is much easier if they are kept together with
-   the main text. Allow both for backwards compatibility.
-
 #. Note that there is an option ``use_firstname_initials``. But you don't have options for any
    other types of initials.
 
@@ -69,10 +58,13 @@ Python code to-do
     even more difficult than it sounds, since many languages actually use gender-dependent
     ordinals, so that knowing the number alone is not sufficient.
 
-#. The LaTeX package ``natbib`` allows the user to change the form of citation tags (text placed
-    at the location of the ``\cite{}`` command in the LaTeX file). Bibulous, being only a backend
-    at the moment, can't do this. Maybe work with a LaTeX package maintainer to integrate
+#. The LaTeX packages ``natbib`` and ``biblatex`` allow the user to change the form of citation tags
+    (text placed at the location of the ``\cite{}`` command in the LaTeX file). Bibulous, being only
+    a backend at the moment, can't do this. Maybe work with a LaTeX package maintainer to integrate
     Bibulous into a more powerful front end?
+
+    In addition, writing notes and annotations in the formatted bibliography is better done in the
+    document itself and not the database, since these are often document-specific.
 
 #. It may be useful for some users to extend the flexibility of the [|] notation to allow nested
     brackets.
@@ -96,13 +88,17 @@ Python testing to-do
         options.sort_with_prefix
         options.period_after_initial
         options.terseinits
+        options.replace_newlines
 
-# Once you have the template language ready, add tests for the following:
+#. Once you have the template language ready, add tests for the following:
         options.authorlist_format
         options.use_author_firstname_initials
         options.use_editor_firstname_initials
         options.editorlist_format
         options.namelist_format
+
+#. Test that citation order options ``anyt`` and ``anyvt`` correctly implement the ``labelalpha``
+    field in ``.aux`` files' ``\bibcite{}``.
 
 #. Test ``purify_string()`` on the following::
 
@@ -171,8 +167,7 @@ Template files to-do
    reviewed journal articles", "conference proceedings papers", "presentations". And
    entries should be sorted in reverse chronological order.
 
-#. Show how to use Bibulous to create a glossary. (See ``gloss.pdf`` file for
-   some good suggestions.)
+#. Show how to use Bibulous to create a glossary.
 
 #. Show a style template that implements an annotated bibliography using the "annotation"
    field in the .bib database.
@@ -180,9 +175,9 @@ Template files to-do
 #. Try implementing some other BST formats, especially OSA's Opt. Lett. and SPIE's Opt. Eng.
    Note that ``chicago.sty`` uses ``chicago.bst``, and ``apalike.sty`` uses ``apalike.bst``.
 
-#. Allow the parsing engine a means of setting, for example, fieldname ``authors`` to get mapped
-   to fieldname ``author``. Maybe something as simple as
+#. Allow the style template parsing engine a means of setting, for example, fieldname
+    ``authors`` to get mapped to fieldname ``author``. Maybe something as simple as
 
         entry.author = entry.authors
 
-   or something like that.
+    or something like that.
