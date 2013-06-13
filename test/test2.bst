@@ -22,7 +22,6 @@ options.maxeditors = 5                                          ## if more than 
 options.mineditors = 5                                          ## if "maxeditors" exceeded, then display only the first "mineditors" and et al.
 options.procspie_as_journal = True                              ## treat SPIE conference proceedings like a journal, with journal name 'Proc. SPIE'
 options.sort_case = False                                       ## whether to use case-sensitive citation sorting (default is False)
-options.warnings = True                                         ## whether to print warning strings
 options.backrefs = False                                        ## whether to implement backreferences in the bibliography -- maybe put in template strings?
 options.backrefstyle = none                                     ## can be one of {"none", "three", "two", "two+", "three+", "all+"}
 options.hyperref = False                                        ## whether to turn on (True) or off (False). If "hyperref" package is loaded, the default value is True, else default is False.

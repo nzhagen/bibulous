@@ -89,7 +89,6 @@ Python testing to-do
 #. Add tests for each of the following::
         options.citation_order
         options.sort_case
-        options.warnings
         options.backrefs
         options.backrefstyle
         options.hyperref
@@ -97,7 +96,8 @@ Python testing to-do
         options.sort_with_prefix
         options.period_after_initial
         options.terseinits
-        options.missing_data_exceptions
+
+# Once you have the template language ready, add tests for the following:
         options.authorlist_format
         options.use_author_firstname_initials
         options.use_editor_firstname_initials

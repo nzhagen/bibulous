@@ -137,7 +137,6 @@ class Bibdata(object):
         #self.options['hyperref'] =
         self.options['backrefstyle'] = 'none'
         self.options['backrefs'] = False
-        self.options['warnings'] = True
         self.options['sort_case'] = True
         self.options['french_initials'] = False
         self.options['sort_with_prefix'] = False
