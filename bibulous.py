@@ -712,23 +712,29 @@ class Bibdata(object):
             ## Verbose output is for debugging.
             if verbose: print('Writing entry "' + c + '" to "' + filename + '" ...')
 
+            self.insert_crossref_data(c)
+            self.create_namelist(c, 'author')
+            self.create_namelist(c, 'editor')
+
             ## Before inserting entries into the BBL file, we do "difficult" BIB parsing jobs
             ## here: insert cross-reference data, format author and editor name lists, generate
             ## the "edition_ordinal", etc. Doing it here means that we don't have to add lots of
             ## extra checks later, allowing for simpler code.
-            self.insert_crossref_data(c)
-            self.create_namelist(c, 'author')
-            self.create_namelist(c, 'editor')
-            self.bibdata[c]['edition_ordinal'] = create_edition_ordinal(self.bibdata[c], c, self.options)
-            if ('pages' in self.bibdata[c]):
+            if (c in self.bibdata):
+                self.bibdata[c]['edition_ordinal'] = create_edition_ordinal(self.bibdata[c], c, self.options)
+
+            if (c in self.bibdata) and ('pages' in self.bibdata[c]):
                 (startpage,endpage) = parse_pagerange(self.bibdata[c]['pages'], c)
                 self.bibdata[c]['startpage'] = startpage
                 self.bibdata[c]['endpage'] = endpage
 
             ## The "month" is stored in the bibdata dictionary as a string representing an integer
             ## from 1 to 12. Here we need to translate it to a string name.
-            if ('month' in self.bibdata[c]):
-                monthname = monthname_dict[self.bibdata[c]['month']]
+            if (c in self.bibdata) and ('month' in self.bibdata[c]):
+                if self.bibdata[c]['month'].isdigit():
+                    monthname = monthname_dict[self.bibdata[c]['month']]
+                else:
+                    monthname = self.bibdata[c]['month']
                 self.bibdata[c]['monthname'] = monthname
 
             s = self.format_bibitem(c)
@@ -817,7 +823,7 @@ class Bibdata(object):
         ## If the citation key is not in the database, replace the format string with a message to the
         ## fact.
         if (c not in self.bibdata):
-            print('Warning: citation key is not in the bibliography database.')
+            print('Warning: citation key "' + c + '" is not in the bibliography database.')
             return(itemstr + '\\textit{Warning: citation key is not in the bibliography database}.')
 
         entrytype = self.bibdata[c]['entrytype']
@@ -1088,6 +1094,10 @@ class Bibdata(object):
             Which bibliography field to use for parsing names.
         '''
 
+        ## First check that the entrykey exists.
+        if (key not in self.bibdata):
+            return
+
         ## If the name field does not exist, we can't define name dictionaries, so exit. Note that
         ## we need not check for cross-reference data, since we will assume that has already been
         ## done.
@@ -1216,6 +1226,10 @@ class Bibdata(object):
             Whether the function found a crossref for the queried field. If multiple fieldnames \
             were input, then foundit will be True if a crossref is located for any one of them.
         '''
+
+        ## First check that the entrykey exists.
+        if (entrykey not in self.bibdata):
+            return(False)
 
         bibentry = self.bibdata[entrykey]
         if ('crossref' not in self.bibdata[entrykey]):
@@ -2889,6 +2903,10 @@ def create_edition_ordinal(bibentry, key, options):
     ## TODO: need to replace the English-locale-dependent approach here with an international
     ## friendly approach. Any ideas?
 
+    ## First check that the key exists.
+    if (key not in bibentry):
+        return(options['undefstr'])
+
     if not ('edition' in bibentry):
         #print('Warning: cannot find "edition" in entry "' + key + '"')
         return(options['undefstr'])
@@ -3039,6 +3057,7 @@ def parse_nameabbrev(abbrevstr):
 ## ==================================================================================================
 
 if (__name__ == '__main__'):
+    print('sys.argv=', sys.argv)
     if (len(sys.argv) > 1):
         try:
             (opts, args) = getopt.getopt(sys.argv[1:], '', ['locale='])
@@ -3056,11 +3075,12 @@ if (__name__ == '__main__'):
 
         ## Use this command on the command line:
         #/home/nh/Lab\ Notes/Bibulous/biblatex.py /home/nh/Publications/2013\ OE\ -\ Review\ of\ Snapshot/snapshot_review.tex /home/nh/Lab\ Notes/Bibulous/osa.bst
-        arg_texfile = sys.argv[0]
-        arg_auxfile = sys.argv[1]
-        if (arg_texfile[0] != '/'):
-            arg_texfile = os.getcwd() + '/' + arg_texfile
-        files = [arg_texfile, arg_auxfile]
+        #arg_texfile = sys.argv[0]
+        arg_auxfile = args[0]
+        #if (arg_texfile[0] != '/'):
+        #    arg_texfile = os.getcwd() + '/' + arg_texfile
+        #files = [arg_texfile, arg_auxfile]
+        files = arg_auxfile
     else:
         ## Use the test example input.
         arg_bibfile = './test/test1.bib'
