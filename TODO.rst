@@ -1,6 +1,9 @@
 Python code to-do
 -----------------
 
+# BibTeX can apparently accept an optional argument to the ``\cite{}`` command and place it into
+    the bibliography. Try replicating that functionality.
+
 #. For each "Warning..." message, add a numerical tag so we know which line in the
    code they come from. (Identical messages can come from different points in
    the code, such as when the code can't find an abbreviation key.)
@@ -35,24 +38,11 @@ Python code to-do
    The file you have works for Python2 and not Python3, but the package is compatible with
    both.
 
-#. Note that ``biblatex`` does *not* use ``\bibliography{...}`` to add a ``*.bib`` database.
-   Rather, in the preamble, it uses ``\addbibresource{...}``. And it doesn't use
-   ``\bibliographystyle{...}``
-   either. Instead, it just uses ``\printbibliography``, while all the style stuff is input in
-   the document preamble (esp. using ``*.bbx`` files). Do these preamble additions put entries
-   into the AUX file that you can parse?
-
 #. Implement a bibliography format in which repeated duplicates of author names are replaced
    with a long dash. (Or ``\textit{idem}`` instead of the dash?)
 
 #. Currently Arabic prefixes of names, like al-Turabi, will produce a space between the ``al-``
    and the last name. Need to fix.
-
-#. For people who want to write TeX/LaTeX files in Unicode, but need to deliver an ascii file
-   to a journal for their internal processing, maybe you can write a function which does the
-   inverse of purify_string(). That is, it converts Unicode characters into their LaTeX
-   encoded equivalents. If you work on this, the ``bibtexparser`` module has a good deal of code
-   for starting on this.
 
 #. On page 130 of the Biblatex documentation, it lists a ``postnote`` option to the ``\cite{}``
    command, in which the writer can enter in either a numeric page number to refer to, or a
@@ -84,6 +74,15 @@ Python code to-do
     at the moment, can't do this. Maybe work with a LaTeX package maintainer to integrate
     Bibulous into a more powerful front end?
 
+#. It may be useful for some users to extend the flexibility of the [|] notation to allow nested
+    brackets.
+
+#. For people who want to write TeX/LaTeX files in Unicode, but need to deliver an ascii file
+   to a journal for their internal processing, maybe you can write a function which does the
+   inverse of purify_string(). That is, it converts Unicode characters into their LaTeX
+   encoded equivalents. If you work on this, the ``bibtexparser`` module has a good deal of code
+   for starting on this.
+
 Python testing to-do
 --------------------
 
@@ -99,13 +98,11 @@ Python testing to-do
         options.period_after_initial
         options.terseinits
         options.missing_data_exceptions
-        options.use_csquotes
         options.authorlist_format
         options.use_author_firstname_initials
         options.use_editor_firstname_initials
         options.editorlist_format
         options.namelist_format
-        options.use_name_ties
 
 #. Test ``purify_string()`` on the following::
 

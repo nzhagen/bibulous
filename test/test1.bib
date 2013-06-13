@@ -18,7 +18,7 @@
 %% Test whether a trailing comma after a title is removed when the title ends with '?'.
 @TITLEPUNCTUATION1{titlepunctuation1,
   title = {Are there quantum jumps?},
-  author = {J.~S. Bell},
+  author = {J. S. Bell},
   booktitle = {Speakable and Unspeakable in Quantum Mechanics},
   publisher = {Cambridge University Press},
   year = {1987},
@@ -207,7 +207,7 @@
 %% Test whether a "preamble" entrytype correctly places text into the BBL file preamble.
 @PREAMBLE{"\providecommand{\um}{$\mu$m}"}
 
-%% Test whether a trailing comma at the end of the last field causes a parsing error.
+%% Test the month formatting with an abbreviation key.
 @MONTHFORMAT1{monthformat1,
   title = {Looney tunes},
   author = "Bugs Bunny",
@@ -215,7 +215,7 @@
   year = {2001},
 }
 
-%% Test whether a trailing comma at the end of the last field causes a parsing error.
+%% Test the month formatting with a numeral.
 @MONTHFORMAT2{monthformat2,
   title = {Looney tunes},
   author = "Bugs Bunny",
@@ -223,7 +223,7 @@
   year = {2001},
 }
 
-%% Test whether a trailing comma at the end of the last field causes a parsing error.
+%% Test the month formatting with a numeric string.
 @MONTHFORMAT3{monthformat3,
   title = {Looney tunes},
   author = "Bugs Bunny",
@@ -231,7 +231,7 @@
   year = {2001},
 }
 
-%% Test whether a trailing comma at the end of the last field causes a parsing error.
+%% Test the month formatting with a regular name string.
 @MONTHFORMAT4{monthformat4,
   title = {Looney tunes},
   author = "Bugs Bunny",
@@ -239,3 +239,9 @@
   year = {2001},
 }
 
+%% Test the name ties option.
+@USENAMETIES1{usenameties1,
+  title = {None},
+  author = {First, Middle1 Middle2, Prefix, Last and First,, Prefix, Last, Suffix},
+  year = {0000}
+}

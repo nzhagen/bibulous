@@ -46,7 +46,8 @@ def run_test1():
     default template file.
     '''
 
-    bstfiles = ('./test/test1.bst', './test/test1_sentencecase.bst', './test/test1_frenchinitials.bst')
+    bstfiles = ('./test/test1.bst', './test/test1_sentencecase1.bst', './test/test1_frenchinitials1.bst',
+                './test/test1_usenameties1.bst')
     bibfile = './test/test1.bib'
     bblfile = './test/test1.bbl'
     auxfile = './test/test1.aux'
@@ -180,8 +181,8 @@ if (__name__ == '__main__'):
         for line in diff: print(line, end='')
 
     ## Run test #2.
-    #outputfile = run_test2()
-    #print('Test #2 PASSED')
+    outputfile = run_test2()
+    print('Test #2 PASSED')
 
     ## Run test #3.
     (outputfile, targetfile) = run_test3()

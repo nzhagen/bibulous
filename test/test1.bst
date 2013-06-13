@@ -45,11 +45,11 @@ options.period_after_initial = True                             ## whether to ad
 options.terseinits = False                                      ## whether to format initials as, for example, "DE" rather than "D. E."
 options.bibitemsep = 0pt                                        ## the extra vertical separation between each bibliography entry. Defining this option *overrides* LaTeX's existing definition for \bibitemsep.
 options.month_abbrev = True                                     ## whether to use abbreviated month names (i.e. "Jan" instead of "January").
+options.use_name_ties = False                                   ## whether to use ties ('~') instead of spaces to glue together initials.
 
 ## The remaining exceptions below are really for users rather than for the journal. Maybe put these someplace else?
 options.missing_data_exceptions = False                         ## whether to raise an exception when Bibulous finds a missing but required field.
 options.undefstr = ???                                          ## what string to replace undefined required fields with
-options.use_csquotes = False                                    ## whether to use the \enquote{} command from LaTeX package "csquotes.sty" for formatting quotation marks.
 options.force_sentence_case = False                             ## Whether to reduce all but the first letter (and brace-protected letters) to lower case
 
 options.authorlist_format = first_name_first                    ## use authorlist "Bugs Bunny, Daffy Duck, and Porky Pig" format

@@ -143,7 +143,6 @@ class Bibdata(object):
         self.options['french_initials'] = False
         self.options['sort_with_prefix'] = False
         self.options['period_after_initial'] = True                      #zzz
-        self.options['use_csquotes'] = False
         self.options['terse_inits'] = False
         self.options['force_sentence_case'] = False
         self.options['bibitemsep'] = None

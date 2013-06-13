@@ -36,7 +36,6 @@ options.bibitemsep = 0pt                                        ## the extra ver
 ## The remaining exceptions below are really for users rather than for the journal. Maybe put these someplace else?
 options.missing_data_exceptions = False                         ## whether to raise an exception when Bibulous finds a missing but required field.
 options.undefstr = ???                                          ## what string to replace undefined required fields with
-options.use_csquotes = False                                    ## whether to use the \enquote{} command from LaTeX package "csquotes.sty" for formatting quotation marks.
 options.force_sentence_case = False                             ## Whether to reduce all but the first letter (and brace-protected letters) to lower case
 
 options.namelist_format = first_name_first                      ## use authorlist (or editorlist) "Bugs Bunny, Daffy Duck, and Porky Pig" format
