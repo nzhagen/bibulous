@@ -145,7 +145,6 @@ class Bibdata(object):
         self.options['force_sentence_case'] = False
         self.options['bibitemsep'] = None
         self.options['bibextract'] = ''
-        self.options['remove_abbrev_newlines'] = True
         self.options['month_abbrev'] = True
 
         ## Compile some patterns for use in regex searches.
