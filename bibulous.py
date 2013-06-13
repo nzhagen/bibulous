@@ -132,7 +132,6 @@ class Bibdata(object):
         self.options['procspie_as_journal'] = False
         self.options['use_firstname_initials'] = True                    #zzz
         self.options['use_name_ties'] = False                            #zzz
-        self.options['missing_data_exceptions'] = False
         self.options['show_urls'] = False
         self.options['use_abbrevs'] = True
         #self.options['hyperref'] =
