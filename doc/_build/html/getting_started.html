@@ -1,0 +1,161 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Getting started &mdash; Bibulous 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Bibulous 1.0 documentation" href="index.html" />
+    <link rel="prev" title="Overview" href="README.html" /> 
+  </head>
+  <body>
+
+<div style="background-color: white; text-align: left; padding: 10px 10px 15px 15px">
+<a href="index.html"><img src="_static/banner.svg" border="0" height=300 alt="py4sci"/></a>
+</div>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="README.html" title="Overview"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">home</a>|&nbsp;</li>
+        <li><a href="search.html">search</a>|&nbsp;</li>
+ 
+      </ul>
+    </div>
+
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/logo_small.svg" alt="Logo"/>
+            </a></p>
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Getting started</a><ul>
+<li><a class="reference internal" href="#kile-replacing-bibtex-with-bibulous">Kile: replacing BibTeX with Bibulous</a></li>
+<li><a class="reference internal" href="#modifying-winedt5-to-replace-bibtex-with-bibulous">Modifying WinEdt5 to replace BibTeX with Bibulous</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="README.html"
+                        title="previous chapter">Overview</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/getting_started.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="getting-started">
+<h1>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
+<p>For general users, all that is needed is place the main <tt class="docutils literal"><span class="pre">bibulous.py</span></tt> file into the Python path. For users interested in using the auxiliary commands, <tt class="docutils literal"><span class="pre">bibulous_authorextract.py</span></tt> and <tt class="docutils literal"><span class="pre">bibulous_citeextract.py</span></tt> must also be in the Python path, and must be in the same directory as the main file.</p>
+<div class="section" id="kile-replacing-bibtex-with-bibulous">
+<h2>Kile: replacing BibTeX with Bibulous<a class="headerlink" href="#kile-replacing-bibtex-with-bibulous" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p class="first">In your <tt class="docutils literal"><span class="pre">.tex</span></tt> file, change the filename of the <tt class="docutils literal"><span class="pre">\bibliography{...}</span></tt> command to the filename for the appropriate Bibulous-format bibliography style template (<tt class="docutils literal"><span class="pre">.bst</span></tt> file).</p>
+</li>
+<li><p class="first">In Kile, go to the menu bar and select <tt class="docutils literal"><span class="pre">Settings</span></tt> &gt; <tt class="docutils literal"><span class="pre">Configure</span> <span class="pre">Kile</span></tt>. Select <tt class="docutils literal"><span class="pre">Tools</span></tt> &gt; <tt class="docutils literal"><span class="pre">Build</span></tt> and choose <tt class="docutils literal"><span class="pre">BibTeX</span></tt> from the <tt class="docutils literal"><span class="pre">Select</span> <span class="pre">a</span> <span class="pre">tool</span></tt> menu (see the figure). To the right of the menu, after you select <tt class="docutils literal"><span class="pre">BibTeX</span></tt> you should see &#8220;Choose a configuration for the tool BibTeX&#8221;. Below the drop-down menu, select the button &#8220;New&#8221; and type in the name <tt class="docutils literal"><span class="pre">Bibulous</span></tt> (or whatever you prefer to call your new tool). Below, in the <tt class="docutils literal"><span class="pre">General</span></tt> tab, type in the location of the <tt class="docutils literal"><span class="pre">bibulous.py</span></tt> file. And in the <tt class="docutils literal"><span class="pre">Options</span></tt> field, type:</p>
+<div class="highlight-python"><pre>\begin{Verbatim}
+'%S.tex'
+'%source'
+\end{Verbatim}</pre>
+</div>
+</li>
+</ol>
+<p>That should be it. In case your default setup is different, you can also check the <tt class="docutils literal"><span class="pre">Advanced</span></tt> tab settings and verify that they are as shown in the second figure. (That is, <tt class="docutils literal"><span class="pre">Source</span> <span class="pre">extension</span></tt> is set to <tt class="docutils literal"><span class="pre">aux</span></tt>, and <tt class="docutils literal"><span class="pre">Target</span> <span class="pre">extension</span></tt> is set to <tt class="docutils literal"><span class="pre">bbl</span></tt>.)</p>
+<img alt="_images/screenshot_for_kile_instructions.png" src="_images/screenshot_for_kile_instructions.png" style="width: 49%;" />
+<img alt="_images/screenshot_for_kile_instructions2.png" src="_images/screenshot_for_kile_instructions2.png" style="width: 49%;" />
+</div>
+<div class="section" id="modifying-winedt5-to-replace-bibtex-with-bibulous">
+<h2>Modifying WinEdt5 to replace BibTeX with Bibulous<a class="headerlink" href="#modifying-winedt5-to-replace-bibtex-with-bibulous" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p class="first">Go to the menu <tt class="docutils literal"><span class="pre">Options</span></tt> &gt; <tt class="docutils literal"><span class="pre">Execution</span> <span class="pre">Modes</span></tt>. In the <tt class="docutils literal"><span class="pre">Console</span> <span class="pre">Applications</span></tt> menu on the left hand side, select <tt class="docutils literal"><span class="pre">BibTeX</span></tt>. Then replace the three <tt class="docutils literal"><span class="pre">Command</span> <span class="pre">Line</span></tt> fields with the ones shown in the figure, replacing the files paths with the ones correct for your installation of Python and <tt class="docutils literal"><span class="pre">bibulous.py</span></tt>.</p>
+</li>
+<li><p class="first">Note that the following are definitions of WinEdt registers:</p>
+<div class="highlight-python"><pre>%f = full path of active file (= %p/%n.%t)
+%n = name of the active file
+%p = the path of the active file
+%t = the extension of the active file
+%q = the path relative to the main file (i.e. for subdirectories)
+%b = WinEdt's local working directory (not the tex file directory)
+%B = path to the WinEdt executable file</pre>
+</div>
+</li>
+</ol>
+<img alt="_images/original_Winedt5_setup.png" src="_images/original_Winedt5_setup.png" style="width: 49%;" />
+<img alt="_images/modified_Winedt5_setup.png" src="_images/modified_Winedt5_setup.png" style="width: 49%;" />
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="README.html" title="Overview"
+             >previous</a> |</li>
+        <li><a href="index.html">home</a>|&nbsp;</li>
+        <li><a href="search.html">search</a>|&nbsp;</li>
+ 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Bibulous developers.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
