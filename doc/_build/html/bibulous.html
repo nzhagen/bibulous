@@ -1,0 +1,1264 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Bibulous Module &mdash; Bibulous 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Bibulous 1.0 documentation" href="index.html" /> 
+  </head>
+  <body>
+
+<div style="background-color: white; text-align: left; padding: 10px 10px 15px 15px">
+<a href="index.html"><img src="_static/banner.svg" border="0" height=300 alt="py4sci"/></a>
+</div>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="index.html">home</a>|&nbsp;</li>
+        <li><a href="search.html">search</a>|&nbsp;</li>
+ 
+      </ul>
+    </div>
+
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/logo_small.svg" alt="Logo"/>
+            </a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/bibulous.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-bibulous">
+<span id="bibulous-module"></span><h1>Bibulous Module<a class="headerlink" href="#module-bibulous" title="Permalink to this headline">¶</a></h1>
+<p>Bibulous is a drop-in replacement for BibTeX, with the primary advantage that the bibliography
+template format is compact and <em>very</em> easy to modify.</p>
+<p>The basic program flow is as follows:</p>
+<ol class="arabic simple">
+<li>Read the .aux file and get the names of the bibliography databases (.bib files),
+the style templates (.bst files) to use, and the entire set of citations.</li>
+<li>Read in all of the bibliography database files into one long dictionary (<cite>bibdata</cite>),
+replacing any abbreviations with their full form. Cross-referenced data is <em>not</em> yet
+inserted at this point. That is delayed until the time of writing the BBL file in order
+to speed up parsing.</li>
+<li>Read in the Bibulous style template file as a dictionary (<cite>bstdict</cite>).</li>
+<li>Now that all the information is collected, go through each citation key, find the
+corresponding entry key in <cite>bibdata</cite>. From the entry type, select a template from <cite>bstdict</cite>
+and begin inserting the variables one-by-one into the template. If any data is missing,
+check for cross-references and use crossref data to fill in missing values.</li>
+</ol>
+<dl class="function">
+<dt id="bibulous.get_bibfilenames">
+<tt class="descclassname">bibulous.</tt><tt class="descname">get_bibfilenames</tt><big>(</big><em>filename</em>, <em>debug=False</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#get_bibfilenames"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.get_bibfilenames" title="Permalink to this definition">¶</a></dt>
+<dd><p>If the input is a filename ending in &#8216;.aux&#8217;, then read through the .aux file and locate the
+lines <cite>ibdata{...}</cite> and <cite>ibstyle{...}</cite> to get the filename(s) for the bibliography database
+and style template.</p>
+<p>If the input is a list of filenames, then assume that this is the complete list of files to
+use.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>filename</strong> : str</p>
+<blockquote>
+<div><p>The &#8220;auxiliary&#8221; file, containing citation info, TOC info, etc.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>filedict</strong> : dict</p>
+<blockquote class="last">
+<div><p>A dictionary with keys &#8216;bib&#8217; and &#8216;bst&#8217;, each entry of which contains a list of filenames.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="bibulous.sentence_case">
+<tt class="descclassname">bibulous.</tt><tt class="descname">sentence_case</tt><big>(</big><em>s</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#sentence_case"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.sentence_case" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reduce the case of the string to lower case, except for the first character in the string, and
+except if any given character is at nonzero brace level.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>s</strong> : str</p>
+<blockquote>
+<div><p>The string to be modified.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>t</strong> : str</p>
+<blockquote class="last">
+<div><p>The resulting modified string.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="bibulous.stringsplit">
+<tt class="descclassname">bibulous.</tt><tt class="descname">stringsplit</tt><big>(</big><em>s</em>, <em>sep=u' |(?&lt;!\\\\)~'</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#stringsplit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.stringsplit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Split a string into tokens, taking care not to allow the separator to act unless at brace
+level zero.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>s</strong> : str</p>
+<blockquote>
+<div><p>The string to split.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>tokens</strong> : list of str</p>
+<blockquote class="last">
+<div><p>The list of tokens.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="bibulous.finditer">
+<tt class="descclassname">bibulous.</tt><tt class="descname">finditer</tt><big>(</big><em>a_str</em>, <em>sub</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#finditer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.finditer" title="Permalink to this definition">¶</a></dt>
+<dd><p>A generator replacement for re.finditer() but without using regex expressions.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>a_str</strong> : str</p>
+<blockquote>
+<div><p>The string to query.</p>
+</div></blockquote>
+<p><strong>sub</strong> : str</p>
+<blockquote class="last">
+<div><p>The substring to match to.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="bibulous.namefield_to_namelist">
+<tt class="descclassname">bibulous.</tt><tt class="descname">namefield_to_namelist</tt><big>(</big><em>namefield</em>, <em>key=None</em>, <em>nameabbrev=None</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#namefield_to_namelist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.namefield_to_namelist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse a name field (&#8220;author&#8221; or &#8220;editor&#8221;) of a BibTeX entry into a list of dicts, one for
+each person.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>namefield</strong> : str</p>
+<blockquote>
+<div><p>Either the &#8220;author&#8221; field of a database entry or the &#8220;editor&#8221; field.</p>
+</div></blockquote>
+<p><strong>key</strong> : str</p>
+<blockquote>
+<div><p>The bibliography data entry key.</p>
+</div></blockquote>
+<p><strong>nameabbrev</strong> : dict</p>
+<blockquote>
+<div><p>The dictionary for translating names to their abbreviated forms.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>namelist</strong> : list</p>
+<blockquote class="last">
+<div><p>A list of dictionaries, with one dictionary for each name. Each dict has keys &#8220;first&#8221;,
+&#8220;middle&#8221;, &#8220;prefix&#8221;, &#8220;last&#8221;, and &#8220;suffix&#8221;. The &#8220;last&#8221; key is the only one that is required.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="bibulous.namedict_to_formatted_namestr">
+<tt class="descclassname">bibulous.</tt><tt class="descname">namedict_to_formatted_namestr</tt><big>(</big><em>namedict</em>, <em>options=None</em>, <em>use_firstname_initials=True</em>, <em>namelist_format=u'first_name_first'</em>, <em>nameabbrev=None</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#namedict_to_formatted_namestr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.namedict_to_formatted_namestr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a name dictionary into a formatted name string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>namedict</strong> : dict</p>
+<blockquote>
+<div><p>The name dictionary (contains a required key &#8220;last&#8221; and optional keys &#8220;first&#8221;, &#8220;middle&#8221;,         &#8220;prefix&#8221;, and &#8220;suffix&#8221;.</p>
+</div></blockquote>
+<p><strong>options</strong> : dict, optional</p>
+<blockquote>
+<div><p>Includes formatting options such as
+&#8216;use_name_ties&#8217;: Whether to use &#8216;~&#8217; instead of spaces to tie together author initials.
+&#8216;terse_inits&#8217;: Whether to format initialized author names like &#8220;RMA Azzam&#8221; instead of             the default form &#8220;R. M. A. Azzam&#8221;.
+&#8216;french_intials&#8217;: Whether to initialize digraphs with two letters instead of the default             of one. For example, if use_french_initials==True, then &#8220;Christian&#8221; -&gt; &#8220;Ch.&#8221;, not &#8220;C.&#8221;.
+&#8216;period_after_initial&#8217;: Whether to include a &#8216;.&#8217; after the author initial.</p>
+</div></blockquote>
+<p><strong>use_firstname_initials</strong> : bool</p>
+<blockquote>
+<div><p>Whether or not to initialize first names.</p>
+</div></blockquote>
+<p><strong>namelist_format</strong> : str</p>
+<blockquote>
+<div><p>The type of format to use for name formatting. (&#8220;first_name_first&#8221;, &#8220;last_name_first&#8221;)</p>
+</div></blockquote>
+<p><strong>nameabbrev</strong> : list of str</p>
+<blockquote>
+<div><p>A list of names and their abbreviations.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>namestr</strong> : str</p>
+<blockquote class="last">
+<div><p>The formatted string of the name.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="bibulous.initialize_name">
+<tt class="descclassname">bibulous.</tt><tt class="descname">initialize_name</tt><big>(</big><em>name</em>, <em>options=None</em>, <em>debug=False</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#initialize_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.initialize_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>From an input name element (first, middle, prefix, last, or suffix) , convert it to its
+initials.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>name</strong> : str</p>
+<blockquote>
+<div><p>The name element to be converted.</p>
+</div></blockquote>
+<p><strong>options</strong> : dict, optional</p>
+<blockquote>
+<div><p>Includes formatting options such as
+&#8216;use_name_ties&#8217;: Whether to use &#8216;~&#8217; instead of spaces to tie together author initials.
+&#8216;terse_inits&#8217;: Whether to format initialized author names like &#8220;RMA Azzam&#8221; instead of             the default form &#8220;R. M. A. Azzam&#8221;.
+&#8216;french_intials&#8217;: Whether to initialize digraphs with two letters instead of the default             of one. For example, if use_french_initials==True, then &#8220;Christian&#8221; -&gt; &#8220;Ch.&#8221;, not &#8220;C.&#8221;.
+&#8216;period_after_initial&#8217;: Whether to include a &#8216;.&#8217; after the author initial.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>new_name</strong> : str</p>
+<blockquote class="last">
+<div><p>The name element converted to its initials form.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="bibulous.get_delim_levels">
+<tt class="descclassname">bibulous.</tt><tt class="descname">get_delim_levels</tt><big>(</big><em>s</em>, <em>delims=(u'{'</em>, <em>u'}')</em>, <em>operator=None</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#get_delim_levels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.get_delim_levels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a list of level numbers for each character in a string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>s</strong> : str</p>
+<blockquote>
+<div><p>The string to characterize.</p>
+</div></blockquote>
+<p><strong>ldelim</strong> : str</p>
+<blockquote>
+<div><p>The left-hand-side delimiter.</p>
+</div></blockquote>
+<p><strong>rdelim</strong> : str</p>
+<blockquote>
+<div><p>The right-hand-side delimiter.</p>
+</div></blockquote>
+<p><strong>is_regex</strong> : bool</p>
+<blockquote>
+<div><p>Whether the delimiters are expressed as regular expressions or as simple strings.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>oplevels</strong> : list of ints</p>
+<blockquote class="last">
+<div><p>A list giving the operator delimiter level (or &#8220;brace level&#8221; if no operator is given) of         each character in the string.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="bibulous.get_quote_levels">
+<tt class="descclassname">bibulous.</tt><tt class="descname">get_quote_levels</tt><big>(</big><em>s</em>, <em>debug=False</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#get_quote_levels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.get_quote_levels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list which gives the &#8220;quotation level&#8221; of each character in the string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>s</strong> : str</p>
+<blockquote>
+<div><p>The string to analyze.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>alevels</strong> : list</p>
+<blockquote>
+<div><p>The double-quote-level for (<a href="#id1"><span class="problematic" id="id2">``</span></a>,&#8217;&#8216;) pairs in the string.</p>
+</div></blockquote>
+<p><strong>blevels</strong> : list</p>
+<blockquote>
+<div><p>The single-quote-level for (<a href="#id3"><span class="problematic" id="id4">`</span></a>,&#8217;) pairs in the string.</p>
+</div></blockquote>
+<p><strong>clevels</strong> : list</p>
+<blockquote class="last">
+<div><p>The neutral-quote-level for (&#8221;,&#8221;) pairs in the string.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>When using double-quotes, it is easy to break the parser, so they should be used only sparingly.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="bibulous.splitat">
+<tt class="descclassname">bibulous.</tt><tt class="descname">splitat</tt><big>(</big><em>s</em>, <em>ilist</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#splitat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.splitat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Split a string at locations given by a list of indices.</p>
+<p>This can be used more flexibly than Python&#8217;s native string split() function, when the character
+you are splitting on is not always a valid splitting location.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>s</strong> : str</p>
+<blockquote>
+<div><p>The string to split.</p>
+</div></blockquote>
+<p><strong>ilist</strong> : list</p>
+<blockquote>
+<div><p>The list of string index locations at which to split the string.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>slist</strong> : list of str</p>
+<blockquote class="last">
+<div><p>The list of split substrings.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="bibulous.multisplit">
+<tt class="descclassname">bibulous.</tt><tt class="descname">multisplit</tt><big>(</big><em>s</em>, <em>seps</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#multisplit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.multisplit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Split a string using more than one separator.</p>
+<p>Copied from <a class="reference external" href="http://stackoverflow.com/questions/1059559/python-strings-split-with-multiple-separators">http://stackoverflow.com/questions/1059559/python-strings-split-with-multiple-separators</a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>s</strong> : str</p>
+<blockquote>
+<div><p>The string to split.</p>
+</div></blockquote>
+<p><strong>sep</strong> : list of str</p>
+<blockquote>
+<div><p>The list of separators.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>res</strong> : list</p>
+<blockquote class="last">
+<div><p>The list of split substrings.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="bibulous.enwrap_nested_string">
+<tt class="descclassname">bibulous.</tt><tt class="descname">enwrap_nested_string</tt><big>(</big><em>s</em>, <em>delims=(u'{'</em>, <em>u'}')</em>, <em>odd_operator=u'\\textbf'</em>, <em>even_operator=u'\\textrm'</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#enwrap_nested_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.enwrap_nested_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function will return the input string if it finds there
+are no nested operators inside (i.e. when the number of delimiters found is &lt; 2).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>s</strong> : str</p>
+<blockquote>
+<div><p>The string whose nested operators are to be modified.</p>
+</div></blockquote>
+<p><strong>delims</strong> : tuple of two strings</p>
+<blockquote>
+<div><p>The left and right delimiters for all matches.</p>
+</div></blockquote>
+<p><strong>odd_operator</strong> : str</p>
+<blockquote>
+<div><p>The nested operator (applied to the left of the delimiter) currently used within string &#8220;s&#8221;.</p>
+</div></blockquote>
+<p><strong>even_operator</strong> : str</p>
+<blockquote>
+<div><p>The operator used to replace the currently used one for all even nesting levels.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>s</strong> : str</p>
+<blockquote class="last">
+<div><p>The modified string.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="bibulous.enwrap_nested_quotes">
+<tt class="descclassname">bibulous.</tt><tt class="descname">enwrap_nested_quotes</tt><big>(</big><em>s</em>, <em>debug=False</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#enwrap_nested_quotes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.enwrap_nested_quotes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find nested quotes within strings and, if necessary, replace them with the proper nesting
+(i.e. outer quotes use <a href="#id5"><span class="problematic" id="id6">``</span></a><tt class="docutils literal"><span class="pre">...''</span></tt> while inner quotes use <tt class="docutils literal"><span class="pre">`...'</span></tt>).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>s</strong> : str</p>
+<blockquote>
+<div><p>The string to modify.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>s</strong> : str</p>
+<blockquote class="last">
+<div><p>The new string in which nested quotes have been properly reformatted.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="bibulous.purify_string">
+<tt class="descclassname">bibulous.</tt><tt class="descname">purify_string</tt><big>(</big><em>s</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#purify_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.purify_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove the LaTeX-based formatting elements from a string so that a sorting function can use     alphanumerical sorting on the string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>s</strong> : str</p>
+<blockquote>
+<div><p>The string to &#8220;purify&#8221;.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>p</strong> : str</p>
+<blockquote class="last">
+<div><p>The &#8220;purified&#8221; string.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>Currently <cite>purify_string()</cite> does not allow LaTeX markup such as &#8216;i to refer to the Unicode
+character which is correctly written as &#8216;i. Add functionality to allow that?</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="bibulous.latex_to_utf8">
+<tt class="descclassname">bibulous.</tt><tt class="descname">latex_to_utf8</tt><big>(</big><em>s</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#latex_to_utf8"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.latex_to_utf8" title="Permalink to this definition">¶</a></dt>
+<dd><p>Translate LaTeX-markup special characters to their Unicode equivalents.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>s</strong> : str</p>
+<blockquote>
+<div><p>The string to translate.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>s</strong> : str</p>
+<blockquote class="last">
+<div><p>The translated version of the input.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="bibulous.parse_bst_template_str">
+<tt class="descclassname">bibulous.</tt><tt class="descname">parse_bst_template_str</tt><big>(</big><em>bst_template_str</em>, <em>bibentry</em>, <em>variables</em>, <em>undefstr=u'???'</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#parse_bst_template_str"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.parse_bst_template_str" title="Permalink to this definition">¶</a></dt>
+<dd><p>From an &#8220;options train&#8221; <cite>[...|...|...]</cite>, find the first defined block in the
+train.</p>
+<p>A Bibulous type of bibliography style template string contains grammatical featues
+called options trains, of the form <cite>[...|...|...]</cite>. Each &#8220;block&#8221; in the train (divided
+from the others by a <cite>|</cite> symbol), contains fields which, if defined, replace the
+entire options train in the returned string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>bst_template_str</strong> : str</p>
+<blockquote>
+<div><p>The string containing a complete entrytype bibliography style template.</p>
+</div></blockquote>
+<p><strong>variables</strong> : list of str</p>
+<blockquote>
+<div><p>The list of variables defined within the template string.</p>
+</div></blockquote>
+<p><strong>bibentry</strong> : dict</p>
+<blockquote>
+<div><p>An entry from the bibliography database.</p>
+</div></blockquote>
+<p><strong>undefstr</strong> : str</p>
+<blockquote>
+<div><p>The string to replace undefined required fields with.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>arg</strong> : str</p>
+<blockquote class="last">
+<div><p>The string giving the entrytype block to replace an options train.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="bibulous.namestr_to_namedict">
+<tt class="descclassname">bibulous.</tt><tt class="descname">namestr_to_namedict</tt><big>(</big><em>namestr</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#namestr_to_namedict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.namestr_to_namedict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take a BibTeX string representing a single person&#8217;s name and parse it into its first, middle,     last, etc pieces.</p>
+<dl class="docutils">
+<dt>BibTeX allows three different styles of author formats.</dt>
+<dd><ol class="first last arabic simple">
+<li>A space-separated list, [firstname middlenames suffix lastname]</li>
+<li>A two-element comma-separated list, [prefix lastname, firstname middlenames]</li>
+<li>a three-element comma-separated list, [prefix lastname, suffix, firstname middlenames].</li>
+</ol>
+</dd>
+</dl>
+<p>So, we can separate these three categories by counting the number of commas that appear.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>namestr</strong> : str</p>
+<blockquote>
+<div><p>The string containing a single person&#8217;s name, in BibTeX format</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>namedict</strong> : dict</p>
+<blockquote class="last">
+<div><p>A dictionary with keys &#8220;first&#8221;, &#8220;middle&#8221;, &#8220;prefix&#8221;, &#8220;last&#8221;, and &#8220;suffix&#8221;.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="bibulous.search_middlename_for_prefixes">
+<tt class="descclassname">bibulous.</tt><tt class="descname">search_middlename_for_prefixes</tt><big>(</big><em>namedict</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#search_middlename_for_prefixes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.search_middlename_for_prefixes" title="Permalink to this definition">¶</a></dt>
+<dd><p>From the middle name of a single person, check if any of the names should be placed into the
+&#8220;prefix&#8221; and move them there.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>namedict</strong> : dict</p>
+<blockquote>
+<div><p>The dictionary containing the key &#8220;middle&#8221;, containing the string with the person&#8217;s         middle names/initials.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>namedict</strong> : dict</p>
+<blockquote class="last">
+<div><p>The dictionary augmented with the key &#8220;prefix&#8221; if a prefix is indeed found.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="bibulous.create_edition_ordinal">
+<tt class="descclassname">bibulous.</tt><tt class="descname">create_edition_ordinal</tt><big>(</big><em>bibentry</em>, <em>key</em>, <em>options</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#create_edition_ordinal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.create_edition_ordinal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a bibliography entry&#8217;s edition <em>number</em>, format it as an ordinal (i.e. &#8220;1st&#8221;, &#8220;2nd&#8221;     instead of &#8220;1&#8221;, &#8220;2&#8221;) in the way that it will appear on the formatted page.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>bibdata</strong> :  dict</p>
+<blockquote>
+<div><p>The bibliography database dictionary (constructed from &#8221;.bib&#8221; files).</p>
+</div></blockquote>
+<p><strong>key</strong> :      str</p>
+<blockquote>
+<div><p>The key in <cite>bibdata</cite> defining the current entry being formatted.</p>
+</div></blockquote>
+<p><strong>options</strong> : dict, optional</p>
+<blockquote>
+<div><p>Includes formatting options such as
+&#8216;missing_data_excaptions&#8217;: Whether to raise an exception when encountering missing data             errors.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>editionstr</strong> : str</p>
+<blockquote class="last">
+<div><p>The formatted form of the edition, with ordinal attached.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="bibulous.export_bibfile">
+<tt class="descclassname">bibulous.</tt><tt class="descname">export_bibfile</tt><big>(</big><em>bibdata</em>, <em>filename</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#export_bibfile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.export_bibfile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write a bibliography database dictionary into a .bib file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>filename</strong> : str</p>
+<blockquote>
+<div><p>The filename of the file to write.</p>
+</div></blockquote>
+<p><strong>bibdata</strong> : dict</p>
+<blockquote class="last">
+<div><p>The bibliography dictionary to write out.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="bibulous.parse_pagerange">
+<tt class="descclassname">bibulous.</tt><tt class="descname">parse_pagerange</tt><big>(</big><em>pages_str</em>, <em>citekey=None</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#parse_pagerange"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.parse_pagerange" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a string containing the &#8220;pages&#8221; field of a bibliographic entry, figure out the start and
+end pages.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>pages_str</strong> : str</p>
+<blockquote>
+<div><p>The string to parse.</p>
+</div></blockquote>
+<p><strong>citekey</strong> : str, optional</p>
+<blockquote>
+<div><p>The citation key (useful for debugging messages).</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>startpage</strong> : str</p>
+<blockquote>
+<div><p>The starting page.</p>
+</div></blockquote>
+<p><strong>endpage</strong> : str</p>
+<blockquote class="last">
+<div><p>The ending page. If endpage==startpage, then endpage is set to None.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="bibulous.parse_nameabbrev">
+<tt class="descclassname">bibulous.</tt><tt class="descname">parse_nameabbrev</tt><big>(</big><em>abbrevstr</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#parse_nameabbrev"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.parse_nameabbrev" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a string containing either a single &#8220;name&#8221; &gt; &#8220;abbreviation&#8221; pair or a list of such pairs,
+parse the string into a dictionary of names and abbreviations.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>abbrevstr</strong> : str</p>
+<blockquote>
+<div><p>The string containing the abbreviation definitions.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>nameabbrev_dict</strong> : dict</p>
+<blockquote class="last">
+<div><p>A dictionary with names for keys and abbreviations for values.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="bibulous.Bibdata">
+<em class="property">class </em><tt class="descclassname">bibulous.</tt><tt class="descname">Bibdata</tt><big>(</big><em>filename</em>, <em>debug=False</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#Bibdata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.Bibdata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bibdata is a class to hold all data related to a bibliography database, a citation list, and a
+style template.</p>
+<p>To initialize the class, either call it with the filename of the &#8221;.aux&#8221; file containing the
+relevant file locations (for the &#8221;.bib&#8221; database files and the &#8221;.bst&#8221; template files) or simply
+call it with a list of all filenames to be used (&#8221;.bib&#8221;, &#8221;.bst&#8221; and &#8221;.aux&#8221;). The output file
+(the LaTeX-formatted bibliography) is assumed to have the same filename root as the &#8221;.aux&#8221;
+file, but with &#8221;.bbl&#8221; as its extension.</p>
+<p class="rubric">Attributes</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="9%" />
+<col width="14%" />
+<col width="77%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>abbrevs</td>
+<td>dict</td>
+<td>The list of abbreviations given in the bibliography database file(s). The dictionary keys         are the abbreviations, and the values are their full forms.</td>
+</tr>
+<tr class="row-even"><td>bibdata</td>
+<td>dict</td>
+<td>The database of bibliography entries and fields derived from parsing the bibliography         database file(s).</td>
+</tr>
+<tr class="row-odd"><td>bstdict</td>
+<td>dict</td>
+<td>The style template for formatting the bibliography. The dictionary keys are the         entrytypes, with the dictionary values their string template.</td>
+</tr>
+<tr class="row-even"><td>citedict</td>
+<td>dict</td>
+<td>The dictionary of citation keys and their corresponding numerical order of citation.</td>
+</tr>
+<tr class="row-odd"><td>debug</td>
+<td>bool</td>
+<td>Whether to turn on debugging features.</td>
+</tr>
+<tr class="row-even"><td>filedict</td>
+<td>dict</td>
+<td>The ditionary of filenames associated with the bibliographic data. The dictionary consists         of keys <cite>bib</cite>, <cite>bst</cite>, <cite>aux</cite>, <cite>tex</cite>, and <cite>bbl</cite>. The first two are lists of filenames, while
+the others contain only a single filename.</td>
+</tr>
+<tr class="row-odd"><td>filename</td>
+<td>str</td>
+<td>(For error messages and debugging) The name of the file currently being parsed.</td>
+</tr>
+<tr class="row-even"><td>i</td>
+<td>int</td>
+<td>(For error messages and debugging) The line of the file currently being parsed.</td>
+</tr>
+<tr class="row-odd"><td>options</td>
+<td>dict</td>
+<td>The dictionary containing the various option settings from the style template (BST) files.</td>
+</tr>
+<tr class="row-even"><td>abbrevkey_pattern</td>
+<td>compiled regular expression object</td>
+<td>The regex used to search for abbreviation keys.</td>
+</tr>
+<tr class="row-odd"><td>anybrace_pattern</td>
+<td>compiled regular expression object</td>
+<td>The regex used to search for curly braces <cite>{</cite> or <cite>}</cite>.</td>
+</tr>
+<tr class="row-even"><td>anybraceorquote_pattern</td>
+<td>compiled regular expression object</td>
+<td>The regex used to search for curly braces or for double-quotes, i.e. <cite>{</cite>, <cite>}</cite>, or <cite>&#8220;</cite>.</td>
+</tr>
+<tr class="row-odd"><td>endbrace_pattern</td>
+<td>compiled regular expression object</td>
+<td>The regex used to search for an ending curly brace, i.e. &#8216;}&#8217;.</td>
+</tr>
+<tr class="row-even"><td>quote_pattern</td>
+<td>compiled regular expression object</td>
+<td>The regex used to search for a double-quote, i.e. <cite>&#8220;</cite>.</td>
+</tr>
+<tr class="row-odd"><td>startbrace_pattern</td>
+<td>compiled regular expression object</td>
+<td>The regex used to search for a starting curly brace, <cite>{</cite>.</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#bibulous.Bibdata.parse_bibfile" title="bibulous.Bibdata.parse_bibfile"><tt class="xref py py-obj docutils literal"><span class="pre">parse_bibfile</span></tt></a>(filename)</td>
+<td>Parse a &#8221;.bib&#8221; file to generate a dictionary representing a bibliography database.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#bibulous.Bibdata.parse_bibentry" title="bibulous.Bibdata.parse_bibentry"><tt class="xref py py-obj docutils literal"><span class="pre">parse_bibentry</span></tt></a>(entrystr,&nbsp;entrytype)</td>
+<td>Given a string representing the entire contents of the BibTeX-format bibliography entry,</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#bibulous.Bibdata.parse_bibfield" title="bibulous.Bibdata.parse_bibfield"><tt class="xref py py-obj docutils literal"><span class="pre">parse_bibfield</span></tt></a>(entrystr)</td>
+<td>For a given string representing the raw contents of a BibTeX-format bibliography entry,</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#bibulous.Bibdata.parse_auxfile" title="bibulous.Bibdata.parse_auxfile"><tt class="xref py py-obj docutils literal"><span class="pre">parse_auxfile</span></tt></a>(filename[,&nbsp;debug])</td>
+<td>Read in an &#8221;.aux&#8221; file and convert the <cite>citation{}</cite> entries found there into a dictionary of citekeys and citation order number.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#bibulous.Bibdata.parse_bstfile" title="bibulous.Bibdata.parse_bstfile"><tt class="xref py py-obj docutils literal"><span class="pre">parse_bstfile</span></tt></a>(filename[,&nbsp;ignore_overwrite,&nbsp;...])</td>
+<td>Convert a Bibulous-type bibliography style template into a dictionary.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#bibulous.Bibdata.write_bblfile" title="bibulous.Bibdata.write_bblfile"><tt class="xref py py-obj docutils literal"><span class="pre">write_bblfile</span></tt></a>([filename,&nbsp;write_preamble,&nbsp;...])</td>
+<td>Given a bibliography database <cite>bibdata</cite>, a dictionary containing the citations called out         <cite>citedict</cite>, and a bibliography style template <cite>bstdict</cite> write the LaTeX-format file for the         formatted bibliography.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#bibulous.Bibdata.create_citation_list" title="bibulous.Bibdata.create_citation_list"><tt class="xref py py-obj docutils literal"><span class="pre">create_citation_list</span></tt></a>()</td>
+<td>Create the list of citation keys, sorted into the proper order.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#bibulous.Bibdata.format_bibitem" title="bibulous.Bibdata.format_bibitem"><tt class="xref py py-obj docutils literal"><span class="pre">format_bibitem</span></tt></a>(citekey)</td>
+<td>Create the &#8220;ibitem{...}&#8221; string to insert into the &#8221;.bbl&#8221; file.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#bibulous.Bibdata.generate_sortkey" title="bibulous.Bibdata.generate_sortkey"><tt class="xref py py-obj docutils literal"><span class="pre">generate_sortkey</span></tt></a>(citekey)</td>
+<td>From a bibliography entry and the formatting template options, generate a sorting key for the entry.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#bibulous.Bibdata.create_namelist" title="bibulous.Bibdata.create_namelist"><tt class="xref py py-obj docutils literal"><span class="pre">create_namelist</span></tt></a>(key,&nbsp;nametype)</td>
+<td>Deconstruct the bibfile string following &#8220;author = ...&#8221; (or &#8220;editor = ...&#8221;), and create a new field <cite>authorlist</cite> or <cite>editorlist</cite> that is a list of dictionaries (one dict for each person).</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#bibulous.Bibdata.format_namelist" title="bibulous.Bibdata.format_namelist"><tt class="xref py py-obj docutils literal"><span class="pre">format_namelist</span></tt></a>(namelist,&nbsp;nametype)</td>
+<td>Format a list of dictionaries (one dict for each person) into a long string, with the format according to the directives in the bibliography style template.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#bibulous.Bibdata.insert_crossref_data" title="bibulous.Bibdata.insert_crossref_data"><tt class="xref py py-obj docutils literal"><span class="pre">insert_crossref_data</span></tt></a>(entrykey[,&nbsp;fieldname])</td>
+<td>Insert crossref info into a bibliography database dictionary.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#bibulous.Bibdata.write_citeextract" title="bibulous.Bibdata.write_citeextract"><tt class="xref py py-obj docutils literal"><span class="pre">write_citeextract</span></tt></a>(outputfile[,&nbsp;debug])</td>
+<td>Extract a sub-database from a large bibliography database, with the former containing only         those entries cited in the .aux file.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#bibulous.Bibdata.write_authorextract" title="bibulous.Bibdata.write_authorextract"><tt class="xref py py-obj docutils literal"><span class="pre">write_authorextract</span></tt></a>(searchname[,&nbsp;...])</td>
+<td>Extract a sub-database from a large bibliography database, with the former containing only         those entries citing the given author/editor.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="bibulous.Bibdata.create_citation_list">
+<tt class="descname">create_citation_list</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/bibulous.html#Bibdata.create_citation_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.Bibdata.create_citation_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the list of citation keys, sorted into the proper order.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>citelist</strong> : list</p>
+<blockquote class="last">
+<div><p>The sorted list of citation keys.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="bibulous.Bibdata.create_namelist">
+<tt class="descname">create_namelist</tt><big>(</big><em>key</em>, <em>nametype</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#Bibdata.create_namelist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.Bibdata.create_namelist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deconstruct the bibfile string following &#8220;author = ...&#8221; (or &#8220;editor = ...&#8221;), and create a
+new field <cite>authorlist</cite> or <cite>editorlist</cite> that is a list of dictionaries (one dict for each
+person).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>key</strong> : str</p>
+<blockquote>
+<div><p>The key in <cite>bibdata</cite> defining the current entry being formatted.</p>
+</div></blockquote>
+<p><strong>nametype</strong> : str, {&#8216;author&#8217;,&#8217;editor&#8217;}</p>
+<blockquote class="last">
+<div><p>Which bibliography field to use for parsing names.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="bibulous.Bibdata.format_bibitem">
+<tt class="descname">format_bibitem</tt><big>(</big><em>citekey</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#Bibdata.format_bibitem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.Bibdata.format_bibitem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the &#8220;ibitem{...}&#8221; string to insert into the &#8221;.bbl&#8221; file.</p>
+<p>This is the workhorse function of Bibulous. For a given key, find the resulting entry
+in the bibliography database. From the entry&#8217;s <cite>entrytype</cite>, lookup the relevant template
+in bstdict and start replacing template variables with formatted elements of the database
+entry. Once you&#8217;ve replaced all template variables, you&#8217;re done formatting that entry.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>citekey</strong> : str</p>
+<blockquote>
+<div><p>The citation key.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>itemstr</strong> : str</p>
+<blockquote class="last">
+<div><p>The string containing the ibitem{} citation key and LaTeX-formatted string for the
+formatted bibliography. (That is, this string is designed to be inserted directly into
+the LaTeX document.)</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="bibulous.Bibdata.format_namelist">
+<tt class="descname">format_namelist</tt><big>(</big><em>namelist</em>, <em>nametype</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#Bibdata.format_namelist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.Bibdata.format_namelist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Format a list of dictionaries (one dict for each person) into a long string, with the
+format according to the directives in the bibliography style template.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>namelist</strong> : str</p>
+<blockquote>
+<div><p>The list of dictionaries containing all of the names to be formatted.</p>
+</div></blockquote>
+<p><strong>nametype</strong> : str, {&#8216;author&#8217;, &#8216;editor&#8217;}</p>
+<blockquote>
+<div><p>Whether the names are for authors or editors.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>namestr</strong> : str</p>
+<blockquote class="last">
+<div><p>The formatted form of the &#8220;name string&#8221;. This is generally a list of authors or list             of editors.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="bibulous.Bibdata.generate_sortkey">
+<tt class="descname">generate_sortkey</tt><big>(</big><em>citekey</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#Bibdata.generate_sortkey"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.Bibdata.generate_sortkey" title="Permalink to this definition">¶</a></dt>
+<dd><p>From a bibliography entry and the formatting template options, generate a sorting key for the
+entry.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>citekey</strong> : str</p>
+<blockquote>
+<div><p>The key for the current entry.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>sortkey</strong> : str</p>
+<blockquote class="last">
+<div><p>A string to use as a sorting key.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="bibulous.Bibdata.insert_crossref_data">
+<tt class="descname">insert_crossref_data</tt><big>(</big><em>entrykey</em>, <em>fieldname=None</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#Bibdata.insert_crossref_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.Bibdata.insert_crossref_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Insert crossref info into a bibliography database dictionary.</p>
+<p>Loop through a bibliography database dictionary and, for each entry which has a &#8220;crossref&#8221;
+field, locate the crossref entry and insert any missing bibliographic information into the
+main entry&#8217;s fields.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>entrykey</strong> : str</p>
+<blockquote>
+<div><p>The key of the bibliography entry to query.</p>
+</div></blockquote>
+<p><strong>fieldname</strong> : str, optional</p>
+<blockquote>
+<div><p>The name of the field to check. If fieldname==None, then check all fields.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>foundit</strong> : bool</p>
+<blockquote class="last">
+<div><p>Whether the function found a crossref for the queried field. If multiple fieldnames             were input, then foundit will be True if a crossref is located for any one of them.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="bibulous.Bibdata.parse_auxfile">
+<tt class="descname">parse_auxfile</tt><big>(</big><em>filename</em>, <em>debug=False</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#Bibdata.parse_auxfile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.Bibdata.parse_auxfile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read in an &#8221;.aux&#8221; file and convert the <cite>citation{}</cite> entries found there into a dictionary
+of citekeys and citation order number.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>filename</strong> : str</p>
+<blockquote class="last">
+<div><p>The filename of the &#8221;.aux&#8221; file to parse.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="bibulous.Bibdata.parse_bibentry">
+<tt class="descname">parse_bibentry</tt><big>(</big><em>entrystr</em>, <em>entrytype</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#Bibdata.parse_bibentry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.Bibdata.parse_bibentry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a string representing the entire contents of the BibTeX-format bibliography entry,
+parse the contents and place them into the bibliography preamble string, the set of
+abbreviations, and the bibliography database dictionary.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>entrystr</strong> : str</p>
+<blockquote>
+<div><p>The string containing the entire contents of the bibliography entry.</p>
+</div></blockquote>
+<p><strong>entrytype</strong> : str</p>
+<blockquote class="last">
+<div><p>The type of entry (&#8220;article&#8221;, &#8220;preamble&#8221;, etc.).</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="bibulous.Bibdata.parse_bibfield">
+<tt class="descname">parse_bibfield</tt><big>(</big><em>entrystr</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#Bibdata.parse_bibfield"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.Bibdata.parse_bibfield" title="Permalink to this definition">¶</a></dt>
+<dd><p>For a given string representing the raw contents of a BibTeX-format bibliography entry,
+parse the contents into a dictionary of key:value pairs corresponding to the field
+names and field values.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>entrystr</strong> : str</p>
+<blockquote class="last">
+<div><p>The string containing the entire contents of the bibliography entry.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="bibulous.Bibdata.parse_bibfile">
+<tt class="descname">parse_bibfile</tt><big>(</big><em>filename</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#Bibdata.parse_bibfile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.Bibdata.parse_bibfile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse a &#8221;.bib&#8221; file to generate a dictionary representing a bibliography database.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>filename</strong> : str</p>
+<blockquote class="last">
+<div><p>The filename of the .bib file to parse.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="bibulous.Bibdata.parse_bstfile">
+<tt class="descname">parse_bstfile</tt><big>(</big><em>filename</em>, <em>ignore_overwrite=False</em>, <em>debug=False</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#Bibdata.parse_bstfile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.Bibdata.parse_bstfile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a Bibulous-type bibliography style template into a dictionary.</p>
+<p>The resulting dictionary consists of keys which are the various entrytypes, and values which         are the template strings. In addition, any formatting options are stored in the &#8220;options&#8221; key         as a dictionary of option_name:option_value pairs.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>filename</strong> : str</p>
+<blockquote>
+<div><p>The filename of the Bibulous style template to use.</p>
+</div></blockquote>
+<p><strong>ignore_overwrite</strong> : bool, optional</p>
+<blockquote class="last">
+<div><p>Whether to issue a warning when overwriting an existing template variable.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="bibulous.Bibdata.write_authorextract">
+<tt class="descname">write_authorextract</tt><big>(</big><em>searchname</em>, <em>outputfile=None</em>, <em>debug=False</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#Bibdata.write_authorextract"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.Bibdata.write_authorextract" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract a sub-database from a large bibliography database, with the former containing only         those entries citing the given author/editor.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>searchname</strong> : str or dict</p>
+<blockquote>
+<div><p>The string or dictionary for the author&#8217;s name. This can be, for example, &#8220;Bugs E. Bunny&#8221;
+or {&#8216;first&#8217;:&#8217;Bugs&#8217;, &#8216;last&#8217;:&#8217;Bunny&#8217;, &#8216;middle&#8217;:&#8217;E&#8217;}.</p>
+</div></blockquote>
+<p><strong>outputfile</strong> : str, optional</p>
+<blockquote class="last">
+<div><p>The filename of the extracted BIB file to write.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="bibulous.Bibdata.write_bblfile">
+<tt class="descname">write_bblfile</tt><big>(</big><em>filename=None</em>, <em>write_preamble=True</em>, <em>write_postamble=True</em>, <em>bibsize=None</em>, <em>verbose=False</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#Bibdata.write_bblfile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.Bibdata.write_bblfile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a bibliography database <cite>bibdata</cite>, a dictionary containing the citations called out         <cite>citedict</cite>, and a bibliography style template <cite>bstdict</cite> write the LaTeX-format file for the         formatted bibliography.</p>
+<p>Start with the preamble and then loop over the citations one by one, formatting each entry         one at a time, and put <cite>end{thebibliography}</cite> at the end when done.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>filename</strong> : str, optional</p>
+<blockquote>
+<div><p>The filename of the &#8221;.bbl&#8221; file to write. (Default is to take the AUX file and change             its extension to &#8221;.bbl&#8221;.)</p>
+</div></blockquote>
+<p><strong>write_preamble</strong> : bool, optional</p>
+<blockquote>
+<div><p>Whether to write the preamble. (Setting this to False can be useful when writing the             bibliography in separate steps.)</p>
+</div></blockquote>
+<p><strong>write_postamble</strong> : bool, optional</p>
+<blockquote>
+<div><p>Whether to write the postamble. (Setting this to False can be useful when writing the             bibliography in separate steps.)</p>
+</div></blockquote>
+<p><strong>bibsize</strong> : str, optional</p>
+<blockquote class="last">
+<div><p>A string the length of which is used to determine the label margin for the bibliography.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="bibulous.Bibdata.write_citeextract">
+<tt class="descname">write_citeextract</tt><big>(</big><em>outputfile</em>, <em>debug=False</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#Bibdata.write_citeextract"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.Bibdata.write_citeextract" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract a sub-database from a large bibliography database, with the former containing only         those entries cited in the .aux file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>filedict</strong> :  str</p>
+<blockquote>
+<div><p>The dictionary filenames must have keys &#8220;aux&#8221;,  &#8220;bst&#8221;, and &#8220;bib&#8221;.</p>
+</div></blockquote>
+<p><strong>outputfile</strong> : str, optional</p>
+<blockquote class="last">
+<div><p>The filename to use for writing the extracted BIB file.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="index.html">home</a>|&nbsp;</li>
+        <li><a href="search.html">search</a>|&nbsp;</li>
+ 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Bibulous developers.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

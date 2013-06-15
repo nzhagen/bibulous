@@ -1,0 +1,185 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Guidelines for writing bibliography style templates &mdash; Bibulous 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Bibulous 1.0 documentation" href="index.html" />
+    <link rel="next" title="Instructions on how to report a bug to the Bibulous development team" href="instructions_for_reporting_bugs.html" />
+    <link rel="prev" title="Getting started" href="getting_started.html" /> 
+  </head>
+  <body>
+
+<div style="background-color: white; text-align: left; padding: 10px 10px 15px 15px">
+<a href="index.html"><img src="_static/banner.svg" border="0" height=300 alt="py4sci"/></a>
+</div>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="instructions_for_reporting_bugs.html" title="Instructions on how to report a bug to the Bibulous development team"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="getting_started.html" title="Getting started"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">home</a>|&nbsp;</li>
+        <li><a href="search.html">search</a>|&nbsp;</li>
+ 
+      </ul>
+    </div>
+
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/logo_small.svg" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="getting_started.html"
+                        title="previous chapter">Getting started</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="instructions_for_reporting_bugs.html"
+                        title="next chapter">Instructions on how to report a bug to the Bibulous development team</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/guidelines_for_writing_style_templates.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="guidelines-for-writing-bibliography-style-templates">
+<h1>Guidelines for writing bibliography style templates<a class="headerlink" href="#guidelines-for-writing-bibliography-style-templates" title="Permalink to this headline">¶</a></h1>
+<ol class="arabic">
+<li><p class="first">Comments begin with <tt class="docutils literal"><span class="pre">#</span></tt>. (A single <tt class="docutils literal"><span class="pre">#</span></tt> indicates a symbol and not a comment!)</p>
+</li>
+<li><p class="first">A line which begins with an entrytype name followed by an <tt class="docutils literal"><span class="pre">=</span></tt> sign defines the bibliographic format for that entrytype. For example:</p>
+<div class="highlight-python"><pre>article = &lt;authorlist&gt;, ``&lt;title&gt;,'' &lt;journal&gt;, &lt;volume&gt;, [&lt;startpage&gt;--&lt;endpage&gt;|&lt;eid&gt;|]  (&lt;year&gt;). [&lt;note&gt;.]</pre>
+</div>
+<p>Here the <tt class="docutils literal"><span class="pre">article</span></tt> entrytype will be typeset so that the list of authors is followed by the article title in double quotes, the journal name in standard font (i.e. not italics), the volume number, the page range, and the year.</p>
+</li>
+<li><p class="first">Square brackets <tt class="docutils literal"><span class="pre">[]</span></tt> indicate an optional entry; any required entries which are not defined in the BibTeX database file (.bib file) are replaced with &#8216;???&#8217; by default. Optional arguments is undefined are simply skipped. If a <tt class="docutils literal"><span class="pre">|</span></tt> is present within the square brackets, it indicates an &#8220;elseif&#8221; argument (if not the final <tt class="docutils literal"><span class="pre">|</span></tt> within the brackets), or an &#8220;else&#8221; argument (if the final <tt class="docutils literal"><span class="pre">|</span></tt>). The &#8220;else&#8221; indicates a <em>required</em> argument, so if you want an optional entry to be replaced with something, you can use <tt class="docutils literal"><span class="pre">[option|]</span></tt> &#8212; the use of an empty cell inside the square brackets indicates that we simply use the default replacement for an undefined required argument (i.e. <tt class="docutils literal"><span class="pre">???</span></tt>). If you want all of the cells to be optional, then use <tt class="docutils literal"><span class="pre">|'']</span></tt> in the last cell &#8211; that is, the last cell should be an empty string. For  now, the format currently does not allow nesting of brackets.</p>
+</li>
+<li><p class="first">If you need the square brackets or <tt class="docutils literal"><span class="pre">|</span></tt> symbol as formatting elements, then simply use <tt class="docutils literal"><span class="pre">{\makeopenbracket}</span></tt>, <tt class="docutils literal"><span class="pre">{\makeclosebracket}</span></tt>, or <tt class="docutils literal"><span class="pre">{\makeverticalbar}</span></tt>. If you need the angle brackets as formatting elements, then use <tt class="docutils literal"><span class="pre">{\makegreaterthan}</span></tt> and <tt class="docutils literal"><span class="pre">{\makelessthan}</span></tt>. Note that the curly brackets are needed here so that when Bibulous replaces the command with the appropriate symbol, that symbol can be used correctly in LaTeX commands.</p>
+</li>
+<li><p class="first">Unlike BibTeX, Bibulous does <em>not</em> change the capitalization state of any entry variables. It assumes that the authors have defined it the way they want it.</p>
+</li>
+<li><p class="first">If an entrytype format definition contains only another entrytype on the right hand side of the <tt class="docutils literal"><span class="pre">=</span></tt>, for example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">inbook</span> <span class="o">=</span> <span class="n">incollection</span>
+</pre></div>
+</div>
+<p>then this simply defines the format for the entrytype on the left hand side as identical to that of the entrytype given on the right hand side.</p>
+</li>
+<li><p class="first">The second type of data present in the file are the formatting options. These are defined by writing <tt class="docutils literal"><span class="pre">options</span></tt> followed by a period and then the option name, for example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">options</span><span class="o">.</span><span class="n">authorlist_format</span> <span class="o">=</span> <span class="s">&#39;first_name_first&#39;</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Bibulous only allows string variables to be inserted into a given position within an entrytype template, and all Bibulous variables are surrounded with angle brackets. Thus, when typesetting the bibliography, Bibulous will replace the variable <tt class="docutils literal"><span class="pre">&lt;authorlist&gt;</span></tt> with the string stored in the <tt class="docutils literal"><span class="pre">authorlist</span></tt> field of the current entry being formatted. An example list of variables one may choose to use is:</p>
+<blockquote>
+<div><p><tt class="docutils literal"><span class="pre">&lt;authorlist&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;booktitle&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;chapter&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;edition_ordinal&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;editorlist&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;eid&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;endpage&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;institution&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;journal&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;nationality&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;note&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;number&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;organization&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;publisher&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;school&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;series&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;startpage&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;title&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;version&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;volume&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;year&gt;</span></tt>.</p>
+</div></blockquote>
+<p>As one can see, these primarily consist of the various fields one can expect to see within a given BibTeX-formatted database file. This list is actually freely extensible. You can add whatever additional variables you like, so that if you use a special <tt class="docutils literal"><span class="pre">video</span></tt> field in your database, you can insert that field&#8217;s value into the template wherever <tt class="docutils literal"><span class="pre">&lt;movie&gt;</span></tt> is located.</p>
+</li>
+<li><p class="first">Note that several fields are defined by default which are <em>not</em> directly from the bibliography database. These are <tt class="docutils literal"><span class="pre">authorlist</span></tt>, <tt class="docutils literal"><span class="pre">editorlist</span></tt>, <tt class="docutils literal"><span class="pre">startpage</span></tt>, <tt class="docutils literal"><span class="pre">endpage</span></tt>, and <tt class="docutils literal"><span class="pre">edition_ordinal</span></tt>. These fields are derived from the original database file, but have been reformatted.</p>
+</li>
+<li><p class="first">Although the entrytype template definitions listed below are in alphabetical order, that can be put in any desired order within the file. (The exception to this rule is that if a definition consists of, for example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">inbook</span> <span class="o">=</span> <span class="n">incollection</span>
+</pre></div>
+</div>
+<p>then the <tt class="docutils literal"><span class="pre">incollection</span></tt> template must already be defined. Also note that two entrytype names are special and so cannot be used on the left hand side of the equals sign here: <tt class="docutils literal"><span class="pre">comment</span></tt> and <tt class="docutils literal"><span class="pre">preamble</span></tt>.</p>
+</li>
+<li><p class="first">Options for <tt class="docutils literal"><span class="pre">citation_order</span></tt> include</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">citenumber</span></tt> or <tt class="docutils literal"><span class="pre">none</span></tt> (the default)</li>
+<li><tt class="docutils literal"><span class="pre">citekey</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">alpha</span></tt> (uses three letters of author&#8217;s last name plus last two numbers in the year)</li>
+<li><tt class="docutils literal"><span class="pre">nyt</span></tt> or <tt class="docutils literal"><span class="pre">plain</span></tt> (uses the first author&#8217;s last name, the year, and then the title)</li>
+<li><tt class="docutils literal"><span class="pre">nty</span></tt>, <tt class="docutils literal"><span class="pre">nyvt</span></tt>, <tt class="docutils literal"><span class="pre">anyt</span></tt>, <tt class="docutils literal"><span class="pre">anyvt</span></tt>, <tt class="docutils literal"><span class="pre">ynt</span></tt>, and <tt class="docutils literal"><span class="pre">ydnt</span></tt></li>
+</ul>
+</div></blockquote>
+<p>where the different letters indicate (as in Biblatex) <tt class="docutils literal"><span class="pre">n</span></tt> = name (i.e. author&#8217;s last name), <tt class="docutils literal"><span class="pre">y</span></tt> = year, <tt class="docutils literal"><span class="pre">t</span></tt> = title, <tt class="docutils literal"><span class="pre">v</span></tt> = volume, and <tt class="docutils literal"><span class="pre">a</span></tt> = alphabetic label (where the user is implementing some bibliography front-end that prints out alphabetic labels inside the <tt class="docutils literal"><span class="pre">.aux</span></tt> file). The <tt class="docutils literal"><span class="pre">d</span></tt> here means that the order should be <em>descending</em> rather than the default of ascending.</p>
+</li>
+<li><p class="first">A user wanting a localized form of quotation should use <tt class="docutils literal"><span class="pre">\enquote{&lt;title&gt;}</span></tt> rather than <tt class="docutils literal"><span class="pre">``&lt;title&gt;''</span></tt>, and add <tt class="docutils literal"><span class="pre">\usepackage{csquotes}</span></tt> to the preamble of the LaTeX document.</p>
+</li>
+</ol>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="instructions_for_reporting_bugs.html" title="Instructions on how to report a bug to the Bibulous development team"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="getting_started.html" title="Getting started"
+             >previous</a> |</li>
+        <li><a href="index.html">home</a>|&nbsp;</li>
+        <li><a href="search.html">search</a>|&nbsp;</li>
+ 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Bibulous developers.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

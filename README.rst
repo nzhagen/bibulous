@@ -1,4 +1,4 @@
-Bibulous
+Overview
 ========
 
 Bibulous is a drop-in replacement for BibTeX that makes use of style templates instead of BibTeX's BST language. The code is written in Python and, like BibTeX itself, is open source.
@@ -8,6 +8,7 @@ Bibulous developed out of frustration with the complexity of creating bibliograp
 Bibulous incorporates this template approach, and at the same time implements many of the modern enhancements to BibTeX, such as the ability to work with languages other than English, better support for allowing non-standard bibliography entry types, functionality for enhanced citation styles, and increased options for author name formatting, among others. The fact that Bibulous is agnostic to the names of fields in bibliography database files (``.bib``) means that one can use the same database and same LaTeX commands for generating each of: a bibliography, a glossary, a publications list for a CV, an annotated bibliography, and more, all within the same file and only by specifying a different style template for each case.
 
 Bibulous' “style template” files allow a user to visualize the entire bibliography format structure in a concise way within a single page of text. Moreover, the template is structured with its own Python-like mini-language, intended to allow uses to create flexible formatting instructions quickly and easily. The example below illustrates the simplicity of the format.
+
 Example
 -------
 
@@ -25,7 +26,7 @@ One can read the book template similarly, and find that it has different require
 Installing and instructions
 ---------------------------
 
-Instructions for installing Bibulous, and for seamlessly integrating it into your normal LaTeX workflow, are given in the ``INSTALL.rst`` file. Users can also consult the user guide (``user_guide.rst``) for further information and tutorials. A FAQ page is also available.
+Instructions for installing Bibulous, and for seamlessly integrating it into your normal LaTeX workflow, are given in the ``INSTALL.rst`` file. Users can also consult the user guide (``user_guide.rst``) for further information and tutorials. A ``FAQ`` page is also available.
 
 Developers
 ----------
@@ -37,10 +38,7 @@ Guidelines for developers are given in ``developer_guide.rst``, and includes an 
 License
 -------
 
-Bibulous is released under the MIT/X11 license, meaning that it is free and open source, and that it can be used without restriction in other programs, commercial or not. The license is given in the file ``LICENSE.txt``, the text of which is reproduced below.
+Bibulous is released under the MIT/X11 license, meaning that it is free and open source, and that it can be used without restriction in other programs, commercial or not. The license is given in the file ``LICENSE.txt``, the text of which is reproduced here:
 
-Copyright (c) 2013 Bibulous developers
+.. include:: ../LICENSE.txt
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.

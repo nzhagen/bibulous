@@ -1,0 +1,284 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Developer guide &mdash; Bibulous 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Bibulous 1.0 documentation" href="index.html" />
+    <link rel="prev" title="Instructions on how to report a bug to the Bibulous development team" href="instructions_for_reporting_bugs.html" /> 
+  </head>
+  <body>
+
+<div style="background-color: white; text-align: left; padding: 10px 10px 15px 15px">
+<a href="index.html"><img src="_static/banner.svg" border="0" height=300 alt="py4sci"/></a>
+</div>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="instructions_for_reporting_bugs.html" title="Instructions on how to report a bug to the Bibulous development team"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">home</a>|&nbsp;</li>
+        <li><a href="search.html">search</a>|&nbsp;</li>
+ 
+      </ul>
+    </div>
+
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/logo_small.svg" alt="Logo"/>
+            </a></p>
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Developer guide</a><ul>
+<li><a class="reference internal" href="#guidelines-for-python-coding-style">Guidelines for Python coding style</a></li>
+<li><a class="reference internal" href="#overall-project-strategy-and-code-structure">Overall project strategy and code structure</a></li>
+<li><a class="reference internal" href="#parsing-bib-files">Parsing BIB files</a><ul>
+<li><a class="reference internal" href="#parse-bibfile">parse_bibfile()</a></li>
+<li><a class="reference internal" href="#parse-bibentry">parse_bibentry()</a></li>
+<li><a class="reference internal" href="#parse-bibfield">parse_bibfield()</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#parsing-aux-files">Parsing AUX files</a></li>
+<li><a class="reference internal" href="#parsing-bst-files">Parsing BST files</a></li>
+<li><a class="reference internal" href="#writing-the-bbl-file">Writing the BBL file</a></li>
+<li><a class="reference internal" href="#name-formatting">Name formatting</a><ul>
+<li><a class="reference internal" href="#create-namelist">create_namelist()</a></li>
+<li><a class="reference internal" href="#format-namelist">format_namelist()</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#generating-sortkeys">Generating sortkeys</a></li>
+<li><a class="reference internal" href="#testing">Testing</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="instructions_for_reporting_bugs.html"
+                        title="previous chapter">Instructions on how to report a bug to the Bibulous development team</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/developer_guide.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="developer-guide">
+<h1>Developer guide<a class="headerlink" href="#developer-guide" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="guidelines-for-python-coding-style">
+<h2>Guidelines for Python coding style<a class="headerlink" href="#guidelines-for-python-coding-style" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p class="first">Note that you can mix 8-bit Python strings (ASCII text) with UTF-8 encoded text as long as the 8-bit string contains only ASCII characters.</p>
+</li>
+<li><p class="first">Keep in mind when running into Unicode errors: reading a line of text from a file produces a line of bytes and not characters. To decode the bytes into a string of characters, you need to know the encoding.</p>
+</li>
+<li><p class="first">There are a couple of minor points where the Bibulous coding standards deviates from Python&#8217;s PEP8:</p>
+<blockquote>
+<div><ol class="loweralpha simple">
+<li>A line width of 100 is the standard (not 80).</li>
+<li>In general, statements that evaluate to a boolean are placed within parentheses (i.e. <tt class="docutils literal"><span class="pre">if</span> <span class="pre">(a</span> <span class="pre">&lt;</span> <span class="pre">b):</span></tt> rather than <tt class="docutils literal"><span class="pre">if</span> <span class="pre">a</span> <span class="pre">&lt;</span> <span class="pre">b:</span></tt>).</li>
+</ol>
+</div></blockquote>
+</li>
+<li><p class="first">Many developers prefer to spread out code among a large number of small files. Bibulous is currently organized in the opposite fashion &#8211; all of the code needed to run <tt class="docutils literal"><span class="pre">bibulous</span></tt> to create a <tt class="docutils literal"><span class="pre">.bbl</span></tt> file is located within a single large file. Several auxiliary scripts exist, but these use <tt class="docutils literal"><span class="pre">bibulous.py</span></tt> as a core library file, and perform different tasks (such as extracting sub-bibliography databases) than the main file was designed to do.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="overall-project-strategy-and-code-structure">
+<h2>Overall project strategy and code structure<a class="headerlink" href="#overall-project-strategy-and-code-structure" title="Permalink to this headline">¶</a></h2>
+<p>The basic function of BibTeX is to accept an <tt class="docutils literal"><span class="pre">.aux</span></tt> file as input and to produce a <tt class="docutils literal"><span class="pre">.bbl</span></tt> file as output. The <tt class="docutils literal"><span class="pre">aux</span></tt> file contains all of the citation information as well as the filenames for the bibliography database file (<tt class="docutils literal"><span class="pre">.bib</span></tt>) and the style file (<tt class="docutils literal"><span class="pre">.bst</span></tt>).</p>
+<p>The basic program flow is as follows:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>Read the .aux file and get the names of the bibliography databases (.bib files), the style templates (.bst files) to use, and the entire set of citations.</li>
+<li>Read in all of the bibliography database files into one long dictionary (<cite>bibdata</cite>), replacing any abbreviations with their full form. Cross-referenced data is <em>not</em> yet inserted at this point. That is delayed until the time of writing the BBL file in order to speed up parsing.</li>
+<li>Read in the Bibulous style template file as a dictionary (<cite>bstdict</cite>).</li>
+<li>Now that all the information is collected, go through each citation key, find the corresponding entry key in <cite>bibdata</cite>. If there is crossref data, then fill in missing values here. Also create the &#8220;special fields&#8221; here. Finally, from the entry type, select a template from <cite>bstdict</cite> and begin inserting the variables one-by-one into the template.</li>
+</ol>
+</div></blockquote>
+<p>Because the <tt class="docutils literal"><span class="pre">.bib</span></tt> file is highly structured, it is straightforward to write a parser by hand in Python: the <tt class="docutils literal"><span class="pre">parse_bibfile()</span></tt> method converts the <tt class="docutils literal"><span class="pre">.bib</span></tt> file contents into a Python dictionary (the <tt class="docutils literal"><span class="pre">Bibdata</span></tt> class&#8217; <tt class="docutils literal"><span class="pre">bibdata</span></tt>). The <tt class="docutils literal"><span class="pre">.aux</span></tt> file is even easier to parse, and the <tt class="docutils literal"><span class="pre">parse_auxfile()</span></tt> method converts the citation information into the <tt class="docutils literal"><span class="pre">Bibdata</span></tt> class&#8217; <tt class="docutils literal"><span class="pre">citedict</span></tt> dictionary. The <tt class="docutils literal"><span class="pre">.bst</span></tt> style template file, having its own domain specific language, is much more complicated, so that its parser is generated from a grammar written for the <tt class="docutils literal"><span class="pre">Antlr</span></tt> parser generator. (This creates Bibulous&#8217; only external dependency &#8211; Java &#8211; which we may be able to eliminate if we use a Python-based parser generator, such as <tt class="docutils literal"><span class="pre">pyparsing</span></tt>.)</p>
+<p>The <tt class="docutils literal"><span class="pre">Bibdata</span></tt> class thus holds all relevant information needed to operate on a bibliography and generate the output LaTeX-formatted <tt class="docutils literal"><span class="pre">.bbl</span></tt> file.</p>
+</div>
+<div class="section" id="parsing-bib-files">
+<h2>Parsing BIB files<a class="headerlink" href="#parsing-bib-files" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="parse-bibfile">
+<h3>parse_bibfile()<a class="headerlink" href="#parse-bibfile" title="Permalink to this headline">¶</a></h3>
+<p>The strategy for <tt class="docutils literal"><span class="pre">parse_bibfile()</span></tt> is to find each individual bibliography entry, determine its entry type, and save all of the text between the entry&#8217;s opening and closing braces as one long string, to be passed to <tt class="docutils literal"><span class="pre">parse_bibentry()</span></tt> for parsing. To gather the entry data string, we first look for the next line that starts with <tt class="docutils literal"><span class="pre">&#64;</span></tt>. On that line, we look for a string after the <tt class="docutils literal"><span class="pre">&#64;</span></tt> followed by <tt class="docutils literal"><span class="pre">{</span></tt>, where the string gives the entry type. After we know the entry type, we look for the corresponding closing brace. If we don&#8217;t find it on the same line, then we read in the next line, and so forth, concatenating all of the lines into one long &#8220;entry string&#8221; until we encounter the corresponding closing brace. Once we have this extended &#8220;entry string&#8221; we feed it to <tt class="docutils literal"><span class="pre">parse_bibentry()</span></tt> to generate the bibliography data. Once we have come to the end of a given entry, we continue reading down the file looking for the next &#8216;&#64;&#8217; and so on.</p>
+<p>Although this approach effectively means that we have to pass twice through the same data, dealing with brace-matching can otherwise become a mess since the BibTeX format, since it allows nested delimiters, is not directly compatible with regular expressions.</p>
+</div>
+<div class="section" id="parse-bibentry">
+<h3>parse_bibentry()<a class="headerlink" href="#parse-bibentry" title="Permalink to this headline">¶</a></h3>
+<p><tt class="docutils literal"><span class="pre">parse_bibentry()</span></tt> only needs to worry about a single entry, and there are four possible formats for the entry string passed to the function:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>If the entrytype is a comment, then skip everything, adding nothing to the database dictionary.</li>
+<li>If the entrytype is a preamble, then treat the entire entry contents as a single fieldvalue. Append the string onto the <tt class="docutils literal"><span class="pre">preamble</span></tt> value in the <tt class="docutils literal"><span class="pre">bibdata</span></tt> dictionary.</li>
+<li>If the entrytype is a <tt class="docutils literal"><span class="pre">string</span></tt> (i.e. an abbreviation), then there is no entrykey. Get the fieldname (abbreviation key), and the remainder of the string is a single field value (the full form of the abbreviated string. Add this key-value pair to the <tt class="docutils literal"><span class="pre">abbrevs</span></tt> dictionary.</li>
+<li>If the entry is any other type, then get the entrykey, and the remainder of the string is a <em>series</em> of field-value pairs.</li>
+</ol>
+</div></blockquote>
+<p>Once it determines which of these four options to use, <tt class="docutils literal"><span class="pre">parse_bibentry()</span></tt> extracts the entry key (if present), separates out each of the fields (if more than one is present) and loops over each field with a call to <tt class="docutils literal"><span class="pre">parse_bibfield()</span></tt> to extract the field key-value pairs.</p>
+</div>
+<div class="section" id="parse-bibfield">
+<h3>parse_bibfield()<a class="headerlink" href="#parse-bibfield" title="Permalink to this headline">¶</a></h3>
+<p><tt class="docutils literal"><span class="pre">parse_bibfield()</span></tt> is the workhorse function of the BIB parsing. And because of BibTeX&#8217;s method for allowing concatenation, use of abbreviation keys, and use of two different types of delimiters (<tt class="docutils literal"><span class="pre">&quot;...&quot;</span></tt> or <tt class="docutils literal"><span class="pre">{...}</span></tt>), this function is a little messy. However, for the format of a given field, there are four parsing possibilities:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>If the field begins with a double quote <tt class="docutils literal"><span class="pre">&quot;</span></tt> then scan until you find the next <tt class="docutils literal"><span class="pre">&quot;</span></tt>. Add that to the result string. If the ending <tt class="docutils literal"><span class="pre">&quot;</span></tt> is followed by a comma, then the field is done; return the result string. If the ending is followed by a <tt class="docutils literal"><span class="pre">#</span></tt> then expect another field string. Scan for it and append it to the current result string.</li>
+<li>If the field begins with <tt class="docutils literal"><span class="pre">{</span></tt> then scan until you resolve the brace level. This should be followed by a comma, since no concatenation is allowed of brace-delimited fields. Otherwise issue a syntax error warning.</li>
+<li>If the field begins with a <tt class="docutils literal"><span class="pre">#</span></tt> (concatenation operator) then skip whitespace to the next character set, where you should expect a quote-delimited field. Append that to the current result string.</li>
+<li>If the field begins with anything else, then the substring up until the first whitespace character represents an abbreviation key. Locate it and substitute it in. If you don&#8217;t find the key in the <tt class="docutils literal"><span class="pre">abbrevs</span></tt> dictionary, give a warning and skip.</li>
+</ol>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="parsing-aux-files">
+<h2>Parsing AUX files<a class="headerlink" href="#parsing-aux-files" title="Permalink to this headline">¶</a></h2>
+<p>The <tt class="docutils literal"><span class="pre">.aux</span></tt> file contains the filenames of the <tt class="docutils literal"><span class="pre">.bib</span></tt> database file and the <tt class="docutils literal"><span class="pre">.bst</span></tt> style template file, as well as the citations. The <tt class="docutils literal"><span class="pre">get_bibfilenames()</span></tt> method scans through the <tt class="docutils literal"><span class="pre">.aux</span></tt> file and locates a line with <tt class="docutils literal"><span class="pre">\bibdata{...}</span></tt> which contains a filename or a comma-delimited list of filenames, giving the database files. Another line with <tt class="docutils literal"><span class="pre">\bibstyle{...}</span></tt> gives the filename or comma-delimited list of filenames for style templates. The filenames obtained are saved into the <tt class="docutils literal"><span class="pre">filedict</span></tt> attribute &#8211; a dictionary whose keys are the file extensions <tt class="docutils literal"><span class="pre">aux</span></tt>, <tt class="docutils literal"><span class="pre">bbl</span></tt>, <tt class="docutils literal"><span class="pre">bib</span></tt>, <tt class="docutils literal"><span class="pre">bst</span></tt>, or <tt class="docutils literal"><span class="pre">tex</span></tt>.</p>
+<p>The <tt class="docutils literal"><span class="pre">parse_auxfile()</span></tt> method makes a second pass through the <tt class="docutils literal"><span class="pre">.aux</span></tt> file, this time looking for the citation information. (Auxiliary files are generally quite small, so taking multiple passes through them cost very little time.) Each line with <tt class="docutils literal"><span class="pre">\citation{...}</span></tt> contains a citation key or comma-delimited list of citation keys &#8211; each one is added into the citation dictionary (<tt class="docutils literal"><span class="pre">citedict</span></tt>), with a value corresponding to the citation order.</p>
+</div>
+<div class="section" id="parsing-bst-files">
+<h2>Parsing BST files<a class="headerlink" href="#parsing-bst-files" title="Permalink to this headline">¶</a></h2>
+<p>(This part is changing at the moment, and so the documentation is not available yet.)</p>
+</div>
+<div class="section" id="writing-the-bbl-file">
+<h2>Writing the BBL file<a class="headerlink" href="#writing-the-bbl-file" title="Permalink to this headline">¶</a></h2>
+<p>Now that all the information is available to Bibulous, we can begin writing the output BBL file. First we write a few lines to the preamble, including the <tt class="docutils literal"><span class="pre">preamble</span></tt> string obtained from the <tt class="docutils literal"><span class="pre">.bib</span></tt> database files. Next we create the citation list &#8211; the citations listed in the sorting order as defined in the style template files. (This requires a surprising amount of code to get right &#8211; see <strong>Generating sortkeys</strong> below.) We loop over each citation in the desired order, and insert cross-reference information to fill in missing fields, and parse each name field (see the &#8220;Formatting names&#8221; subsection below). The cross-referencing and name parsing steps can be delayed until later on in the processing chain, but would require more complex code to do there, so doing them here keeps the code simpler without sacrificing much speed. (The assumption here is that the citation list is small, at least in comparison to the database, so that limiting the difficult parsing to only those entries cited will allow significant improvement in speed.) Finally, at each step in the loop, we call <tt class="docutils literal"><span class="pre">format_bibitem()</span></tt> to insert the database entry fields into the appropriate style template, incorporating any extra formatting requested by the user in the style template file.</p>
+</div>
+<div class="section" id="name-formatting">
+<h2>Name formatting<a class="headerlink" href="#name-formatting" title="Permalink to this headline">¶</a></h2>
+<p>One of the more complex tasks needed for parsing BIB files is to resolve the elements of name lists (typically saved in the <tt class="docutils literal"><span class="pre">author</span></tt> and <tt class="docutils literal"><span class="pre">editor</span></tt> fields). In order to know how these should be inserted into a template, it is necessary to know which parts of a given person&#8217;s name correspond to the first name, the middle name(s), the &#8220;prefix&#8221; (or &#8220;von part&#8221;), the last name (or &#8220;surname&#8221;), and the &#8220;suffix&#8221; (such as &#8220;Jr.&#8221; or &#8220;III&#8221;). These five pieces or each person&#8217;s name are saved as a dictionary, so that a bibliography entry with five authors is represented in <tt class="docutils literal"><span class="pre">&lt;authorlist&gt;</span></tt> as a list of five dictionaries, and each dictionary having keys <tt class="docutils literal"><span class="pre">first</span></tt>, <tt class="docutils literal"><span class="pre">middle</span></tt>, <tt class="docutils literal"><span class="pre">prefix</span></tt>, <tt class="docutils literal"><span class="pre">last</span></tt>, and <tt class="docutils literal"><span class="pre">suffix</span></tt>.</p>
+<p>In order to speed up parsing times, the actual mapping of the <tt class="docutils literal"><span class="pre">author</span></tt> or <tt class="docutils literal"><span class="pre">editor</span></tt> fields to <tt class="docutils literal"><span class="pre">authorlist</span></tt> or <tt class="docutils literal"><span class="pre">editorlist</span></tt> is not done until the loop over citation keys performed while writing out the BBL file. The function that product the list-of-dicts parsing result is <tt class="docutils literal"><span class="pre">namestr_to_namedict(namestr)</span></tt>.</p>
+<p>The default formatting of a namelist into a string to be inserted into the template is performed by <tt class="docutils literal"><span class="pre">format_namelist()</span></tt>.</p>
+<div class="section" id="create-namelist">
+<h3>create_namelist()<a class="headerlink" href="#create-namelist" title="Permalink to this headline">¶</a></h3>
+<p>A BibTeX &#8220;name&#8221; field can consist of three different formats of names:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>A space-separated list: <tt class="docutils literal"><span class="pre">[firstname</span> <span class="pre">middlenames</span> <span class="pre">suffix</span> <span class="pre">lastname]</span></tt></li>
+<li>A two-element comma-separated list: <tt class="docutils literal"><span class="pre">[prefix</span> <span class="pre">lastname,</span> <span class="pre">firstname</span> <span class="pre">middlenames]</span></tt></li>
+<li>A three-element comma-separated list: <tt class="docutils literal"><span class="pre">[prefix</span> <span class="pre">lastname,</span> <span class="pre">suffix,</span> <span class="pre">firstname</span> <span class="pre">middlenames]</span></tt></li>
+</ol>
+</div></blockquote>
+<p>So, an easy way to separate these three categories is by counting the number of commas that appear. The trickiest part here is that although we can use <tt class="docutils literal"><span class="pre">and</span></tt> as a name separator, we are only allowed to do so if <tt class="docutils literal"><span class="pre">and</span></tt> occurs at the top brace level.</p>
+<p>In addition, in order to make name parsing more flexible for nonstandard names, Bibulous adds two more name formats to this list:</p>
+<blockquote>
+<div><ol class="arabic simple" start="4">
+<li>A four-element comma-separated list: <tt class="docutils literal"><span class="pre">[firstname,</span> <span class="pre">middlenames,</span> <span class="pre">prefix,</span> <span class="pre">lastname]</span></tt></li>
+<li>A five-element comma-separated list: <tt class="docutils literal"><span class="pre">[firstname,</span> <span class="pre">middlenames,</span> <span class="pre">prefix,</span> <span class="pre">lastname,</span> <span class="pre">suffix]</span></tt></li>
+</ol>
+</div></blockquote>
+<p>For each name in the field, we parse the name tokens into a dictionary. We then compile all of the dictionaries into a list, ordered by the appearance of the names in the input field.</p>
+</div>
+<div class="section" id="format-namelist">
+<h3>format_namelist()<a class="headerlink" href="#format-namelist" title="Permalink to this headline">¶</a></h3>
+<p>Given a namelist (list of dictionaries), we glue the name elements together into a single string, incorporating all of the format options selected by the user in the template file. This includes calls to <tt class="docutils literal"><span class="pre">namedict_to_formatted_namestr()</span></tt>, and to <tt class="docutils literal"><span class="pre">initialize_name()</span></tt> if converting any name tokens to initials.</p>
+</div>
+</div>
+<div class="section" id="generating-sortkeys">
+<h2>Generating sortkeys<a class="headerlink" href="#generating-sortkeys" title="Permalink to this headline">¶</a></h2>
+<p>If the user&#8217;s style template file selects the citation order to be <tt class="docutils literal"><span class="pre">citenum</span></tt> or <tt class="docutils literal"><span class="pre">none</span></tt>, then creating the ordered citation list is as simple as listing the citation keys in order of their citation appearance, which was recorded as the value in the citation dictionary. If the user instead chooses the citation order to be <tt class="docutils literal"><span class="pre">citekey</span></tt>, then all that is needed is to sort the citation keys alphabetically. Similar operations follow for the various citation order options, but the difficult lies in correctly sorting in the presence of non-ASCII languages, and especially in the presence of LaTeX markup of non-ASCII names. For a citation sorting order that requires using author names, any LaTeX markup needs to be converted to its Unicode equivalent prior to sorting. Using unicode allows the sorting to be done with any input languages, and allows the sorting order to be locale-dependent.</p>
+<p><tt class="docutils literal"><span class="pre">create_citation_list()</span></tt> is the highest-level function for generating the citation list. For each citation key, it calls <tt class="docutils literal"><span class="pre">generate_sortkey()</span></tt>, which is the workhorse function for including all of the various options when generating the key to use for sorting the list. A key part of the function is a call to <tt class="docutils literal"><span class="pre">purify_string()</span></tt>, which removes unnecessary LaTeX markup elements and then calls <tt class="docutils literal"><span class="pre">latex_to_utf8()</span></tt> to convert LaTeX-markup non-ASCII characters to Unicode. It is only after all of these conversions that the final sorting is performed and the sorted citation list returned.</p>
+</div>
+<div class="section" id="testing">
+<h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h2>
+<p>The suite of regression tests for Bibulous consist of various template definitions and database entries designed to test individual features of the program. The basic approach of the tests is as follows:</p>
+<blockquote>
+<div><ol class="arabic">
+<li><p class="first">Once a change is made to the code (to fix a bug or add functionality), the developer also adds an entry to the <tt class="docutils literal"><span class="pre">test/test1.bib</span></tt> file, where the entry&#8217;s &#8220;entrytype&#8221; is named in such a way to give an indication of what the test is for. For example, the entry in the BIB file may be defined with:</p>
+<div class="highlight-python"><pre>@test_initialize1{...</pre>
+</div>
+<p>where the developer provides an <tt class="docutils literal"><span class="pre">author</span></tt> field in the entry where one or more authors have names which are difficult to for generating initials correctly. The developer should also include at least a 1-line comment about the purpose of the entry as well. To make everything easy to find, use the entrytype as the entry&#8217;s key as well. Thus, the example above would use:</p>
+<div class="highlight-python"><pre>@test_initialize1{test_initialize1, ...</pre>
+</div>
+</li>
+<li><p class="first">If the above new entry is something which can be checked with normal options settings, then the developer should add a corresponding line in the BST file defining how that new entrytype (i.e. <tt class="docutils literal"><span class="pre">test_initialize1</span></tt>) should be formatted. If <em>different</em> options settings are needed, then a new BST file is needed. Only a minimalist file is generally needed: the file can, for example, contain one line defining a new entrytype and one line to define the new option setting. You can define all of the other options if you want, but these are redundant and introduce a number of unnecessary &#8220;overwriting option value...&#8221; warning messages.</p>
+</li>
+<li><p class="first">Next, the developer should add a line <tt class="docutils literal"><span class="pre">\citation{entrytype}</span></tt> to the AUX file where the key is the key given in the new entry of the BIB file you just put in (e.g. <tt class="docutils literal"><span class="pre">test_initialize1</span></tt>). This is the same as the entrytype to keep everything consistent.</p>
+</li>
+<li><p class="first">Next, the developer needs to add two lines to the <tt class="docutils literal"><span class="pre">test1_target.bbl</span></tt> file to say what the formatted result should look like. Take a look at other lines to get a feel for how these should look, and take in consideration the form of the template just added to the BST file.</p>
+</li>
+<li><p class="first">Finally, run <tt class="docutils literal"><span class="pre">bibulous_test.py</span></tt> to check the result. This script will load the modified BIB and BST files and will write out several formatted BBL file <tt class="docutils literal"><span class="pre">test1.bbl</span></tt> etc. It will then run a <tt class="docutils literal"><span class="pre">diff</span></tt> program on the output file versus the target BBL file to see if there are any differences between the target and actual output BBL files.</p>
+</li>
+</ol>
+</div></blockquote>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="instructions_for_reporting_bugs.html" title="Instructions on how to report a bug to the Bibulous development team"
+             >previous</a> |</li>
+        <li><a href="index.html">home</a>|&nbsp;</li>
+        <li><a href="search.html">search</a>|&nbsp;</li>
+ 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Bibulous developers.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

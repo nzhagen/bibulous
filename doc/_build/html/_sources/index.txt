@@ -4,21 +4,26 @@
    contain the root `toctree` directive.
 
 Bibulous documentation
-====================================
+**********************
 
 Contents:
 
 .. toctree::
    :maxdepth: 2
-   
-   README.rst
+
    getting_started.rst
-  
+   guidelines_for_writing_style_templates.rst
+   instructions_for_reporting_bugs.rst
+   developer_guide.rst
+
+.. include:: ../README.rst
 
 Indices and tables
 ==================
 
 * :ref:`genindex`
-* :ref:`modindex`
 * :ref:`search`
 
+.. * :ref:`modindex`
+
+.. autosummary::

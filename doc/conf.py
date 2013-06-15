@@ -26,7 +26,11 @@ import sys, os
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
 sys.path.append(os.path.abspath('sphinxext'))
-#extensions = ['sphinx.ext.autodoc', 'sphinx.ext.viewcode', 'numpydoc']
+sys.path.insert(0, os.path.abspath('..'))
+extensions = ['sphinx.ext.autodoc',
+              'sphinx.ext.viewcode',
+              'numpydoc',
+              'sphinx.ext.autosummary']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -77,6 +81,8 @@ add_function_parentheses = True
 # unit titles (such as .. function::).
 add_module_names = True
 
+autosummary_generate = True
+
 # If true, sectionauthor and moduleauthor directives will be shown in the
 # output. They are ignored by default.
 #show_authors = False
@@ -97,8 +103,30 @@ html_theme = 'default'
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
-#html_theme_options = {}
-
+html_theme_options = {
+    'rightsidebar': 'true',
+    'stickysidebar': '',
+    'footerbgcolor': '',      # (CSS color): Back color for the footer line.
+    'footertextcolor': '',    # (CSS color): Text color for the footer line.
+    'sidebarbgcolor': '',     # (CSS color): Background color for the sidebar.
+    'sidebarbtncolor': '',    # (CSS color): color for the sidebar collapse btn
+    'sidebartextcolor': '',   # (CSS color): Text color for the sidebar.
+    'sidebarlinkcolor': '',   # (CSS color): Link color for the sidebar.
+    'relbarbgcolor': '',      # (CSS color): Bg color for the relation bar.
+    'relbartextcolor': '',    # (CSS color): Text color for the relation bar.
+    'relbarlinkcolor': '',    # (CSS color): Link color for the relation bar.
+    'bgcolor': '',            # (CSS color): Body background color.
+    'textcolor': '',          # (CSS color): Body text color.
+    'linkcolor': '',          # (CSS color): Body link color.
+    'visitedlinkcolor': '',   # (CSS color): Body color for visited links.
+    'headbgcolor': '',        # (CSS color): Background color for headings.
+    'headtextcolor': '',      # (CSS color): Text color for headings.
+    'headlinkcolor': '',      # (CSS color): Link color for headings.
+    'codebgcolor': '',        # (CSS color): Background color for code blocks.
+    'codetextcolor': '',      # (CSS color): Text color for code blocks, if not set differently by highlighting style.
+    'bodyfont': '',           # (CSS font-family): Font for normal text.
+    'headfont': ''            # (CSS font-family): Font for headings.
+}
 # Add any paths that contain custom themes here, relative to this directory.
 #html_theme_path = []
 
@@ -208,6 +236,9 @@ latex_logo = 'banner.pdf'
 # If false, no module index is generated.
 #latex_domain_indices = True
 
+latex_use_modindex = True
+latex_elements['preamble'] = '\\DeclareUnicodeCharacter{672C}{X}\n'
+#本
 
 # -- Options for manual page output --------------------------------------------
 
@@ -229,7 +260,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
   ('index', 'Bibulous', u'Bibulous Documentation',
-   u'Bibulous deveopers', 'Bibulous', 'One line description of project.',
+   u'Bibulous developers', 'Bibulous', 'One line description of project',
    'Miscellaneous'),
 ]
 

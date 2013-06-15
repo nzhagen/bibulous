@@ -1,0 +1,304 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>bibulous_test &mdash; Bibulous 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Bibulous 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+
+<div style="background-color: white; text-align: left; padding: 10px 10px 15px 15px">
+<a href="../index.html"><img src="../_static/banner.svg" border="0" height=300 alt="py4sci"/></a>
+</div>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">home</a>|&nbsp;</li>
+        <li><a href="../search.html">search</a>|&nbsp;</li>
+
+          <li><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo_small.svg" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for bibulous_test</h1><div class="highlight"><pre>
+<span class="c">#!/usr/bin/env python</span>
+<span class="c"># -*- coding: UTF-8 -*-</span>
+<span class="c"># See the LICENSE.rst file for licensing information.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Bibulous_test.py is a script which runs through the entire Bibulous regression testing suite.</span>
+
+<span class="sd">    The basic approach of the tests is as follows:</span>
+<span class="sd">    (1) Once a change is made to the code (to fix a bug or add functionality), the writer should</span>
+<span class="sd">        add an entry to the /test/test1.bib file, where the &quot;entrytype&quot; gives an indication of</span>
+<span class="sd">        what the test is for. For example, the entry in the BIB file may start with</span>
+<span class="sd">                @test_initialize1{...</span>
+<span class="sd">        and provide an &quot;author&quot; field where one or more authors have names which the code for</span>
+<span class="sd">        generating initials can potentially break is not written carefully. Include a 1-line</span>
+<span class="sd">        comment about the purpose of the entry as well.</span>
+<span class="sd">    (2) If this is something which can be checked with normal options settings, then add a</span>
+<span class="sd">        corresponding line in the BST file defining how that new entrytype (&quot;test_initialize1&quot;)</span>
+<span class="sd">        should be formatted. If different options settings are needed, then a new BST file is</span>
+<span class="sd">        needed. To make this, copy the &quot;test1.bst&quot; file, remove the entrytype definitions (you can</span>
+<span class="sd">        keep them, but they would be redundant), and change the options to the needed settings.</span>
+<span class="sd">        Then add a line in this file to define the entrytype template.</span>
+<span class="sd">    (3) Add a line &quot;\citation{key}&quot; to the AUX file where &quot;key&quot; is the key given in the new entry</span>
+<span class="sd">        of the BIB file you just put in (e.g. &quot;test_initialize1&quot;)</span>
+<span class="sd">    (4) Add two lines to the test1_target.bbl file (one for the &quot;bibentry&quot; function call, and one</span>
+<span class="sd">        for the entry contents) to say what the formatted result should look like.</span>
+<span class="sd">    (5) Finally, run this script to check the result. This script will load the modified BIB and</span>
+<span class="sd">        BST files and will write out a formatted BBL file &quot;test1.bbl&quot;. It will then try to run a</span>
+<span class="sd">        &quot;diff&quot; program on these two files to see if there are any differences between the target</span>
+<span class="sd">        and actual output BBL files.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">unicode_literals</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">division</span>     <span class="c">## for Python3 compatibility</span>
+<span class="kn">import</span> <span class="nn">string</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">traceback</span>    <span class="c">## for getting full traceback info in exceptions</span>
+<span class="kn">import</span> <span class="nn">pdb</span>          <span class="c">## put &quot;pdb.set_trace()&quot; at any place you want to interact with pdb</span>
+<span class="kn">import</span> <span class="nn">difflib</span>      <span class="c">## for comparing one string sequence with another</span>
+<span class="kn">from</span> <span class="nn">bibulous</span> <span class="kn">import</span> <span class="n">Bibdata</span>
+
+
+<span class="c">## ==================================================================================================</span>
+<div class="viewcode-block" id="run_test1"><a class="viewcode-back" href="../bibulous_test.html#bibulous_test.run_test1">[docs]</a><span class="k">def</span> <span class="nf">run_test1</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Test #1 consists of a suite of single tests of options and features that are valid with the</span>
+<span class="sd">    default template file.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">bstfiles</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;./test/test1.bst&#39;</span><span class="p">,</span> <span class="s">&#39;./test/test1_sentencecase1.bst&#39;</span><span class="p">,</span> <span class="s">&#39;./test/test1_frenchinitials1.bst&#39;</span><span class="p">,</span>
+                <span class="s">&#39;./test/test1_usenameties1.bst&#39;</span><span class="p">)</span>
+    <span class="n">bibfile</span> <span class="o">=</span> <span class="s">&#39;./test/test1.bib&#39;</span>
+    <span class="n">bblfile</span> <span class="o">=</span> <span class="s">&#39;./test/test1.bbl&#39;</span>
+    <span class="n">auxfile</span> <span class="o">=</span> <span class="s">&#39;./test/test1.aux&#39;</span>
+    <span class="n">target_bblfile</span> <span class="o">=</span> <span class="s">&#39;./test/test1_target.bbl&#39;</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;============================================================================&#39;</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;Running Bibulous-test1 on: &#39;</span> <span class="o">+</span> <span class="n">bibfile</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;The target output BBL file: &#39;</span> <span class="o">+</span> <span class="n">target_bblfile</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;The testing template files are: &#39;</span> <span class="o">+</span> <span class="n">bstfiles</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">bstfiles</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;                                &#39;</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;The current working directory is: &#39;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;The actual output BBL file: &#39;</span> <span class="o">+</span> <span class="n">bblfile</span><span class="p">)</span>
+
+    <span class="n">test1bib</span> <span class="o">=</span> <span class="n">Bibdata</span><span class="p">([</span><span class="n">bibfile</span><span class="p">,</span><span class="n">auxfile</span><span class="p">,</span><span class="n">bblfile</span><span class="p">,</span><span class="n">bstfiles</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+    <span class="n">test1bib</span><span class="o">.</span><span class="n">write_bblfile</span><span class="p">(</span><span class="n">write_preamble</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">write_postamble</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">bibsize</span><span class="o">=</span><span class="s">&#39;XX&#39;</span><span class="p">)</span>
+    <span class="n">bstfiles</span> <span class="o">=</span> <span class="n">bstfiles</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+
+    <span class="k">for</span> <span class="n">bstfile</span> <span class="ow">in</span> <span class="n">bstfiles</span><span class="p">:</span>
+        <span class="n">auxfile</span> <span class="o">=</span> <span class="n">bstfile</span><span class="p">[:</span><span class="o">-</span><span class="mi">4</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#39;.aux&#39;</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;Reading &#39;</span> <span class="o">+</span> <span class="n">bstfile</span> <span class="o">+</span> <span class="s">&#39; and &#39;</span> <span class="o">+</span> <span class="n">auxfile</span><span class="p">)</span>
+        <span class="c">## Delete the old citekeys so that the new test contains only the new keys.</span>
+        <span class="n">test1bib</span><span class="o">.</span><span class="n">citedict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">test1bib</span><span class="o">.</span><span class="n">parse_auxfile</span><span class="p">(</span><span class="n">auxfile</span><span class="p">)</span>
+        <span class="n">test1bib</span><span class="o">.</span><span class="n">parse_bstfile</span><span class="p">(</span><span class="n">bstfile</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+        <span class="n">write_postamble</span> <span class="o">=</span> <span class="p">(</span><span class="n">bstfile</span> <span class="o">==</span> <span class="n">bstfiles</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">test1bib</span><span class="o">.</span><span class="n">write_bblfile</span><span class="p">(</span><span class="n">write_preamble</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">write_postamble</span><span class="o">=</span><span class="n">write_postamble</span><span class="p">)</span>
+
+    <span class="k">return</span><span class="p">(</span><span class="n">bblfile</span><span class="p">,</span> <span class="n">target_bblfile</span><span class="p">)</span>
+
+<span class="c">## =============================</span></div>
+<div class="viewcode-block" id="run_test2"><a class="viewcode-back" href="../bibulous_test.html#bibulous_test.run_test2">[docs]</a><span class="k">def</span> <span class="nf">run_test2</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Test #2 loads a number of large .bib database files to put the BibTeX parser and the BBL file</span>
+<span class="sd">    writer through a comprehensive set of conditions. Every entry in the BIB files is written to</span>
+<span class="sd">    the output BBL file to test as much of the processing chain as possible.</span>
+
+<span class="sd">    Rather than checking the output against a target file, this test really just makes sure that</span>
+<span class="sd">    no exceptions are emitted when processing the entire database through the full chain of</span>
+<span class="sd">    functions.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">bstfile</span> <span class="o">=</span> <span class="s">&#39;./test/test2.bst&#39;</span>
+    <span class="n">bibfiles</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;./test/master.bib&#39;</span><span class="p">,</span>   <span class="s">&#39;./test/journal.bib&#39;</span><span class="p">,</span>   <span class="s">&#39;./test/amstat.bib&#39;</span><span class="p">,</span>
+               <span class="s">&#39;./test/cccuj2000.bib&#39;</span><span class="p">,</span> <span class="s">&#39;./test/gutenberg.bib&#39;</span><span class="p">,</span> <span class="s">&#39;./test/onlinealgs.bib&#39;</span><span class="p">,</span>
+               <span class="s">&#39;./test/python.bib&#39;</span><span class="p">,</span>    <span class="s">&#39;./test/random.bib&#39;</span><span class="p">,</span>    <span class="s">&#39;./test/sciam2000.bib&#39;</span><span class="p">,</span>
+               <span class="s">&#39;./test/template.bib&#39;</span><span class="p">,</span>  <span class="s">&#39;./test/thiruv.bib&#39;</span><span class="p">,</span>    <span class="s">&#39;./test/benfords-law.bib&#39;</span><span class="p">,</span>
+               <span class="s">&#39;./test/texstuff.bib&#39;</span><span class="p">,</span>  <span class="s">&#39;./test/karger.bib&#39;</span><span class="p">]</span>
+    <span class="n">bblfile</span> <span class="o">=</span> <span class="s">&#39;./test/test2.bbl&#39;</span>
+    <span class="n">auxfile</span> <span class="o">=</span> <span class="s">&#39;./test/test2.aux&#39;</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;============================================================================&#39;</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;Running Bibulous-test2 on: &#39;</span> <span class="o">+</span> <span class="n">bibfiles</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">bibfiles</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;                           &#39;</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;The testing template file is: &#39;</span> <span class="o">+</span> <span class="n">bstfile</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;The current working directory is: &#39;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;The actual output BBL file: &#39;</span> <span class="o">+</span> <span class="n">bblfile</span><span class="p">)</span>
+
+    <span class="n">filenames</span> <span class="o">=</span> <span class="n">bibfiles</span> <span class="o">+</span> <span class="p">[</span><span class="n">bblfile</span><span class="p">,</span><span class="n">bstfile</span><span class="p">]</span>
+    <span class="n">test2bib</span> <span class="o">=</span> <span class="n">Bibdata</span><span class="p">(</span><span class="n">filenames</span><span class="p">)</span>
+
+    <span class="c">## Build a large citation dictionary using all of the bibliography database entries.</span>
+    <span class="n">citedict</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">k</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">test2bib</span><span class="o">.</span><span class="n">bibdata</span><span class="o">.</span><span class="n">keys</span><span class="p">())}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="s">&#39;abbrev&#39;</span> <span class="ow">in</span> <span class="n">citedict</span><span class="p">):</span> <span class="k">del</span> <span class="n">citedict</span><span class="p">[</span><span class="s">&#39;abbrev&#39;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="p">(</span><span class="s">&#39;preamble&#39;</span> <span class="ow">in</span> <span class="n">citedict</span><span class="p">):</span> <span class="k">del</span> <span class="n">citedict</span><span class="p">[</span><span class="s">&#39;preamble&#39;</span><span class="p">]</span>
+    <span class="n">test2bib</span><span class="o">.</span><span class="n">citedict</span> <span class="o">=</span> <span class="n">citedict</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">auxfile</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">citedict</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\\</span><span class="s">citation{&#39;</span> <span class="o">+</span> <span class="n">c</span> <span class="o">+</span> <span class="s">&#39;}</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\\</span><span class="s">bibdata{&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">bibfiles</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="o">+</span> <span class="s">&#39;,&#39;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">bibfiles</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="s">&#39;}</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\\</span><span class="s">bibstyle{test2.bst}</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">test2bib</span><span class="o">.</span><span class="n">write_bblfile</span><span class="p">()</span>
+
+    <span class="k">return</span><span class="p">(</span><span class="n">bblfile</span><span class="p">)</span>
+
+<span class="c">## =============================</span></div>
+<div class="viewcode-block" id="run_test3"><a class="viewcode-back" href="../bibulous_test.html#bibulous_test.run_test3">[docs]</a><span class="k">def</span> <span class="nf">run_test3</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Test #3 calls the authorextract function for</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="kn">import</span> <span class="nn">subprocess</span>
+    <span class="n">auxfile</span> <span class="o">=</span> <span class="s">&#39;./test/test2.aux&#39;</span>
+    <span class="n">authorstr</span> <span class="o">=</span> <span class="s">&#39;John W. Tukey&#39;</span>
+    <span class="n">outputfile</span> <span class="o">=</span> <span class="s">&#39;./test/test3_authorextract.bib&#39;</span>
+    <span class="n">target_bibfile</span> <span class="o">=</span> <span class="s">&#39;./test/test3_target.bib&#39;</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;============================================================================&#39;</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;Running Bibulous-test3 for author &quot;&#39;</span> <span class="o">+</span> <span class="n">authorstr</span> <span class="o">+</span> <span class="s">&#39;&quot;&#39;</span><span class="p">)</span>
+
+    <span class="n">bibdata</span> <span class="o">=</span> <span class="n">Bibdata</span><span class="p">(</span><span class="n">auxfile</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;Writing BIB author extract file = &#39;</span> <span class="o">+</span> <span class="n">outputfile</span><span class="p">)</span>
+    <span class="n">bibdata</span><span class="o">.</span><span class="n">write_authorextract</span><span class="p">(</span><span class="n">authorstr</span><span class="p">,</span> <span class="n">outputfile</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+    <span class="k">return</span><span class="p">(</span><span class="n">outputfile</span><span class="p">,</span> <span class="n">target_bibfile</span><span class="p">)</span>
+
+<span class="c">## =============================</span></div>
+<div class="viewcode-block" id="check_file_match"><a class="viewcode-back" href="../bibulous_test.html#bibulous_test.check_file_match">[docs]</a><span class="k">def</span> <span class="nf">check_file_match</span><span class="p">(</span><span class="n">outputfile</span><span class="p">,</span> <span class="n">targetfile</span><span class="p">):</span>
+    <span class="c">## Load the actual output BBL file and the target BBL file (the former says what we got; the</span>
+    <span class="c">## latter says what we *should* get). Load each into strings and calculate their difference.</span>
+    <span class="n">foutput</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">outputfile</span><span class="p">,</span> <span class="s">&#39;rU&#39;</span><span class="p">)</span>
+    <span class="n">ftarget</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">targetfile</span><span class="p">,</span> <span class="s">&#39;rU&#39;</span><span class="p">)</span>
+
+    <span class="n">outputlines</span> <span class="o">=</span> <span class="n">foutput</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+    <span class="n">targetlines</span> <span class="o">=</span> <span class="n">ftarget</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+
+    <span class="n">foutput</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">ftarget</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="n">diff</span> <span class="o">=</span> <span class="n">difflib</span><span class="o">.</span><span class="n">unified_diff</span><span class="p">(</span><span class="n">outputlines</span><span class="p">,</span> <span class="n">targetlines</span><span class="p">,</span> <span class="n">lineterm</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">diff</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">diff</span><span class="p">)</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">diff</span><span class="p">)</span>
+
+
+<span class="c">## ==================================================================================================</span></div>
+<span class="k">if</span> <span class="p">(</span><span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">):</span>
+    <span class="c">## Run test #1.</span>
+    <span class="p">(</span><span class="n">outputfile</span><span class="p">,</span> <span class="n">targetfile</span><span class="p">)</span> <span class="o">=</span> <span class="n">run_test1</span><span class="p">()</span>
+    <span class="n">diff</span> <span class="o">=</span> <span class="n">check_file_match</span><span class="p">(</span><span class="n">outputfile</span><span class="p">,</span> <span class="n">targetfile</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">diff</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;TEST #1 PASSED&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;TEST #1 FAILED. FILE DIFFERENCES:&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">diff</span><span class="p">:</span> <span class="k">print</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">)</span>
+
+    <span class="c">## Run test #2.</span>
+    <span class="n">outputfile</span> <span class="o">=</span> <span class="n">run_test2</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;Test #2 PASSED&#39;</span><span class="p">)</span>
+
+    <span class="c">## Run test #3.</span>
+    <span class="p">(</span><span class="n">outputfile</span><span class="p">,</span> <span class="n">targetfile</span><span class="p">)</span> <span class="o">=</span> <span class="n">run_test3</span><span class="p">()</span>
+    <span class="n">diff</span> <span class="o">=</span> <span class="n">check_file_match</span><span class="p">(</span><span class="n">outputfile</span><span class="p">,</span> <span class="n">targetfile</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">diff</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;TEST #3 PASSED&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;TEST #3 FAILED. FILE DIFFERENCES:&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">diff</span><span class="p">:</span> <span class="k">print</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">)</span>
+
+
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;DONE&#39;</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">home</a>|&nbsp;</li>
+        <li><a href="../search.html">search</a>|&nbsp;</li>
+
+          <li><a href="index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Bibulous developers.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

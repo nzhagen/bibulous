@@ -1,7 +1,10 @@
 Python code to-do
 -----------------
 
-# BibTeX can apparently accept an optional argument to the ``\cite{}`` command and place it into
+#. Add documentation to the Bibulous' class attributes and methods. See ``numpydoc``'s "HOWTO_DOCUMENT"
+    to get this set up right.
+
+#. BibTeX can apparently accept an optional argument to the ``\cite{}`` command and place it into
     the bibliography. Try replicating that functionality.
 
 #. For each "Warning..." message, add a numerical tag so we know which line in the
@@ -29,7 +32,7 @@ Python code to-do
    the largest number. For alpha-formats, it needs to be more complicated.
 
 #. Make sure that when an exception has occurred, you still generate a valid BBL file (just
-   an incomplete one). So you will need to make use of some try...except blocks.
+   an incomplete one). So you will need to make use of some ``try...except`` blocks.
 
 #. Write a ``bibclean`` function which checks a ``*.bib`` file for errors. Include using
    ``namefield_to_namelist(`` to check for name format errors. A common problem will be encoding
@@ -106,8 +109,8 @@ Python testing to-do
         s2 = r'Vorschl{\"a}ge zur Construction einiger optischer Vorichtungen'
         s3 = u'¡Hola! ¿Cómo estás? ¿Está bien así en España?'
         s4 = r'C{\'o}mo est{\'a}s? ?`Est{\'a} bien as{\'\i} en Espa{\~n}a?'
-        s5 = u'Smør brød på hytte paab'
-        s6 = r'Sm{\o}r br{\oo}d p{\aa} hytte p{\aab}'
+        s5 = u'Smør brød på hytte paap'
+        s6 = r'Sm{\o}r br{\oo}d p{\aa} hytte p{\aap}'
         s7 = u"Rōmaji (ローマ字), kanji (漢字, かんじ), hiragana (平仮名, ひらがな), katakana (片仮名, カタカナ)"
         s8 = r'\{\{ $\left[.\left\lfloor \frac{5}{\frac{\left(3\right)}{4}} \right).\right]$ \}\}'
 

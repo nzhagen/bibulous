@@ -3,21 +3,23 @@
 # pylint: disable-msg=C0321
 # See the LICENSE.rst file for licensing information.
 '''
-    Bibulous is a drop-in replacement for BibTeX, with the primary advantage that the bibliography
-    template format is compact and *very* easy to modify.
+Bibulous is a drop-in replacement for BibTeX, with the primary advantage that the bibliography
+template format is compact and *very* easy to modify.
 
-    The basic program flow is as follows:
-    (1) Read the .aux file and get the names of the bibliography databases (.bib files),
-        the style templates (.bst files) to use, and the entire set of citations.
-    (2) Read in all of the bibliography database files into one long dictionary (`bibdata`),
-        replacing any abbreviations with their full form. Cross-referenced data is *not* yet
-        inserted at this point. That is delayed until the time of writing the BBL file in order
-        to speed up parsing.
-    (3) Read in the Bibulous style template file as a dictionary (`bstdict`).
-    (4) Now that all the information is collected, go through each citation key, find the
-        corresponding entry key in `bibdata`. From the entry type, select a template from `bstdict`
-        and begin inserting the variables one-by-one into the template. If any data is missing,
-        check for cross-references and use crossref data to fill in missing values.
+The basic program flow is as follows:
+
+1. Read the .aux file and get the names of the bibliography databases (.bib files),
+   the style templates (.bst files) to use, and the entire set of citations.
+2. Read in all of the bibliography database files into one long dictionary (`bibdata`),
+   replacing any abbreviations with their full form. Cross-referenced data is *not* yet
+   inserted at this point. That is delayed until the time of writing the BBL file in order
+   to speed up parsing.
+3. Read in the Bibulous style template file as a dictionary (`bstdict`).
+4. Now that all the information is collected, go through each citation key, find the
+   corresponding entry key in `bibdata`. From the entry type, select a template from `bstdict`
+   and begin inserting the variables one-by-one into the template. If any data is missing,
+   check for cross-references and use crossref data to fill in missing values.
+
 '''
 
 from __future__ import unicode_literals, print_function, division     ## for Python3 compatibility
@@ -66,21 +68,41 @@ class Bibdata(object):
 
     Attributes
     ----------
-    abbrevkey_pattern
-    abbrevs
-    anybrace_pattern
-    anybraceorquote_pattern
-    bibdata
-    bstdict
-    citedict
-    debug
-    endbrace_pattern
-    filedict
-    filename
-    i
-    options
-    quote_pattern
-    startbrace_pattern
+    abbrevs : dict
+        The list of abbreviations given in the bibliography database file(s). The dictionary keys \
+        are the abbreviations, and the values are their full forms.
+    bibdata : dict
+        The database of bibliography entries and fields derived from parsing the bibliography \
+        database file(s).
+    bstdict : dict
+        The style template for formatting the bibliography. The dictionary keys are the \
+        entrytypes, with the dictionary values their string template.
+    citedict : dict
+        The dictionary of citation keys and their corresponding numerical order of citation.
+    debug : bool
+        Whether to turn on debugging features.
+    filedict : dict
+        The ditionary of filenames associated with the bibliographic data. The dictionary consists \
+        of keys `bib`, `bst`, `aux`, `tex`, and `bbl`. The first two are lists of filenames, while
+        the others contain only a single filename.
+    filename : str
+        (For error messages and debugging) The name of the file currently being parsed.
+    i : int
+        (For error messages and debugging) The line of the file currently being parsed.
+    options : dict
+        The dictionary containing the various option settings from the style template (BST) files.
+    abbrevkey_pattern : compiled regular expression object
+        The regex used to search for abbreviation keys.
+    anybrace_pattern : compiled regular expression object
+        The regex used to search for curly braces `{` or `}`.
+    anybraceorquote_pattern : compiled regular expression object
+        The regex used to search for curly braces or for double-quotes, i.e. `{`, `}`, or `"`.
+    endbrace_pattern : compiled regular expression object
+        The regex used to search for an ending curly brace, i.e. '}'.
+    quote_pattern : compiled regular expression object
+        The regex used to search for a double-quote, i.e. `"`.
+    startbrace_pattern : compiled regular expression object
+        The regex used to search for a starting curly brace, `{`.
 
     Methods
     -------
@@ -181,7 +203,7 @@ class Bibdata(object):
     ## =============================
     def parse_bibfile(self, filename):
         '''
-        Parse a *.bib file to generate a dictionary representing a bibliography database.
+        Parse a ".bib" file to generate a dictionary representing a bibliography database.
 
         Parameters
         ----------
@@ -494,13 +516,13 @@ class Bibdata(object):
     ## =============================
     def parse_auxfile(self, filename, debug=False):
         '''
-        Read in an *.aux file and convert the `\citation{}` entries found there into a dictionary
+        Read in an ".aux" file and convert the `\citation{}` entries found there into a dictionary
         of citekeys and citation order number.
 
         Parameters
         ----------
         filename : str
-            The filename of the *.aux file to parse.
+            The filename of the ".aux" file to parse.
         '''
 
         if debug: print('Reading AUX file "' + filename + '" ...')
@@ -650,8 +672,8 @@ class Bibdata(object):
         Parameters
         ----------
         filename : str, optional
-            The filename of the *.bbl file to write. (Default is to take the AUX file and change \
-            its extension to .bbl.)
+            The filename of the ".bbl" file to write. (Default is to take the AUX file and change \
+            its extension to ".bbl".)
         write_preamble : bool, optional
             Whether to write the preamble. (Setting this to False can be useful when writing the \
             bibliography in separate steps.)
@@ -781,7 +803,7 @@ class Bibdata(object):
         #citekeys = [x+str(i) for i,x in enumerate(citekeys) if citekeys.count(x)>1]
 
         ## Finally, now that we have them in the order we want, we keep only the citation keys, so
-        ## that we know which entry maps to which in the *.aux file.
+        ## that we know which entry maps to which in the ".aux" file.
         self.citelist = [b for (a,b) in self.citelist]
 
         return
@@ -789,7 +811,7 @@ class Bibdata(object):
     ## =============================
     def format_bibitem(self, citekey):
         '''
-        Create the "\bibitem{...}" string to insert into the *.bbl file.
+        Create the "\bibitem{...}" string to insert into the ".bbl" file.
 
         This is the workhorse function of Bibulous. For a given key, find the resulting entry
         in the bibliography database. From the entry's `entrytype`, lookup the relevant template
@@ -1412,7 +1434,7 @@ def get_bibfilenames(filename, debug=False):
                 indx = line.index('}')
                 bstres = line[:indx]
 
-        ## Now we have the strings from the *.tex file that describing the bibliography filenames.
+        ## Now we have the strings from the ".tex" file that describing the bibliography filenames.
         ## If these are lists of filenames, then split them out.
         if (',' in bibres):
             bibres = bibres.split(',')      ## if a list of files, then split up the list pieces
@@ -1438,7 +1460,7 @@ def get_bibfilenames(filename, debug=False):
 
             bibfiles.append(r)
 
-        ## Next do the same thing for the *.bst files.
+        ## Next do the same thing for the ".bst" files.
         if (',' in bstres):
             bstres = bstres.split(',')      ## if a list of files, then split up the list pieces
         else:
@@ -2148,7 +2170,7 @@ def enwrap_nested_string(s, delims=('{','}'), odd_operator=r'\textbf', even_oper
 def enwrap_nested_quotes(s, debug=False):
     '''
     Find nested quotes within strings and, if necessary, replace them with the proper nesting
-    (i.e. outer quotes use ``...'' while inner quotes use `...').
+    (i.e. outer quotes use ````...''`` while inner quotes use ```...'``).
 
     Parameters
     ----------
@@ -2882,7 +2904,7 @@ def create_edition_ordinal(bibentry, key, options):
     Parameters
     ----------
     bibdata :  dict
-        The bibliography database dictionary (constructed from *.bib files).
+        The bibliography database dictionary (constructed from ".bib" files).
     key :      str
         The key in `bibdata` defining the current entry being formatted.
     options : dict, optional

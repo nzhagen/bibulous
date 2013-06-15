@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012/Debian) (format=pdflatex 2013.5.23)  14 JUN 2013 20:03
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012/Debian) (format=pdflatex 2013.5.23)  15 JUN 2013 18:14
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -784,6 +784,7 @@ Package: hypcap 2011/02/16 v1.11 Adjusting the anchors of captions (HO)
 (/usr/share/texlive/texmf-dist/tex/latex/multirow/multirow.sty
 \bigstrutjot=\dimen139
 )
+   defining Unicode char U+672C (decimal 26412)
 \@indexfile=\write5
 \openout5 = `Bibulous.idx'.
 
@@ -792,28 +793,28 @@ Writing index file Bibulous.idx
 (./Bibulous.aux)
 \openout1 = `Bibulous.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 113.
-LaTeX Font Info:    ... okay on input line 113.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 113.
-LaTeX Font Info:    ... okay on input line 113.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 113.
-LaTeX Font Info:    ... okay on input line 113.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 113.
-LaTeX Font Info:    ... okay on input line 113.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 113.
-LaTeX Font Info:    ... okay on input line 113.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 113.
-LaTeX Font Info:    ... okay on input line 113.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 113.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 113.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 114.
+LaTeX Font Info:    ... okay on input line 114.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 114.
+LaTeX Font Info:    ... okay on input line 114.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 114.
+LaTeX Font Info:    ... okay on input line 114.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 114.
+LaTeX Font Info:    ... okay on input line 114.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 114.
+LaTeX Font Info:    ... okay on input line 114.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 114.
+LaTeX Font Info:    ... okay on input line 114.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 114.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 114.
 
  (/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 113.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 113.
-LaTeX Font Info:    ... okay on input line 113.
-LaTeX Font Info:    Try loading font information for T1+ptm on input line 113.
+LaTeX Font Info:    ... okay on input line 114.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 114.
+LaTeX Font Info:    ... okay on input line 114.
+LaTeX Font Info:    Try loading font information for T1+ptm on input line 114.
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1ptm.fd
 File: t1ptm.fd 2001/06/04 font definitions for T1/ptm.
@@ -847,7 +848,7 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
 \AtBeginShipoutBox=\box41
-Package hyperref Info: Link coloring ON on input line 113.
+Package hyperref Info: Link coloring ON on input line 114.
 
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2010/04/30 v2.40 Cross-referencing by name of section
@@ -857,43 +858,43 @@ Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
 \c@section@level=\count130
 )
-LaTeX Info: Redefining \ref on input line 113.
-LaTeX Info: Redefining \pageref on input line 113.
-LaTeX Info: Redefining \nameref on input line 113.
+LaTeX Info: Redefining \ref on input line 114.
+LaTeX Info: Redefining \pageref on input line 114.
+LaTeX Info: Redefining \nameref on input line 114.
 
 (./Bibulous.out) (./Bibulous.out)
 \@outlinefile=\write6
 \openout6 = `Bibulous.out'.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 116--116
+Underfull \hbox (badness 10000) in paragraph at lines 117--117
 
  []
 
-<banner.pdf, id=32, 1882.71153pt x 493.97911pt>
+<banner.pdf, id=100, 1882.71153pt x 493.97911pt>
 File: banner.pdf Graphic file (type pdf)
  <use banner.pdf>
-Package pdftex.def Info: banner.pdf used on input line 116.
+Package pdftex.def Info: banner.pdf used on input line 117.
 (pdftex.def)             Requested size: 1882.70695pt x 493.9779pt.
 File: banner.pdf Graphic file (type pdf)
 
 <use banner.pdf>
-Package pdftex.def Info: banner.pdf used on input line 116.
+Package pdftex.def Info: banner.pdf used on input line 117.
 (pdftex.def)             Requested size: 469.755pt x 123.25327pt.
-LaTeX Font Info:    Try loading font information for T1+phv on input line 116.
+LaTeX Font Info:    Try loading font information for T1+phv on input line 117.
  (/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1phv.fd
 File: t1phv.fd 2001/06/04 scalable font definitions for T1/phv.
 )
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <24.88> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 116.
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 117.
 LaTeX Font Info:    Font shape `T1/phv/m/it' in size <17.28> not available
-(Font)              Font shape `T1/phv/m/sl' tried instead on input line 116.
+(Font)              Font shape `T1/phv/m/sl' tried instead on input line 117.
 LaTeX Font Info:    Font shape `T1/phv/bx/it' in size <17.28> not available
-(Font)              Font shape `T1/phv/b/it' tried instead on input line 116.
+(Font)              Font shape `T1/phv/b/it' tried instead on input line 117.
 LaTeX Font Info:    Font shape `T1/phv/b/it' in size <17.28> not available
-(Font)              Font shape `T1/phv/b/sl' tried instead on input line 116.
+(Font)              Font shape `T1/phv/b/sl' tried instead on input line 117.
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <17.28> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 116.
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 117.
 
 [1
 
@@ -910,19 +911,19 @@ LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <10> not available
 
 Adding blank page after the table of contents.
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <10> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 116.
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 117.
 pdfTeX warning (ext4): destination with the same identifier (name{page.i}) has 
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.116 \tableofcontents
+l.117 \tableofcontents
                        [1
 
 ]pdfTeX warning (ext4): destination with the same identifier (name{page.ii}) ha
 s been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.116 \tableofcontents
+l.117 \tableofcontents
                        [2] [1
 
 ] [2
@@ -930,103 +931,111 @@ l.116 \tableofcontents
 ]
 Chapter 1.
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <14.4> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 123.
-LaTeX Font Info:    Try loading font information for T1+pcr on input line 150.
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 124.
+LaTeX Font Info:    Try loading font information for T1+pcr on input line 126.
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1pcr.fd
 File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
-) [3] [4]
-Chapter 2.
-<original_Winedt5_setup.png, id=87, 708.6475pt x 558.085pt>
+)
+<screenshot_for_kile_instructions.png, id=162, 765.6103pt x 552.82825pt>
+File: screenshot_for_kile_instructions.png Graphic file (type png)
+
+<use screenshot_for_kile_instructions.png>
+Package pdftex.def Info: screenshot_for_kile_instructions.png used on input lin
+e 139.
+(pdftex.def)             Requested size: 230.18253pt x 166.20404pt.
+
+<screenshot_for_kile_instructions2.png, id=164, 765.6103pt x 552.82825pt>
+File: screenshot_for_kile_instructions2.png Graphic file (type png)
+
+<use screenshot_for_kile_instructions2.png>
+Package pdftex.def Info: screenshot_for_kile_instructions2.png used on input li
+ne 141.
+(pdftex.def)             Requested size: 230.18253pt x 166.20404pt.
+ [3 <./screenshot_for_kile_instructions.png>] <original_Winedt5_setup.png, id=1
+75, 708.6475pt x 558.085pt>
 File: original_Winedt5_setup.png Graphic file (type png)
 
 <use original_Winedt5_setup.png>
-Package pdftex.def Info: original_Winedt5_setup.png used on input line 225.
-(pdftex.def)             Requested size: 708.64578pt x 558.08365pt.
-File: original_Winedt5_setup.png Graphic file (type png)
- <use original_Winedt5_setup.png>
-Package pdftex.def Info: original_Winedt5_setup.png used on input line 225.
-(pdftex.def)             Requested size: 469.755pt x 369.95523pt.
+Package pdftex.def Info: original_Winedt5_setup.png used on input line 153.
+(pdftex.def)             Requested size: 230.18253pt x 181.27328pt.
 
-<modified_Winedt5_setup.png, id=88, 708.6475pt x 558.085pt>
+<modified_Winedt5_setup.png, id=176, 708.6475pt x 558.085pt>
 File: modified_Winedt5_setup.png Graphic file (type png)
 
 <use modified_Winedt5_setup.png>
-Package pdftex.def Info: modified_Winedt5_setup.png used on input line 227.
-(pdftex.def)             Requested size: 708.64578pt x 558.08365pt.
-File: modified_Winedt5_setup.png Graphic file (type png)
- <use modified_Winedt5_setup.png>
-Package pdftex.def Info: modified_Winedt5_setup.png used on input line 227.
-(pdftex.def)             Requested size: 469.755pt x 369.95523pt.
+Package pdftex.def Info: modified_Winedt5_setup.png used on input line 155.
+(pdftex.def)             Requested size: 230.18253pt x 181.27328pt.
+ [4 <./screenshot_for_kile_instructions2.png> <./original_Winedt5_setup.png>] [
+5 <./modified_Winedt5_setup.png>] [6
 
-<screenshot_for_kile_instructions.png, id=89, 765.6103pt x 552.82825pt>
-File: screenshot_for_kile_instructions.png Graphic file (type png)
+]
+Chapter 2.
+[7]
+Underfull \hbox (badness 10000) in paragraph at lines 217--218
+\T1/pcr/m/n/10 <eid>\T1/ptm/m/n/10 , \T1/pcr/m/n/10 <endpage>\T1/ptm/m/n/10 , \
+T1/pcr/m/n/10 <institution>\T1/ptm/m/n/10 , \T1/pcr/m/n/10 <journal>\T1/ptm/m/n
+/10 , \T1/pcr/m/n/10 <nationality>\T1/ptm/m/n/10 , \T1/pcr/m/n/10 <note>\T1/ptm
+/m/n/10 ,
+ []
 
-<use screenshot_for_kile_instructions.png>
-Package pdftex.def Info: screenshot_for_kile_instructions.png used on input lin
-e 229.
-(pdftex.def)             Requested size: 765.60843pt x 552.8269pt.
-File: screenshot_for_kile_instructions.png Graphic file (type png)
-
-<use screenshot_for_kile_instructions.png>
-Package pdftex.def Info: screenshot_for_kile_instructions.png used on input lin
-e 229.
-(pdftex.def)             Requested size: 469.755pt x 339.19864pt.
- [5
-
- <./original_Winedt5_setup.png>]
-<screenshot_for_kile_instructions2.png, id=95, 765.6103pt x 552.82825pt>
-File: screenshot_for_kile_instructions2.png Graphic file (type png)
-
-<use screenshot_for_kile_instructions2.png>
-Package pdftex.def Info: screenshot_for_kile_instructions2.png used on input li
-ne 231.
-(pdftex.def)             Requested size: 765.60843pt x 552.8269pt.
-File: screenshot_for_kile_instructions2.png Graphic file (type png)
-
-<use screenshot_for_kile_instructions2.png>
-Package pdftex.def Info: screenshot_for_kile_instructions2.png used on input li
-ne 231.
-(pdftex.def)             Requested size: 469.755pt x 339.19864pt.
- [6 <./modified_Winedt5_setup.png>]
-[7 <./screenshot_for_kile_instructions.png>] [8 <./screenshot_for_kile_instruct
-ions2.png>]
-Chapter 3.
-LaTeX Font Info:    Try loading font information for TS1+ptm on input line 236.
+LaTeX Font Info:    Try loading font information for TS1+ptm on input line 237.
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
-) (./Bibulous.ind)
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 251.
-
+) [8]
+Chapter 3.
 [9
 
+] [10]
+Chapter 4.
+[11
+
 ]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 251.
+LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <12> not available
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 357.
+ [12] [13]
+Underfull \hbox (badness 10000) in paragraph at lines 454--455
+[]\T1/ptm/m/n/10 A five-element comma-separated list: \T1/pcr/m/n/10 [firstname
+, middlenames, prefix, lastname,
+ []
+
+[14] [15] [16
+
+]
+Chapter 5.
+[17] [18]
+Chapter 6.
+(./Bibulous.ind)
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 603.
+ [19
+
+]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 603.
  (./Bibulous.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 251.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 251.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 603.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 603.
 Package rerunfilecheck Info: File `Bibulous.out' has not changed.
-(rerunfilecheck)             Checksum: 1366E41AC3D881BB2AFCDE88CDBEA84F;381.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 251.
+(rerunfilecheck)             Checksum: 257D092A64106585A8FCE9961BA34F4C;1622.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 603.
  ) 
 Here is how much of TeX's memory you used:
- 8810 strings out of 495036
- 121973 string characters out of 3180976
- 217748 words of memory out of 3000000
- 11792 multiletter control sequences out of 15000+200000
- 50590 words of font info for 58 fonts, out of 3000000 for 9000
+ 8942 strings out of 495036
+ 124112 string characters out of 3180976
+ 221186 words of memory out of 3000000
+ 11846 multiletter control sequences out of 15000+200000
+ 55056 words of font info for 61 fonts, out of 3000000 for 9000
  15 hyphenation exceptions out of 8191
- 36i,11n,45p,478b,382s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 36i,12n,45p,1323b,424s stack positions out of 5000i,500n,10000p,200000b,50000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
 e/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texlive/texmf-dist/
 fonts/type1/urw/helvetic/uhvb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/
 urw/helvetic/uhvbo8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/u
 tmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr
 /share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Bibulous.pdf (13 pages, 432531 bytes).
+Output written on Bibulous.pdf (23 pages, 473961 bytes).
 PDF statistics:
- 146 PDF objects out of 1000 (max. 8388607)
- 114 compressed objects within 2 object streams
- 21 named destinations out of 1000 (max. 500000)
- 82 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 339 PDF objects out of 1000 (max. 8388607)
+ 296 compressed objects within 3 object streams
+ 98 named destinations out of 1000 (max. 500000)
+ 218 words of extra memory for PDF output out of 10000 (max. 10000000)
 
