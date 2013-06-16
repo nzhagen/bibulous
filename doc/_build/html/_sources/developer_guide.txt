@@ -136,3 +136,8 @@ The suite of regression tests for Bibulous consist of various template definitio
     3. Next, the developer should add a line ``\citation{entrytype}`` to the AUX file where the key is the key given in the new entry of the BIB file you just put in (e.g. ``test_initialize1``). This is the same as the entrytype to keep everything consistent.
     4. Next, the developer needs to add two lines to the ``test1_target.bbl`` file to say what the formatted result should look like. Take a look at other lines to get a feel for how these should look, and take in consideration the form of the template just added to the BST file.
     5. Finally, run ``bibulous_test.py`` to check the result. This script will load the modified BIB and BST files and will write out several formatted BBL file ``test1.bbl`` etc. It will then run a ``diff`` program on the output file versus the target BBL file to see if there are any differences between the target and actual output BBL files.
+
+Generating the documentation
+============================
+
+From the bibulous repository ``doc/`` subfolder, run ``make html`` to generate the HTML documentation. The result can be found in ``doc/_build/html/``, with ``index.html`` as the main file. To generate the PDF documentation, run ``make latexpdf`` from the ``doc/`` subfolder, with the result found at ``doc/_build/latex/Bibulous.pdf``.

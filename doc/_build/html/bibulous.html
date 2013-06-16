@@ -872,7 +872,7 @@ the others contain only a single filename.</td>
 <tr class="row-odd"><td><a class="reference internal" href="#bibulous.Bibdata.create_citation_list" title="bibulous.Bibdata.create_citation_list"><tt class="xref py py-obj docutils literal"><span class="pre">create_citation_list</span></tt></a>()</td>
 <td>Create the list of citation keys, sorted into the proper order.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#bibulous.Bibdata.format_bibitem" title="bibulous.Bibdata.format_bibitem"><tt class="xref py py-obj docutils literal"><span class="pre">format_bibitem</span></tt></a>(citekey)</td>
+<tr class="row-even"><td><a class="reference internal" href="#bibulous.Bibdata.format_bibitem" title="bibulous.Bibdata.format_bibitem"><tt class="xref py py-obj docutils literal"><span class="pre">format_bibitem</span></tt></a>(citekey[,&nbsp;debug])</td>
 <td>Create the &#8220;ibitem{...}&#8221; string to insert into the &#8221;.bbl&#8221; file.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#bibulous.Bibdata.generate_sortkey" title="bibulous.Bibdata.generate_sortkey"><tt class="xref py py-obj docutils literal"><span class="pre">generate_sortkey</span></tt></a>(citekey)</td>
@@ -892,6 +892,9 @@ the others contain only a single filename.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#bibulous.Bibdata.write_authorextract" title="bibulous.Bibdata.write_authorextract"><tt class="xref py py-obj docutils literal"><span class="pre">write_authorextract</span></tt></a>(searchname[,&nbsp;...])</td>
 <td>Extract a sub-database from a large bibliography database, with the former containing only         those entries citing the given author/editor.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#bibulous.Bibdata.replace_abbrevs_with_full" title="bibulous.Bibdata.replace_abbrevs_with_full"><tt class="xref py py-obj docutils literal"><span class="pre">replace_abbrevs_with_full</span></tt></a>(fieldstr,&nbsp;resultstr)</td>
+<td>Given an input str, locate the abbreviation key within it and replace the abbreviation with its full form.</td>
 </tr>
 </tbody>
 </table>
@@ -939,7 +942,7 @@ person).</p>
 
 <dl class="method">
 <dt id="bibulous.Bibdata.format_bibitem">
-<tt class="descname">format_bibitem</tt><big>(</big><em>citekey</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#Bibdata.format_bibitem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.Bibdata.format_bibitem" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">format_bibitem</tt><big>(</big><em>citekey</em>, <em>debug=False</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#Bibdata.format_bibitem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.Bibdata.format_bibitem" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create the &#8220;ibitem{...}&#8221; string to insert into the &#8221;.bbl&#8221; file.</p>
 <p>This is the workhorse function of Bibulous. For a given key, find the resulting entry
 in the bibliography database. From the entry&#8217;s <cite>entrytype</cite>, lookup the relevant template
@@ -1149,6 +1152,45 @@ names and field values.</p>
 <p><strong>ignore_overwrite</strong> : bool, optional</p>
 <blockquote class="last">
 <div><p>Whether to issue a warning when overwriting an existing template variable.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="bibulous.Bibdata.replace_abbrevs_with_full">
+<tt class="descname">replace_abbrevs_with_full</tt><big>(</big><em>fieldstr</em>, <em>resultstr</em><big>)</big><a class="headerlink" href="#bibulous.Bibdata.replace_abbrevs_with_full" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given an input str, locate the abbreviation key within it and replace the abbreviation with
+its full form.</p>
+<p>Once the abbreviation key is found, remove it from the &#8220;fieldstr&#8221; and add the full form to
+the &#8220;resultstr&#8221;.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>fieldstr</strong> : str</p>
+<blockquote>
+<div><p>The string to search for the abbrevation key.</p>
+</div></blockquote>
+<p><strong>resultstr</strong> : str</p>
+<blockquote>
+<div><p>The thing to hold the abbreviation&#8217;s full form. (Note that it might not be empty on             input.)</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>fieldstr</strong> : str</p>
+<blockquote>
+<div><p>The string to search for the abbrevation key.</p>
+</div></blockquote>
+<p><strong>resultstr</strong> : str</p>
+<blockquote>
+<div><p>The thing to hold the abbreviation&#8217;s full form.</p>
+</div></blockquote>
+<p><strong>end_of_field</strong> : bool</p>
+<blockquote class="last">
+<div><p>Whether the abbreviation key was at the end of the current field.</p>
 </div></blockquote>
 </td>
 </tr>

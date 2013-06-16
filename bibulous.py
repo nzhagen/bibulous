@@ -1475,7 +1475,7 @@ def get_bibfilenames(filename, debug=False):
 
     if isinstance(filename, basestring) and filename.endswith('.aux'):
         auxfile = os.path.normpath(filename)
-        path = os.path.dirname(filename) + '/'
+        path = os.path.dirname(os.path.normpath(filename)) + '/'
 
         s = open(filename, 'rU')
         for line in s.readlines():
@@ -1503,7 +1503,7 @@ def get_bibfilenames(filename, debug=False):
                 r += '.bib'
 
             ## If the filename has a relative address, convert it to an absolute one.
-            if r.startswith('./') or r.startswith('.\\'):
+            if r.startswith(r'./') or r.startswith(r'.\\'):
                 r = path + r[2:]
             elif r.startswith('/'):
                 ## Linux absolute paths begin with a forward slash
@@ -1960,6 +1960,8 @@ def get_delim_levels(s, delims=('{','}'), operator=None):
         A list giving the operator delimiter level (or "brace level" if no operator is given) of \
         each character in the string.
     '''
+
+    print('SSS=', s)
 
     stack = []
     oplevels = [0]*len(s)        ## operator level

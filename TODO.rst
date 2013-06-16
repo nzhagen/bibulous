@@ -82,11 +82,13 @@ Python testing to-do
 --------------------
 
 #. Add tests for each of the following::
-        options.citation_order
-        options.sort_case
         options.backrefs
         options.backrefstyle
         options.hyperref
+
+#. Make a run_test4() function in bibulous_test.py for testing::
+        options.citation_order
+        options.sort_case
         options.sort_with_prefix
 
 #. Once you have the template language ready, add tests for the following:

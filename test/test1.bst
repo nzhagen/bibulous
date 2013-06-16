@@ -26,6 +26,8 @@ monthformat1 = <authorliststr>, \enquote{<title>} (<monthname>, <year>).
 monthformat2 = <authorliststr>, \enquote{<title>} (<monthname>, <year>).
 monthformat3 = <authorliststr>, \enquote{<title>} (<month>, <year>).
 replace_newlines = <authorliststr>, \enquote{<title>,} \textit{<journal>} \textbf{<volume>}: <startpage>--<endpage> (<year>).
+#quote_and_accent_detection = <authorliststr>, \enquote{<title>,} \textit{<journal>} \textbf{<volume>}: <startpage>--<endpage> (<year>).
+quote_and_accent_detection = <authorliststr>, ``<title>,'' \textit{<journal>} \textbf{<volume>}: <startpage>--<endpage> (<year>).
 
 
 options.citation_order = citenum                                ## order the bibliography by "citekey" or "citenum" (or "nyt" etc.)
