@@ -120,6 +120,7 @@ class Bibdata(object):
     insert_crossref_data
     write_citeextract
     write_authorextract
+    replace_abbrevs_with_full
 
     Example
     -------
@@ -141,8 +142,13 @@ class Bibdata(object):
         self.filename = ''                      ## the current filename (for error messages)
         self.i = 0                              ## counter for line in file (for error messages)
 
-        ## Put in default options settings.
+        ## Put in default options settings. Note that "use_abbrevs" is different from the other
+        ## options in that it can be set here, but *not* in the style template files. This is
+        ## because it is implemented when parsing the BIB file and not later, so it needs to
+        ## be defined prior to parsing the database.
         self.options = {}
+        self.options['use_abbrevs'] = True
+
         self.options['undefstr'] = '???'
         self.options['replace_newlines'] = True
         self.options['namelist_format'] = 'first_name_first'           #zzz
@@ -155,7 +161,6 @@ class Bibdata(object):
         self.options['use_firstname_initials'] = True                    #zzz
         self.options['use_name_ties'] = False                            #zzz
         self.options['show_urls'] = False
-        self.options['use_abbrevs'] = True
         #self.options['hyperref'] =
         self.options['backrefstyle'] = 'none'
         self.options['backrefs'] = False
@@ -441,6 +446,10 @@ class Bibdata(object):
                     ## syntax error.
                     endpos = len(fieldstr)
                     end_of_field = False
+
+                    ## The "abbrevkey_pattern" searches for the first '#' or ',' that is not
+                    ## preceded by a backslash. If this pattern is found, then we've found the
+                    ## *end* of the abbreviation key.
                     if not re.search(self.abbrevkey_pattern, fieldstr):
                         ## If the "abbrevkey" is an integer, then it's not actually an abbreviation.
                         ## Convert it to a string and insert the number itself.
@@ -458,38 +467,7 @@ class Bibdata(object):
                         fieldstr = ''
                         end_of_field = True
                     else:
-                        for match in re.finditer(self.abbrevkey_pattern, fieldstr):
-                            endpos = match.end()
-                            if (match.group(0)[0] == '#'):
-                                abbrevkey = fieldstr[:endpos-1].strip()
-                                if abbrevkey.isdigit():
-                                    resultstr += str(abbrevkey)
-                                elif (abbrevkey not in self.abbrevs):
-                                    print('Warning: for the entry ending on line #' + str(self.i) + \
-                                          ' of file "' + self.filename + '", cannot find the '
-                                          'abbreviation key "' + abbrevkey + '". Skipping ...')
-                                    resultstr += self.options['undefstr']
-                                else:
-                                    resultstr += self.abbrevs[abbrevkey].strip()
-                                fieldstr = fieldstr[endpos+1:].strip()
-                                break
-                            elif (match.group(0)[0] == ','):
-                                abbrevkey = fieldstr[:endpos-1].strip()
-                                if abbrevkey.isdigit():
-                                    resultstr += str(abbrevkey)
-                                elif (abbrevkey not in self.abbrevs):
-                                    print('Warning: for the entry ending on line #' + str(self.i) + \
-                                          ' of file "' + self.filename + '", cannot find the '
-                                          'abbreviation key "' + abbrevkey + '". Skipping ...')
-                                    resultstr += self.options['undefstr']
-                                else:
-                                    resultstr += self.abbrevs[abbrevkey].strip()
-
-                                fieldstr = fieldstr[endpos+1:].strip()
-                                end_of_field = True
-                                break
-                            else:
-                                raise SyntaxError('Should never reach here. What happened?')
+                        (fieldstr, resultstr, end_of_field) = self.replace_abbrevs_with_full(fieldstr, resultstr)
 
                     ## Since we found the comma at the end of this field's contents, we break here
                     ## to return to the loop over fields.
@@ -742,7 +720,7 @@ class Bibdata(object):
             ## here: insert cross-reference data, format author and editor name lists, generate
             ## the "edition_ordinal", etc. Doing it here means that we don't have to add lots of
             ## extra checks later, allowing for simpler code.
-            if (c in self.bibdata):
+            if (c in self.bibdata) and ('edition' in self.bibdata[c]):
                 self.bibdata[c]['edition_ordinal'] = create_edition_ordinal(self.bibdata[c], c, self.options)
 
             if (c in self.bibdata) and ('pages' in self.bibdata[c]):
@@ -813,7 +791,7 @@ class Bibdata(object):
         return
 
     ## =============================
-    def format_bibitem(self, citekey):
+    def format_bibitem(self, citekey, debug=False):
         '''
         Create the "\bibitem{...}" string to insert into the ".bbl" file.
 
@@ -836,6 +814,11 @@ class Bibdata(object):
         '''
 
         c = citekey
+
+        if debug:
+            print('Formatting entry "' + citekey + '"')
+            print('Template: "' + self.bstdict[self.bibdata[c]['entrytype']] + '"')
+            print('Field data: ' + repr(self.bibdata[c]))
 
         if (self.options['citation_order'] in ('citenumber','citenum','none')):
             itemstr = r'\bibitem{' + c + '}\n'
@@ -1389,6 +1372,74 @@ class Bibdata(object):
         export_bibfile(bibextract, outputfile)
 
         return
+
+    ## =============================
+    def replace_abbrevs_with_full(self, fieldstr, resultstr):
+        '''
+        Given an input str, locate the abbreviation key within it and replace the abbreviation with
+        its full form.
+
+        Once the abbreviation key is found, remove it from the "fieldstr" and add the full form to
+        the "resultstr".
+
+        Parameters
+        ==========
+        fieldstr : str
+            The string to search for the abbrevation key.
+        resultstr : str
+            The thing to hold the abbreviation's full form. (Note that it might not be empty on \
+            input.)
+
+        Returns
+        =======
+        fieldstr : str
+            The string to search for the abbrevation key.
+        resultstr : str
+            The thing to hold the abbreviation's full form.
+        end_of_field : bool
+            Whether the abbreviation key was at the end of the current field.
+        '''
+
+        ## The "abbrevkey_pattern" seaerches for the first '#' or ',' that is not preceded by a
+        ## backslash. If this pattern is found, then we've found the *end* of the abbreviation key.
+        for match in re.finditer(self.abbrevkey_pattern, fieldstr):
+            endpos = match.end()
+            if (match.group(0)[0] == '#'):
+                abbrevkey = fieldstr[:endpos-1].strip()
+                ## If the "abbreviation" is an integer, then it's not an abbreviation
+                ## but rather a number, and just return it as-is.
+                if abbrevkey.isdigit() or not self.options['use_abbrevs']:
+                    resultstr += str(abbrevkey)
+                elif (abbrevkey not in self.abbrevs):
+                    print('Warning: for the entry ending on line #' + str(self.i) + \
+                            ' of file "' + self.filename + '", cannot find the '
+                            'abbreviation key "' + abbrevkey + '". Skipping ...')
+                    resultstr += self.options['undefstr']
+                else:
+                    resultstr += self.abbrevs[abbrevkey].strip()
+                fieldstr = fieldstr[endpos+1:].strip()
+                break
+            elif (match.group(0)[0] == ','):
+                abbrevkey = fieldstr[:endpos-1].strip()
+                ## If the "abbreviation" is an integer, then it's not an abbreviation
+                ## but rather a number, and just return it as-is.
+                if abbrevkey.isdigit() or not self.options['use_abbrevs']:
+                    resultstr += str(abbrevkey)
+                elif (abbrevkey not in self.abbrevs):
+                    print('Warning: for the entry ending on line #' + str(self.i) + \
+                            ' of file "' + self.filename + '", cannot find the '
+                            'abbreviation key "' + abbrevkey + '". Skipping ...')
+                    resultstr += self.options['undefstr']
+                else:
+                    resultstr += self.abbrevs[abbrevkey].strip()
+
+                fieldstr = fieldstr[endpos+1:].strip()
+                end_of_field = True
+                break
+            else:
+                raise SyntaxError('if-else mismatch inside replace_abbrevs_with_full().')
+
+        return(fieldstr, resultstr, end_of_field)
 
 ## ================================================================================================
 ## END OF BIBDATA CLASS.
