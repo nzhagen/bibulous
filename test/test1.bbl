@@ -54,6 +54,8 @@ B. Bunny, ``Looney tunes'' (Apr, 2001).
 B. Bunny, ``Looney tunes'' (Apr, 2001).
 \bibitem{monthformat3}
 B. Bunny, ``Looney tunes'' (4, 2001).
+\bibitem{replace_newlines}
+D. L. Marks, B. J. Davis, S. A. Boppart, and P. S. Carney, ``Partially coherent illumination in full-field interferometric synthetic aperture microscopy,'' \textit{J. Opt. Soc. Am. A} \textbf{26}: 376--386 (2009).
 \bibitem{force_sentence_case}
 P. Stoica and B. C. Ng, ``On the {C}ram{\'e}r-{R}ao bound under parametric constraints'' (1998).
 \bibitem{french_initials}

@@ -25,6 +25,7 @@ trailing_comma = <authorliststr>, \enquote{<title>} (<year>).
 monthformat1 = <authorliststr>, \enquote{<title>} (<monthname>, <year>).
 monthformat2 = <authorliststr>, \enquote{<title>} (<monthname>, <year>).
 monthformat3 = <authorliststr>, \enquote{<title>} (<month>, <year>).
+replace_newlines = <authorliststr>, \enquote{<title>,} \textit{<journal>} \textbf{<volume>}: <startpage>--<endpage> (<year>).
 
 
 options.citation_order = citenum                                ## order the bibliography by "citekey" or "citenum" (or "nyt" etc.)
@@ -44,6 +45,7 @@ options.terse_inits = False                                     ## whether to fo
 options.bibitemsep = 0pt                                        ## the extra vertical separation between each bibliography entry. Defining this option *overrides* LaTeX's existing definition for \bibitemsep.
 options.month_abbrev = True                                     ## whether to use abbreviated month names (i.e. "Jan" instead of "January").
 options.use_name_ties = False                                   ## whether to use ties ('~') instead of spaces to glue together initials.
+options.replace_newlines = True                                 ## whether to remove newlines from the database entry fields
 
 ## The remaining exceptions below are really for users rather than for the journal. Maybe put these someplace else?
 options.missing_data_exceptions = False                         ## whether to raise an exception when Bibulous finds a missing but required field.

@@ -176,6 +176,7 @@ def check_file_match(outputfile, targetfile):
     ftarget.close()
 
     diff = difflib.unified_diff(outputlines, targetlines, lineterm='')
+    #diff = difflib.ndiff(outputlines, targetlines)
     diff = list(diff)
     return(diff)
 

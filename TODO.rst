@@ -88,7 +88,6 @@ Python testing to-do
         options.backrefstyle
         options.hyperref
         options.sort_with_prefix
-        options.replace_newlines
 
 #. Once you have the template language ready, add tests for the following:
         options.authorlist_format

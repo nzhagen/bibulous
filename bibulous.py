@@ -142,12 +142,13 @@ class Bibdata(object):
         self.filename = ''                      ## the current filename (for error messages)
         self.i = 0                              ## counter for line in file (for error messages)
 
-        ## Put in default options settings. Note that "use_abbrevs" is different from the other
-        ## options in that it can be set here, but *not* in the style template files. This is
-        ## because it is implemented when parsing the BIB file and not later, so it needs to
-        ## be defined prior to parsing the database.
+        ## Put in default options settings. Note that "use_abbrevs" and "replace_newlines" are
+        ## different from the other options in that they can *not* be defined in the style template
+        ## files. This is because they are used when parsing the BIB file and not later, so it needs
+        ## to be defined prior to parsing the database.
         self.options = {}
         self.options['use_abbrevs'] = True
+        self.options['replace_newlines'] = True
 
         self.options['undefstr'] = '???'
         self.options['replace_newlines'] = True
