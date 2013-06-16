@@ -5,3 +5,4 @@ options.force_sentence_case = False      ## Whether to reduce all but the first 
 options.use_name_ties = True             ## whether to use ties ('~') instead of spaces to glue together initials.
 options.period_after_initial = True      ## whether to add a '.' after a person's initials.
 options.terse_inits = False              ## whether to format initials as, for example, "DE" rather than "D. E."
+

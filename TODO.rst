@@ -87,9 +87,7 @@ Python testing to-do
         options.backrefs
         options.backrefstyle
         options.hyperref
-        options.use_abbrevs
         options.sort_with_prefix
-        options.terse_inits
         options.replace_newlines
 
 #. Once you have the template language ready, add tests for the following:

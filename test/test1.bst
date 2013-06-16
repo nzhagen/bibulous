@@ -37,7 +37,6 @@ options.sort_case = False                                       ## whether to us
 options.backrefs = False                                        ## whether to implement backreferences in the bibliography -- maybe put in template strings?
 options.backrefstyle = none                                     ## can be one of {"none", "three", "two", "two+", "three+", "all+"}
 options.hyperref = False                                        ## whether to turn on (True) or off (False). If "hyperref" package is loaded, the default value is True, else default is False.
-options.use_abbrevs = True                                      ## whether to use the abbreviation strings (mainly useful for debugging)
 options.french_initials = False                                 ## whether to use French initials (i.e. Jean-Paul -> J.-P. and not J., also Philippe -> Ph. not P.)
 options.sort_with_prefix = False                                ## whether or not to use a person's prefix in front of the last name for sorting order. Should probably be used with options.sort_case=True.
 options.period_after_initial = True                             ## whether to add a '.' after a person's initials.
