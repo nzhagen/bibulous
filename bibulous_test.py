@@ -46,8 +46,12 @@ def run_test1():
     default template file.
     '''
 
-    bstfiles = ('./test/test1.bst', './test/test1_force_sentence_case.bst', './test/test1_french_initials.bst',
-                './test/test1_use_name_ties.bst', './test/test1_period_after_initial.bst')
+    bstfiles = ('./test/test1.bst',
+                './test/test1_force_sentence_case.bst',
+                './test/test1_french_initials.bst',
+                './test/test1_use_name_ties.bst',
+                './test/test1_period_after_initial.bst',
+                './test/test1_terse_inits.bst')
     bibfile = './test/test1.bib'
     bblfile = './test/test1.bbl'
     auxfile = './test/test1.aux'
@@ -180,18 +184,18 @@ if (__name__ == '__main__'):
         print('TEST #1 FAILED. FILE DIFFERENCES:')
         for line in diff: print(line, end='')
 
-    ## Run test #2.
-    outputfile = run_test2()
-    print('Test #2 PASSED')
-
-    ## Run test #3.
-    (outputfile, targetfile) = run_test3()
-    diff = check_file_match(outputfile, targetfile)
-    if not diff:
-        print('TEST #3 PASSED')
-    else:
-        print('TEST #3 FAILED. FILE DIFFERENCES:')
-        for line in diff: print(line, end='')
+#    ## Run test #2.
+#    outputfile = run_test2()
+#    print('Test #2 PASSED')
+#
+#    ## Run test #3.
+#    (outputfile, targetfile) = run_test3()
+#    diff = check_file_match(outputfile, targetfile)
+#    if not diff:
+#        print('TEST #3 PASSED')
+#    else:
+#        print('TEST #3 FAILED. FILE DIFFERENCES:')
+#        for line in diff: print(line, end='')
 
 
     print('DONE')

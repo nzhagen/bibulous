@@ -642,6 +642,10 @@ class Bibdata(object):
 
         filehandle.close()
 
+        ## The "terse_inits" options has to override the "period_after_initial" option.
+        if self.options['terse_inits']:
+            self.options['period_after_initial'] = False
+
         ## Next check to see whether any of the template definitions are simply maps to one
         ## of the other definitions. For example, in "osa.bst" I have a line of the form
         ##      inbook = incollection
@@ -1779,7 +1783,10 @@ def namedict_to_formatted_namestr(namedict, options=None, use_firstname_initials
         middlename = initialize_name(middlename, options)
 
     if (middlename != ''):
-        if options['use_name_ties']:
+        if options['terse_inits']:
+            frontname = firstname + middlename
+            frontname.replace(' ','')
+        elif options['use_name_ties']:
             middlename = middlename.replace(' ','~')    ## replace spaces with tildes
             frontname = firstname + '~' + middlename
         else:
