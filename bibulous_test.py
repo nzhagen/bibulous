@@ -46,7 +46,7 @@ def run_test1():
     default template file.
     '''
 
-    bstfiles = ('./test/test1.bst',
+    bstfiles = ('./test/test1.bst',                 ## the "default" style template must go first!
                 './test/test1_force_sentence_case.bst',
                 './test/test1_french_initials.bst',
                 './test/test1_use_name_ties.bst',
@@ -77,7 +77,14 @@ def run_test1():
         ## Delete the old citekeys so that the new test contains only the new keys.
         test1bib.citedict = {}
         test1bib.parse_auxfile(auxfile)
+
+        ## For the style templates, always use the default templates first and the
+        ## specific test template second --- this allows each test template to be
+        ## very simple (only the differences from the default need to be used).
+        if (bstfile != bstfiles[0]):
+            test1bib.parse_bstfile(bstfiles[0])
         test1bib.parse_bstfile(bstfile, debug=False)
+
         write_postamble = (bstfile == bstfiles[-1])
         test1bib.write_bblfile(write_preamble=False, write_postamble=write_postamble)
 
