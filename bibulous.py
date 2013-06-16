@@ -1787,9 +1787,6 @@ def namedict_to_formatted_namestr(namedict, options=None, use_firstname_initials
     else:
         frontname = firstname
 
-    if options['terse_inits']:
-        frontname = frontname.replace(' ','')
-
     ## Reconstruct the name string in the desired order for the formatted bibliography.
     if (namelist_format == 'first_name_first'):
         if (prefix != ''): prefix = ' ' + prefix

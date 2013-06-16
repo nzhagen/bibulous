@@ -46,8 +46,8 @@ def run_test1():
     default template file.
     '''
 
-    bstfiles = ('./test/test1.bst', './test/test1_sentencecase1.bst', './test/test1_frenchinitials1.bst',
-                './test/test1_usenameties1.bst')
+    bstfiles = ('./test/test1.bst', './test/test1_force_sentence_case.bst', './test/test1_french_initials.bst',
+                './test/test1_use_name_ties.bst', './test/test1_period_after_initial.bst')
     bibfile = './test/test1.bib'
     bblfile = './test/test1.bbl'
     auxfile = './test/test1.aux'
