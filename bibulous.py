@@ -721,22 +721,27 @@ class Bibdata(object):
             ## here: insert cross-reference data, format author and editor name lists, generate
             ## the "edition_ordinal", etc. Doing it here means that we don't have to add lots of
             ## extra checks later, allowing for simpler code.
-            if (c in self.bibdata) and ('edition' in self.bibdata[c]):
-                self.bibdata[c]['edition_ordinal'] = create_edition_ordinal(self.bibdata[c], c, self.options)
+            if (c in self.bibdata):
+                if ('edition' in self.bibdata[c]):
+                    self.bibdata[c]['edition_ordinal'] = create_edition_ordinal(self.bibdata[c], c, self.options)
 
-            if (c in self.bibdata) and ('pages' in self.bibdata[c]):
-                (startpage,endpage) = parse_pagerange(self.bibdata[c]['pages'], c)
-                self.bibdata[c]['startpage'] = startpage
-                self.bibdata[c]['endpage'] = endpage
+                if ('pages' in self.bibdata[c]):
+                    (startpage,endpage) = parse_pagerange(self.bibdata[c]['pages'], c)
+                    self.bibdata[c]['startpage'] = startpage
+                    self.bibdata[c]['endpage'] = endpage
 
-            ## The "month" is stored in the bibdata dictionary as a string representing an integer
-            ## from 1 to 12. Here we need to translate it to a string name.
-            if (c in self.bibdata) and ('month' in self.bibdata[c]):
-                if self.bibdata[c]['month'].isdigit():
-                    monthname = monthname_dict[self.bibdata[c]['month']]
-                else:
-                    monthname = self.bibdata[c]['month']
-                self.bibdata[c]['monthname'] = monthname
+                ## The "month" is stored in the bibdata dictionary as a string representing an integer
+                ## from 1 to 12. Here we need to translate it to a string name.
+                if ('month' in self.bibdata[c]):
+                    if self.bibdata[c]['month'].isdigit():
+                        monthname = monthname_dict[self.bibdata[c]['month']]
+                    else:
+                        monthname = self.bibdata[c]['month']
+                    self.bibdata[c]['monthname'] = monthname
+
+                if ('doi' in self.bibdata[c]):
+                    if not self.bibdata[c]['doi'].startswith('http://dx.doi.org/'):
+                        self.bibdata[c]['doi'] = 'http://dx.doi.org/' + self.bibdata[c]['doi']
 
             s = self.format_bibitem(c)
             if (s != ''):
@@ -915,7 +920,7 @@ class Bibdata(object):
                 varname = var[1:-1]     ## remove angle brackets to extract just the name
                 ## Check if the variable is defined and that it is not None (or empty string).
                 if (varname in self.bibdata[c]) and self.bibdata[c][varname]:
-                    templatestr = templatestr.replace(var, self.bibdata[c][varname])
+                    templatestr = templatestr.replace(var, unicode(self.bibdata[c][varname]))
                 else:
                     #print('Warning: cannot find "' + varname + '" in entry "' + c + '".')
                     templatestr = templatestr.replace(var, self.options['undefstr'])
@@ -1961,8 +1966,6 @@ def get_delim_levels(s, delims=('{','}'), operator=None):
         each character in the string.
     '''
 
-    print('SSS=', s)
-
     stack = []
     oplevels = [0]*len(s)        ## operator level
     brlevels = [0]*len(s)        ## brace level
@@ -2045,14 +2048,14 @@ def get_quote_levels(s, debug=False):
                 stack.append('b')       ## add a single-quote marker to the stack
         elif (ch == "'") and (alevels[j-1]+blevels[j-1]+clevels[j-1] > 0) and (s[j-1] != '\\'):
             ## Note: the '\\' case here is for detecting an accent markup.
-            if (s[j:j+2] == "''"):
+            if (s[j:j+2] == "''") and (stack[-1] == 'a'):
                 stack.pop()    ## remove double-quote marker from the stack
-            elif (s[j-1] != "'"):
+            elif (s[j-1] != "'") and (stack[-1] == 'b'):
                 stack.pop()    ## remove single-quote marker from the stack
         elif (ch == '"') and (s[j-1] != '\\'):
             ## Note: the '\\' here case is for not detecting an umlaut markup.
             if (len(stack) > 0) and (stack[-1] == 'c'):
-                stack.pop()
+                stack.pop()    ## remove neutral-quote marker from the stack
             else:
                 stack.append('c')
 
@@ -2267,7 +2270,7 @@ def enwrap_nested_quotes(s, debug=False):
         return(s)
 
     ## Get the lists describing the quote nesting.
-    (alevels, blevels, clevels) = get_quote_levels(s)
+    (alevels, blevels, clevels) = get_quote_levels(s, debug=debug)
 
     ## First, we look at the quote stack and replace *all* quote pairs with \enquote{...}. When
     ## done, we can use `enwrap_nested_string()` to replace the odd and even instances of

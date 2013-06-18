@@ -192,18 +192,18 @@ if (__name__ == '__main__'):
         print('TEST #1 FAILED. FILE DIFFERENCES:')
         for line in diff: print(line, end='')
 
-#    ## Run test #2.
-#    outputfile = run_test2()
-#    print('Test #2 PASSED')
-#
-#    ## Run test #3.
-#    (outputfile, targetfile) = run_test3()
-#    diff = check_file_match(outputfile, targetfile)
-#    if not diff:
-#        print('TEST #3 PASSED')
-#    else:
-#        print('TEST #3 FAILED. FILE DIFFERENCES:')
-#        for line in diff: print(line, end='')
+    ## Run test #2.
+    outputfile = run_test2()
+    print('Test #2 PASSED')
+
+    ## Run test #3.
+    (outputfile, targetfile) = run_test3()
+    diff = check_file_match(outputfile, targetfile)
+    if not diff:
+        print('TEST #3 PASSED')
+    else:
+        print('TEST #3 FAILED. FILE DIFFERENCES:')
+        for line in diff: print(line, end='')
 
 
     print('DONE')
