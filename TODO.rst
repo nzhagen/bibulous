@@ -81,11 +81,6 @@ Python code to-do
 Python testing to-do
 --------------------
 
-#. Add tests for each of the following::
-        options.backrefs
-        options.backrefstyle
-        options.hyperref
-
 #. Make a run_test4() function in bibulous_test.py for testing::
         options.citation_order
         options.sort_case

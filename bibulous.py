@@ -162,7 +162,6 @@ class Bibdata(object):
         self.options['use_firstname_initials'] = True                    #zzz
         self.options['use_name_ties'] = False                            #zzz
         self.options['show_urls'] = False
-        #self.options['hyperref'] =
         self.options['backrefstyle'] = 'none'
         self.options['backrefs'] = False
         self.options['sort_case'] = True
