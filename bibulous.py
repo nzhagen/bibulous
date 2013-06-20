@@ -183,13 +183,13 @@ class Bibdata(object):
         self.anybraceorquote_pattern = re.compile(r'(?<!\\)[{}"]', re.UNICODE)
 
         ## Print out some info on Bibulous and the files it is working on.
-        print('This is Bibulous, version ' + str(__version__))
+        print('This is Bibulous, version ' + unicode(__version__))
         print('The current working directory is: ' + os.getcwd())
-        print('The top-level TeX file: ' + str(self.filedict['tex']))
-        print('The top-level auxiliary file: ' + str(self.filedict['aux']))
-        print('The bibliography database file(s): ' + str(self.filedict['bib']))
-        print('The Bibulous style template file(s): ' + str(self.filedict['bst']))
-        print('The output formatted bibliography file: ' + str(self.filedict['bbl']))
+        print('The top-level TeX file: ' + unicode(self.filedict['tex']))
+        print('The top-level auxiliary file: ' + unicode(self.filedict['aux']))
+        print('The bibliography database file(s): ' + unicode(self.filedict['bib']))
+        print('The Bibulous style template file(s): ' + unicode(self.filedict['bst']))
+        print('The output formatted bibliography file: ' + unicode(self.filedict['bbl']))
 
         ## If "filename" is a list of filenames, then convert them one by one in order.
         if self.filedict['bib']:
@@ -247,7 +247,7 @@ class Bibdata(object):
                 self.parse_bibentry(entrystr, entrytype)       ## close out the entry
                 entrystr = ''
                 if (line[1:].strip() != ''):
-                    print('Warning: line#' + str(self.i) + ' of "' + self.filename + '" has data '
+                    print('Warning: line#' + unicode(self.i) + ' of "' + self.filename + '" has data '
                           'outside of an entry {...} block. Skipping all contents until the next '
                           'entry ...')
                     #raise ValueError
@@ -262,7 +262,7 @@ class Bibdata(object):
                 brace_idx = line.find('{')             ## assume a form like "@ENTRYTYPE{"
                 if (brace_idx == -1):
                     print('Warning: open brace not found for the entry beginning on line#' + \
-                          str(self.i) + ' of "' + self.filename + '". Skipping to next entry ...')
+                          unicode(self.i) + ' of "' + self.filename + '". Skipping to next entry ...')
                     entry_brace_level = 0
                     continue
                 entrytype = line[1:brace_idx].lower().strip()   ## extract string between "@" and "{"
@@ -273,7 +273,7 @@ class Bibdata(object):
             ## the next entry.
             if (entry_brace_level == 0):
                 if (line.strip() != ''):
-                    print('Warning: line#' + str(self.i) + ' of "' + self.filename + '" has data '
+                    print('Warning: line#' + unicode(self.i) + ' of "' + self.filename + '" has data '
                           'outside of an entry {...} block. Skipping all contents until the next '
                           'entry ...')
                     #raise ValueError
@@ -291,7 +291,7 @@ class Bibdata(object):
                 if (entry_brace_level == 0):
                     ## If we've found the final brace, then check if there is anything after it.
                     if (line[match.end():].strip() != ''):
-                        print('Warning: line#' + str(self.i) + ' of "' + self.filename + '" has '
+                        print('Warning: line#' + unicode(self.i) + ' of "' + self.filename + '" has '
                               'data outside of an entry {...} block. Skipping all contents until '
                               'the next entry ...')
                         #raise ValueError
@@ -340,7 +340,7 @@ class Bibdata(object):
             ## First get the entry key. Then send the remainder of the entry string to the parser.
             idx = entrystr.find(',')
             if (idx == -1):
-                print('Warning: the entry ending on line #' + str(self.i) + ' of file "' + \
+                print('Warning: the entry ending on line #' + unicode(self.i) + ' of file "' + \
                       self.filename + '" is does not have an "," for defining the entry key. '
                       'Skipping ...')
                 return(fd)
@@ -377,7 +377,7 @@ class Bibdata(object):
             ## First locate the field key.
             idx = entrystr.find('=')
             if (idx == -1):
-                print('Warning: the entry ending on line #' + str(self.i) + ' of file "' + \
+                print('Warning: the entry ending on line #' + unicode(self.i) + ' of file "' + \
                       self.filename + '" is an abbreviation-type entry but does not have an "=" '
                       'for defining the end of the abbreviation key. Skipping ...')
                 #raise ValueError
@@ -455,12 +455,12 @@ class Bibdata(object):
                         ## Convert it to a string and insert the number itself.
                         abbrevkey = fieldstr
                         if abbrevkey.isdigit():
-                            resultstr += str(abbrevkey)
+                            resultstr += unicode(abbrevkey)
                         else:
                             if abbrevkey in self.abbrevs:
                                 resultstr += self.abbrevs[abbrevkey].strip()
                             else:
-                                print('Warning: for the entry ending on line #' + str(self.i) + \
+                                print('Warning: for the entry ending on line #' + unicode(self.i) + \
                                       ' of file "' + self.filename + '", cannot find the '
                                       'abbreviation key "' + abbrevkey + '". Skipping ...')
                                 resultstr = self.options['undefstr']
@@ -508,17 +508,6 @@ class Bibdata(object):
         #filehandle = open(os.path.normpath(self.filename), 'rU')
         filehandle = codecs.open(os.path.normpath(filename), 'r', 'utf-8')
 
-        ## Commented lines below are useful if you are reading in \bibcite{...} rather than
-        ## \citation{...}.
-        #for line in file.readlines():
-        #    line = unicode(line, 'utf-8')
-        #    if not line.startswith(r'\bibcite'): continue
-        #    line = line.replace(r'\bibcite{','')
-        #
-        #    (citekey, number) = line.split('}{')
-        #    number = number.replace('}','').strip()
-        #    self.citedict[citekey] = int(number)
-
         ## First go through the file and grab the list of citation keys. Once we get them all, then
         ## we can go through the list and figure out the numbering.
         keylist = []
@@ -550,7 +539,7 @@ class Bibdata(object):
             ## When displaying the dictionary, show it in order-sorted form. Remember to use
             ## the user's locale for the sort.
             for key in sorted(self.citedict, key=self.citedict.get, cmp=locale.strcoll):
-                print(key + ': ' + str(self.citedict[key]))
+                print(key + ': ' + unicode(self.citedict[key]))
 
         return
 
@@ -591,7 +580,7 @@ class Bibdata(object):
             if ('=' in line):
                 res = line.split(' = ')
                 if (len(res) != 2):
-                    raise SyntaxError('The line "' + line + '" (line #' + str(i) + ') in file "' + \
+                    raise SyntaxError('The line "' + line + '" (line #' + unicode(i) + ') in file "' + \
                                       filename + '" is not valid BST grammar.')
                 else:
                     (lhs,rhs) = res
@@ -609,7 +598,7 @@ class Bibdata(object):
                     optvar = var[8:]
                     if (optvar in self.options) and (self.options[optvar] != value) and not ignore_overwrite:
                         print('Warning: overwriting the existing template option "' + optvar + \
-                              '" from [' + str(self.options[optvar]) + '] to [' + str(value) + '] ...')
+                              '" from [' + unicode(self.options[optvar]) + '] to [' + unicode(value) + '] ...')
                     self.options[optvar] = value
                 else:
                     ## The line defines an entrytype template.
@@ -638,7 +627,7 @@ class Bibdata(object):
         if debug:
             ## When displaying the bst dictionary, show it in sorted form.
             for key in sorted(self.bstdict, key=self.bstdict.get, cmp=locale.strcoll):
-                print(key + ': ' + str(self.bstdict[key]))
+                print(key + ': ' + unicode(self.bstdict[key]))
 
     ## =============================
     def write_bblfile(self, filename=None, write_preamble=True, write_postamble=True, bibsize=None,
@@ -658,10 +647,10 @@ class Bibdata(object):
             its extension to ".bbl".)
         write_preamble : bool, optional
             Whether to write the preamble. (Setting this to False can be useful when writing the \
-            bibliography in separate steps.)
+            bibliography in separate steps, as in the testing suite.)
         write_postamble : bool, optional
             Whether to write the postamble. (Setting this to False can be useful when writing the \
-            bibliography in separate steps.)
+            bibliography in separate steps, as in the testing suite.)
         bibsize : str, optional
             A string the length of which is used to determine the label margin for the bibliography.
         '''
@@ -679,9 +668,9 @@ class Bibdata(object):
         monthname_dict = {}
         for i in range(1,13):
             if self.options['month_abbrev']:
-                monthname_dict[str(i)] = locale.nl_langinfo(locale.__dict__['ABMON_'+str(i)]).title()
+                monthname_dict[unicode(i)] = locale.nl_langinfo(locale.__dict__['ABMON_'+unicode(i)]).title()
             else:
-                monthname_dict[str(i)] = locale.nl_langinfo(locale.__dict__['MON_'+str(i)]).title()
+                monthname_dict[unicode(i)] = locale.nl_langinfo(locale.__dict__['MON_'+unicode(i)]).title()
 
         if write_preamble:
             if not bibsize: bibsize = repr(len(self.citedict))
@@ -772,10 +761,9 @@ class Bibdata(object):
             sortkey = self.generate_sortkey(c)
             self.citelist.append((sortkey,c))
 
-        ## Now that we have the sortkeys, sort the citation list in numerical order. (Since each
-        ## element of citelist is a tuple whose first element is an integer, we need not use
-        ## locale-dependent sorting here.)
-        self.citelist.sort()
+        self.citelist = sorted(self.citedict, cmp=locale.strcoll)
+        #self.citelist.sort(cmp=locale.strcoll)
+        #self.citelist.sort()
 
         ## If using a citation order which is descending rather than ascending, then reverse the list.
         if (self.options['citation_order'] == 'ydnt'):
@@ -785,13 +773,13 @@ class Bibdata(object):
         ## unique. It doesn't matter what you append, just so long as it makes the key unique, so we
         ## use the entry's index in the list of keys.
         #sortkeys = [key for (key,val) in self.citelist]
-        #sortkeys = [x+str(i) for i,x in enumerate(sortkeys) if sortkeys.count(x)>1]
+        #sortkeys = [x+unicode(i) for i,x in enumerate(sortkeys) if sortkeys.count(x)>1]
         #citekeys = [val for (key,val) in self.citelist]
-        #citekeys = [x+str(i) for i,x in enumerate(citekeys) if citekeys.count(x)>1]
+        #citekeys = [x+unicode(i) for i,x in enumerate(citekeys) if citekeys.count(x)>1]
 
         ## Finally, now that we have them in the order we want, we keep only the citation keys, so
         ## that we know which entry maps to which in the ".aux" file.
-        self.citelist = [b for (a,b) in self.citelist]
+        #self.citelist = [b for (a,b) in self.citelist]
 
         return
 
@@ -858,8 +846,8 @@ class Bibdata(object):
         ## number of open as closed brackets.
         num_obrackets = templatestr.count('[')
         num_cbrackets = templatestr.count(']')
-        assert (num_obrackets == num_cbrackets), 'There are ' + str(num_obrackets) + \
-            ' open brackets "[", but ' + str(num_cbrackets) + ' close brackets "]" in the ' + \
+        assert (num_obrackets == num_cbrackets), 'There are ' + unicode(num_obrackets) + \
+            ' open brackets "[", but ' + unicode(num_cbrackets) + ' close brackets "]" in the ' + \
             'formatting string.'
 
         ## Get the list of all the variables used by the template string.
@@ -995,8 +983,8 @@ class Bibdata(object):
         ## Use the name abbreviation (if it exists) in the sortkey.
         if ('sortname' in bibentry) and ('nameabbrev' in bibentry['sortname']):
             nameabbrev_dict = parse_nameabbrev(bibentry['sortname']['nameabbrev'])
-        elif ('nameabbrev' in bibentry[citekey]):
-            nameabbrev_dict = parse_nameabbrev(bibentry[citekey]['nameabbrev'])
+        elif ('nameabbrev' in bibentry):
+            nameabbrev_dict = parse_nameabbrev(bibentry['nameabbrev'])
         else:
             nameabbrev_dict = None
 
@@ -1035,13 +1023,13 @@ class Bibdata(object):
         name = name.replace('.','')
 
         if ('sortyear' in bibentry):
-            year = str(bibentry['sortyear'])
+            year = unicode(bibentry['sortyear'])
         else:
-            year = '9999' if ('year' not in bibentry) else str(bibentry['year'])
+            year = '9999' if ('year' not in bibentry) else unicode(bibentry['year'])
 
         ## "presort" is a string appended to the beginning of each sortkey. This can be useful for
         ## grouping entries.
-        presort = '' if ('presort' not in bibentry) else str(bibentry['presort'])
+        presort = '' if ('presort' not in bibentry) else unicode(bibentry['presort'])
 
         ## "sorttitle" is an alternative title used for sorting. Can be useful if the title contains
         ## special characters and LaTeX commands.
@@ -1050,7 +1038,7 @@ class Bibdata(object):
         else:
             title = '' if ('title' not in bibentry) else bibentry['title']
 
-        volume = '0' if ('volume' not in bibentry) else str(bibentry['volume'])
+        volume = '0' if ('volume' not in bibentry) else unicode(bibentry['volume'])
 
         ## The different formatting options for the citation order are "nty"/"plain", "nyt", "nyvt",
         ## "anyt", "anyvt", ynt", and "ydnt".
@@ -1072,10 +1060,10 @@ class Bibdata(object):
                     name = name[0:3]
             sortkey = presort + name[0:3] + year[-2:]
         elif (citeorder == 'anyt'):
-            alpha = '' if ('alphalabel' not in self.citedict[citekey]) else self.citedict[citekey]['alphalabel']
+            alpha = '' if ('alphalabel' not in bibentry) else bibentry['alphalabel']
             sortkey = presort + alpha + name + year + title
         elif (citeorder == 'anyvt'):
-            alpha = '' if ('alphalabel' not in self.citedict[citekey]) else self.citedict[citekey]['alphalabel']
+            alpha = '' if ('alphalabel' not in bibentry) else bibentry['alphalabel']
             sortkey = presort + alpha + name + year + volume + title
         #elif (citeorder in ('citenumber','citenum','none')):
         #    raise ValueError('Wrong citation sort order option. How did this happen?')
@@ -1314,7 +1302,7 @@ class Bibdata(object):
         '''
 
         if not isinstance(searchname, basestring):
-            raise TypeError('The input search name ["' + str(searchname) + \
+            raise TypeError('The input search name ["' + unicode(searchname) + \
                             '"] is not a valid string.')
         if not outputfile:
             outputfile = self.filedict['aux'][:-4] + '_authorextract.bib'
@@ -1414,9 +1402,9 @@ class Bibdata(object):
                 ## If the "abbreviation" is an integer, then it's not an abbreviation
                 ## but rather a number, and just return it as-is.
                 if abbrevkey.isdigit() or not self.options['use_abbrevs']:
-                    resultstr += str(abbrevkey)
+                    resultstr += unicode(abbrevkey)
                 elif (abbrevkey not in self.abbrevs):
-                    print('Warning: for the entry ending on line #' + str(self.i) + \
+                    print('Warning: for the entry ending on line #' + unicode(self.i) + \
                             ' of file "' + self.filename + '", cannot find the '
                             'abbreviation key "' + abbrevkey + '". Skipping ...')
                     resultstr += self.options['undefstr']
@@ -1429,9 +1417,9 @@ class Bibdata(object):
                 ## If the "abbreviation" is an integer, then it's not an abbreviation
                 ## but rather a number, and just return it as-is.
                 if abbrevkey.isdigit() or not self.options['use_abbrevs']:
-                    resultstr += str(abbrevkey)
+                    resultstr += unicode(abbrevkey)
                 elif (abbrevkey not in self.abbrevs):
-                    print('Warning: for the entry ending on line #' + str(self.i) + \
+                    print('Warning: for the entry ending on line #' + unicode(self.i) + \
                             ' of file "' + self.filename + '", cannot find the '
                             'abbreviation key "' + abbrevkey + '". Skipping ...')
                     resultstr += self.options['undefstr']
@@ -1582,9 +1570,9 @@ def get_bibfilenames(filename, debug=False):
     if debug:
         print('bib files: ' + repr(bibfiles))
         print('bst files: ' + repr(bstfiles))
-        print('tex file: "' + str(texfile) + '"')
-        print('aux file: "' + str(auxfile) + '"')
-        print('bbl file: "' + str(bblfile) + '"')
+        print('tex file: "' + unicode(texfile) + '"')
+        print('aux file: "' + unicode(auxfile) + '"')
+        print('bbl file: "' + unicode(bblfile) + '"')
 
     return(filedict)
 
@@ -1731,10 +1719,10 @@ def namefield_to_namelist(namefield, key=None, nameabbrev=None):
 
     ## Look for common typos.
     if re.search('\sand,\s', namefield, re.UNICODE):
-        print('Warning: The name string in entry "' + str(key) + '" has " and, ", which is likely '
+        print('Warning: The name string in entry "' + unicode(key) + '" has " and, ", which is likely '
               'a typo. Continuing on anyway ...')
     if re.search(', and', namefield, re.UNICODE):
-        print('Warning: The name string in entry "' + str(key) + '" has ", and", which is likely '
+        print('Warning: The name string in entry "' + unicode(key) + '" has ", and", which is likely '
               'a typo. Continuing on anyway ...')
 
     if (nameabbrev != None):
@@ -1999,11 +1987,11 @@ def show_levels_debug(s, levels):
     if ('\n' in s):
         for line in s.split('\n'):
             print(line)
-            print(str(levels[q:q+len(line)])[2:-1].replace(',','').replace(' ',''))
+            print(unicode(levels[q:q+len(line)])[2:-1].replace(',','').replace(' ',''))
             q += len(line)
     else:
         print(s)
-        print(str(levels)[2:-1].replace(',','').replace(' ',''))
+        print(unicode(levels)[2:-1].replace(',','').replace(' ',''))
     return
 
 ## ===================================
@@ -3012,7 +3000,7 @@ def create_edition_ordinal(bibentry, key, options):
         editionstr = edition_number + 'th'
     else:
         if ('edition' in bibentry):
-            print('Warning: the edition number "' + str(edition_number) + '" given for entry ' + \
+            print('Warning: the edition number "' + unicode(edition_number) + '" given for entry ' + \
                   key + ' is invalid. Ignoring')
             editionstr = options['undefstr']
 
@@ -3042,7 +3030,7 @@ def export_bibfile(bibdata, filename):
 
         ## Write out the entries.
         for i,k in enumerate(entry):
-            f.write('  ' + k + ' = {' + str(entry[k]) + '}')
+            f.write('  ' + k + ' = {' + unicode(entry[k]) + '}')
 
             ## If this is the last field in the dictionary, then do not end the line with a
             ## trailing comma.
