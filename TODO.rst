@@ -82,9 +82,9 @@ Python testing to-do
 --------------------
 
 #. Make a run_test4() function in bibulous_test.py for testing. To do this, we need to add some difficult
-   cases to the bibliography database. Test for the following options::
+   cases to the bibliography database. And add entries with fields "sortname", "sortyear", and "sorttitle".
+   Also test for the following options::
 
-        options.citation_order
         options.sort_case
         options.sort_with_prefix
 
@@ -97,50 +97,6 @@ Python testing to-do
         options.use_editor_firstname_initials
         options.editorlist_format
         options.namelist_format
-
-#. Test ``purify_string()`` on the following::
-
-        s1 = r"Recherches exp{\'e}rimentales sur la g{\'e}n{\'e}ralisation de l'emploi du spectrom{\`e}tre Fabry-Perot"
-        s2 = r'Vorschl{\"a}ge zur Construction einiger optischer Vorichtungen'
-        s3 = u'¡Hola! ¿Cómo estás? ¿Está bien así en España?'
-        s4 = r'C{\'o}mo est{\'a}s? ?`Est{\'a} bien as{\'\i} en Espa{\~n}a?'
-        s5 = u'Smør brød på hytte paap'
-        s6 = r'Sm{\o}r br{\oo}d p{\aa} hytte p{\aap}'
-        s7 = u"Rōmaji (ローマ字), kanji (漢字, かんじ), hiragana (平仮名, ひらがな), katakana (片仮名, カタカナ)"
-        s8 = r'\{\{ $\left[.\left\lfloor \frac{5}{\frac{\left(3\right)}{4}} \right).\right]$ \}\}'
-
-        print('s1 = ' + s1)
-        print('s2 = ' + s2)
-        print('s3 = ' + s3)
-        print('s4 = ' + s4)
-        print('s5 = ' + s5)
-        print('s6 = ' + s6)
-        print('s7 = ' + s7)
-        print('s8 = ' + s8)
-        print('')
-
-        p1 = purify_string(s1)
-        p2 = purify_string(s2)
-        p3 = purify_string(s3)
-        p4 = purify_string(s4)
-        p5 = purify_string(s5)
-        p6 = purify_string(s6)
-        p7 = purify_string(s7)
-        p8 = purify_string(s8)
-
-        print('p1 = ' + p1)
-        print('p2 = ' + p2)
-        print('p3 = ' + p3)
-        print('p4 = ' + p4)
-        print('p5 = ' + p5)
-        print('p6 = ' + p6)
-        print('p7 = ' + p7)
-        print('p8 = ' + p8)
-        print('')
-
-    Note that this also tests some Unicode-compatibility.
-
-#. Test the Unicode compatibility of ``generate_sortkey()``.
 
 #. Add a test for ``bibulous_citeextract``.
 
