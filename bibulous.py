@@ -30,6 +30,7 @@ import codecs       ## for importing UTF8-encoded files
 import locale       ## for language internationalization and localization
 import getopt       ## for getting command-line options
 import traceback    ## for getting full traceback info in exceptions
+from math import log10
 import pdb          ## put "pdb.set_trace()" at any place you want to interact with pdb
 
 #def info(type, value, tb):
@@ -52,7 +53,7 @@ __all__ = ['get_bibfilenames', 'sentence_case', 'stringsplit', 'finditer', 'name
            'get_quote_levels', 'splitat', 'multisplit', 'enwrap_nested_string',
            'enwrap_nested_quotes', 'purify_string', 'latex_to_utf8', 'parse_bst_template_str',
            'namestr_to_namedict', 'search_middlename_for_prefixes', 'create_edition_ordinal',
-           'export_bibfile', 'parse_pagerange', 'parse_nameabbrev']
+           'export_bibfile', 'parse_pagerange', 'parse_nameabbrev', 'make_sortkey_unique']
 
 
 class Bibdata(object):
@@ -347,6 +348,11 @@ class Bibdata(object):
 
             entrykey = entrystr[:idx].strip()
             entrystr = entrystr[idx+1:]
+
+            if (entrykey in self.bibdata):
+                print('Warning: the entry ending on line #' + unicode(self.i) + ' of file "' + \
+                      self.filename + '" has the same key as a previous entry. Overwriting the ' \
+                      'entry and continuing ...')
 
             self.bibdata[entrykey] = {}
             self.bibdata[entrykey]['entrytype'] = entrytype
@@ -746,40 +752,34 @@ class Bibdata(object):
     def create_citation_list(self):
         '''
         Create the list of citation keys, sorted into the proper order.
-
-        Returns
-        -------
-        citelist : list
-            The sorted list of citation keys.
         '''
 
-        self.citelist = []
+        ## Create a temporary dictionary to hold the citation keys (as dictionary values) and the
+        ## strings we wish to use for sorting (as the dictionary keys).
+        sortdict = {}
 
-        ## The "citelist" consists of tuples containing the new sort key and the original citation
-        ## key.
+        ## Generate a sortkey for each citation. If the sortkey is already present in the
+        ## dictionary, it will replace the the old entry with the new, and we would lose a citation
+        ## in the process. To prevent this, we need to make sure that it is unique.
         for c in self.citedict:
             sortkey = self.generate_sortkey(c)
-            self.citelist.append((sortkey,c))
+            if (sortkey in sortdict):
+                sortkey = make_sortkey_unique(sortkey, sortdict)
+            sortdict[sortkey] = unicode(c)      ## use "unicode()" to convert to string in case the key is an integer
 
-        self.citelist = sorted(self.citedict, cmp=locale.strcoll)
-        #self.citelist.sort(cmp=locale.strcoll)
-        #self.citelist.sort()
+        self.citelist = sorted(sortdict.iterkeys(), cmp=locale.strcoll)
 
         ## If using a citation order which is descending rather than ascending, then reverse the list.
         if (self.options['citation_order'] == 'ydnt'):
             self.citelist = self.citelist[::-1]
 
-        ## If any duplicate sorting keys exist, append a label onto the end in order to make them
-        ## unique. It doesn't matter what you append, just so long as it makes the key unique, so we
-        ## use the entry's index in the list of keys.
-        #sortkeys = [key for (key,val) in self.citelist]
-        #sortkeys = [x+unicode(i) for i,x in enumerate(sortkeys) if sortkeys.count(x)>1]
-        #citekeys = [val for (key,val) in self.citelist]
-        #citekeys = [x+unicode(i) for i,x in enumerate(citekeys) if citekeys.count(x)>1]
-
         ## Finally, now that we have them in the order we want, we keep only the citation keys, so
         ## that we know which entry maps to which in the ".aux" file.
-        #self.citelist = [b for (a,b) in self.citelist]
+        self.citelist = [sortdict[a] for a in self.citelist]
+        for c in self.citelist:
+            sortkey = (key for key,value in sortdict.items() if value==c).next()
+            if self.debug:
+                print('citekey=%20s: sortkey=%s' % (c, sortkey))
 
         return
 
@@ -813,7 +813,7 @@ class Bibdata(object):
             print('Template: "' + self.bstdict[self.bibdata[c]['entrytype']] + '"')
             print('Field data: ' + repr(self.bibdata[c]))
 
-        if (self.options['citation_order'] in ('citenumber','citenum','none')):
+        if (self.options['citation_order'] in ('citenumber','citenum','none','unsrt')):
             itemstr = r'\bibitem{' + c + '}\n'
         else:
             itemstr = r'\bibitem[' + c + ']{' + c + '}\n'
@@ -971,12 +971,21 @@ class Bibdata(object):
         if citekey not in self.bibdata:
             return('Warning: "' + citekey + '" is not in the bibliography database.')
 
+        ## If we are ordering by the order of appearance of the citations in the text, then the key
+        ## is most likely an integer type rather than a string, which causes problems. We can
+        ## use "unicode()" to convert the int-type to string, but this won't sort properly --- "10"
+        ## will get sorted between "1" and "2". So we need to pad with zeros. How many zeros depends
+        ## on how many citations there are.
+        if (citeorder in ('citenum','citenumber')):
+            ncites = len(self.citedict)
+            ndigits = 1 + int(log10(ncites))
+            sortkey = unicode(self.citedict[citekey]).zfill(ndigits)
+            return(sortkey)
+
+        ## If the citation order used is "citenum", then any sortkey field in the entry is ignored.
         bibentry = self.bibdata[citekey]
         if ('sortkey' in bibentry):
             return(bibentry['sortkey'])
-
-        if (citeorder in ('citenum','citenumber')):
-            return(self.citedict[citekey])
 
         namelist = []
 
@@ -1052,21 +1061,22 @@ class Bibdata(object):
             sortkey = presort + year + name + title
         elif (citeorder == 'alpha'):
             if (len(namelist) == 1):
-                name = name[0:3]
+                concat_name = name[0:3]
             elif (len(namelist) > 1):
                 if namelist:
-                    name = ''.join([name['last'][0] for name in namelist])
+                    concat_name = ''
+                    for name in namelist:
+                        concat_name += name['last'].strip('{}')[0]
+                    #concat_name = ''.join([name['last'].strip('{}')[0] for name in namelist])
                 else:
-                    name = name[0:3]
-            sortkey = presort + name[0:3] + year[-2:]
+                    concat_name = name[0:3]
+            sortkey = presort + concat_name[0:3] + year[-2:]
         elif (citeorder == 'anyt'):
             alpha = '' if ('alphalabel' not in bibentry) else bibentry['alphalabel']
             sortkey = presort + alpha + name + year + title
         elif (citeorder == 'anyvt'):
             alpha = '' if ('alphalabel' not in bibentry) else bibentry['alphalabel']
             sortkey = presort + alpha + name + year + volume + title
-        #elif (citeorder in ('citenumber','citenum','none')):
-        #    raise ValueError('Wrong citation sort order option. How did this happen?')
         else:
             raise KeyError('That citation sort order ("' + citeorder + '") is not supported.')
 
@@ -3118,7 +3128,35 @@ def parse_nameabbrev(abbrevstr):
 
     return(nameabbrev_dict)
 
+## =============================
+def make_sortkey_unique(sortkey, sortdict):
+    '''
+    Given a key that matches an already-present key in the input dictionary, generate a new key by
+    appending zeros to the key string.
 
+    Parameters
+    ----------
+    sortkey : str
+        The key to be modified.
+    sortdict : dict
+        The dictionary whose keys we can query to check for uniqueness.
+
+    Returns
+    -------
+    newkey : str
+        The new (and unique) key.
+    '''
+
+    if (sortkey not in sortdict):
+        return(sortkey)
+
+    newkey = sortkey
+    while True:
+        newkey += '0'
+        if (newkey not in sortdict):
+            break
+
+    return(newkey)
 
 ## ==================================================================================================
 
