@@ -143,27 +143,41 @@ def run_test2():
 ## =============================
 def run_test3():
     '''
-    Test #3 tests that the "authorextract" method functions correctly.
+    Test #3 tests that the "authorextract" and "citeextract" methods function correctly.
     '''
 
-    auxfile = './test/test2.aux'
+    auxfile = './test/test2.aux'        ## re-use the huge database
     authorstr = 'John W. Tukey'
-    outputfile = './test/test3_authorextract.bib'
-    target_bibfile = './test/test3_target.bib'
+    outputfile1 = './test/test3_authorextract.bib'
+    targetfile1 = './test/test3_authorextract_target.bib'
 
     print('\n' + '='*75)
     print('Running Bibulous-test3 for author "' + authorstr + '"')
 
     bibobj = Bibdata(auxfile)
-    print('Writing BIB author extract file = ' + outputfile)
-    bibobj.write_authorextract(authorstr, outputfile, debug=False)
+    print('Writing BIB author extract file = ' + outputfile1)
+    bibobj.write_authorextract(authorstr, outputfile1, debug=False)
 
-    return(outputfile, target_bibfile)
+    ## Next do the cite-extract check.
+    auxfile = './test/test3_citeextract.aux'
+    outputfile2 = './test/test3_citeextract.bib'
+    targetfile2 = './test/test3_citeextract_target.bib'
+    print('Writing BIB author extract file = ' + outputfile2)
+
+    ## Delete the old citekeys so that the new test contains only the new keys.
+    bibobj.citedict = {}
+    bibobj.parse_auxfile(auxfile)
+    bibobj.write_citeextract(outputfile2, debug=False)
+
+    outputfiles = [outputfile1, outputfile2]
+    targetfiles = [targetfile1, targetfile2]
+
+    return(outputfiles, targetfiles)
 
 ## ==================================================================================================
 def run_test4():
     '''
-    Test #4 ...
+    Test #4 checks the operation of generating citation keys.
     '''
 
     ## Although three of these files were copied from "test1", it is a bad idea to use the "test1.*"
@@ -203,7 +217,7 @@ def run_test4():
     bibobj = Bibdata([bibfile,auxfile,bblfile,bstfile])
     bibobj.locale = thislocale
     bibobj.bibdata['preamble'] = '\n'
-    bibobj.debug = True     ## turn on debugging for citekey printing
+    #bibobj.debug = True     ## turn on debugging for citekey printing
 
     for order in citation_order_options:
         ## Delete the old citekeys so that the new test contains only the new keys.
@@ -243,56 +257,62 @@ def run_test4():
     return(bblfile, target_bblfile)
 
 ## =============================
-def check_file_match(outputfile, targetfile):
-    ## Load the actual output BBL file and the target BBL file (the former says what we got; the
-    ## latter says what we *should* get). Load each into strings and calculate their difference.
-    foutput = open(outputfile, 'rU')
-    ftarget = open(targetfile, 'rU')
+def check_file_match(testnum, outputfile, targetfile):
+    if not isinstance(outputfile, list):
+      outputfile = [outputfile]
+    if not isinstance(targetfile, list):
+        targetfile = [targetfile]
 
-    outputlines = foutput.readlines()
-    targetlines = ftarget.readlines()
+    alldiffs = []
+    for i in range(len(outputfile)):
+        file1 = outputfile[i]
+        file2 = targetfile[i]
+        print('COMPARING FILES "' + file1 + '" and "' + file2 + '" ...')
 
-    foutput.close()
-    ftarget.close()
+        ## Load the actual output BBL file and the target BBL file (the former says what we got; the
+        ## latter says what we *should* get). Load each into strings and calculate their difference.
+        foutput = open(file1, 'rU')
+        ftarget = open(file2, 'rU')
 
-    diff = difflib.unified_diff(outputlines, targetlines, lineterm='')
-    #diff = difflib.ndiff(outputlines, targetlines)
-    diff = list(diff)
-    return(diff)
+        outputlines = foutput.readlines()
+        targetlines = ftarget.readlines()
+
+        foutput.close()
+        ftarget.close()
+
+        #diffobj = difflib.ndiff(outputlines, targetlines, lineterm='')
+        diffobj = difflib.unified_diff(outputlines, targetlines, lineterm='')
+        difflist = list(diffobj)
+        if (len(difflist) > 1):
+            alldiffs.extend(difflist)
+
+    if (len(alldiffs) < 2):
+        print('TEST #%i PASSED' % testnum)
+    else:
+        print('TEST #%i FAILED. FILE DIFFERENCES:' % testnum)
+        for line in alldiffs: print(line, end='')
+
+
+    return(difflist)
 
 
 ## ==================================================================================================
 if (__name__ == '__main__'):
     ## Run test #1.
     (outputfile, targetfile) = run_test1()
-    diff = check_file_match(outputfile, targetfile)
-    if not diff:
-        print('TEST #1 PASSED')
-    else:
-        print('TEST #1 FAILED. FILE DIFFERENCES:')
-        for line in diff: print(line, end='')
+    check_file_match(1, outputfile, targetfile)
 
-#    ## Run test #2.
-#    outputfile = run_test2()
-#    print('Test #2 PASSED')
-#
-#    ## Run test #3.
-#    (outputfile, targetfile) = run_test3()
-#    diff = check_file_match(outputfile, targetfile)
-#    if not diff:
-#        print('TEST #3 PASSED')
-#    else:
-#        print('TEST #3 FAILED. FILE DIFFERENCES:')
-#        for line in diff: print(line, end='')
+    ## Run test #2.
+    outputfile = run_test2()
+    print('Test #2 PASSED')
+
+    ## Run test #3.
+    (outputfile, targetfile) = run_test3()
+    check_file_match(3, outputfile, targetfile)
 
     ## Run test #4.
     (outputfile, targetfile) = run_test4()
-    diff = check_file_match(outputfile, targetfile)
-    if not diff:
-        print('TEST #4 PASSED')
-    else:
-        print('TEST #4 FAILED. FILE DIFFERENCES:')
-        for line in diff: print(line, end='')
+    check_file_match(4, outputfile, targetfile)
 
 
     print('DONE')

@@ -88,8 +88,6 @@ Python testing to-do
         options.editorlist_format
         options.namelist_format
 
-#. Add a test for ``bibulous_citeextract``.
-
 #. Test that trying to import a BibTeX-format BST file generates an ``ImportError`` exception.
 
 #. Test proper formatting of the ``edition`` field.

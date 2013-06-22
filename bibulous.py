@@ -1292,7 +1292,7 @@ class Bibdata(object):
         '''
 
         ## A dict comprehension to extract only the relevant items in "bibdata".
-        bibextract = {c: bibdata[c] for c in citedict}
+        bibextract = {c: self.bibdata[c] for c in self.citedict}
         export_bibfile(bibextract, outputfile)
         return
 
@@ -1402,6 +1402,8 @@ class Bibdata(object):
         end_of_field : bool
             Whether the abbreviation key was at the end of the current field.
         '''
+
+        end_of_field = False
 
         ## The "abbrevkey_pattern" seaerches for the first '#' or ',' that is not preceded by a
         ## backslash. If this pattern is found, then we've found the *end* of the abbreviation key.
