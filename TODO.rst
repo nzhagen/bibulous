@@ -81,12 +81,6 @@ Python code to-do
 Python testing to-do
 --------------------
 
-#. Make a run_test4() function in bibulous_test.py for testing. To do this, we need to add some difficult
-   cases to the bibliography database. Also test for the following options::
-
-        options.sort_case
-        options.sort_with_prefix
-
 #. Once you have the template language ready, add tests for the following:
         options.authorlist_format
         options.use_author_firstname_initials

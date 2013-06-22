@@ -203,7 +203,7 @@ def run_test4():
     bibobj = Bibdata([bibfile,auxfile,bblfile,bstfile])
     bibobj.locale = thislocale
     bibobj.bibdata['preamble'] = '\n'
-    #bibobj.debug = True     ## turn on debugging for citekey printing
+    bibobj.debug = True     ## turn on debugging for citekey printing
 
     for order in citation_order_options:
         ## Delete the old citekeys so that the new test contains only the new keys.
@@ -213,11 +213,32 @@ def run_test4():
         bibobj.parse_auxfile(auxfile)      ## this generates the citations
         write_preamble = (order == citation_order_options[0])
         write_postamble = (order == citation_order_options[-1])
-        bibobj.write_bblfile(write_preamble=write_preamble, write_postamble=write_postamble)
+        bibobj.write_bblfile(write_preamble=write_preamble, write_postamble=False)
 
         filehandle = open(bblfile, 'a')
         filehandle.write('\n\n')
         filehandle.close()
+
+    ## Delete the old citekeys so that the new test contains only the new keys.
+    print('Setting option sort_case = True')
+    bibobj.citedict = {}
+    bibobj.options['citation_order'] = 'nyt'
+    bibobj.options['sort_case'] = True
+    bibobj.parse_auxfile(auxfile)      ## this generates the citations
+    bibobj.write_bblfile(write_preamble=False, write_postamble=False)
+    filehandle = open(bblfile, 'a')
+    filehandle.write('\n\n')
+    filehandle.close()
+
+    ## Delete the old citekeys so that the new test contains only the new keys.
+    print('Setting option sort_with_prefix = True')
+    bibobj.citedict = {}
+    bibobj.options['sort_with_prefix'] = True
+    bibobj.parse_auxfile(auxfile)      ## this generates the citations
+    bibobj.write_bblfile(write_preamble=False, write_postamble=True)
+    filehandle = open(bblfile, 'a')
+    filehandle.write('\n\n')
+    filehandle.close()
 
     return(bblfile, target_bblfile)
 
