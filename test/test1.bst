@@ -1,5 +1,3 @@
-#! /usr/bin/env bibulous
-
 initialize1 = <authorliststr>, \enquote{<title>} (<year>).
 initialize2 = <authorliststr>, \enquote{<title>} (<year>).
 title_punctuation = <authorliststr>, \enquote{<title>,} (<year>).

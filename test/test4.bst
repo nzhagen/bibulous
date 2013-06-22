@@ -1,5 +1,3 @@
-#! /usr/bin/env bibulous
-
 article = <authorliststr>, \enquote{<title>} (<year>).
 incollection = <authorliststr>, \enquote{<title>,} <publisher> (<year>). {\makeopenbracket}In <language>.{\makeclosebracket}
 
