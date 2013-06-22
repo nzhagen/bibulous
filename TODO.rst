@@ -82,14 +82,10 @@ Python testing to-do
 --------------------
 
 #. Make a run_test4() function in bibulous_test.py for testing. To do this, we need to add some difficult
-   cases to the bibliography database. And add entries with fields "sortname", "sortyear", and "sorttitle".
-   Also test for the following options::
+   cases to the bibliography database. Also test for the following options::
 
         options.sort_case
         options.sort_with_prefix
-
-    Also test that citation order options ``anyt`` and ``anyvt`` correctly implement the ``labelalpha``
-    field in ``.aux`` files' ``\bibcite{}``.
 
 #. Once you have the template language ready, add tests for the following:
         options.authorlist_format
