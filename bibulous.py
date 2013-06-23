@@ -138,6 +138,7 @@ class Bibdata(object):
         self.citedict = {}  ## the dictionary containing the original data from the AUX file
         self.citelist = []  ##citation keys in the ordered they will be printed in the final result
         self.bstdict = {}
+        self.script = ''    ## any user-written Python scripts go here
 
         ## Temporary variables for use in error messages while parsing files.
         self.filename = ''                      ## the current filename (for error messages)
@@ -172,7 +173,6 @@ class Bibdata(object):
         self.options['terse_inits'] = False
         self.options['force_sentence_case'] = False
         self.options['bibitemsep'] = None
-        self.options['bibextract'] = ''
         self.options['month_abbrev'] = True
 
         ## Compile some patterns for use in regex searches.
@@ -351,8 +351,8 @@ class Bibdata(object):
 
             if (entrykey in self.bibdata):
                 print('Warning: the entry ending on line #' + unicode(self.i) + ' of file "' + \
-                      self.filename + '" has the same key as a previous entry. Overwriting the ' \
-                      'entry and continuing ...')
+                      self.filename + '" has the same key ("' + entrykey + '") as a previous ' + \
+                      'entry. Overwriting the entry and continuing ...')
 
             self.bibdata[entrykey] = {}
             self.bibdata[entrykey]['entrytype'] = entrytype
@@ -373,8 +373,6 @@ class Bibdata(object):
         entrystr : str
             The string containing the entire contents of the bibliography entry.
         '''
-
-        ## TODO: this function deperately needs some simplification!
 
         entrystr = entrystr.strip()
         fd = {}             ## the dictionary for holding key:value string pairs
@@ -550,7 +548,7 @@ class Bibdata(object):
         return
 
     ## =============================
-    def parse_bstfile(self, filename, ignore_overwrite=False, debug=False):
+    def parse_bstfile(self, filename, ignore_overwrite=False):
         '''
         Convert a Bibulous-type bibliography style template into a dictionary.
 
@@ -577,41 +575,75 @@ class Bibdata(object):
             raise ImportError('The style template file "' + filename + '" appears to be BibTeX '
                               'format, not Bibulous. Aborting...')
 
+        section = 'TEMPLATES'
+        ## For the "definition_pattern", rather than matching the initial string up to the first
+        ## whitespace character, we match a whitespace-equals-whitespace
+        definition_pattern = re.compile(r'\s=\s', re.UNICODE)
+
         for i,line in enumerate(alllines):
             ## Ignore any comment lines, and remove any comments from data lines.
             if line.startswith('#'): continue
             if ('#' in line):
                 idx = line.index('#')
                 line = line[:idx]
-            if ('=' in line):
-                res = line.split(' = ')
-                if (len(res) != 2):
-                    raise SyntaxError('The line "' + line + '" (line #' + unicode(i) + ') in file "' + \
-                                      filename + '" is not valid BST grammar.')
-                else:
-                    (lhs,rhs) = res
-                var = lhs.strip()
-                value = rhs.strip()
 
-                ## If the value is numeric or bool, then convert the datatype from string.
-                if value.isdigit():
-                    value = int(value)
-                elif (value == 'True') or (value == 'False'):
-                    value = (value == 'True')
+            line = line.strip()
 
-                if var.startswith('options.'):
-                    ## The variable defines an option rather than an entrytype.
-                    optvar = var[8:]
-                    if (optvar in self.options) and (self.options[optvar] != value) and not ignore_overwrite:
-                        print('Warning: overwriting the existing template option "' + optvar + \
-                              '" from [' + unicode(self.options[optvar]) + '] to [' + unicode(value) + '] ...')
-                    self.options[optvar] = value
-                else:
-                    ## The line defines an entrytype template.
+            if line.startswith('TEMPLATES:'):
+                section = 'TEMPLATES'
+                continue
+            elif line.startswith('OPTIONS:'):
+                section = 'OPTIONS'
+                continue
+            elif line.startswith('DEFINITIONS:'):
+                section = 'DEFINITIONS'
+                continue
+
+            if (section == 'DEFINITIONS'):
+                self.script += line
+                if self.debug: print('Adding a line to the BST scripting string: ' + line)
+            elif (section in ('TEMPLATES','OPTIONS')):
+                ## Skip empty lines. It is tempting to put this line above here, but resist the
+                ## temptation -- putting it higher above would remove empty lines from the Python
+                ## scripts in the DEFINITIONS section, which would make troubleshooting those
+                ## more difficult.
+                if not line: continue
+                matchobj = re.search(definition_pattern, line)
+                if (matchobj == None):
+                    print('Warning: line #' + str(i) + ' of file "' + filename + '" does not ' + \
+                          'contain a valid variable definition.\n Skipping ...')
+                    continue
+
+                (start,end) = matchobj.span()
+                var = line[:start].strip()
+                value = line[end:].strip()
+
+                if (section == 'TEMPLATES'):
+                    ## The line defines an entrytype template. Check whether this definition is
+                    ## overwriting an already existing definition.
                     if (var in self.bstdict) and (self.bstdict[var] != value) and not ignore_overwrite:
                         print('Warning: overwriting the existing template variable "' + var + \
                               '" from [' + self.bstdict[var] + '] to [' + value + '] ...')
                     self.bstdict[var] = value
+                    if self.debug:
+                        print('Setting BST variable "' + var + '" to value "' + value + '"')
+
+                elif (section == 'OPTIONS'):
+                    ## The variable defines an option rather than an entrytype. Check whether this definition is
+                    ## overwriting an already existing definition.
+                    if (var in self.options) and (self.options[var] != value) and not ignore_overwrite:
+                        print('Warning: overwriting the existing template option "' + var + \
+                              '" from [' + unicode(self.options[var]) + '] to [' + \
+                              unicode(value) + '] ...')
+                    ## If the value is numeric or bool, then convert the datatype from string.
+                    if self.debug:
+                        print('Setting BST option "' + var + '" to value "' + value + '"')
+
+                    if value.isdigit():
+                        value = int(value)
+                    elif (value in ('True','False')):
+                        value = (value == 'True')
+                    self.options[var] = value
 
         filehandle.close()
 
@@ -620,20 +652,21 @@ class Bibdata(object):
             self.options['period_after_initial'] = False
 
         ## Next check to see whether any of the template definitions are simply maps to one
-        ## of the other definitions. For example, in "osa.bst" I have a line of the form
+        ## of the other definitions. For example, one BST file may have a line of the form
         ##      inbook = incollection
         ## which implies that the template for "inbook" should be mapped to the same template
         ## as defined for the "incollection" entrytype.
         for key in self.bstdict:
-            if (key == 'options'): continue
             nwords = len(re.findall(r'\w+', self.bstdict[key]))
             if (nwords == 1) and ('<' not in self.bstdict[key]):
                 self.bstdict[key] = self.bstdict[self.bstdict[key]]
 
-        if debug:
+        if self.debug:
             ## When displaying the bst dictionary, show it in sorted form.
             for key in sorted(self.bstdict, key=self.bstdict.get, cmp=locale.strcoll):
                 print(key + ': ' + unicode(self.bstdict[key]))
+
+        return
 
     ## =============================
     def write_bblfile(self, filename=None, write_preamble=True, write_postamble=True, bibsize=None,

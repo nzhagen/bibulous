@@ -4,6 +4,8 @@ Python code to-do
 #. Add documentation to the Bibulous' class attributes and methods. See ``numpydoc``'s "HOWTO_DOCUMENT"
     to get this set up right.
 
+#. Simplify the parse_bibfield() method by taking some of the function's load off into a subroutine.
+
 #. BibTeX can apparently accept an optional argument to the ``\cite{}`` command and place it into
     the bibliography. Try replicating that functionality.
 
@@ -34,6 +36,8 @@ Python code to-do
 #. Make sure that when an exception has occurred, you still generate a valid BBL file (just
    an incomplete one). So you will need to make use of some ``try...except`` blocks.
 
+#. Add the "Example" section to the Bibdata class docstring.
+
 #. Write a ``bibclean`` function which checks a ``*.bib`` file for errors. Include using
    ``namefield_to_namelist(`` to check for name format errors. A common problem will be encoding
    errors. For this, you can use ``fix_bad_unicode.py``, which attempts to undo encoding errors.
@@ -45,7 +49,8 @@ Python code to-do
    with a long dash. (Or ``\textit{idem}`` instead of the dash?)
 
 #. Currently Arabic prefixes of names, like al-Turabi, will produce a space between the ``al-``
-   and the last name. Need to fix.
+   and the last name. Need to fix. Or maybe just let users make their own template script to
+   handle that case?
 
 #. On page 130 of the Biblatex documentation, it lists a ``postnote`` option to the ``\cite{}``
    command, in which the writer can enter in either a numeric page number to refer to, or a
@@ -81,7 +86,8 @@ Python code to-do
 Python testing to-do
 --------------------
 
-#. Once you have the template language ready, add tests for the following:
+#. Add tests for the following::
+
         options.authorlist_format
         options.use_author_firstname_initials
         options.use_editor_firstname_initials

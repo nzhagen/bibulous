@@ -75,10 +75,25 @@ Parsing BST files
 
 (This part is changing at the moment, and so the documentation is not available yet.)
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 Writing the BBL file
 ====================
 
-Now that all the information is available to Bibulous, we can begin writing the output BBL file. First we write a few lines to the preamble, including the ``preamble`` string obtained from the ``.bib`` database files. Next we create the citation list -- the citations listed in the sorting order as defined in the style template files. (This requires a surprising amount of code to get right -- see **Generating sortkeys** below.) We loop over each citation in the desired order, and insert cross-reference information to fill in missing fields, and parse each name field (see the "Formatting names" subsection below). The cross-referencing and name parsing steps can be delayed until later on in the processing chain, but would require more complex code to do there, so doing them here keeps the code simpler without sacrificing much speed. (The assumption here is that the citation list is small, at least in comparison to the database, so that limiting the difficult parsing to only those entries cited will allow significant improvement in speed.) Finally, at each step in the loop, we call ``format_bibitem()`` to insert the database entry fields into the appropriate style template, incorporating any extra formatting requested by the user in the style template file.
+Now that all the information is available to Bibulous, we can begin writing the output BBL file. First we write a few lines to the preamble, including the ``preamble`` string obtained from the ``.bib`` database files. We also create the citation list -- the citations listed in the sorting order as defined in the style template files. (This requires a surprising amount of code to get right -- see **Generating sortkeys** below.) We loop over each citation in the desired order, and insert cross-reference information to fill in missing fields, and parse each name field (see the "Formatting names" subsection below). The cross-referencing and name parsing steps can be delayed until later on in the processing chain, but would require more complex code to do there, so doing them here keeps the code simpler without sacrificing much speed. (The assumption here is that the citation list is small, at least in comparison to the database, so that limiting the difficult parsing to only those entries cited will allow significant improvement in speed.) Finally, at each step in the loop, we call ``format_bibitem()`` to insert the database entry fields into the appropriate style template, incorporating any extra formatting requested by the user in the style template file.
 
 Name formatting
 ================

@@ -83,7 +83,7 @@ def run_test1():
         ## very simple (only the differences from the default need to be used).
         if (bstfile != bstfiles[0]):
             bibobj.parse_bstfile(bstfiles[0])
-        bibobj.parse_bstfile(bstfile, debug=False)
+        bibobj.parse_bstfile(bstfile)
 
         write_postamble = (bstfile == bstfiles[-1])
         bibobj.write_bblfile(write_preamble=False, write_postamble=write_postamble)

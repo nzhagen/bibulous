@@ -1,3 +1,4 @@
+TEMPLATES:
 article = <authorliststr>, ``[\href{<url>}{<title>}|\href{<doi>}{<title>}|<title>|],'' \textit{<journal>} \textbf{<volume>}: [<startpage>--<endpage>|<startpage>|<eid>|] (<year>).[ <note>]
 book = [<authorliststr>|<editorliststr>|<organization>|<institution>|], \textit{<title>}[, <edition_ordinal>~ed.][, vol.~<volume>] (<publisher>, <year>)[ Chap.~<chapter>][, pp.~<startpage>--<endpage>].[ <note>]
 endnote = <note>
@@ -13,31 +14,30 @@ proceedings = <editorliststr>, \textit{<title>}, [vol.~<volume>][, <edition_ordi
 techreport = [<authorliststr>, |<editorliststr>, ]``<title>,'' <institution>, Tech.\ Report <number> (<year>).[ <note>]
 unpublished = misc
 
-options.citation_order = citekey                                ## order the bibliography by "citekey" or "citenum" (or "nyt" etc.)
-options.maxauthors = 9                                          ## if more than 10 authors, then use "et al." format
-options.minauthors = 9                                          ## if "maxauthors" exceeded, then display only the first "minauthors" and et al.
-options.maxeditors = 5                                          ## if more than 5 editors, then use "et al." format
-options.mineditors = 5                                          ## if "maxeditors" exceeded, then display only the first "mineditors" and et al.
-options.procspie_as_journal = True                              ## treat SPIE conference proceedings like a journal, with journal name 'Proc. SPIE'
-options.sort_case = False                                       ## whether to use case-sensitive citation sorting (default is False)
-options.backrefs = False                                        ## whether to implement backreferences in the bibliography -- maybe put in template strings?
-options.backrefstyle = none                                     ## can be one of {"none", "three", "two", "two+", "three+", "all+"}
-options.hyperref = False                                        ## whether to turn on (True) or off (False). If "hyperref" package is loaded, the default value is True, else default is False.
-options.use_abbrevs = True                                      ## whether to use the abbreviation strings (mainly useful for debugging)
-options.french_initials = False                                 ## whether to use French initials (i.e. Jean-Paul -> J.-P. and not J., also Philippe -> Ph. not P.)
-options.sort_with_prefix = False                                ## whether or not to use a person's prefix in front of the last name for sorting order. Should probably be used with options.sort_case=True.
-options.period_after_initial = True                             ## whether to add a '.' after a person's initials.
-options.terse_inits = False                                     ## whether to format initials as, for example, "DE" rather than "D. E."
-options.bibitemsep = 0pt                                        ## the extra vertical separation between each bibliography entry. Defining this option *overrides* LaTeX's existing definition for \bibitemsep.
+OPTIONS:
+citation_order = citekey                  ## order the bibliography by "citekey" or "citenum" (or "nyt" etc.)
+maxauthors = 9                            ## if more than 10 authors, then use "et al." format
+minauthors = 9                            ## if "maxauthors" exceeded, then display only the first "minauthors" and et al.
+maxeditors = 5                            ## if more than 5 editors, then use "et al." format
+mineditors = 5                            ## if "maxeditors" exceeded, then display only the first "mineditors" and et al.
+procspie_as_journal = True                ## treat SPIE conference proceedings like a journal, with journal name 'Proc. SPIE'
+sort_case = False                         ## whether to use case-sensitive citation sorting (default is False)
+backrefs = False                          ## whether to implement backreferences in the bibliography -- maybe put in template strings?
+backrefstyle = none                       ## can be one of {"none", "three", "two", "two+", "three+", "all+"}
+hyperref = False                          ## whether to turn on (True) or off (False). If "hyperref" package is loaded, the default value is True, else default is False.
+use_abbrevs = True                        ## whether to use the abbreviation strings (mainly useful for debugging)
+french_initials = False                   ## whether to use French initials (i.e. Jean-Paul -> J.-P. and not J., also Philippe -> Ph. not P.)
+sort_with_prefix = False                  ## whether or not to use a person's prefix in front of the last name for sorting order. Should probably be used with option "sort_case=True".
+period_after_initial = True               ## whether to add a '.' after a person's initials.
+terse_inits = False                       ## whether to format initials as, for example, "DE" rather than "D. E."
+bibitemsep = 0pt                          ## the extra vertical separation between each bibliography entry. Defining this option *overrides* LaTeX's existing definition for \bibitemsep.
+missing_data_exceptions = False           ## whether to raise an exception when Bibulous finds a missing but required field.
+undefstr = ???                            ## what string to replace undefined required fields with
+force_sentence_case = False               ## Whether to reduce all but the first letter (and brace-protected letters) to lower case
+namelist_format = first_name_first        ## use authorlist (or editorlist) "Bugs Bunny, Daffy Duck, and Porky Pig" format
+use_firstname_initials = True             ## initialize all but the authors' last names
+namelist_format = first_name_first        ## defines values for both "authorlist_format" and "editorlist_format" at once
+use_name_ties = False                     ## whether or not to tie together initials with unbreakable spaces ('~')
+replace_newlines = True                   ## whether to replace newline characters inside fields with spaces
 
-## The remaining exceptions below are really for users rather than for the journal. Maybe put these someplace else?
-options.missing_data_exceptions = False                         ## whether to raise an exception when Bibulous finds a missing but required field.
-options.undefstr = ???                                          ## what string to replace undefined required fields with
-options.force_sentence_case = False                             ## Whether to reduce all but the first letter (and brace-protected letters) to lower case
-
-options.namelist_format = first_name_first                      ## use authorlist (or editorlist) "Bugs Bunny, Daffy Duck, and Porky Pig" format
-options.use_firstname_initials = True                           ## initialize all but the authors' last names
-options.namelist_format = first_name_first                      ## defines values for both "authorlist_format" and "editorlist_format" at once
-options.use_name_ties = False                                   ## whether or not to tie together initials with unbreakable spaces ('~')
-options.replace_newlines = True                                 ## whether to replace newline characters inside fields with spaces
-
+DEFINITIONS:
