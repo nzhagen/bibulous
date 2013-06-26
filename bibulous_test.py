@@ -52,7 +52,8 @@ def run_test1():
                 './test/test1_french_initials.bst',
                 './test/test1_use_name_ties.bst',
                 './test/test1_period_after_initial.bst',
-                './test/test1_terse_inits.bst')
+                './test/test1_terse_inits.bst',
+                './test/test1_author_firstname_initials.bst')
     bibfile = './test/test1.bib'
     bblfile = './test/test1.bbl'
     auxfile = './test/test1.aux'
@@ -319,17 +320,17 @@ if (__name__ == '__main__'):
     (outputfile, targetfile) = run_test1()
     check_file_match(1, outputfile, targetfile)
 
-#    ## Run test #2.
-#    outputfile = run_test2()
-#    print('Test #2 PASSED')
-#
-#    ## Run test #3.
-#    (outputfile, targetfile) = run_test3()
-#    check_file_match(3, outputfile, targetfile)
-#
-#    ## Run test #4.
-#    (outputfile, targetfile) = run_test4()
-#    check_file_match(4, outputfile, targetfile)
+    ## Run test #2.
+    outputfile = run_test2()
+    print('Test #2 PASSED')
+
+    ## Run test #3.
+    (outputfile, targetfile) = run_test3()
+    check_file_match(3, outputfile, targetfile)
+
+    ## Run test #4.
+    (outputfile, targetfile) = run_test4()
+    check_file_match(4, outputfile, targetfile)
 
     ## Run test #5.
     (outputfile, targetfile) = run_test5()

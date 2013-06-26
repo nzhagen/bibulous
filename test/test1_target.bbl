@@ -70,5 +70,9 @@ F.~M.~M. Prefix Last and F. Prefix Last, Suffix, ``None'' (0000).
 B R Bunny, ``Looney tunes'' (2001).
 \bibitem{terse_inits}
 DD Duck, ``Looney tunes'' (2001).
+\bibitem{author_firstname_initials}
+Alain Aspect, Philippe Grangier, and G{\'e}rard Roger, ``Experimental realization of einstein-podolsky-rosen-bohm \textit{Gedenkenexperiment}: a new violation of bell's inequalities'' (1982).
+\bibitem{editor_firstname_initials}
+David B. Chenault and Dennis H. Goldstein, eds, eds., ``Polarization: measurement, analysis, and remote sensing x'' (2012).
 
 \end{thebibliography}

@@ -1180,9 +1180,6 @@ class Bibdata(object):
 
         sortkey = purify_string(sortkey)
 
-        #yyy
-        print(sortkey)
-
         if not self.options['sort_case']:
             sortkey = sortkey.lower()
 
