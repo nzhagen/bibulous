@@ -80,22 +80,11 @@ Python code to-do
 Python testing to-do
 --------------------
 
-#. Add tests for the following::
-
-        options.authorlist_format
-        options.editorlist_format
-        options.namelist_format
-
 #. Test that trying to import a BibTeX-format BST file generates an ``ImportError`` exception.
 
 #. Test proper formatting of the ``edition`` field.
 
 #. Test for missing fields in entries.
-
-#. The entry ``pagerange1`` has a comma-delimited page range. Currently you don't have a
-   template that allows one to differentiate formatting to use ``<pages>`` when there are
-   commas in the field, whereas one uses ``<startpage>--<endpage>`` when there are no commas.
-   Once you get the general parser working, give this functionality a try.
 
 #. Add a test for locale-dependent sorting.
 
