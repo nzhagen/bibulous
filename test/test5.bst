@@ -45,6 +45,7 @@ def format_yearstyle(yearstr, options):
 
     return(result)
 
+## ==================================
 def get_author(entry, options):
     '''
     In the test5 database, a given entry may have a "writer" field or an "author" field.
@@ -59,6 +60,7 @@ def get_author(entry, options):
     else:
         return(options['undefstr'])
 
+## ==================================
 def format_pagerange(entry, options):
     '''
     If the "pages" field is comma-delimited, then return the pages field as-is. Otherwise

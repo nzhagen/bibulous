@@ -83,8 +83,6 @@ Python testing to-do
 #. Add tests for the following::
 
         options.authorlist_format
-        options.use_author_firstname_initials
-        options.use_editor_firstname_initials
         options.editorlist_format
         options.namelist_format
 

@@ -667,7 +667,7 @@ class Bibdata(object):
         filehandle.close()
 
         ## The "terse_inits" options has to override the "period_after_initial" option.
-        if self.options['terse_inits']:
+        if ('terse_inits' in self.options) and  self.options['terse_inits']:
             self.options['period_after_initial'] = False
 
         ## Next check to see whether any of the template definitions are simply maps to one
@@ -692,7 +692,9 @@ class Bibdata(object):
         if self.debug:
             ## When displaying the bst dictionary, show it in sorted form.
             for key in sorted(self.bstdict, key=self.bstdict.get, cmp=locale.strcoll):
-                print(key + ': ' + unicode(self.bstdict[key]))
+                print('entrytype.' + key + ': ' + unicode(self.bstdict[key]))
+            for key in sorted(self.options, key=self.options.get):
+                print('options.' + key + ': ' + unicode(self.options[key]))
 
         return
 

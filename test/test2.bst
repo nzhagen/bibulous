@@ -17,9 +17,9 @@ unpublished = misc
 OPTIONS:
 citation_order = citekey                  ## order the bibliography by "citekey" or "citenum" (or "nyt" etc.)
 maxauthors = 9                            ## if more than 10 authors, then use "et al." format
-minauthors = 9                            ## if "maxauthors" exceeded, then display only the first "minauthors" and et al.
+minauthors = 9                            ## if "maxauthors" is exceeded, then display only the first "minauthors" and et al.
 maxeditors = 5                            ## if more than 5 editors, then use "et al." format
-mineditors = 5                            ## if "maxeditors" exceeded, then display only the first "mineditors" and et al.
+mineditors = 5                            ## if "maxeditors" is exceeded, then display only the first "mineditors" and et al.
 procspie_as_journal = True                ## treat SPIE conference proceedings like a journal, with journal name 'Proc. SPIE'
 sort_case = False                         ## whether to use case-sensitive citation sorting (default is False)
 backrefs = False                          ## whether to implement backreferences in the bibliography -- maybe put in template strings?
