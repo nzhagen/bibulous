@@ -685,7 +685,8 @@ class Bibdata(object):
         ## does below. Rather than the default "eval(..., globals(), locals())", the code below
         ## pushes the scope to module level.
         if self.script:
-            print('Evaluating the user script:\n' + 'v'*50 + '\n' + self.script + '^'*50 + '\n')
+            if self.debug:
+                print('Evaluating the user script:\n' + 'v'*50 + '\n' + self.script + '^'*50 + '\n')
             exec(self.script, globals(), globals())
 
         if self.debug:
@@ -827,7 +828,18 @@ class Bibdata(object):
                 sortkey = make_sortkey_unique(sortkey, sortdict)
             sortdict[sortkey] = unicode(c)      ## use "unicode()" to convert to string in case the key is an integer
 
-        self.citelist = sorted(sortdict.iterkeys(), cmp=locale.strcoll)
+        ## This part can be a little tricky. If the sortkey is generated such that it begins with an
+        ## integer, then we should make sure that negative-values get sorted in front of positive
+        ## ones. This happens in simple sort() but not when we use locale's "strcoll". So we have to
+        ## separate the two cases manually. Also, use [::-1] on the negative integers because they
+        ## need to be ordered from largest number to smallest.
+        if (self.options['citation_order'][0] == 'y'):
+            firstdict = {k:sortdict[k] for k in sortdict if k[0] == '-'}
+            seconddict = {k:sortdict[k] for k in sortdict if k[0] != '-'}
+            self.citelist = sorted(firstdict.iterkeys(), cmp=locale.strcoll)[::-1]
+            self.citelist += sorted(seconddict.iterkeys(), cmp=locale.strcoll)
+        else:
+            self.citelist = sorted(sortdict.iterkeys(), cmp=locale.strcoll)
 
         ## If using a citation order which is descending rather than ascending, then reverse the list.
         if (self.options['citation_order'] == 'ydnt'):
@@ -869,7 +881,6 @@ class Bibdata(object):
         '''
 
         c = citekey
-        entry = self.bibdata[c]
 
         if debug:
             print('Formatting entry "' + citekey + '"')
@@ -886,12 +897,14 @@ class Bibdata(object):
         if (c not in self.bibdata):
             print('Warning: citation key "' + c + '" is not in the bibliography database.')
             return(itemstr + '\\textit{Warning: citation key is not in the bibliography database}.')
+        else:
+            entry = self.bibdata[c]
 
         entrytype = entry['entrytype']
 
         ## If the journal format uses ProcSPIE like a journal, then you need to change the entrytype
         ## from "inproceedings" to "article", and add a "journal" field.
-        if self.options['procspie_as_journal'] and (entry['entrytype'] == 'inproceedings') and \
+        if self.options['procspie_as_journal'] and (entrytype == 'inproceedings') and \
             ('series' in entry) and (entry['series'] in ['Proc. SPIE','procspie']):
             entrytype = 'article'
             entry['entrytype'] = 'article'
@@ -1111,10 +1124,15 @@ class Bibdata(object):
         ## Names that have initials will have unwanted '.'s in them.
         name = name.replace('.','')
 
+        ## To make sure that alphabetical sorting treats numbers correctly, we need to append zeros
+        ## so that, say, "10" does not get sorted before "2". Note that this formatting should work
+        ## for years between -999 and +9999.
         if ('sortyear' in bibentry):
-            year = unicode(bibentry['sortyear'])
+            year = unicode('%04i' % int(bibentry['sortyear']))
+        elif ('year' in bibentry):
+            year = unicode('%04i' % int(bibentry['year']))
         else:
-            year = '9999' if ('year' not in bibentry) else unicode(bibentry['year'])
+            year = '9999'
 
         ## "presort" is a string appended to the beginning of each sortkey. This can be useful for
         ## grouping entries.
@@ -1161,6 +1179,9 @@ class Bibdata(object):
             raise KeyError('That citation sort order ("' + citeorder + '") is not supported.')
 
         sortkey = purify_string(sortkey)
+
+        #yyy
+        print(sortkey)
 
         if not self.options['sort_case']:
             sortkey = sortkey.lower()

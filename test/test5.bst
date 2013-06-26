@@ -1,6 +1,7 @@
 TEMPLATES:
 book = <authorliststr>, \textit{<title>} [\textit{<englishtitle>}] (<year_bce>). [In <language>.]
 dialogue = <authorliststr>, \textit{<title>} [\textit{<englishtitle>}] (<year_bce>). [In <language>.]
+article = <authorliststr>, \enquote{<title>,} \textit{<journal>} \textbf{<volume>} (<number>), pp.~<pagerange> (<year>).
 
 OPTIONS:
 use_firstname_initials = False            ## initialize all but the authors' last names
@@ -11,6 +12,7 @@ yearstyle = 'BCE/CE'                      ## whether to use 'BCE/CE' after the y
 VARIABLES:
 year_bce = format_yearstyle(entry['year'], options)
 authorliststr = get_author(entry, options)
+pagerange = format_pagerange(entry, options)
 
 DEFINITIONS:
 def format_yearstyle(yearstr, options):
@@ -56,3 +58,14 @@ def get_author(entry, options):
         return(entry['writer'])
     else:
         return(options['undefstr'])
+
+def format_pagerange(entry, options):
+    '''
+    If the "pages" field is comma-delimited, then return the pages field as-is. Otherwise
+    return the standard startpage--endpage range.
+    '''
+
+    if (',' in entry['pages']):
+        return(entry['pages'])
+    else:
+        return(entry['startpage']--entry['endpage'])
