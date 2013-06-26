@@ -257,6 +257,24 @@ def run_test4():
     return(bblfile, target_bblfile)
 
 ## =============================
+def run_test5():
+    '''
+    Test #5 flexes the Python API.
+    '''
+
+    auxfile = './test/test5.aux'
+    bblfile = './test/test5.bbl'
+    targetfile = './test/test5_target.bbl'
+
+    print('\n' + '='*75)
+    print('Running Bibulous-test5')
+
+    bibobj = Bibdata(auxfile, debug=False)
+    bibobj.write_bblfile(write_preamble=True, write_postamble=True)
+
+    return(bblfile, targetfile)
+
+## =============================
 def check_file_match(testnum, outputfile, targetfile):
     if not isinstance(outputfile, list):
       outputfile = [outputfile]
@@ -292,7 +310,6 @@ def check_file_match(testnum, outputfile, targetfile):
         print('TEST #%i FAILED. FILE DIFFERENCES:' % testnum)
         for line in alldiffs: print(line, end='')
 
-
     return(difflist)
 
 
@@ -314,6 +331,9 @@ if (__name__ == '__main__'):
     (outputfile, targetfile) = run_test4()
     check_file_match(4, outputfile, targetfile)
 
+    ## Run test #5.
+    (outputfile, targetfile) = run_test5()
+    check_file_match(5, outputfile, targetfile)
 
     print('DONE')
 

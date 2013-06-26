@@ -1,0 +1,16 @@
+\begin{thebibliography}{4}
+\providecommand{\enquote}[1]{``#1''}
+\providecommand{\url}[1]{\verb|#1|}
+\providecommand{\href}[2]{#2}
+
+
+\bibitem[tacitus]{tacitus}
+Publius Cornelius Tacitus, \textit{Ab excessu divi Augusti} \textit{Annals of Imperial Rome} (117 AD). In Latin.
+\bibitem[aurelius]{aurelius}
+Marcus Aurelius, \textit{Τὰ εἰς ἑαυτόν} \textit{Meditations} (180 AD). In Greek.
+\bibitem[caesar]{caesar}
+Gaius Julius Caesar, \textit{Commentarii de Bello Gallico} \textit{Commentaries on the Gallic War} (-45 BCE). In Latin.
+\bibitem[cicero]{cicero}
+Marcus Tullius Cicero, \textit{De re publica} \textit{On the republic} (-51 BCE). In Latin.
+
+\end{thebibliography}

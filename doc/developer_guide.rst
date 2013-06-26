@@ -75,6 +75,8 @@ Parsing BST files
 
 (This part is changing at the moment, and so the documentation is not available yet.)
 
+Note format_bibitem() is where we compile any scripts present in the BST files. Doing it before this step basically requires that we run any script on all of the entries of the database and not just the ones that have been cited. For large databases, this can be a significant amount of extra computation. There are two different compilation steps here. The first is that, before looping over the bibitems, we compile the scripts so that any functions defined there are available to the local namespace. Second, once we're inside the loop, if the template string for the current entry has a variable which is a user-defined variable, then we have to use Python's ``eval()`` function to obtain the result of evaluating the script on the current entry.
+
 
 
 

@@ -57,4 +57,6 @@ editorlist_format = first_name_first      ## use editorlist "Bugs Bunny, Daffy D
 namelist_format = first_name_first        ## defines values for both "authorlist_format" and "editorlist_format" at once
 use_name_ties = False                     ## whether or not to tie together initials with unbreaskable spaces ('~')
 
+VARIABLES:
+
 DEFINITIONS:

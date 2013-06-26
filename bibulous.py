@@ -139,6 +139,7 @@ class Bibdata(object):
         self.citelist = []  ##citation keys in the ordered they will be printed in the final result
         self.bstdict = {}
         self.script = ''    ## any user-written Python scripts go here
+        self.user_variables = {}    ### any user-defined variables from the BST files
 
         ## Temporary variables for use in error messages while parsing files.
         self.filename = ''                      ## the current filename (for error messages)
@@ -182,6 +183,7 @@ class Bibdata(object):
         self.quote_pattern = re.compile(r'(?<!\\)"', re.UNICODE)
         self.abbrevkey_pattern = re.compile(r'(?<!\\)[,#]', re.UNICODE)
         self.anybraceorquote_pattern = re.compile(r'(?<!\\)[{}"]', re.UNICODE)
+        self.integer_pattern = re.compile(r'^-?[0-9]+', re.UNICODE)
 
         ## Print out some info on Bibulous and the files it is working on.
         print('This is Bibulous, version ' + unicode(__version__))
@@ -458,7 +460,7 @@ class Bibdata(object):
                         ## If the "abbrevkey" is an integer, then it's not actually an abbreviation.
                         ## Convert it to a string and insert the number itself.
                         abbrevkey = fieldstr
-                        if abbrevkey.isdigit():
+                        if re.match(self.integer_pattern, abbrevkey):
                             resultstr += unicode(abbrevkey)
                         else:
                             if abbrevkey in self.abbrevs:
@@ -586,22 +588,39 @@ class Bibdata(object):
             if ('#' in line):
                 idx = line.index('#')
                 line = line[:idx]
+                if not line.strip(): continue       ## if the line contained only a comment
 
-            line = line.strip()
-
-            if line.startswith('TEMPLATES:'):
+            if line.strip().startswith('TEMPLATES:'):
                 section = 'TEMPLATES'
                 continue
-            elif line.startswith('OPTIONS:'):
+            elif line.strip().startswith('OPTIONS:'):
                 section = 'OPTIONS'
                 continue
-            elif line.startswith('DEFINITIONS:'):
+            elif line.strip().startswith('DEFINITIONS:'):
                 section = 'DEFINITIONS'
+                continue
+            elif line.strip().startswith('VARIABLES:'):
+                section = 'VARIABLES'
                 continue
 
             if (section == 'DEFINITIONS'):
                 self.script += line
-                if self.debug: print('Adding a line to the BST scripting string: ' + line)
+                if self.debug: print('Adding a line to the BST scripting string: ' + line, end='')
+
+            line = line.strip()
+
+            if (section == 'VARIABLES'):
+                if not line: continue
+                matchobj = re.search(definition_pattern, line)
+                if (matchobj == None):
+                    print('Warning: line #' + str(i) + ' of file "' + filename + '" does not ' + \
+                          'contain a valid variable definition.\n Skipping ...')
+                    continue
+                (start,end) = matchobj.span()
+                var = line[:start].strip()
+                value = line[end:].strip()
+                self.user_variables[var] = filter_script(value)
+                if self.debug: print('Adding user variable "' + var + '" with value "' + value + '" ...')
             elif (section in ('TEMPLATES','OPTIONS')):
                 ## Skip empty lines. It is tempting to put this line above here, but resist the
                 ## temptation -- putting it higher above would remove empty lines from the Python
@@ -631,7 +650,7 @@ class Bibdata(object):
                 elif (section == 'OPTIONS'):
                     ## The variable defines an option rather than an entrytype. Check whether this definition is
                     ## overwriting an already existing definition.
-                    if (var in self.options) and (self.options[var] != value) and not ignore_overwrite:
+                    if (var in self.options) and (str(self.options[var]) != value) and not ignore_overwrite:\
                         print('Warning: overwriting the existing template option "' + var + \
                               '" from [' + unicode(self.options[var]) + '] to [' + \
                               unicode(value) + '] ...')
@@ -660,6 +679,14 @@ class Bibdata(object):
             nwords = len(re.findall(r'\w+', self.bstdict[key]))
             if (nwords == 1) and ('<' not in self.bstdict[key]):
                 self.bstdict[key] = self.bstdict[self.bstdict[key]]
+
+        ## If the user defined any functions, then we want to evaluate them in a way such that
+        ## they are available in other functions. This is what the second argument to "eval()"
+        ## does below. Rather than the default "eval(..., globals(), locals())", the code below
+        ## pushes the scope to module level.
+        if self.script:
+            print('Evaluating the user script:\n' + 'v'*50 + '\n' + self.script + '^'*50 + '\n')
+            exec(self.script, globals(), globals())
 
         if self.debug:
             ## When displaying the bst dictionary, show it in sorted form.
@@ -826,6 +853,8 @@ class Bibdata(object):
         in bstdict and start replacing template variables with formatted elements of the database
         entry. Once you've replaced all template variables, you're done formatting that entry.
 
+        This function is also where we compile any scripts present in the BST files.
+
         Parameters
         ----------
         citekey : str
@@ -840,11 +869,12 @@ class Bibdata(object):
         '''
 
         c = citekey
+        entry = self.bibdata[c]
 
         if debug:
             print('Formatting entry "' + citekey + '"')
-            print('Template: "' + self.bstdict[self.bibdata[c]['entrytype']] + '"')
-            print('Field data: ' + repr(self.bibdata[c]))
+            print('Template: "' + self.bstdict[entry['entrytype']] + '"')
+            print('Field data: ' + repr(entry))
 
         if (self.options['citation_order'] in ('citenumber','citenum','none','unsrt')):
             itemstr = r'\bibitem{' + c + '}\n'
@@ -857,31 +887,34 @@ class Bibdata(object):
             print('Warning: citation key "' + c + '" is not in the bibliography database.')
             return(itemstr + '\\textit{Warning: citation key is not in the bibliography database}.')
 
-        entrytype = self.bibdata[c]['entrytype']
+        entrytype = entry['entrytype']
 
         ## If the journal format uses ProcSPIE like a journal, then you need to change the entrytype
         ## from "inproceedings" to "article", and add a "journal" field.
-        if self.options['procspie_as_journal'] and (self.bibdata[c]['entrytype'] == 'inproceedings') and \
-            ('series' in self.bibdata[c]) and (self.bibdata[c]['series'] in ['Proc. SPIE','procspie']):
+        if self.options['procspie_as_journal'] and (entry['entrytype'] == 'inproceedings') and \
+            ('series' in entry) and (entry['series'] in ['Proc. SPIE','procspie']):
             entrytype = 'article'
-            self.bibdata[c]['entrytype'] = 'article'
-            self.bibdata[c]['journal'] = 'Proc. SPIE'
+            entry['entrytype'] = 'article'
+            entry['journal'] = 'Proc. SPIE'
 
         if (entrytype in self.bstdict):
             templatestr = self.bstdict[entrytype]
         else:
-            print('Warning: entrytype "' + entrytype + '" does not have a template defined in the '
-                  '.bst file.')
-            return(itemstr + '\\textit{Warning: entrytype "' + entrytype + '" does not have a '
-                   'template defined in the .bst file}.')
+            msg = 'Warning: entrytype "' + entrytype + '" does not have a template defined in the ' + \
+                  '.bst file'
+            print(msg)
+            return(itemstr + '\\textit{' + msg + '}.')
 
         ## Process the optional arguments. First check the syntax. Make sure that there are the same
         ## number of open as closed brackets.
         num_obrackets = templatestr.count('[')
         num_cbrackets = templatestr.count(']')
-        assert (num_obrackets == num_cbrackets), 'There are ' + unicode(num_obrackets) + \
-            ' open brackets "[", but ' + unicode(num_cbrackets) + ' close brackets "]" in the ' + \
-            'formatting string.'
+        if (num_obrackets != num_cbrackets):
+            msg = 'In the template for entrytype "' + entrytype + '" there are ' + \
+                  unicode(num_obrackets) + ' open brackets "[", but ' + unicode(num_cbrackets) + \
+                  ' close brackets "]" in the formatting string.'
+            print('Warning: ' + msg)
+            return(itemstr + '\\testit{' + msg + '}.')
 
         ## Get the list of all the variables used by the template string.
         variables = re.findall(r'<.*?>', templatestr)
@@ -893,30 +926,32 @@ class Bibdata(object):
         for i in range(num_obrackets):
             start_idx = templatestr.index('[')
             end_idx = templatestr.index(']')
-            assert (start_idx < end_idx), 'A closed bracket "]" occurs before an open bracket ' + \
+            if not (start_idx < end_idx):
+                msg = 'A closed bracket "]" occurs before an open bracket ' + \
                     '"[" in the format str "' + templatestr + '".'
+                print('Warning: ' + msg)
+                return(itemstr + '\\testit{' + msg + '}.')
 
             ## Remove the outer square brackets, and use the resulting substring as an input to the
             ## parser.
             substr = templatestr[start_idx+1:end_idx]
             ## In each options train, go through and replace the whole train with the one block that
             ## has a defined value.
-            res = parse_bst_template_str(substr, self.bibdata[c], variables,
-                                         undefstr=self.options['undefstr'])
+            res = parse_bst_template_str(substr, entry, variables, undefstr=self.options['undefstr'])
             templatestr = templatestr[:start_idx] + res + templatestr[end_idx+1:]
 
         ## Next go through the template and replace each variable with the appropriate string from
         ## the database. Start with the three special cases.
-        if ('<authorliststr>' in templatestr) and ('authorlist' in self.bibdata[c]):
-            self.bibdata[c]['authorliststr'] = self.format_namelist(self.bibdata[c]['authorlist'], 'author')
-        if ('<editorliststr>' in templatestr) and ('editorlist' in self.bibdata[c]):
-            self.bibdata[c]['editorliststr'] = self.format_namelist(self.bibdata[c]['editorlist'], 'editor')
+        if ('<authorliststr>' in templatestr) and ('authorlist' in entry):
+            entry['authorliststr'] = self.format_namelist(entry['authorlist'], 'author')
+        if ('<editorliststr>' in templatestr) and ('editorlist' in entry):
+            entry['editorliststr'] = self.format_namelist(entry['editorlist'], 'editor')
 
-        if ('<title>' in templatestr) and ('title' in self.bibdata[c]):
+        if ('<title>' in templatestr) and ('title' in entry):
             if self.options['force_sentence_case']:
-                title = sentence_case(self.bibdata[c]['title'])
+                title = sentence_case(entry['title'])
             else:
-                title = self.bibdata[c]['title']
+                title = entry['title']
 
             ## If the template string has punctuation right after the title, and the title itself
             ## also has punctuation, then you may get something like "Title?," where the two
@@ -935,14 +970,26 @@ class Bibdata(object):
         specials_list = ('<title>')
         variables = [item for item in variables if item not in specials_list]
 
+        ## The following variables are needed for user-defined functions.
+        if self.user_variables:
+            options = self.options
+            citedict = self.citedict
+            bstdict = self.bstdict
+            bibdata = self.bibdata
+
         for var in variables:
             if (var in templatestr):
                 varname = var[1:-1]     ## remove angle brackets to extract just the name
                 ## Check if the variable is defined and that it is not None (or empty string).
-                if (varname in self.bibdata[c]) and self.bibdata[c][varname]:
-                    templatestr = templatestr.replace(var, unicode(self.bibdata[c][varname]))
+                if (varname in entry) and entry[varname]:
+                    templatestr = templatestr.replace(var, unicode(entry[varname]))
+                elif (varname in self.user_variables):
+                    user_var_value = eval(self.user_variables[varname])
+                    if user_var_value:
+                        templatestr = templatestr.replace(var, unicode(user_var_value))
+                    else:
+                        templatestr = templatestr.replace(var, self.options['undefstr'])
                 else:
-                    #print('Warning: cannot find "' + varname + '" in entry "' + c + '".')
                     templatestr = templatestr.replace(var, self.options['undefstr'])
 
         ## Add the template string onto the "\bibitem{...}\n" line in front of it.
@@ -3192,6 +3239,42 @@ def make_sortkey_unique(sortkey, sortdict):
             break
 
     return(newkey)
+
+## =============================
+def filter_script(line):
+    '''
+    Remove elements from a Python script which are provide the most egregious security flaws; also
+    replace some identifiers with their correct namespace representation.
+
+    Parameters
+    ----------
+    line : str
+        The line of source code to filter.
+
+    Returns
+    -------
+    filtered : str
+        The filtered line of source code.
+    '''
+
+    line = line.strip()
+    #identifier_pattern = re.compile(r'[A-Za-z_]\w+', re.UNICODE)
+    os_pattern = re.compile(r'\Wos.', re.UNICODE)
+    sys_pattern = re.compile(r'\Wsys.', re.UNICODE)
+
+    if line.startswith('import') or re.search(os_pattern, line) or re.search(sys_pattern, line):
+        filtered = ''
+    else:
+        filtered = line
+
+    ## Replace any use of "entry", "options", "citedict", or "bstdict" with the needed identifier
+    ## for the namespace inside format_bibitem().
+    filtered = re.sub(r'(?<=\W)entry(?=\W)', 'self.bibdata[c]', line, re.UNICODE)
+    filtered = re.sub(r'(?<=\W)options(?=\W)', 'self.options', line, re.UNICODE)
+    filtered = re.sub(r'(?<=\W)citedict(?=\W)', 'self.citedict', line, re.UNICODE)
+    filtered = re.sub(r'(?<=\W)bstdict(?=\W)', 'self.bstdict', line, re.UNICODE)
+
+    return(filtered)
 
 ## ==================================================================================================
 

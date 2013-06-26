@@ -40,4 +40,6 @@ namelist_format = first_name_first        ## defines values for both "authorlist
 use_name_ties = False                     ## whether or not to tie together initials with unbreakable spaces ('~')
 replace_newlines = True                   ## whether to replace newline characters inside fields with spaces
 
+VARIABLES:
+
 DEFINITIONS:
