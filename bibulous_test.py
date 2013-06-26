@@ -83,13 +83,8 @@ def run_test1():
         ## specific test template second --- this allows each test template to be
         ## very simple (only the differences from the default need to be used).
         if (bstfile != bstfiles[0]):
-            bibobj.debug = True
             bibobj.options = {}
-            print('!!! Resetting options !!!')
             bibobj.parse_bstfile('./test/test1.bst')
-            print('!!! Done loading default options !!!')
-
-        print('force_sentence_case = ', bibobj.options['force_sentence_case'])
 
         bibobj.parse_bstfile(bstfile)
         write_postamble = (bstfile == bstfiles[-1])

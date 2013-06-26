@@ -88,25 +88,16 @@ Python testing to-do
 
 #. Add a test for locale-dependent sorting.
 
-Template files to-do
---------------------
-
-#. Now that you have a ``bibulous_authorextract`` script, write a
-   ``cvpublications.bst`` style template file to go with it. Bibliography sections: "peer
-   reviewed journal articles", "conference proceedings papers", "presentations". And
-   entries should be sorted in reverse chronological order.
-
-#. Show how to use Bibulous to create a glossary.
-
-#. Show a style template that implements an annotated bibliography using the "annotation"
-   field in the .bib database.
-
-#. Try implementing some other BST formats, especially OSA's Opt. Lett. and SPIE's Opt. Eng.
-   Note that ``chicago.sty`` uses ``chicago.bst``, and ``apalike.sty`` uses ``apalike.bst``.
-
 #. Allow the style template parsing engine a means of setting, for example, fieldname
    ``authors`` to get mapped to fieldname ``author``. Maybe something as simple as
 
         entry.author = entry.authors
 
-   or something like that.
+   or something like that. This is not trivial because you can't just overwrite an
+   existing 'author' field.
+
+Template files to-do
+--------------------
+
+#. Try implementing some other BST formats, especially OSA's Opt. Lett. and SPIE's Opt. Eng.
+   Note that ``chicago.sty`` uses ``chicago.bst``, and ``apalike.sty`` uses ``apalike.bst``.

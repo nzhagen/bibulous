@@ -27,6 +27,8 @@ monthformat3 = <authorliststr>, \enquote{<title>} (<month>, <year>).
 replace_newlines = <authorliststr>, \enquote{<title>,} \textit{<journal>} \textbf{<volume>}: <startpage>--<endpage> (<year>).
 quote_and_accent_detection = <authorliststr>, \enquote{<title>,} \textit{<journal>} \textbf{<volume>}: <startpage>--<endpage> (<year>).
 hyperlinked_title = <authorliststr>, \enquote{[\href{<url>}{<title>}|\href{<doi>}{<title>}|<title>|],} \textit{<journal>} \textbf{<volume>}: <startpage>--<endpage> (<year>).
+edition_ordinal = <authorliststr>, \textit{<title>}[, <edition_ordinal>~ed.][, vol.~<volume>] (<publisher>, <year>)[ Chap.~<chapter>][, pp.~<startpage>--<endpage>].[ <note>]
+
 
 OPTIONS:
 citation_order = citenum                  ## order the bibliography by "citekey" or "citenum" (or "nyt" etc.)

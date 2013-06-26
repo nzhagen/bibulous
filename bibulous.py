@@ -779,27 +779,31 @@ class Bibdata(object):
             ## the "edition_ordinal", etc. Doing it here means that we don't have to add lots of
             ## extra checks later, allowing for simpler code.
             if (c in self.bibdata):
-                if ('edition' in self.bibdata[c]):
-                    self.bibdata[c]['edition_ordinal'] = create_edition_ordinal(self.bibdata[c], c, self.options)
+                entry = self.bibdata[c]
 
-                if ('pages' in self.bibdata[c]):
-                    (startpage,endpage) = parse_pagerange(self.bibdata[c]['pages'], c)
-                    self.bibdata[c]['startpage'] = startpage
-                    self.bibdata[c]['endpage'] = endpage
+                if ('edition' in entry):
+                    entry['edition_ordinal'] = create_edition_ordinal(entry, self.options)
+
+                if ('pages' in entry):
+                    (startpage,endpage) = parse_pagerange(entry['pages'], c)
+                    entry['startpage'] = startpage
+                    entry['endpage'] = endpage
 
                 ## The "month" is stored in the bibdata dictionary as a string representing an integer
                 ## from 1 to 12. Here we need to translate it to a string name.
-                if ('month' in self.bibdata[c]):
-                    if self.bibdata[c]['month'].isdigit():
-                        monthname = monthname_dict[self.bibdata[c]['month']]
+                if ('month' in entry):
+                    if entry['month'].isdigit():
+                        monthname = monthname_dict[entry['month']]
                     else:
-                        monthname = self.bibdata[c]['month']
-                    self.bibdata[c]['monthname'] = monthname
+                        monthname = entry['month']
+                    entry['monthname'] = monthname
 
-                if ('doi' in self.bibdata[c]):
-                    if not self.bibdata[c]['doi'].startswith('http://dx.doi.org/'):
-                        self.bibdata[c]['doi'] = 'http://dx.doi.org/' + self.bibdata[c]['doi']
+                if ('doi' in entry):
+                    if not entry['doi'].startswith('http://dx.doi.org/'):
+                        entry['doi'] = 'http://dx.doi.org/' + entry['doi']
 
+            ## Now that we have generated all of the "special" fields, we can call the bibitem
+            ## formatter to generate the output for this entry.
             s = self.format_bibitem(c)
             if (s != ''):
                 ## Need two line EOL's here and not one so that backrefs can work properly.
@@ -3056,17 +3060,15 @@ def search_middlename_for_prefixes(namedict):
     return(namedict)
 
 ## =============================
-def create_edition_ordinal(bibentry, key, options):
+def create_edition_ordinal(bibentry, options):
     '''
     Given a bibliography entry's edition *number*, format it as an ordinal (i.e. "1st", "2nd" \
     instead of "1", "2") in the way that it will appear on the formatted page.
 
     Parameters
     ----------
-    bibdata :  dict
-        The bibliography database dictionary (constructed from ".bib" files).
-    key :      str
-        The key in `bibdata` defining the current entry being formatted.
+    bibentry : dict
+        The bibliography database entry.
     options : dict, optional
         Includes formatting options such as
         'missing_data_excaptions': Whether to raise an exception when encountering missing data \
@@ -3078,11 +3080,8 @@ def create_edition_ordinal(bibentry, key, options):
         The formatted form of the edition, with ordinal attached.
     '''
 
-    ## TODO: need to replace the English-locale-dependent approach here with an international
-    ## friendly approach. Any ideas?
-
     ## First check that the key exists.
-    if (key not in bibentry):
+    if ('edition' not in bibentry):
         return(options['undefstr'])
 
     if not ('edition' in bibentry):
