@@ -8,7 +8,7 @@ Kile: replacing BibTeX with Bibulous
 
 1. In your ``.tex`` file, change the filename of the ``\bibliography{...}`` command to the filename for the appropriate Bibulous-format bibliography style template (``.bst`` file).
 
-2. In Kile, go to the menu bar and select ``Settings`` > ``Configure Kile``. Select ``Tools`` > ``Build`` and choose ``BibTeX`` from the ``Select a tool`` menu (see the figure). To the right of the menu, after you select ``BibTeX`` you should see "Choose a configuration for the tool BibTeX". Below the drop-down menu, select the button "New" and type in the name ``Bibulous`` (or whatever you prefer to call your new tool). Below, in the ``General`` tab, type in the location of the ``bibulous.py`` file. And in the ``Options`` field, type ``%S.aux``.
+2. In Kile, go to the menu bar and select ``Settings`` > ``Configure Kile``. Select ``Tools`` > ``Build`` and choose ``BibTeX`` from the ``Select a tool`` menu (see the figure). To the right of the menu, after you select ``BibTeX`` you should see "Choose a configuration for the tool BibTeX". Below the drop-down menu, select the button "New" and type in the name ``Bibulous`` (or whatever you prefer to call your new tool). Below, in the ``General`` tab, type in the location of the ``bibulous.py`` file. And in the ``Options`` field, type ``%dir_base/%S.aux``.
 
 .. image:: _static/screenshot_for_kile_instructions.png
    :width: 49%
@@ -17,6 +17,20 @@ Kile: replacing BibTeX with Bibulous
    :width: 49%
 
 That should be it. In case your default setup is different, you can also check the ``Advanced`` tab settings and verify that they are as shown in the second figure. (That is, ``Source extension`` is set to ``aux``, and ``Target extension`` is set to ``bbl``.)
+
+3. Note that the following variables are accessible in Kile's ``Options`` field::
+
+    %source = filename (i.e. filename with suffix but not path)
+    %S = filename without suffix (and without path)
+    %dir_base = source file directory (source file's path without the filename)
+    %dir_target = target file directory (source file's path without the filename)
+
+
+
+
+
+
+
 
 Modifying WinEdt5 to replace BibTeX with Bibulous
 -------------------------------------------------

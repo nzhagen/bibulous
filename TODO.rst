@@ -1,14 +1,8 @@
 Python code to-do
 -----------------
 
-#. Put some simple safeties into the API engine. Such as: prevent imports and file operations. Prevent
-   use of os and sys modules. And some of the built-in functions as well.
-
 #. Look into whether the code can be simplified and user scripts still benefit if you move some
    bibulous module functions from module scope functions to Bibdata class methods.
-
-#. Add documentation to the Bibulous' class attributes and methods. See ``numpydoc``'s "HOWTO_DOCUMENT"
-   to get this set up right.
 
 #. Simplify the ``parse_bibfield()`` method by taking some of the function's load off into a subroutine.
 
@@ -23,8 +17,6 @@ Python code to-do
 
 #. Make sure that when an exception has occurred, you still generate a valid BBL file (just
    an incomplete one). So you will need to make use of some ``try...except`` blocks.
-
-#. Add the "Example" section to the Bibdata class docstring.
 
 #. Write a ``bibclean`` function which checks a ``*.bib`` file for errors. Include using
    ``namefield_to_namelist()`` to check for name format errors. A common problem will be encoding

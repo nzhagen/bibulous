@@ -85,7 +85,7 @@
 template format is compact and <em>very</em> easy to modify.</p>
 <p>The basic program flow is as follows:</p>
 <ol class="arabic simple">
-<li>Read the .aux file and get the names of the bibliography databases (.bib files),
+<li>Read the <cite>.aux</cite> file and get the names of the bibliography databases (<cite>.bib</cite> files),
 the style templates (.bst files) to use, and the entire set of citations.</li>
 <li>Read in all of the bibliography database files into one long dictionary (<cite>bibdata</cite>),
 replacing any abbreviations with their full form. Cross-referenced data is <em>not</em> yet
@@ -199,7 +199,7 @@ level zero.</p>
 
 <dl class="function">
 <dt id="bibulous.namefield_to_namelist">
-<tt class="descclassname">bibulous.</tt><tt class="descname">namefield_to_namelist</tt><big>(</big><em>namefield</em>, <em>key=None</em>, <em>nameabbrev=None</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#namefield_to_namelist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.namefield_to_namelist" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">bibulous.</tt><tt class="descname">namefield_to_namelist</tt><big>(</big><em>namefield</em>, <em>key=None</em>, <em>nameabbrev=None</em>, <em>disable=None</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#namefield_to_namelist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.namefield_to_namelist" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse a name field (&#8220;author&#8221; or &#8220;editor&#8221;) of a BibTeX entry into a list of dicts, one for
 each person.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -217,6 +217,10 @@ each person.</p>
 <p><strong>nameabbrev</strong> : dict</p>
 <blockquote>
 <div><p>The dictionary for translating names to their abbreviated forms.</p>
+</div></blockquote>
+<p><strong>disable</strong> : list of int, optional</p>
+<blockquote>
+<div><p>The list of warning message numbers to ignore.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -346,7 +350,7 @@ initials.</p>
 
 <dl class="function">
 <dt id="bibulous.get_quote_levels">
-<tt class="descclassname">bibulous.</tt><tt class="descname">get_quote_levels</tt><big>(</big><em>s</em>, <em>debug=False</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#get_quote_levels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.get_quote_levels" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">bibulous.</tt><tt class="descname">get_quote_levels</tt><big>(</big><em>s</em>, <em>disable=None</em>, <em>debug=False</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#get_quote_levels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.get_quote_levels" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a list which gives the &#8220;quotation level&#8221; of each character in the string.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -355,6 +359,10 @@ initials.</p>
 <tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>s</strong> : str</p>
 <blockquote>
 <div><p>The string to analyze.</p>
+</div></blockquote>
+<p><strong>disable</strong> : list of int, optional</p>
+<blockquote>
+<div><p>The list of warning message numbers to ignore.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -439,7 +447,7 @@ you are splitting on is not always a valid splitting location.</p>
 
 <dl class="function">
 <dt id="bibulous.enwrap_nested_string">
-<tt class="descclassname">bibulous.</tt><tt class="descname">enwrap_nested_string</tt><big>(</big><em>s</em>, <em>delims=(u'{'</em>, <em>u'}')</em>, <em>odd_operator=u'\\textbf'</em>, <em>even_operator=u'\\textrm'</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#enwrap_nested_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.enwrap_nested_string" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">bibulous.</tt><tt class="descname">enwrap_nested_string</tt><big>(</big><em>s</em>, <em>delims=(u'{'</em>, <em>u'}')</em>, <em>odd_operator=u'\\textbf'</em>, <em>even_operator=u'\\textrm'</em>, <em>disable=None</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#enwrap_nested_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.enwrap_nested_string" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function will return the input string if it finds there
 are no nested operators inside (i.e. when the number of delimiters found is &lt; 2).</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -462,6 +470,10 @@ are no nested operators inside (i.e. when the number of delimiters found is &lt;
 <blockquote>
 <div><p>The operator used to replace the currently used one for all even nesting levels.</p>
 </div></blockquote>
+<p><strong>disable</strong> : list of int, optional</p>
+<blockquote>
+<div><p>The list of warning message numbers to ignore.</p>
+</div></blockquote>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>s</strong> : str</p>
@@ -476,7 +488,7 @@ are no nested operators inside (i.e. when the number of delimiters found is &lt;
 
 <dl class="function">
 <dt id="bibulous.enwrap_nested_quotes">
-<tt class="descclassname">bibulous.</tt><tt class="descname">enwrap_nested_quotes</tt><big>(</big><em>s</em>, <em>debug=False</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#enwrap_nested_quotes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.enwrap_nested_quotes" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">bibulous.</tt><tt class="descname">enwrap_nested_quotes</tt><big>(</big><em>s</em>, <em>disable=None</em>, <em>debug=False</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#enwrap_nested_quotes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.enwrap_nested_quotes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find nested quotes within strings and, if necessary, replace them with the proper nesting
 (i.e. outer quotes use <a href="#id5"><span class="problematic" id="id6">``</span></a><tt class="docutils literal"><span class="pre">...''</span></tt> while inner quotes use <tt class="docutils literal"><span class="pre">`...'</span></tt>).</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -486,6 +498,10 @@ are no nested operators inside (i.e. when the number of delimiters found is &lt;
 <tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>s</strong> : str</p>
 <blockquote>
 <div><p>The string to modify.</p>
+</div></blockquote>
+<p><strong>disable</strong> : list of int, optional</p>
+<blockquote>
+<div><p>The list of warning message numbers to ignore.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -553,7 +569,7 @@ character which is correctly written as &#8216;i. Add functionality to allow tha
 <dl class="function">
 <dt id="bibulous.parse_bst_template_str">
 <tt class="descclassname">bibulous.</tt><tt class="descname">parse_bst_template_str</tt><big>(</big><em>bst_template_str</em>, <em>bibentry</em>, <em>variables</em>, <em>undefstr=u'???'</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#parse_bst_template_str"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.parse_bst_template_str" title="Permalink to this definition">¶</a></dt>
-<dd><p>From an &#8220;options train&#8221; <cite>[...|...|...]</cite>, find the first defined block in the
+<dd><p>From an &#8220;options train&#8221; <cite>[...|...|...]</cite>, find the first fully defined block in the
 train.</p>
 <p>A Bibulous type of bibliography style template string contains grammatical featues
 called options trains, of the form <cite>[...|...|...]</cite>. Each &#8220;block&#8221; in the train (divided
@@ -593,7 +609,7 @@ entire options train in the returned string.</p>
 
 <dl class="function">
 <dt id="bibulous.namestr_to_namedict">
-<tt class="descclassname">bibulous.</tt><tt class="descname">namestr_to_namedict</tt><big>(</big><em>namestr</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#namestr_to_namedict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.namestr_to_namedict" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">bibulous.</tt><tt class="descname">namestr_to_namedict</tt><big>(</big><em>namestr</em>, <em>disable=None</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#namestr_to_namedict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.namestr_to_namedict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Take a BibTeX string representing a single person&#8217;s name and parse it into its first, middle,     last, etc pieces.</p>
 <dl class="docutils">
 <dt>BibTeX allows three different styles of author formats.</dt>
@@ -612,6 +628,10 @@ entire options train in the returned string.</p>
 <tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>namestr</strong> : str</p>
 <blockquote>
 <div><p>The string containing a single person&#8217;s name, in BibTeX format</p>
+</div></blockquote>
+<p><strong>disable</strong> : list of int, optional</p>
+<blockquote>
+<div><p>The list of warning message numbers to ignore.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -652,24 +672,19 @@ entire options train in the returned string.</p>
 
 <dl class="function">
 <dt id="bibulous.create_edition_ordinal">
-<tt class="descclassname">bibulous.</tt><tt class="descname">create_edition_ordinal</tt><big>(</big><em>bibentry</em>, <em>key</em>, <em>options</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#create_edition_ordinal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.create_edition_ordinal" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">bibulous.</tt><tt class="descname">create_edition_ordinal</tt><big>(</big><em>bibentry</em>, <em>disable=None</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#create_edition_ordinal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.create_edition_ordinal" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given a bibliography entry&#8217;s edition <em>number</em>, format it as an ordinal (i.e. &#8220;1st&#8221;, &#8220;2nd&#8221;     instead of &#8220;1&#8221;, &#8220;2&#8221;) in the way that it will appear on the formatted page.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>bibdata</strong> :  dict</p>
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>bibentry</strong> : dict</p>
 <blockquote>
-<div><p>The bibliography database dictionary (constructed from &#8221;.bib&#8221; files).</p>
+<div><p>The bibliography database entry.</p>
 </div></blockquote>
-<p><strong>key</strong> :      str</p>
+<p><strong>disable</strong> : list of int, optional</p>
 <blockquote>
-<div><p>The key in <cite>bibdata</cite> defining the current entry being formatted.</p>
-</div></blockquote>
-<p><strong>options</strong> : dict, optional</p>
-<blockquote>
-<div><p>Includes formatting options such as
-&#8216;missing_data_excaptions&#8217;: Whether to raise an exception when encountering missing data             errors.</p>
+<div><p>The list of warning message numbers to ignore.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -707,7 +722,7 @@ entire options train in the returned string.</p>
 
 <dl class="function">
 <dt id="bibulous.parse_pagerange">
-<tt class="descclassname">bibulous.</tt><tt class="descname">parse_pagerange</tt><big>(</big><em>pages_str</em>, <em>citekey=None</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#parse_pagerange"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.parse_pagerange" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">bibulous.</tt><tt class="descname">parse_pagerange</tt><big>(</big><em>pages_str</em>, <em>citekey=None</em>, <em>disable=None</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#parse_pagerange"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.parse_pagerange" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given a string containing the &#8220;pages&#8221; field of a bibliographic entry, figure out the start and
 end pages.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -721,6 +736,10 @@ end pages.</p>
 <p><strong>citekey</strong> : str, optional</p>
 <blockquote>
 <div><p>The citation key (useful for debugging messages).</p>
+</div></blockquote>
+<p><strong>disable</strong> : list of int, optional</p>
+<blockquote>
+<div><p>The list of warning message numbers to ignore.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -763,9 +782,110 @@ parse the string into a dictionary of names and abbreviations.</p>
 </table>
 </dd></dl>
 
+<dl class="function">
+<dt id="bibulous.make_sortkey_unique">
+<tt class="descclassname">bibulous.</tt><tt class="descname">make_sortkey_unique</tt><big>(</big><em>sortkey</em>, <em>sortdict</em><big>)</big><a class="headerlink" href="#bibulous.make_sortkey_unique" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a key that matches an already-present key in the input dictionary, generate a new key by
+appending zeros to the key string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>sortkey</strong> : str</p>
+<blockquote>
+<div><p>The key to be modified.</p>
+</div></blockquote>
+<p><strong>sortdict</strong> : dict</p>
+<blockquote>
+<div><p>The dictionary whose keys we can query to check for uniqueness.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>newkey</strong> : str</p>
+<blockquote class="last">
+<div><p>The new (and unique) key.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="bibulous.filter_script">
+<tt class="descclassname">bibulous.</tt><tt class="descname">filter_script</tt><big>(</big><em>line</em><big>)</big><a class="headerlink" href="#bibulous.filter_script" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove elements from a Python script which are provide the most egregious security flaws; also
+replace some identifiers with their correct namespace representation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>line</strong> : str</p>
+<blockquote>
+<div><p>The line of source code to filter.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>filtered</strong> : str</p>
+<blockquote class="last">
+<div><p>The filtered line of source code.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="bibulous.str_is_integer">
+<tt class="descclassname">bibulous.</tt><tt class="descname">str_is_integer</tt><big>(</big><em>s</em><big>)</big><a class="headerlink" href="#bibulous.str_is_integer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check is an input string represents an integer value. Although a trivial function, it will be
+useful for user scripts.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>s</strong> : str</p>
+<blockquote>
+<div><p>The input string to test.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>is_integer</strong> : bool</p>
+<blockquote class="last">
+<div><p>Whether the string represents an integer value.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="bibulous.warn">
+<tt class="descclassname">bibulous.</tt><tt class="descname">warn</tt><big>(</big><em>msg</em>, <em>disable=None</em><big>)</big><a class="headerlink" href="#bibulous.warn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print a warning message, with the option to disable any given message.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>msg</strong> : str</p>
+<blockquote>
+<div><p>The warning message to print.</p>
+</div></blockquote>
+<p><strong>disable</strong> : list of int, optional</p>
+<blockquote class="last">
+<div><p>The list of warning message numbers that the user wishes to disable (i.e. ignore).</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="class">
 <dt id="bibulous.Bibdata">
-<em class="property">class </em><tt class="descclassname">bibulous.</tt><tt class="descname">Bibdata</tt><big>(</big><em>filename</em>, <em>debug=False</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#Bibdata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.Bibdata" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">bibulous.</tt><tt class="descname">Bibdata</tt><big>(</big><em>filename</em>, <em>disable=</em><span class="optional">[</span><span class="optional">]</span>, <em>debug=False</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#Bibdata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.Bibdata" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bibdata is a class to hold all data related to a bibliography database, a citation list, and a
 style template.</p>
 <p>To initialize the class, either call it with the filename of the &#8221;.aux&#8221; file containing the
@@ -863,7 +983,7 @@ the others contain only a single filename.</td>
 <tr class="row-even"><td><a class="reference internal" href="#bibulous.Bibdata.parse_auxfile" title="bibulous.Bibdata.parse_auxfile"><tt class="xref py py-obj docutils literal"><span class="pre">parse_auxfile</span></tt></a>(filename[,&nbsp;debug])</td>
 <td>Read in an &#8221;.aux&#8221; file and convert the <cite>citation{}</cite> entries found there into a dictionary of citekeys and citation order number.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#bibulous.Bibdata.parse_bstfile" title="bibulous.Bibdata.parse_bstfile"><tt class="xref py py-obj docutils literal"><span class="pre">parse_bstfile</span></tt></a>(filename[,&nbsp;ignore_overwrite,&nbsp;...])</td>
+<tr class="row-odd"><td><a class="reference internal" href="#bibulous.Bibdata.parse_bstfile" title="bibulous.Bibdata.parse_bstfile"><tt class="xref py py-obj docutils literal"><span class="pre">parse_bstfile</span></tt></a>(filename)</td>
 <td>Convert a Bibulous-type bibliography style template into a dictionary.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#bibulous.Bibdata.write_bblfile" title="bibulous.Bibdata.write_bblfile"><tt class="xref py py-obj docutils literal"><span class="pre">write_bblfile</span></tt></a>([filename,&nbsp;write_preamble,&nbsp;...])</td>
@@ -902,18 +1022,6 @@ the others contain only a single filename.</td>
 <dt id="bibulous.Bibdata.create_citation_list">
 <tt class="descname">create_citation_list</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/bibulous.html#Bibdata.create_citation_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.Bibdata.create_citation_list" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create the list of citation keys, sorted into the proper order.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>citelist</strong> : list</p>
-<blockquote class="last">
-<div><p>The sorted list of citation keys.</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
 </dd></dl>
 
 <dl class="method">
@@ -948,6 +1056,7 @@ person).</p>
 in the bibliography database. From the entry&#8217;s <cite>entrytype</cite>, lookup the relevant template
 in bstdict and start replacing template variables with formatted elements of the database
 entry. Once you&#8217;ve replaced all template variables, you&#8217;re done formatting that entry.</p>
+<p>This function is also where we compile any scripts present in the BST files.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1138,7 +1247,7 @@ names and field values.</p>
 
 <dl class="method">
 <dt id="bibulous.Bibdata.parse_bstfile">
-<tt class="descname">parse_bstfile</tt><big>(</big><em>filename</em>, <em>ignore_overwrite=False</em>, <em>debug=False</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#Bibdata.parse_bstfile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.Bibdata.parse_bstfile" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">parse_bstfile</tt><big>(</big><em>filename</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#Bibdata.parse_bstfile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.Bibdata.parse_bstfile" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert a Bibulous-type bibliography style template into a dictionary.</p>
 <p>The resulting dictionary consists of keys which are the various entrytypes, and values which         are the template strings. In addition, any formatting options are stored in the &#8220;options&#8221; key         as a dictionary of option_name:option_value pairs.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1146,12 +1255,8 @@ names and field values.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>filename</strong> : str</p>
-<blockquote>
-<div><p>The filename of the Bibulous style template to use.</p>
-</div></blockquote>
-<p><strong>ignore_overwrite</strong> : bool, optional</p>
 <blockquote class="last">
-<div><p>Whether to issue a warning when overwriting an existing template variable.</p>
+<div><p>The filename of the Bibulous style template to use.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -1236,11 +1341,11 @@ or {&#8216;first&#8217;:&#8217;Bugs&#8217;, &#8216;last&#8217;:&#8217;Bunny&#821
 </div></blockquote>
 <p><strong>write_preamble</strong> : bool, optional</p>
 <blockquote>
-<div><p>Whether to write the preamble. (Setting this to False can be useful when writing the             bibliography in separate steps.)</p>
+<div><p>Whether to write the preamble. (Setting this to False can be useful when writing the             bibliography in separate steps, as in the testing suite.)</p>
 </div></blockquote>
 <p><strong>write_postamble</strong> : bool, optional</p>
 <blockquote>
-<div><p>Whether to write the postamble. (Setting this to False can be useful when writing the             bibliography in separate steps.)</p>
+<div><p>Whether to write the postamble. (Setting this to False can be useful when writing the             bibliography in separate steps, as in the testing suite.)</p>
 </div></blockquote>
 <p><strong>bibsize</strong> : str, optional</p>
 <blockquote class="last">
