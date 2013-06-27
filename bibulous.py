@@ -139,7 +139,7 @@ class Bibdata(object):
         self.citedict = {}  ## the dictionary containing the original data from the AUX file
         self.citelist = []  ##citation keys in the ordered they will be printed in the final result
         self.bstdict = {}
-        self.script = ''    ## any user-written Python scripts go here
+        self.user_script = ''    ## any user-written Python scripts go here
         self.user_variables = {}    ### any user-defined variables from the BST files
 
         ## Temporary variables for use in error messages while parsing files.
@@ -577,6 +577,7 @@ class Bibdata(object):
         definition_pattern = re.compile(r'\s=\s', re.UNICODE)
         section = 'TEMPLATES'
         continuation = False    ## whether the current line is a continuation of the previous
+        abort_script = False    ## if an unsafe object is being used, abort the user_script eval
 
         for i,line in enumerate(filehandle):
             ## Ignore any comment lines, and remove any comments from data lines.
@@ -608,7 +609,38 @@ class Bibdata(object):
                 continue
 
             if (section == 'DEFINITIONS'):
-                self.script += line
+                if ('__' in line):
+                    warn('Warning 026a: Python script line #' + str(i) + ' of file "' + filename + \
+                         '" contains an invalid use of "__".\nAborting script evaluation ...',
+                         self.disable)
+                    abort_script = True
+                if re.search(r'\sos.\S', line, re.UNICODE):
+                    warn('Warning 026b: Python script line #' + str(i) + ' of file "' + filename + \
+                         '" contains an invalid call to the "os" module.\n' + \
+                         'Aborting script evaluation ...', self.disable)
+                    abort_script = True
+                if re.search(r'\ssys.\S', line, re.UNICODE):
+                    warn('Warning 026c: Python script line #' + str(i) + ' of file "' + filename + \
+                         '" contains an invalid call to the "sys" module.\n' + \
+                         'Aborting script evaluation ...', self.disable)
+                    abort_script = True
+                if re.search(r'\scodecs.\S', line, re.UNICODE):
+                    warn('Warning 026c: Python script line #' + str(i) + ' of file "' + filename + \
+                         '" contains an invalid call to the "codecs" module.\n' + \
+                         'Aborting script evaluation ...', self.disable)
+                    abort_script = True
+                if re.search(r'^import\s', line, re.UNICODE):
+                    warn('Warning 026d: Python script line #' + str(i) + ' of file "' + filename + \
+                         '" contains an invalid call to "import".\n' + \
+                         'Aborting script evaluation ...', self.disable)
+                    abort_script = True
+                if re.search(r'^import\s', line, re.UNICODE):
+                    warn('Warning 026e: Python script line #' + str(i) + ' of file "' + filename + \
+                         '" contains an invalid call to the "open()" function.\n' + \
+                         'Aborting script evaluation ...', self.disable)
+                    abort_script = True
+
+                self.user_script += line
                 if self.debug: print('Adding a line to the BST scripting string: ' + line, end='')
 
             line = line.strip()
@@ -689,6 +721,9 @@ class Bibdata(object):
 
         filehandle.close()
 
+        if abort_script:
+            self.user_script = ''
+
         ## The "terse_inits" options has to override the "period_after_initial" option.
         if ('terse_inits' in self.options) and  self.options['terse_inits']:
             self.options['period_after_initial'] = False
@@ -705,10 +740,10 @@ class Bibdata(object):
 
         ## If the user defined any functions, then we want to evaluate them in a way such that
         ## they are available in other functions.
-        if self.script and self.options['allow_scripts']:
+        if self.user_script and self.options['allow_scripts']:
             if self.debug:
-                print('Evaluating the user script:\n' + 'v'*50 + '\n' + self.script + '^'*50 + '\n')
-            exec(self.script, globals())
+                print('Evaluating the user script:\n' + 'v'*50 + '\n' + self.user_script + '^'*50 + '\n')
+            exec(self.user_script, globals())
 
         if self.debug:
             ## When displaying the bst dictionary, show it in sorted form.
