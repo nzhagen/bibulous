@@ -53,7 +53,8 @@ __all__ = ['get_bibfilenames', 'sentence_case', 'stringsplit', 'finditer', 'name
            'get_quote_levels', 'splitat', 'multisplit', 'enwrap_nested_string',
            'enwrap_nested_quotes', 'purify_string', 'latex_to_utf8', 'parse_bst_template_str',
            'namestr_to_namedict', 'search_middlename_for_prefixes', 'create_edition_ordinal',
-           'export_bibfile', 'parse_pagerange', 'parse_nameabbrev', 'make_sortkey_unique']
+           'export_bibfile', 'parse_pagerange', 'parse_nameabbrev', 'make_sortkey_unique',
+           'filter_script', 'str_is_integer']
 
 
 class Bibdata(object):
@@ -581,6 +582,7 @@ class Bibdata(object):
         ## For the "definition_pattern", rather than matching the initial string up to the first
         ## whitespace character, we match a whitespace-equals-whitespace
         definition_pattern = re.compile(r'\s=\s', re.UNICODE)
+        continuation = False    ## whether the current line is a continuation of the previous
 
         for i,line in enumerate(alllines):
             ## Ignore any comment lines, and remove any comments from data lines.
@@ -592,15 +594,19 @@ class Bibdata(object):
 
             if line.strip().startswith('TEMPLATES:'):
                 section = 'TEMPLATES'
+                continuation = line.endswith('...')
                 continue
             elif line.strip().startswith('OPTIONS:'):
                 section = 'OPTIONS'
+                continuation = False
                 continue
             elif line.strip().startswith('DEFINITIONS:'):
                 section = 'DEFINITIONS'
+                continuation = False
                 continue
             elif line.strip().startswith('VARIABLES:'):
                 section = 'VARIABLES'
+                continuation = False
                 continue
 
             if (section == 'DEFINITIONS'):
@@ -627,15 +633,30 @@ class Bibdata(object):
                 ## scripts in the DEFINITIONS section, which would make troubleshooting those
                 ## more difficult.
                 if not line: continue
-                matchobj = re.search(definition_pattern, line)
-                if (matchobj == None):
-                    print('Warning: line #' + str(i) + ' of file "' + filename + '" does not ' + \
-                          'contain a valid variable definition.\n Skipping ...')
-                    continue
+                if not continuation:
+                    ## If the line ends with an ellpsis, then remove the ellipsis and set continuation to True.
+                    if line.endswith('...'):
+                        line = line[:-3].strip()
+                        continuation = True
 
-                (start,end) = matchobj.span()
-                var = line[:start].strip()
-                value = line[end:].strip()
+                    matchobj = re.search(definition_pattern, line)
+                    if (matchobj == None):
+                        print('Warning: line #' + str(i) + ' of file "' + filename + '" does not ' + \
+                              'contain a valid variable definition.\n Skipping ...')
+                        continue
+
+                    (start,end) = matchobj.span()
+                    var = line[:start].strip()
+                    value = line[end:].strip()
+                else:
+                    ## If the line ends with an ellpsis, then remove the ellipsis and set continuation to True.
+                    if line.endswith('...'):
+                        line = line[:-3].strip()
+                        continuation = True
+                    else:
+                        continuation = False
+
+                    value += line.strip()
 
                 if (section == 'TEMPLATES'):
                     ## The line defines an entrytype template. Check whether this definition is
@@ -938,6 +959,27 @@ class Bibdata(object):
         ## Get the list of all the variables used by the template string.
         variables = re.findall(r'<.*?>', templatestr)
 
+        ## Before checking which variables are defined and which not, we first need to evaluate the
+        ## user-defined variables or else they will always be "undefined". To make this work, we
+        ## also need to provide the user shortcut names:
+        if self.user_variables:
+            options = self.options
+            citedict = self.citedict
+            bstdict = self.bstdict
+            bibdata = self.bibdata
+            for user_var_name in self.user_variables:
+                user_var_value = eval(self.user_variables[user_var_name])
+                self.bibdata[c][user_var_name] = user_var_value
+
+        ## Next go through the template and replace each variable with the appropriate string from
+        ## the database. Start with the three special cases. This block of code has to go before
+        ## the "parse_bst_template_str()" call below to ensure that these variables are defined
+        ## when they are evaluated there.
+        if ('<authorliststr>' in templatestr) and ('authorlist' in entry):
+            entry['authorliststr'] = self.format_namelist(entry['authorlist'], 'author')
+        if ('<editorliststr>' in templatestr) and ('editorlist' in entry):
+            entry['editorliststr'] = self.format_namelist(entry['editorlist'], 'editor')
+
         ## Next, do a nested search. From the beginning of the formatting string look for the first
         ## '[', and the first ']'. If they are out of order, raise an exception. Note that this
         ## assumes that the square brackets cannot be nested. (Is there something important which
@@ -946,25 +988,19 @@ class Bibdata(object):
             start_idx = templatestr.index('[')
             end_idx = templatestr.index(']')
             if not (start_idx < end_idx):
-                msg = 'A closed bracket "]" occurs before an open bracket ' + \
-                    '"[" in the format str "' + templatestr + '".'
+                msg = 'A closed bracket "]" occurs before an open bracket "[" in the format ' + \
+                      'string "' + templatestr + '".'
                 print('Warning: ' + msg)
                 return(itemstr + '\\testit{' + msg + '}.')
 
             ## Remove the outer square brackets, and use the resulting substring as an input to the
             ## parser.
             substr = templatestr[start_idx+1:end_idx]
+
             ## In each options train, go through and replace the whole train with the one block that
             ## has a defined value.
             res = parse_bst_template_str(substr, entry, variables, undefstr=self.options['undefstr'])
             templatestr = templatestr[:start_idx] + res + templatestr[end_idx+1:]
-
-        ## Next go through the template and replace each variable with the appropriate string from
-        ## the database. Start with the three special cases.
-        if ('<authorliststr>' in templatestr) and ('authorlist' in entry):
-            entry['authorliststr'] = self.format_namelist(entry['authorlist'], 'author')
-        if ('<editorliststr>' in templatestr) and ('editorlist' in entry):
-            entry['editorliststr'] = self.format_namelist(entry['editorlist'], 'editor')
 
         if ('<title>' in templatestr) and ('title' in entry):
             if self.options['force_sentence_case']:
@@ -989,13 +1025,6 @@ class Bibdata(object):
         specials_list = ('<title>')
         variables = [item for item in variables if item not in specials_list]
 
-        ## The following variables are needed for user-defined functions.
-        if self.user_variables:
-            options = self.options
-            citedict = self.citedict
-            bstdict = self.bstdict
-            bibdata = self.bibdata
-
         for var in variables:
             if (var in templatestr):
                 varname = var[1:-1]     ## remove angle brackets to extract just the name
@@ -1004,6 +1033,7 @@ class Bibdata(object):
                     templatestr = templatestr.replace(var, unicode(entry[varname]))
                 elif (varname in self.user_variables):
                     user_var_value = eval(self.user_variables[varname])
+
                     if user_var_value:
                         templatestr = templatestr.replace(var, unicode(user_var_value))
                     else:
@@ -1134,9 +1164,15 @@ class Bibdata(object):
         ## so that, say, "10" does not get sorted before "2". Note that this formatting should work
         ## for years between -999 and +9999.
         if ('sortyear' in bibentry):
-            year = unicode('%04i' % int(bibentry['sortyear']))
+            if str_is_integer(bibentry['sortyear']):
+                year = unicode('%04i' % int(bibentry['sortyear']))
+            else:
+                year = bibentry['sortyear']
         elif ('year' in bibentry):
-            year = unicode('%04i' % int(bibentry['year']))
+            if str_is_integer(bibentry['year']):
+                year = unicode('%04i' % int(bibentry['year']))
+            else:
+                year = bibentry['year']
         else:
             year = '9999'
 
@@ -2766,7 +2802,7 @@ def latex_to_utf8(s):
 ## =============================
 def parse_bst_template_str(bst_template_str, bibentry, variables, undefstr='???'):
     '''
-    From an "options train" `[...|...|...]`, find the first defined block in the
+    From an "options train" `[...|...|...]`, find the first fully defined block in the
     train.
 
     A Bibulous type of bibliography style template string contains grammatical featues
@@ -2793,7 +2829,7 @@ def parse_bst_template_str(bst_template_str, bibentry, variables, undefstr='???'
     Example
     -------
     parse_bst_template_str() is given an options train "[<title>|<booktitle>]" and begins to
-    look into the bibliography entry. It does not find an "title" entry but finds a "booktitle"
+    look into the bibliography entry. It does not find a "title" entry but does find a "booktitle"
     entry. So, the function returns "<booktitle>", thereby replacing the train with the proper
     defined variable.
     '''
@@ -2803,10 +2839,10 @@ def parse_bst_template_str(bst_template_str, bibentry, variables, undefstr='???'
     nblocks = len(block_train)
 
     ## Go through the if/elseif/else train of blocks within the string one by one. In each block,
-    ## see if there are any variables defined (using the backslash). If no variables, then the
+    ## see if there are any variables defined. If no variables are present, then the
     ## block is "defined" and we return that block (i.e. replacing the train with that block). If
-    ## an argument is defined, strip its leading backslash and look to see if the variable is
-    ## defined in the bibdata entry. If so, the variable is defined and we return the backslash
+    ## an argument is defined, strip its surrounding '<' and '>' and look to see if the variable is
+    ## defined in the bibdata entry. If so, the variable is defined and we return the '<var>'
     ## version of the variable (later code will do the variable replacement). If the variable is
     ## undefined (not present in the bibdata entry) then skip to the next block. If there is no
     ## next block, or if the block is empty (which means undefined by definition) then set the
@@ -2824,28 +2860,25 @@ def parse_bst_template_str(bst_template_str, bibentry, variables, undefstr='???'
             arg = block
             break
 
-        ## Count how many variables there are in the block. We can't just use
-        ## "nvars = block.count(r'\')" because that would also count the LATEX formatting functions
-        ## used within the block. Instead, we have to loop through the block string and check each
-        ## instance of the "variables" list and count *those* one by one.
-        nvars = 0
-        for var in variables:
-            nvars += block.count(var)
-
-        vars_found = 0
-        arg_is_defined = [False]*nvars
+        ## Count how many variables there are in the block.
+        block_variables = [v for v in variables if v in block]
+        block_is_fully_defined = True
 
         ## Loop through the list of variables and find which ones are defined within the
         ## bibliography entry.
-        for var in variables:
-            if var in block:
-                varname = var[1:-1]             ## remove the angle brackets
-                if (varname in bibentry):
-                    arg_is_defined[vars_found] = True
-                vars_found += 1
-                if (vars_found == nvars): break
+        for var in block_variables:
+            varname = var[1:-1]             ## remove the angle brackets
+            if (varname in bibentry):
+                block_is_fully_defined = (bibentry[varname] != None)
+            else:
+                block_is_fully_defined = False
 
-        if all(arg_is_defined):
+            if not block_is_fully_defined: break
+
+        ## If after going through all of the variables in a block, we have located definitions for
+        ## all of them, then the entire block is defined, and we can return it without evaluating
+        ## the next block.
+        if block_is_fully_defined:
             arg = block
             break
         else:
@@ -3294,6 +3327,30 @@ def filter_script(line):
     filtered = re.sub(r'(?<=\W)bstdict(?=\W)', 'self.bstdict', line, re.UNICODE)
 
     return(filtered)
+
+## =============================
+def str_is_integer(s):
+    '''
+    Check is an input string represents an integer value. Although a trivial function, it will be
+    useful for user scripts.
+
+    Parameters
+    ----------
+    s : str
+        The input string to test.
+
+    Returns
+    -------
+    is_integer : bool
+        Whether the string represents an integer value.
+    '''
+
+    try:
+        value = int(s)
+        return(True)
+    except ValueError:
+        return(False)
+
 
 ## ==================================================================================================
 

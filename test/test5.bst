@@ -1,18 +1,26 @@
 TEMPLATES:
-book = <authorliststr>, \textit{<title>} [\textit{<englishtitle>}] (<year_bce>). [In <language>.]
-dialogue = <authorliststr>, \textit{<title>} [\textit{<englishtitle>}] (<year_bce>). [In <language>.]
-article = <authorliststr>, \enquote{<title>,} \textit{<journal>} \textbf{<volume>} (<number>), pp.~<pagerange> (<year>).
+book = <auth>, \textit{<title>} [\textit{<englishtitle>}] (<year_bce>). {\makeopenbracket}In <language>.{\makeclosebracket}
+dialogue = <auth>, \textit{<title>} [\textit{<englishtitle>}] (<year_bce>). {\makeopenbracket}In <language>.{\makeclosebracket}
+article = <auth>, \enquote{<title>,} \textit{<journal>} \textbf{<volume>} (<number>), pp.~<pagerange> (<year>).
+collection = [<for_japanese_audience><editor_ja>, <title_ja>, <volume>巻 (<publisher_ja> <address_ja> <year>).|...
+              <for_english_audience><editorliststr>, <title_ja> (<title_romaji>) {\makeopenbracket}<title>{\makeclosebracket}, vol.~<volume> (<publisher>, <address>, <year>).|]
+
 
 OPTIONS:
 use_firstname_initials = False            ## initialize all but the authors' last names
 citation_order = ynt                      ## order the bibliography by "citekey" or "citenum" (or "nyt" etc.)
 namelist_format = first_name_first        ## defines values for both "authorlist_format" and "editorlist_format" at once
-yearstyle = 'BCE/CE'                      ## whether to use 'BCE/CE' after the year number or the older 'BC/AD' form
+yearstyle = BCE/CE                        ## whether to use 'BCE/CE' after the year number or the older 'BC/AD' form
+document_language = Japanese              ## whether the document is for a Japanese audience
+
 
 VARIABLES:
 year_bce = format_yearstyle(entry['year'], options)
-authorliststr = get_author(entry, options)
+auth = get_author(entry, options)
 pagerange = format_pagerange(entry, options)
+for_japanese_audience = '{}' if (options['document_language'] == 'Japanese') else None
+for_english_audience = '{}' if (options['document_language'] == 'English') else None
+
 
 DEFINITIONS:
 def format_yearstyle(yearstr, options):
@@ -22,18 +30,20 @@ def format_yearstyle(yearstr, options):
     and "AD".
     '''
 
-    ## First check that the input string is an integer.
-    try:
-        yearnum = int(yearstr)
-    except ValueError:
-        return(None)
+    ## First check that the input string is an integer. If not an integer, then just return
+    ## the field itself.
+    if not str_is_integer(yearstr):
+        return(yearstr)
+
+    yearnum = int(yearstr)
 
     if (yearnum < 0):
         if (options['yearstyle'] == 'BCE/CE'):
-            suffix = 'BC'
-        else:
             suffix = 'BCE'
-        result = str(yearnum) + ' ' + suffix
+        else:
+            suffix = 'BC'
+        ## The "[1:]" here removes the minus sign.
+        result = str(yearnum)[1:] + ' ' + suffix
     elif (yearnum == 0):
         result = str(yearnum)
     else:
@@ -67,7 +77,9 @@ def format_pagerange(entry, options):
     return the standard startpage--endpage range.
     '''
 
-    if (',' in entry['pages']):
+    if not ('pages' in entry):
+        return(None)
+    elif (',' in entry['pages']):
         return(entry['pages'])
     else:
         return(entry['startpage']--entry['endpage'])

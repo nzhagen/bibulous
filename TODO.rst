@@ -82,10 +82,6 @@ Python testing to-do
 
 #. Test that trying to import a BibTeX-format BST file generates an ``ImportError`` exception.
 
-#. Test proper formatting of the ``edition`` field.
-
-#. Test for missing fields in entries.
-
 #. Add a test for locale-dependent sorting.
 
 #. Allow the style template parsing engine a means of setting, for example, fieldname

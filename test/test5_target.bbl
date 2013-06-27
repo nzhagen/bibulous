@@ -1,18 +1,20 @@
-\begin{thebibliography}{5}
+\begin{thebibliography}{6}
 \providecommand{\enquote}[1]{``#1''}
 \providecommand{\url}[1]{\verb|#1|}
 \providecommand{\href}[2]{#2}
 
 
 \bibitem[caesar]{caesar}
-Gaius Julius Caesar, \textit{Commentarii de Bello Gallico} \textit{Commentaries on the Gallic War} (-145 BCE). In Latin.
+Gaius Julius Caesar, \textit{Commentarii de Bello Gallico} \textit{Commentaries on the Gallic War} (145 BCE). [In Latin.]
 \bibitem[cicero]{cicero}
-Marcus Tullius Cicero, \textit{De re publica} \textit{On the republic} (-51 BCE). In Latin.
+Marcus Tullius Cicero, \textit{De re publica} \textit{On the republic} (51 BCE). [In Latin.]
 \bibitem[tacitus]{tacitus}
-Publius Cornelius Tacitus, \textit{Ab excessu divi Augusti} \textit{Annals of Imperial Rome} (117 AD). In Latin.
+Publius Cornelius Tacitus, \textit{Ab excessu divi Augusti} \textit{Annals of Imperial Rome} (117 CE). [In Latin.]
 \bibitem[aurelius]{aurelius}
-Marcus Aurelius, \textit{Τὰ εἰς ἑαυτόν} \textit{Meditations} (180 AD). In Greek.
+Marcus Aurelius, \textit{Τὰ εἰς ἑαυτόν} \textit{Meditations} (180 CE). [In Greek.]
+\bibitem[yanagida]{yanagida}
+{}柳田聖山, 禪學叢書, 10巻 (中文出版社 京都 1974-1977).
 \bibitem[stewart]{stewart}
-Doug Stewart, ``Interview with Walter Stewart,'' \textit{Omni} \textbf{11} (???), pp.~64--66, 87--92, 94 (1989).
+Doug Stewart, ``Interview with Walter Stewart,'' \textit{Omni} \textbf{11} (5), pp.~64--66, 87--92, 94 (1989).
 
 \end{thebibliography}
