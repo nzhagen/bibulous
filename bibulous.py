@@ -54,7 +54,7 @@ __all__ = ['get_bibfilenames', 'sentence_case', 'stringsplit', 'finditer', 'name
            'enwrap_nested_quotes', 'purify_string', 'latex_to_utf8', 'parse_bst_template_str',
            'namestr_to_namedict', 'search_middlename_for_prefixes', 'create_edition_ordinal',
            'export_bibfile', 'parse_pagerange', 'parse_nameabbrev', 'make_sortkey_unique',
-           'filter_script', 'str_is_integer']
+           'filter_script', 'str_is_integer', 'warn']
 
 
 class Bibdata(object):
@@ -129,7 +129,7 @@ class Bibdata(object):
     ...
     '''
 
-    def __init__(self, filename, debug=False):
+    def __init__(self, filename, disable=[], debug=False):
         self.debug = debug
         self.abbrevs = {'jan':'1', 'feb':'2', 'mar':'3', 'apr':'4', 'may':'5', 'jun':'6',
                         'jul':'7', 'aug':'8', 'sep':'9', 'oct':'10', 'nov':'11', 'dec':'12'}
@@ -145,6 +145,7 @@ class Bibdata(object):
         ## Temporary variables for use in error messages while parsing files.
         self.filename = ''                      ## the current filename (for error messages)
         self.i = 0                              ## counter for line in file (for error messages)
+        self.disable = disable                  ## the list of warning message numbers to disable
 
         ## Put in default options settings. Note that "use_abbrevs" and "replace_newlines" are
         ## different from the other options in that they can *not* be defined in the style template
@@ -205,7 +206,7 @@ class Bibdata(object):
 
         if self.filedict['bst']:
             for f in self.filedict['bst']:
-                self.parse_bstfile(f, ignore_overwrite=True)
+                self.parse_bstfile(f)
 
         return
 
@@ -251,9 +252,9 @@ class Bibdata(object):
                 self.parse_bibentry(entrystr, entrytype)       ## close out the entry
                 entrystr = ''
                 if (line[1:].strip() != ''):
-                    print('Warning: line#' + unicode(self.i) + ' of "' + self.filename + '" has data '
-                          'outside of an entry {...} block. Skipping all contents until the next '
-                          'entry ...')
+                    warn('Warning 001a: line#' + unicode(self.i) + ' of "' + self.filename + '" has '
+                          'data outside of an entry {...} block. Skipping all contents until the '
+                          'next entry ...', self.disable)
                     #raise ValueError
                 continue
 
@@ -265,8 +266,9 @@ class Bibdata(object):
             if line.startswith('@'):
                 brace_idx = line.find('{')             ## assume a form like "@ENTRYTYPE{"
                 if (brace_idx == -1):
-                    print('Warning: open brace not found for the entry beginning on line#' + \
-                          unicode(self.i) + ' of "' + self.filename + '". Skipping to next entry ...')
+                    warn('Warning 002a: open brace not found for the entry beginning on line#' + \
+                         unicode(self.i) + ' of "' + self.filename + '". Skipping to next entry ...',
+                         self.disable)
                     entry_brace_level = 0
                     continue
                 entrytype = line[1:brace_idx].lower().strip()   ## extract string between "@" and "{"
@@ -277,9 +279,9 @@ class Bibdata(object):
             ## the next entry.
             if (entry_brace_level == 0):
                 if (line.strip() != ''):
-                    print('Warning: line#' + unicode(self.i) + ' of "' + self.filename + '" has data '
-                          'outside of an entry {...} block. Skipping all contents until the next '
-                          'entry ...')
+                    warn('Warning 001b: line#' + unicode(self.i) + ' of "' + self.filename + \
+                         '" has data outside of an entry {...} block. Skipping all contents ' + \
+                         'until the next entry ...', self.disable)
                     #raise ValueError
                 continue
 
@@ -295,9 +297,9 @@ class Bibdata(object):
                 if (entry_brace_level == 0):
                     ## If we've found the final brace, then check if there is anything after it.
                     if (line[match.end():].strip() != ''):
-                        print('Warning: line#' + unicode(self.i) + ' of "' + self.filename + '" has '
-                              'data outside of an entry {...} block. Skipping all contents until '
-                              'the next entry ...')
+                        warn('Warning 002b: line#' + unicode(self.i) + ' of "' + self.filename + \
+                             '" has data outside of an entry {...} block. Skipping all ' + \
+                             'contents until the next entry ...', self.disable)
                         #raise ValueError
                     endpos = match.end()
                     break
@@ -344,18 +346,18 @@ class Bibdata(object):
             ## First get the entry key. Then send the remainder of the entry string to the parser.
             idx = entrystr.find(',')
             if (idx == -1):
-                print('Warning: the entry ending on line #' + unicode(self.i) + ' of file "' + \
-                      self.filename + '" is does not have an "," for defining the entry key. '
-                      'Skipping ...')
+                warn('Warning 003: the entry ending on line #' + unicode(self.i) + ' of file "' + \
+                     self.filename + '" is does not have an "," for defining the entry key. '
+                     'Skipping ...', self.disable)
                 return(fd)
 
             entrykey = entrystr[:idx].strip()
             entrystr = entrystr[idx+1:]
 
             if (entrykey in self.bibdata):
-                print('Warning: the entry ending on line #' + unicode(self.i) + ' of file "' + \
-                      self.filename + '" has the same key ("' + entrykey + '") as a previous ' + \
-                      'entry. Overwriting the entry and continuing ...')
+                warn('Warning 004: the entry ending on line #' + unicode(self.i) + ' of file "' + \
+                     self.filename + '" has the same key ("' + entrykey + '") as a previous ' + \
+                     'entry. Overwriting the entry and continuing ...', self.disable)
 
             self.bibdata[entrykey] = {}
             self.bibdata[entrykey]['entrytype'] = entrytype
@@ -384,9 +386,9 @@ class Bibdata(object):
             ## First locate the field key.
             idx = entrystr.find('=')
             if (idx == -1):
-                print('Warning: the entry ending on line #' + unicode(self.i) + ' of file "' + \
-                      self.filename + '" is an abbreviation-type entry but does not have an "=" '
-                      'for defining the end of the abbreviation key. Skipping ...')
+                warn('Warning 005: the entry ending on line #' + unicode(self.i) + ' of file "' + \
+                     self.filename + '" is an abbreviation-type entry but does not have an "=" '
+                     'for defining the end of the abbreviation key. Skipping ...', self.disable)
                 #raise ValueError
                 return(fd)
 
@@ -467,9 +469,10 @@ class Bibdata(object):
                             if abbrevkey in self.abbrevs:
                                 resultstr += self.abbrevs[abbrevkey].strip()
                             else:
-                                print('Warning: for the entry ending on line #' + unicode(self.i) + \
-                                      ' of file "' + self.filename + '", cannot find the '
-                                      'abbreviation key "' + abbrevkey + '". Skipping ...')
+                                warn('Warning 006: for the entry ending on line #' + \
+                                     unicode(self.i) + ' of file "' + self.filename + \
+                                     '", cannot find the abbreviation key "' + abbrevkey + \
+                                     '". Skipping ...', self.disable)
                                 resultstr = self.options['undefstr']
                         fieldstr = ''
                         end_of_field = True
@@ -533,7 +536,7 @@ class Bibdata(object):
         ## dictionary of keys giving the citation keys with values equal to the citation order
         ## number.
         if not keylist:
-            print('Warning: no citations found in AUX file "' + filename + '"')
+            warn('Warning 007: no citations found in AUX file "' + filename + '"', self.disable)
         else:
             q = 1                       ## citation order counter
             self.citedict[keylist[0]] = q
@@ -551,7 +554,7 @@ class Bibdata(object):
         return
 
     ## =============================
-    def parse_bstfile(self, filename, ignore_overwrite=False):
+    def parse_bstfile(self, filename):
         '''
         Convert a Bibulous-type bibliography style template into a dictionary.
 
@@ -563,34 +566,29 @@ class Bibdata(object):
         ----------
         filename : str
             The filename of the Bibulous style template to use.
-        ignore_overwrite : bool, optional
-            Whether to issue a warning when overwriting an existing template variable.
         '''
 
         self.filename = filename
         #filehandle = open(os.path.normpath(filename), 'rU')
         filehandle = codecs.open(os.path.normpath(filename), 'r', 'utf-8')
 
-        ## First try to find out if the file is a BibTeX-style BST file rather than a Bibulous one.
-        ## These files are not normally large, so reading in the whole thing should be quick.
-        alllines = filehandle.readlines()
-        if ('EXECUTE {' in alllines) or ('EXECUTE{' in alllines):
-            raise ImportError('The style template file "' + filename + '" appears to be BibTeX '
-                              'format, not Bibulous. Aborting...')
-
-        section = 'TEMPLATES'
         ## For the "definition_pattern", rather than matching the initial string up to the first
         ## whitespace character, we match a whitespace-equals-whitespace
         definition_pattern = re.compile(r'\s=\s', re.UNICODE)
+        section = 'TEMPLATES'
         continuation = False    ## whether the current line is a continuation of the previous
 
-        for i,line in enumerate(alllines):
+        for i,line in enumerate(filehandle):
             ## Ignore any comment lines, and remove any comments from data lines.
             if line.startswith('#'): continue
             if ('#' in line):
                 idx = line.index('#')
                 line = line[:idx]
                 if not line.strip(): continue       ## if the line contained only a comment
+
+            if ('EXECUTE {' in line) or ('EXECUTE{' in line) or ('FUNCTION {' in line):
+                raise ImportError('The style template file "' + filename + '" appears to be BibTeX '
+                                  'format, not Bibulous. Aborting...')
 
             if line.strip().startswith('TEMPLATES:'):
                 section = 'TEMPLATES'
@@ -619,14 +617,15 @@ class Bibdata(object):
                 if not line: continue
                 matchobj = re.search(definition_pattern, line)
                 if (matchobj == None):
-                    print('Warning: line #' + str(i) + ' of file "' + filename + '" does not ' + \
-                          'contain a valid variable definition.\n Skipping ...')
+                    warn('Warning 008a: line #' + str(i) + ' of file "' + filename + '" does ' + \
+                         'not contain a valid variable definition.\n Skipping ...', self.disable)
                     continue
                 (start,end) = matchobj.span()
                 var = line[:start].strip()
                 value = line[end:].strip()
                 self.user_variables[var] = filter_script(value)
-                if self.debug: print('Adding user variable "' + var + '" with value "' + value + '" ...')
+                if self.debug:
+                    print('Adding user variable "' + var + '" with value "' + value + '" ...')
             elif (section in ('TEMPLATES','OPTIONS')):
                 ## Skip empty lines. It is tempting to put this line above here, but resist the
                 ## temptation -- putting it higher above would remove empty lines from the Python
@@ -634,22 +633,24 @@ class Bibdata(object):
                 ## more difficult.
                 if not line: continue
                 if not continuation:
-                    ## If the line ends with an ellpsis, then remove the ellipsis and set continuation to True.
+                    ## If the line ends with an ellpsis, then remove the ellipsis and set
+                    ## continuation to True.
                     if line.endswith('...'):
                         line = line[:-3].strip()
                         continuation = True
 
                     matchobj = re.search(definition_pattern, line)
                     if (matchobj == None):
-                        print('Warning: line #' + str(i) + ' of file "' + filename + '" does not ' + \
-                              'contain a valid variable definition.\n Skipping ...')
+                        warn('Warning 008b: line #' + str(i) + ' of file "' + filename + '" does ' + \
+                             'not contain a valid variable definition.\n Skipping ...', self.disable)
                         continue
 
                     (start,end) = matchobj.span()
                     var = line[:start].strip()
                     value = line[end:].strip()
                 else:
-                    ## If the line ends with an ellpsis, then remove the ellipsis and set continuation to True.
+                    ## If the line ends with an ellpsis, then remove the ellipsis and set
+                    ## continuation to True.
                     if line.endswith('...'):
                         line = line[:-3].strip()
                         continuation = True
@@ -661,9 +662,10 @@ class Bibdata(object):
                 if (section == 'TEMPLATES'):
                     ## The line defines an entrytype template. Check whether this definition is
                     ## overwriting an already existing definition.
-                    if (var in self.bstdict) and (self.bstdict[var] != value) and not ignore_overwrite:
-                        print('Warning: overwriting the existing template variable "' + var + \
-                              '" from [' + self.bstdict[var] + '] to [' + value + '] ...')
+                    if (var in self.bstdict) and (self.bstdict[var] != value):
+                        warn('Warning 009a: overwriting the existing template variable "' + var + \
+                             '" from [' + self.bstdict[var] + '] to [' + value + '] ...',
+                             self.disable)
                     self.bstdict[var] = value
                     if self.debug:
                         print('Setting BST variable "' + var + '" to value "' + value + '"')
@@ -671,10 +673,10 @@ class Bibdata(object):
                 elif (section == 'OPTIONS'):
                     ## The variable defines an option rather than an entrytype. Check whether this definition is
                     ## overwriting an already existing definition.
-                    if (var in self.options) and (str(self.options[var]) != value) and not ignore_overwrite:\
-                        print('Warning: overwriting the existing template option "' + var + \
-                              '" from [' + unicode(self.options[var]) + '] to [' + \
-                              unicode(value) + '] ...')
+                    if (var in self.options) and (str(self.options[var]) != value):\
+                        warn('Warning 009b: overwriting the existing template option "' + var + \
+                             '" from [' + unicode(self.options[var]) + '] to [' + \
+                             unicode(value) + '] ...', self.disable)
                     ## If the value is numeric or bool, then convert the datatype from string.
                     if self.debug:
                         print('Setting BST option "' + var + '" to value "' + value + '"')
@@ -803,10 +805,10 @@ class Bibdata(object):
                 entry = self.bibdata[c]
 
                 if ('edition' in entry):
-                    entry['edition_ordinal'] = create_edition_ordinal(entry, self.options)
+                    entry['edition_ordinal'] = create_edition_ordinal(entry, disable=self.disable)
 
                 if ('pages' in entry):
-                    (startpage,endpage) = parse_pagerange(entry['pages'], c)
+                    (startpage,endpage) = parse_pagerange(entry['pages'], c, self.disable)
                     entry['startpage'] = startpage
                     entry['endpage'] = endpage
 
@@ -922,7 +924,8 @@ class Bibdata(object):
         ## If the citation key is not in the database, replace the format string with a message to the
         ## fact.
         if (c not in self.bibdata):
-            print('Warning: citation key "' + c + '" is not in the bibliography database.')
+            warn('Warning 010: citation key "' + c + '" is not in the bibliography database.',
+                 self.disable)
             return(itemstr + '\\textit{Warning: citation key is not in the bibliography database}.')
         else:
             entry = self.bibdata[c]
@@ -940,10 +943,10 @@ class Bibdata(object):
         if (entrytype in self.bstdict):
             templatestr = self.bstdict[entrytype]
         else:
-            msg = 'Warning: entrytype "' + entrytype + '" does not have a template defined in the ' + \
-                  '.bst file'
-            print(msg)
-            return(itemstr + '\\textit{' + msg + '}.')
+            msg = 'entrytype "' + entrytype + '" does not have a template defined ' + \
+                  'in the .bst file'
+            warn('Warning 011: ' + msg, self.disable)
+            return(itemstr + '\\textit{Warning: ' + msg + '}.')
 
         ## Process the optional arguments. First check the syntax. Make sure that there are the same
         ## number of open as closed brackets.
@@ -953,7 +956,7 @@ class Bibdata(object):
             msg = 'In the template for entrytype "' + entrytype + '" there are ' + \
                   unicode(num_obrackets) + ' open brackets "[", but ' + unicode(num_cbrackets) + \
                   ' close brackets "]" in the formatting string.'
-            print('Warning: ' + msg)
+            warn('Warning 012: ' + msg, self.disable)
             return(itemstr + '\\testit{' + msg + '}.')
 
         ## Get the list of all the variables used by the template string.
@@ -990,7 +993,7 @@ class Bibdata(object):
             if not (start_idx < end_idx):
                 msg = 'A closed bracket "]" occurs before an open bracket "[" in the format ' + \
                       'string "' + templatestr + '".'
-                print('Warning: ' + msg)
+                warn('Warning 013: ' + msg, self.disable)
                 return(itemstr + '\\testit{' + msg + '}.')
 
             ## Remove the outer square brackets, and use the resulting substring as an input to the
@@ -1068,7 +1071,7 @@ class Bibdata(object):
         ## If there are any nested quotation marks in the string, then we need to modify the
         ## formatting properly. If there are any apostrophes or foreign words that use apostrophes
         ## in the string then the current code will raise an exception.
-        itemstr = enwrap_nested_quotes(itemstr)
+        itemstr = enwrap_nested_quotes(itemstr, disable=self.disable)
 
         return(itemstr)
 
@@ -1098,7 +1101,9 @@ class Bibdata(object):
             return(citekey)
 
         if citekey not in self.bibdata:
-            return('Warning: "' + citekey + '" is not in the bibliography database.')
+            msg = '"' + citekey + '" is not in the bibliography database.'
+            warn('Warning 014: ' + msg, self.disable)
+            return('Warning: ' + msg)
 
         ## If we are ordering by the order of appearance of the citations in the text, then the key
         ## is most likely an integer type rather than a string, which causes problems. We can
@@ -1129,7 +1134,7 @@ class Bibdata(object):
         ## Extract the last name of the first author.
         if ('sortname' in bibentry):
             namelist = namefield_to_namelist(bibentry['sortname'], key=citekey,
-                                             nameabbrev=nameabbrev_dict)
+                                             nameabbrev=nameabbrev_dict, disable=self.disable)
             name = namelist[0]['last']
             if ('first' in namelist[0]): name += namelist[0]['first']
             if ('middle' in namelist[0]): name += namelist[0]['middle']
@@ -1266,7 +1271,7 @@ class Bibdata(object):
         ## Convert the raw string containing author/editor names in the BibTeX field into a list
         ## of dictionaries --- one dict for each person.
         namelist = namefield_to_namelist(self.bibdata[key][nametype], key=key,
-                                         nameabbrev=nameabbrev_dict)
+                                         nameabbrev=nameabbrev_dict, disable=self.disable)
         self.bibdata[key][nametype+'list'] = namelist
 
         return
@@ -1401,8 +1406,9 @@ class Bibdata(object):
             if (self.bibdata[entrykey]['crossref'] in self.bibdata):
                 crossref_keys = self.bibdata[self.bibdata[entrykey]['crossref']]
             else:
-                print('Warning: bad cross reference. Entry "' + entrykey + '" refers to entry "' + \
-                      self.bibdata[entrykey]['crossref'] + '", which doesn\'t exist.')
+                warn('Warning 015: bad cross reference. Entry "' + entrykey + '" refers to ' + \
+                     'entry "' + self.bibdata[entrykey]['crossref'] + '", which doesn\'t exist.',
+                     self.disable)
                 continue
 
             for k in crossref_keys:
@@ -1457,7 +1463,7 @@ class Bibdata(object):
         if not outputfile:
             outputfile = self.filedict['aux'][:-4] + '_authorextract.bib'
 
-        searchname = namestr_to_namedict(searchname)
+        searchname = namestr_to_namedict(searchname, self.disable)
         nkeys = len(searchname.keys())
 
         ## Find out if any of the tokens in the search name are initials. If so, then we need to
@@ -1556,9 +1562,9 @@ class Bibdata(object):
                 if abbrevkey.isdigit() or not self.options['use_abbrevs']:
                     resultstr += unicode(abbrevkey)
                 elif (abbrevkey not in self.abbrevs):
-                    print('Warning: for the entry ending on line #' + unicode(self.i) + \
-                            ' of file "' + self.filename + '", cannot find the '
-                            'abbreviation key "' + abbrevkey + '". Skipping ...')
+                    warn('Warning 016a: for the entry ending on line #' + unicode(self.i) + \
+                         ' of file "' + self.filename + '", cannot find the '
+                         'abbreviation key "' + abbrevkey + '". Skipping ...', self.disable)
                     resultstr += self.options['undefstr']
                 else:
                     resultstr += self.abbrevs[abbrevkey].strip()
@@ -1571,9 +1577,9 @@ class Bibdata(object):
                 if abbrevkey.isdigit() or not self.options['use_abbrevs']:
                     resultstr += unicode(abbrevkey)
                 elif (abbrevkey not in self.abbrevs):
-                    print('Warning: for the entry ending on line #' + unicode(self.i) + \
-                            ' of file "' + self.filename + '", cannot find the '
-                            'abbreviation key "' + abbrevkey + '". Skipping ...')
+                    warn('Warning 016b: for the entry ending on line #' + unicode(self.i) + \
+                         ' of file "' + self.filename + '", cannot find the '
+                         'abbreviation key "' + abbrevkey + '". Skipping ...', self.disable)
                     resultstr += self.options['undefstr']
                 else:
                     resultstr += self.abbrevs[abbrevkey].strip()
@@ -1845,7 +1851,7 @@ def finditer(a_str, sub):
         start += 1
 
 ## =============================
-def namefield_to_namelist(namefield, key=None, nameabbrev=None):
+def namefield_to_namelist(namefield, key=None, nameabbrev=None, disable=None):
     '''
     Parse a name field ("author" or "editor") of a BibTeX entry into a list of dicts, one for
     each person.
@@ -1858,6 +1864,8 @@ def namefield_to_namelist(namefield, key=None, nameabbrev=None):
         The bibliography data entry key.
     nameabbrev : dict
         The dictionary for translating names to their abbreviated forms.
+    disable : list of int, optional
+        The list of warning message numbers to ignore.
 
     Returns
     -------
@@ -1871,11 +1879,11 @@ def namefield_to_namelist(namefield, key=None, nameabbrev=None):
 
     ## Look for common typos.
     if re.search('\sand,\s', namefield, re.UNICODE):
-        print('Warning: The name string in entry "' + unicode(key) + '" has " and, ", which is likely '
-              'a typo. Continuing on anyway ...')
+        warn('Warning 017a: The name string in entry "' + unicode(key) + '" has " and, ", which is '
+             'likely a typo. Continuing on anyway ...', disable)
     if re.search(', and', namefield, re.UNICODE):
-        print('Warning: The name string in entry "' + unicode(key) + '" has ", and", which is likely '
-              'a typo. Continuing on anyway ...')
+        warn('Warning 017b: The name string in entry "' + unicode(key) + '" has ", and", which is '
+             'likely a typo. Continuing on anyway ...', disable)
 
     if (nameabbrev != None):
         for key in nameabbrev:
@@ -1886,7 +1894,7 @@ def namefield_to_namelist(namefield, key=None, nameabbrev=None):
     ## not allow the split. Need to treat the case of a single author separate from that of
     ## multiple authors in order to return a single-element *list* rather than a scalar.
     if not re.search('\sand\s', namefield, re.UNICODE):
-        namedict = namestr_to_namedict(namefield)
+        namedict = namestr_to_namedict(namefield, disable)
         namelist.append(namedict)
     else:
         if '{' not in namefield:
@@ -1925,7 +1933,7 @@ def namefield_to_namelist(namefield, key=None, nameabbrev=None):
 
         nauthors = len(names)
         for i in range(nauthors):
-            namedict = namestr_to_namedict(names[i])
+            namedict = namestr_to_namedict(names[i], disable)
             namelist.append(namedict)
 
     return(namelist)
@@ -2147,7 +2155,7 @@ def show_levels_debug(s, levels):
     return
 
 ## ===================================
-def get_quote_levels(s, debug=False):
+def get_quote_levels(s, disable=None, debug=False):
     '''
     Return a list which gives the "quotation level" of each character in the string.
 
@@ -2155,6 +2163,8 @@ def get_quote_levels(s, debug=False):
     ----------
     s : str
         The string to analyze.
+    disable : list of int, optional
+        The list of warning message numbers to ignore.
 
     Returns
     -------
@@ -2204,16 +2214,16 @@ def get_quote_levels(s, debug=False):
 
 
     if (alevels[-1] > 0):
-        print('Warning: found mismatched "``"..."''" quote pairs in the input string "' + s + \
-              '". Ignoring the problem and continuing on ...')
+        warn('Warning 018a: found mismatched "``"..."''" quote pairs in the input string "' + s + \
+             '". Ignoring the problem and continuing on ...', disable)
         alevels[-1] = 0
     if (blevels[-1] > 0):
-        print('Warning: found mismatched "`"..."\'" quote pairs in the input string "' + s + \
-              '". Ignoring the problem and continuing on ...')
+        warn('Warning 018b: found mismatched "`"..."\'" quote pairs in the input string "' + s + \
+             '". Ignoring the problem and continuing on ...', disable)
         blevels[-1] = 0
     if (clevels[-1] > 0):
-        print('Warning: found mismatched '"'...'"' quote pairs in the input string "' + s + \
-              '". Ignoring the problem and continuing on ...')
+        warn('Warning 018c: found mismatched '"'...'"' quote pairs in the input string "' + s + \
+             '". Ignoring the problem and continuing on ...', disable)
         clevels[-1] = 0
 
     if debug:
@@ -2313,7 +2323,7 @@ def multisplit(s, seps):
     return(res)
 
 ## ===================================
-def enwrap_nested_string(s, delims=('{','}'), odd_operator=r'\textbf', even_operator=r'\textrm'):
+def enwrap_nested_string(s, delims=('{','}'), odd_operator=r'\textbf', even_operator=r'\textrm', disable=None):
     '''
     This function will return the input string if it finds there
     are no nested operators inside (i.e. when the number of delimiters found is < 2).
@@ -2328,6 +2338,8 @@ def enwrap_nested_string(s, delims=('{','}'), odd_operator=r'\textbf', even_oper
         The nested operator (applied to the left of the delimiter) currently used within string "s".
     even_operator : str
         The operator used to replace the currently used one for all even nesting levels.
+    disable : list of int, optional
+        The list of warning message numbers to ignore.
 
     Returns
     -------
@@ -2339,8 +2351,8 @@ def enwrap_nested_string(s, delims=('{','}'), odd_operator=r'\textbf', even_oper
 
     oplevels = get_delim_levels(s, delims, odd_operator)
     if (oplevels[-1] > 0):
-        print('Warning: found mismatched "{","}" brace pairs in the input string. '
-              'Ignoring the problem and continuing on ...')
+        warn('Warning 019: found mismatched "{","}" brace pairs in the input string. '
+             'Ignoring the problem and continuing on ...', disable)
         return(s)
 
     ## In the operator queue, we replace all even-numbered levels while leaving all odd-numbered
@@ -2367,7 +2379,7 @@ def enwrap_nested_string(s, delims=('{','}'), odd_operator=r'\textbf', even_oper
     return(s)
 
 ## ===================================
-def enwrap_nested_quotes(s, debug=False):
+def enwrap_nested_quotes(s, disable=None, debug=False):
     '''
     Find nested quotes within strings and, if necessary, replace them with the proper nesting
     (i.e. outer quotes use ````...''`` while inner quotes use ```...'``).
@@ -2376,6 +2388,8 @@ def enwrap_nested_quotes(s, debug=False):
     ----------
     s : str
         The string to modify.
+    disable : list of int, optional
+        The list of warning message numbers to ignore.
 
     Returns
     -------
@@ -2390,10 +2404,10 @@ def enwrap_nested_quotes(s, debug=False):
     ## flag these cases to inform the user that they need to modify the source to tell the parser
     ## what they want to do.
     if ("```" in s) or ("'''" in s):
-        print('Warning: the input string ["' + s + '"] contains multiple unseparated quote characters. '
-              'Bibulous cannot unnest the single and double quotes from this set, so the '
-              'separate quotations must be physically separated like ``{\:}`, for example. '
-              'Ignoring the quotation marks and continuing ...')
+        warn('Warning 020: the input string ["' + s + '"] contains multiple unseparated quote '
+             'characters. Bibulous cannot unnest the single and double quotes from this set, so '
+             'the separate quotations must be physically separated like ``{\:}`, for example. '
+             'Ignoring the quotation marks and continuing ...', disable)
         return(s)
 
     ## Note that a backtick preceded by a backslash, an explamation point, or a question mark,
@@ -2409,7 +2423,7 @@ def enwrap_nested_quotes(s, debug=False):
         return(s)
 
     ## Get the lists describing the quote nesting.
-    (alevels, blevels, clevels) = get_quote_levels(s, debug=debug)
+    (alevels, blevels, clevels) = get_quote_levels(s, disable=disable, debug=debug)
 
     ## First, we look at the quote stack and replace *all* quote pairs with \enquote{...}. When
     ## done, we can use `enwrap_nested_string()` to replace the odd and even instances of
@@ -2887,7 +2901,7 @@ def parse_bst_template_str(bst_template_str, bibentry, variables, undefstr='???'
     return(arg)
 
 ## =============================
-def namestr_to_namedict(namestr):
+def namestr_to_namedict(namestr, disable=None):
     '''
     Take a BibTeX string representing a single person's name and parse it into its first, middle, \
     last, etc pieces.
@@ -2902,6 +2916,8 @@ def namestr_to_namedict(namestr):
     ----------
     namestr : str
         The string containing a single person's name, in BibTeX format
+    disable : list of int, optional
+        The list of warning message numbers to ignore.
 
     Returns
     -------
@@ -2940,8 +2956,8 @@ def namestr_to_namedict(namestr):
             for match in re.finditer(r'(?<!\\)\.(?!-)', n_temp):
                 i = match.start()
                 if (z[i] == 0):
-                    print('Warning: The name token "' + n + '" in namestring "' + namestr + \
-                          '" has a "." inside it, which may be a typo. Ignoring ...')
+                    warn('Warning 021: The name token "' + n + '" in namestring "' + namestr + \
+                         '" has a "." inside it, which may be a typo. Ignoring ...', disable)
 
         namedict = {}
         if (len(nametokens) == 1):
@@ -2980,9 +2996,9 @@ def namestr_to_namedict(namestr):
         third_nametokens = thirdpart.strip().split(' ')
 
         if (len(second_nametokens) != 1):
-            print('Warning: the BibTeX format for namestr="' + namestr + '" is malformed.' + \
-                  '\nThere should be only one name in the second part of the three comma-' \
-                  'separated name elements.')
+            warn('Warning 022: the BibTeX format for namestr="' + namestr + '" is malformed.' + \
+                 '\nThere should be only one name in the second part of the three comma-' \
+                 'separated name elements.', disable)
             return({'last':'???'})
 
         if (len(first_nametokens) == 1):
@@ -3021,8 +3037,8 @@ def namestr_to_namedict(namestr):
         namedict['suffix'] = fifthpart.strip()
 
     else:
-        print('Warning: the BibTeX format for namestr="' + namestr + '" is malformed.' + \
-              '\nThere should never be more than four commas in a given name.')
+        warn('Warning 023: the BibTeX format for namestr="' + namestr + '" is malformed.' + \
+             '\nThere should never be more than four commas in a given name.', disable)
         return({'last':'???'})
 
     ## If any tokens in the middle name start with lower case, then move them, and any tokens after
@@ -3093,7 +3109,7 @@ def search_middlename_for_prefixes(namedict):
     return(namedict)
 
 ## =============================
-def create_edition_ordinal(bibentry, options):
+def create_edition_ordinal(bibentry, disable=None):
     '''
     Given a bibliography entry's edition *number*, format it as an ordinal (i.e. "1st", "2nd" \
     instead of "1", "2") in the way that it will appear on the formatted page.
@@ -3102,10 +3118,8 @@ def create_edition_ordinal(bibentry, options):
     ----------
     bibentry : dict
         The bibliography database entry.
-    options : dict, optional
-        Includes formatting options such as
-        'missing_data_excaptions': Whether to raise an exception when encountering missing data \
-            errors.
+    disable : list of int, optional
+        The list of warning message numbers to ignore.
 
     Returns
     -------
@@ -3115,11 +3129,8 @@ def create_edition_ordinal(bibentry, options):
 
     ## First check that the key exists.
     if ('edition' not in bibentry):
-        return(options['undefstr'])
+        return(None)
 
-    if not ('edition' in bibentry):
-        #print('Warning: cannot find "edition" in entry "' + key + '"')
-        return(options['undefstr'])
     if not bibentry['edition'].isdigit():
         return(bibentry['edition'])
 
@@ -3144,8 +3155,8 @@ def create_edition_ordinal(bibentry, options):
         editionstr = edition_number + 'th'
     else:
         if ('edition' in bibentry):
-            print('Warning: the edition number "' + unicode(edition_number) + '" given for entry ' + \
-                  key + ' is invalid. Ignoring')
+            warn('Warning 024: the edition number "' + unicode(edition_number) + '" given for ' + \
+                 'entry ' + key + ' is invalid. Ignoring', disable)
             editionstr = options['undefstr']
 
     return(editionstr)
@@ -3189,7 +3200,7 @@ def export_bibfile(bibdata, filename):
     return
 
 ## =============================
-def parse_pagerange(pages_str, citekey=None):
+def parse_pagerange(pages_str, citekey=None, disable=None):
     '''
     Given a string containing the "pages" field of a bibliographic entry, figure out the start and
     end pages.
@@ -3200,6 +3211,8 @@ def parse_pagerange(pages_str, citekey=None):
         The string to parse.
     citekey : str, optional
         The citation key (useful for debugging messages).
+    disable : list of int, optional
+        The list of warning message numbers to ignore.
 
     Returns
     -------
@@ -3228,11 +3241,11 @@ def parse_pagerange(pages_str, citekey=None):
     if startpage.isdigit() and endpage and endpage.isdigit():
         if int(endpage) < int(startpage):
             if (citekey != None):
-                print('Warning: the "pages" field in entry "' + citekey + '" has a malformed page'
-                      'range (endpage < startpage). Ignoring ...')
+                warn('Warning 025a: the "pages" field in entry "' + citekey + '" has a malformed '
+                     'page range (endpage < startpage). Ignoring ...', disable)
             else:
-                print('Warning: the "pages" field "' + pages_str + '" is malformed, since endpage '
-                      '< startpage. Ignoring ...')
+                warn('Warning 025b: the "pages" field "' + pages_str + '" is malformed, since '
+                     'endpage < startpage. Ignoring ...', disable)
 
     return(startpage, endpage)
 
@@ -3350,6 +3363,36 @@ def str_is_integer(s):
         return(True)
     except ValueError:
         return(False)
+
+## =============================
+def warn(msg, disable=None):
+    '''
+    Print a warning message, with the option to disable any given message.
+
+    Parameters
+    ----------
+    msg : str
+        The warning message to print.
+    disable : list of int, optional
+        The list of warning message numbers that the user wishes to disable (i.e. ignore).
+    '''
+
+    if (disable == None):
+        print(msg)
+        return
+
+    ## For each number in the "ignore" list, find out if the warning message is one of the ones to
+    ## ignore. If so, then do nothing.
+    show_warning = True
+    for i in disable:
+        s = ('Warning %03i' % i)
+        if msg.startswith(s):
+            show_warning = False
+            break
+
+    if show_warning:
+        print(msg)
+    return
 
 
 ## ==================================================================================================

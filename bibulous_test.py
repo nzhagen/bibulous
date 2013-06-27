@@ -60,15 +60,9 @@ def run_test1():
     target_bblfile = './test/test1_target.bbl'
 
     print('\n' + '='*75)
-    print('Running Bibulous-test1 on: ' + bibfile)
-    print('The target output BBL file: ' + target_bblfile)
-    print('The testing template files are: ' + bstfiles[0])
-    for b in bstfiles[1:]:
-        print('                                ' + b)
-    print('The current working directory is: ' + os.getcwd())
-    print('The actual output BBL file: ' + bblfile)
+    print('Running Bibulous test1')
 
-    bibobj = Bibdata([bibfile,auxfile,bblfile,bstfiles[0]])
+    bibobj = Bibdata([bibfile,auxfile,bblfile,bstfiles[0]], disable=[9,17])
     bibobj.write_bblfile(write_preamble=True, write_postamble=False, bibsize='XX')
     bstfiles = bstfiles[1:]
 
@@ -114,33 +108,35 @@ def run_test2():
     auxfile = './test/test2.aux'
 
     print('\n' + '='*75)
-    print('Running Bibulous-test2 on: ' + bibfiles[0])
-    for b in bibfiles[1:]:
-        print('                           ' + b)
-    print('The testing template file is: ' + bstfile)
-    print('The current working directory is: ' + os.getcwd())
-    print('The actual output BBL file: ' + bblfile)
+    print('Running Bibulous test2')
 
     filenames = bibfiles + [bblfile,bstfile]
-    bibobj = Bibdata(filenames)
 
-    ## Build a large citation dictionary using all of the bibliography database entries.
-    citedict = {k:i for i,k in enumerate(bibobj.bibdata.keys())}
-    if ('abbrev' in citedict): del citedict['abbrev']
-    if ('preamble' in citedict): del citedict['preamble']
-    bibobj.citedict = citedict
-    f = open(auxfile, 'w')
-    for c in citedict:
-        f.write('\\citation{' + c + '}\n')
-    f.write('\\bibdata{')
-    for b in bibfiles[:-1]:
-        f.write(os.path.basename(b) + ',')
-    f.write(os.path.basename(bibfiles[-1]) + '}\n')
-    f.write('\\bibstyle{test2.bst}\n')
-    f.close()
-    bibobj.write_bblfile()
+    ## If no excepts are raised when reading the BIB file or writing the BBL file, then the test
+    ## passes.
+    try:
+        bibobj = Bibdata(filenames, disable=[4,9,11,18,20,21,25])
 
-    return(bblfile)
+        ## Build a large citation dictionary using all of the bibliography database entries.
+        citedict = {k:i for i,k in enumerate(bibobj.bibdata.keys())}
+        if ('abbrev' in citedict): del citedict['abbrev']
+        if ('preamble' in citedict): del citedict['preamble']
+        bibobj.citedict = citedict
+        f = open(auxfile, 'w')
+        for c in citedict:
+            f.write('\\citation{' + c + '}\n')
+        f.write('\\bibdata{')
+        for b in bibfiles[:-1]:
+            f.write(os.path.basename(b) + ',')
+        f.write(os.path.basename(bibfiles[-1]) + '}\n')
+        f.write('\\bibstyle{test2.bst}\n')
+        f.close()
+        bibobj.write_bblfile()
+        result = True
+    except:
+        result = False
+
+    return(result)
 
 ## =============================
 def run_test3():
@@ -154,17 +150,15 @@ def run_test3():
     targetfile1 = './test/test3_authorextract_target.bib'
 
     print('\n' + '='*75)
-    print('Running Bibulous-test3 for author "' + authorstr + '"')
+    print('Running Bibulous test3 for author "' + authorstr + '"')
 
-    bibobj = Bibdata(auxfile)
-    print('Writing BIB author extract file = ' + outputfile1)
+    bibobj = Bibdata(auxfile, disable=[4,9,21])
     bibobj.write_authorextract(authorstr, outputfile1, debug=False)
 
     ## Next do the cite-extract check.
     auxfile = './test/test3_citeextract.aux'
     outputfile2 = './test/test3_citeextract.bib'
     targetfile2 = './test/test3_citeextract_target.bib'
-    print('Writing BIB author extract file = ' + outputfile2)
 
     ## Delete the old citekeys so that the new test contains only the new keys.
     bibobj.citedict = {}
@@ -210,13 +204,9 @@ def run_test4():
                               'ydnt']    ## year-name-title: in descending order
 
     print('\n' + '='*75)
-    print('Running Bibulous-test4 on: ' + bibfile)
-    print('The target output BBL file: ' + target_bblfile)
-    print('The testing template file is: ' + bstfile)
-    print('The current working directory is: ' + os.getcwd())
-    print('The actual output BBL file: ' + bblfile)
+    print('Running Bibulous test4')
 
-    bibobj = Bibdata([bibfile,auxfile,bblfile,bstfile])
+    bibobj = Bibdata([bibfile,auxfile,bblfile,bstfile], disable=[9])
     bibobj.locale = thislocale
     bibobj.bibdata['preamble'] = '\n'
     #bibobj.debug = True     ## turn on debugging for citekey printing
@@ -269,12 +259,32 @@ def run_test5():
     targetfile = './test/test5_target.bbl'
 
     print('\n' + '='*75)
-    print('Running Bibulous-test5')
+    print('Running Bibulous test5')
 
-    bibobj = Bibdata(auxfile, debug=False)
+    bibobj = Bibdata(auxfile, disable=[9], debug=False)
     bibobj.write_bblfile(write_preamble=True, write_postamble=True)
 
     return(bblfile, targetfile)
+
+## =============================
+def run_test6():
+    '''
+    Test #6 makes sure to raise an exception when attempting to load a BibTeX-format BST file.
+    '''
+
+    auxfile = './test/test6.aux'
+    bstfile = './test/test6.bst'
+
+    print('\n' + '='*75)
+    print('Running Bibulous test6')
+
+    try:
+        bibobj = Bibdata([auxfile, bstfile], debug=False, disable=[8,9])
+        result = False
+    except ImportError, arg:
+        result = True
+
+    return(result)
 
 ## =============================
 def check_file_match(testnum, outputfile, targetfile):
@@ -322,8 +332,11 @@ if (__name__ == '__main__'):
     check_file_match(1, outputfile, targetfile)
 
     ## Run test #2.
-    outputfile = run_test2()
-    print('Test #2 PASSED')
+    result = run_test2()
+    if result:
+        print('TEST #2 PASSED')
+    else:
+        print('TEST #2 FAILED.')
 
     ## Run test #3.
     (outputfile, targetfile) = run_test3()
@@ -336,6 +349,13 @@ if (__name__ == '__main__'):
     ## Run test #5.
     (outputfile, targetfile) = run_test5()
     check_file_match(5, outputfile, targetfile)
+
+    ## Run test #6.
+    result = run_test6()
+    if result:
+        print('TEST #6 PASSED')
+    else:
+        print('TEST #6 FAILED.')
 
     print('DONE')
 

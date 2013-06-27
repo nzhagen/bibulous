@@ -5,6 +5,9 @@ Python code to-do
    use of os and sys modules. And some of the built-in functions as well. And add an option that the
    user can set --- "allow_scripts" --- which defaults to "False".
 
+#. Look into whether the code can be simplified and user scripts still benefit if you move some
+   bibulous module functions from module scope functions to Bibdata class methods.
+
 #. Add an optional argument to Bibulous' command-line interface, giving user preferences about running
    scipts. That is, the user can opt to either run scripts as-is when it finds them in the BST files,
    or it can skip any scripts, in the interest of safety. The latter should be the default.
@@ -22,10 +25,6 @@ Python code to-do
 
 #. BibTeX can apparently accept an optional argument to the ``\cite{}`` command and place it into
    the bibliography. Try replicating that functionality.
-
-#. For each "Warning..." message, add a numerical tag so we know which line in the
-   code they come from. (Identical messages can come from different points in
-   the code, such as when the code can't find an abbreviation key.)
 
 #. Remember that the mandatory argument to ``\thebibliography`` in the preamble of the BBL
    file is the longest label occurring in the list. For numeric formats, this is simplify
@@ -79,8 +78,6 @@ Python code to-do
 
 Python testing to-do
 --------------------
-
-#. Test that trying to import a BibTeX-format BST file generates an ``ImportError`` exception.
 
 #. Add a test for locale-dependent sorting.
 
