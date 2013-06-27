@@ -2,19 +2,10 @@ Python code to-do
 -----------------
 
 #. Put some simple safeties into the API engine. Such as: prevent imports and file operations. Prevent
-   use of os and sys modules. And some of the built-in functions as well. And add an option that the
-   user can set --- "allow_scripts" --- which defaults to "False".
+   use of os and sys modules. And some of the built-in functions as well.
 
 #. Look into whether the code can be simplified and user scripts still benefit if you move some
    bibulous module functions from module scope functions to Bibdata class methods.
-
-#. Add an optional argument to Bibulous' command-line interface, giving user preferences about running
-   scipts. That is, the user can opt to either run scripts as-is when it finds them in the BST files,
-   or it can skip any scripts, in the interest of safety. The latter should be the default.
-
-   Additionally, we need to make sure that there are no uses of os.* or sys.* within the user's script.
-   We need to remove all "import" statements. Also we must remove all uses of the open() and write()
-   functions to prevent use of external files.
 
 #. Add documentation to the Bibulous' class attributes and methods. See ``numpydoc``'s "HOWTO_DOCUMENT"
    to get this set up right.

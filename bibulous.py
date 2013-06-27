@@ -154,29 +154,29 @@ class Bibdata(object):
         self.options = {}
         self.options['use_abbrevs'] = True
         self.options['replace_newlines'] = True
-
         self.options['undefstr'] = '???'
         self.options['replace_newlines'] = True
-        self.options['namelist_format'] = 'first_name_first'           #zzz
+        self.options['namelist_format'] = 'first_name_first'
         self.options['citation_order'] = 'citenum'
-        self.options['maxauthors'] = sys.maxint
+        self.options['maxauthors'] = 100
         self.options['maxeditors'] = 100
         self.options['minauthors'] = 5
         self.options['mineditors'] = 5
         self.options['procspie_as_journal'] = False
-        self.options['use_firstname_initials'] = True                    #zzz
-        self.options['use_name_ties'] = False                            #zzz
+        self.options['use_firstname_initials'] = True
+        self.options['use_name_ties'] = False
         self.options['show_urls'] = False
         self.options['backrefstyle'] = 'none'
         self.options['backrefs'] = False
         self.options['sort_case'] = True
         self.options['french_initials'] = False
         self.options['sort_with_prefix'] = False
-        self.options['period_after_initial'] = True                      #zzz
+        self.options['period_after_initial'] = True
         self.options['terse_inits'] = False
         self.options['force_sentence_case'] = False
         self.options['bibitemsep'] = None
         self.options['month_abbrev'] = True
+        self.options['allow_scripts'] = False
 
         ## Compile some patterns for use in regex searches.
         self.anybrace_pattern = re.compile(r'(?<!\\)[{}]', re.UNICODE)
@@ -704,13 +704,11 @@ class Bibdata(object):
                 self.bstdict[key] = self.bstdict[self.bstdict[key]]
 
         ## If the user defined any functions, then we want to evaluate them in a way such that
-        ## they are available in other functions. This is what the second argument to "eval()"
-        ## does below. Rather than the default "eval(..., globals(), locals())", the code below
-        ## pushes the scope to module level.
-        if self.script:
+        ## they are available in other functions.
+        if self.script and self.options['allow_scripts']:
             if self.debug:
                 print('Evaluating the user script:\n' + 'v'*50 + '\n' + self.script + '^'*50 + '\n')
-            exec(self.script, globals(), globals())
+            exec(self.script, globals())
 
         if self.debug:
             ## When displaying the bst dictionary, show it in sorted form.
@@ -965,7 +963,7 @@ class Bibdata(object):
         ## Before checking which variables are defined and which not, we first need to evaluate the
         ## user-defined variables or else they will always be "undefined". To make this work, we
         ## also need to provide the user shortcut names:
-        if self.user_variables:
+        if self.user_variables and self.options['allow_scripts']:
             options = self.options
             citedict = self.citedict
             bstdict = self.bstdict
@@ -1034,7 +1032,7 @@ class Bibdata(object):
                 ## Check if the variable is defined and that it is not None (or empty string).
                 if (varname in entry) and entry[varname]:
                     templatestr = templatestr.replace(var, unicode(entry[varname]))
-                elif (varname in self.user_variables):
+                elif (varname in self.user_variables) and self.options['allow_scripts']:
                     user_var_value = eval(self.user_variables[varname])
 
                     if user_var_value:

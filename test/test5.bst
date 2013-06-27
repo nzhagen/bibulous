@@ -10,6 +10,7 @@ OPTIONS:
 use_firstname_initials = False            ## initialize all but the authors' last names
 citation_order = ynt                      ## order the bibliography by "citekey" or "citenum" (or "nyt" etc.)
 namelist_format = first_name_first        ## defines values for both "authorlist_format" and "editorlist_format" at once
+allow_scripts = True                      ## whether to allow user scripts in BST files
 yearstyle = BCE/CE                        ## whether to use 'BCE/CE' after the year number or the older 'BC/AD' form
 document_language = Japanese              ## whether the document is for a Japanese audience
 
@@ -23,6 +24,7 @@ for_english_audience = '{}' if (options['document_language'] == 'English') else 
 
 
 DEFINITIONS:
+## NOTE! Only Unix-style line endings are allowed here.
 def format_yearstyle(yearstr, options):
     '''
     Append "BC or "AD" to "year", depending on whether the year is positive or negative.
