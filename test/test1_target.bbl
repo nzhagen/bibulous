@@ -76,5 +76,9 @@ DD Duck, ``Looney tunes'' (2001).
 Alain Aspect, Philippe Grangier, and G{\'e}rard Roger, ``Experimental realization of Einstein-Podolsky-Rosen-Bohm \textit{Gedenkenexperiment}: a new violation of Bell's inequalities'' (1982).
 \bibitem{editor_firstname_initials}
 David B. Chenault and Dennis H. Goldstein, eds, ``Polarization: Measurement, Analysis, and Remote Sensing X'' (2012).
+\bibitem[Duck-2001]{citation_label1}
+D. D. Duck, ``Looney tunes'' (2001).
+\bibitem[Duck-2001]{citation_label2}
+D. D. Duck, ed., ``Looney tunes'' (2001).
 
 \end{thebibliography}

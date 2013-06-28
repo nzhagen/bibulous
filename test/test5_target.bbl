@@ -4,17 +4,17 @@
 \providecommand{\href}[2]{#2}
 
 
-\bibitem[caesar]{caesar}
+\bibitem{caesar}
 Gaius Julius Caesar, \textit{Commentarii de Bello Gallico} \textit{Commentaries on the Gallic War} (145 BCE). [In Latin.]
-\bibitem[cicero]{cicero}
+\bibitem{cicero}
 Marcus Tullius Cicero, \textit{De re publica} \textit{On the republic} (51 BCE). [In Latin.]
-\bibitem[tacitus]{tacitus}
+\bibitem{tacitus}
 Publius Cornelius Tacitus, \textit{Ab excessu divi Augusti} \textit{Annals of Imperial Rome} (117 CE). [In Latin.]
-\bibitem[aurelius]{aurelius}
+\bibitem{aurelius}
 Marcus Aurelius, \textit{Τὰ εἰς ἑαυτόν} \textit{Meditations} (180 CE). [In Greek.]
-\bibitem[yanagida]{yanagida}
+\bibitem{柳田1974}
 {}柳田聖山, 禪學叢書, 10巻 (中文出版社 京都 1974-1977).
-\bibitem[stewart]{stewart}
+\bibitem{stewart}
 Doug Stewart, ``Interview with Walter Stewart,'' \textit{Omni} \textbf{11} (5), pp.~64--66, 87--92, 94 (1989).
 
 \end{thebibliography}

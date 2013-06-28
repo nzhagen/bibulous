@@ -963,10 +963,10 @@ class Bibdata(object):
         ## order, we also provide "none", "plain", "unsrt", and "abbrv" for users used to the other
         ## BibTeX names.
         numeric_tag_styles = ('citenumber', 'citenum', 'none', 'unsrt', 'plain', 'abbrv')
-        if (self.options['citation_sort'] in numeric_tag_styles):
+        if (self.options['citation_label'] in numeric_tag_styles):
             itemstr = r'\bibitem{' + c + '}\n'
         else:
-            bibitem_tag = generate_bibitem_label(c)
+            bibitem_tag = self.generate_bibitem_label(c)
             itemstr = r'\bibitem[' + bibitem_tag + ']{' + c + '}\n'
 
         ## If the citation key is not in the database, replace the format string with a message to the
@@ -1657,11 +1657,49 @@ class Bibdata(object):
         '''
 
         labelstyle = self.options['citation_label']
+        entry = self.bibdata[citekey]
 
-        #zzz
+        if ('name' in labelstyle):
+            if ('author' in entry):
+                name = entry['authorlist'][0]['last']
+            elif ('editor' in entry):
+                name = entry['editorlist'][0]['last']
+            else:
+                name = 'Unknown'
 
+        if ('year' in labelstyle):
+            if ('year' in entry) and str_is_integer(entry['year']):
+                year = entry['year']
+            else:
+                year = self.options['undefstr']
 
+        if (labelstyle == 'name-year'):
+            bibitem_label = name + '-' + year
+        elif (labelstyle == 'name, year'):
+            bibitem_label = name + ', ' + year
+        elif (labelstyle == 'name (year)'):
+            bibitem_label = name + '(' + year + ')'
+        elif (labelstyle == 'alpha'):
+            if ('author' in entry):
+                namelist = entry['authorlist']
+            elif ('editor' in entry):
+                namelist = entry['editorlist']
 
+            if (len(namelist) == 1):
+                name = namelist[0]['last'][0:3]
+            elif (len(namelist) == 2):
+                name = namelist[0]['last'][0] + namelist[1]['last'][0]
+            elif (len(namelist) > 2):
+                name = namelist[0]['last'][0] + namelist[1]['last'][0] + namelist[2]['last'][0]
+
+            if ('year' in entry) and str_is_integer(entry['year']):
+                year = entry['year']
+            else:
+                year = self.options['undefstr'][0:2]
+
+            bibitem_label = name + year
+
+        return(bibitem_label)
 
 
 ## ================================================================================================
@@ -1701,7 +1739,7 @@ def get_bibfilenames(filename, debug=False):
 
         s = open(filename, 'rU')
         for line in s.readlines():
-            line = line.strip()
+            line = line.decode('utf-8').strip()
             if line.startswith('%'): continue
             if line.startswith('\\bibdata{'):
                 line = line[9:]

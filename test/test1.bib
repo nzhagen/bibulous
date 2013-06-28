@@ -320,3 +320,17 @@
   publisher = {Cambridge Univ. Press},
   edition = 7
 }
+
+%% Test that the citation reference label is generated correctly.
+@CITATION_LABEL{citation_label1,
+  title = {Looney tunes},
+  author = "Daffy D. Duck",
+  year = {2001},
+}
+
+%% Test that the citation reference label is generated correctly, this time when no author but only editor.
+@CITATION_LABEL{citation_label2,
+  title = {Looney tunes},
+  editor = "Daffy D. Duck",
+  year = {2001},
+}

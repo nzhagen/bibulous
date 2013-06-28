@@ -45,6 +45,8 @@ Python code to-do list
 Python testing to-do
 --------------------
 
+#. Write a test for generate_bibitem_label(). This is probably best done by modifying test#4.
+
 #. Add a test for locale-dependent sorting.
 
 Template files to-do
