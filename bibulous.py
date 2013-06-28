@@ -8,7 +8,7 @@ template format is compact and *very* easy to modify.
 
 The basic program flow is as follows:
 
-1. Read the .aux file and get the names of the bibliography databases (.bib files),
+1. Read the `.aux` file and get the names of the bibliography databases (`.bib` files),
    the style templates (.bst files) to use, and the entire set of citations.
 2. Read in all of the bibliography database files into one long dictionary (`bibdata`),
    replacing any abbreviations with their full form. Cross-referenced data is *not* yet
@@ -19,7 +19,6 @@ The basic program flow is as follows:
    corresponding entry key in `bibdata`. From the entry type, select a template from `bstdict`
    and begin inserting the variables one-by-one into the template. If any data is missing,
    check for cross-references and use crossref data to fill in missing values.
-
 '''
 
 from __future__ import unicode_literals, print_function, division     ## for Python3 compatibility
@@ -80,7 +79,7 @@ class Bibdata(object):
         The style template for formatting the bibliography. The dictionary keys are the \
         entrytypes, with the dictionary values their string template.
     citedict : dict
-        The dictionary of citation keys and their corresponding numerical order of citation.
+        The dictionary of citation keys, and their corresponding numerical order of citation.
     debug : bool
         Whether to turn on debugging features.
     filedict : dict
@@ -126,7 +125,8 @@ class Bibdata(object):
 
     Example
     -------
-    ...
+    bibdata = Bibdata('jobname.aux')
+    bibdata.write_bblfile()
     '''
 
     def __init__(self, filename, disable=[], debug=False):
@@ -326,7 +326,7 @@ class Bibdata(object):
         entrystr : str
             The string containing the entire contents of the bibliography entry.
         entrytype : str
-            The type of entry ("article", "preamble", etc.).
+            The type of entry (`article`, `preamble`, etc.).
         '''
 
         if not entrystr:
@@ -504,13 +504,13 @@ class Bibdata(object):
     ## =============================
     def parse_auxfile(self, filename, debug=False):
         '''
-        Read in an ".aux" file and convert the `\citation{}` entries found there into a dictionary
+        Read in an `.aux` file and convert the `\citation{}` entries found there into a dictionary
         of citekeys and citation order number.
 
         Parameters
         ----------
         filename : str
-            The filename of the ".aux" file to parse.
+            The filename of the `.aux` file to parse.
         '''
 
         if debug: print('Reading AUX file "' + filename + '" ...')
@@ -815,61 +815,70 @@ class Bibdata(object):
 
             filehandle.write('\n\n'.encode('utf-8'))
 
-        ## Define a list which contains the citation keys, sorted in the order in which we need for
-        ## writing into the BBL file.
-        self.create_citation_list()
+        ## Use a try-except block here, so that if any exception is raised then we can make sure to
+        ## produce a valid BBL file.
+        try:
+            ## First Define a list which contains the citation keys, sorted in the order in which
+            ## we need for writing into the BBL file.
+            self.create_citation_list()
 
-        ## Write out each individual bibliography entry. Some formatting options will actually cause
-        ## the entry to be deleted, so we need the check below to see if the return string is empty
-        ## before writing it to the file.
-        for c in self.citelist:
-            ## Verbose output is for debugging.
-            if verbose: print('Writing entry "' + c + '" to "' + filename + '" ...')
+            ## Write out each individual bibliography entry. Some formatting options will actually
+            ## cause the entry to be deleted, so we need the check below to see if the return
+            ## string is empty before writing it to the file.
+            for c in self.citelist:
+                ## Verbose output is for debugging.
+                if verbose: print('Writing entry "' + c + '" to "' + filename + '" ...')
 
-            self.insert_crossref_data(c)
-            self.create_namelist(c, 'author')
-            self.create_namelist(c, 'editor')
+                self.insert_crossref_data(c)
+                self.create_namelist(c, 'author')
+                self.create_namelist(c, 'editor')
 
-            ## Before inserting entries into the BBL file, we do "difficult" BIB parsing jobs
-            ## here: insert cross-reference data, format author and editor name lists, generate
-            ## the "edition_ordinal", etc. Doing it here means that we don't have to add lots of
-            ## extra checks later, allowing for simpler code.
-            if (c in self.bibdata):
-                entry = self.bibdata[c]
+                ## Before inserting entries into the BBL file, we do "difficult" BIB parsing jobs
+                ## here: insert cross-reference data, format author and editor name lists, generate
+                ## the "edition_ordinal", etc. Doing it here means that we don't have to add lots
+                ## of extra checks later, allowing for simpler code.
+                if (c in self.bibdata):
+                    entry = self.bibdata[c]
 
-                if ('edition' in entry):
-                    entry['edition_ordinal'] = create_edition_ordinal(entry, disable=self.disable)
+                    if ('edition' in entry):
+                        entry['edition_ordinal'] = create_edition_ordinal(entry,
+                                                            disable=self.disable)
 
-                if ('pages' in entry):
-                    (startpage,endpage) = parse_pagerange(entry['pages'], c, self.disable)
-                    entry['startpage'] = startpage
-                    entry['endpage'] = endpage
+                    if ('pages' in entry):
+                        (startpage,endpage) = parse_pagerange(entry['pages'], c, self.disable)
+                        entry['startpage'] = startpage
+                        entry['endpage'] = endpage
 
-                ## The "month" is stored in the bibdata dictionary as a string representing an integer
-                ## from 1 to 12. Here we need to translate it to a string name.
-                if ('month' in entry):
-                    if entry['month'].isdigit():
-                        monthname = monthname_dict[entry['month']]
-                    else:
-                        monthname = entry['month']
-                    entry['monthname'] = monthname
+                    ## The "month" is stored in the bibdata dictionary as a string representing an
+                    ## integer from 1 to 12. Here we need to translate it to a string name.
+                    if ('month' in entry):
+                        if entry['month'].isdigit():
+                            monthname = monthname_dict[entry['month']]
+                        else:
+                            monthname = entry['month']
+                        entry['monthname'] = monthname
 
-                if ('doi' in entry):
-                    if not entry['doi'].startswith('http://dx.doi.org/'):
-                        entry['doi'] = 'http://dx.doi.org/' + entry['doi']
+                    if ('doi' in entry):
+                        if not entry['doi'].startswith('http://dx.doi.org/'):
+                            entry['doi'] = 'http://dx.doi.org/' + entry['doi']
 
-            ## Now that we have generated all of the "special" fields, we can call the bibitem
-            ## formatter to generate the output for this entry.
-            s = self.format_bibitem(c)
-            if (s != ''):
-                ## Need two line EOL's here and not one so that backrefs can work properly.
-                filehandle.write((s + '\n').encode('utf-8'))
+                ## Now that we have generated all of the "special" fields, we can call the bibitem
+                ## formatter to generate the output for this entry.
+                s = self.format_bibitem(c)
+                if (s != ''):
+                    ## Need two line EOL's here and not one so that backrefs can work properly.
+                    filehandle.write((s + '\n').encode('utf-8'))
+        except:
+            if write_postamble:
+                filehandle.write('\n\\end{thebibliography}\n'.encode('utf-8'))
+            filehandle.close()
+            raise           ## re-raise the exception
 
         if write_postamble:
             filehandle.write('\n\\end{thebibliography}\n'.encode('utf-8'))
-
         filehandle.close()
         return
+
 
     ## ===================================
     def create_citation_list(self):
@@ -922,12 +931,11 @@ class Bibdata(object):
         '''
         Create the "\bibitem{...}" string to insert into the ".bbl" file.
 
-        This is the workhorse function of Bibulous. For a given key, find the resulting entry
-        in the bibliography database. From the entry's `entrytype`, lookup the relevant template
-        in bstdict and start replacing template variables with formatted elements of the database
-        entry. Once you've replaced all template variables, you're done formatting that entry.
-
-        This function is also where we compile any scripts present in the BST files.
+        This is the workhorse function of Bibulous. For a given citation key, find the resulting
+        entry in the bibliography database. From the entry's `entrytype`, lookup the relevant
+        template in bstdict and start replacing template variables with formatted elements of the
+        database entry. Once you've replaced all template variables, you're done formatting that
+        entry. Write the result to the BBL file.
 
         Parameters
         ----------
@@ -952,14 +960,15 @@ class Bibdata(object):
         if (self.options['citation_order'] in ('citenumber','citenum','none','unsrt')):
             itemstr = r'\bibitem{' + c + '}\n'
         else:
+            #citetag = '' if not self.citedict[c][1] else ', ' + self.citedict[c][1]
             itemstr = r'\bibitem[' + c + ']{' + c + '}\n'
 
         ## If the citation key is not in the database, replace the format string with a message to the
         ## fact.
         if (c not in self.bibdata):
-            warn('Warning 010: citation key "' + c + '" is not in the bibliography database.',
-                 self.disable)
-            return(itemstr + '\\textit{Warning: citation key is not in the bibliography database}.')
+            msg = 'citation key "' + c + '" is not in the bibliography database.'
+            warn('Warning 010: ' + msg, self.disable)
+            return(itemstr + '\\textit{Warning: ' + msg + '}.')
         else:
             entry = self.bibdata[c]
 

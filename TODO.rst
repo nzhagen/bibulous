@@ -1,12 +1,16 @@
-Python code to-do
------------------
+Python code to-do list
+----------------------
+
+#. The LaTeX packages ``natbib`` and ``biblatex`` allow the user to change the form of citation tags
+   (text placed at the location of the ``\cite{}`` command in the LaTeX file). Add in this ability
+   to BIbulous by using the [...] of the ``\bibcite[...]{...} command``. NOTE! This requires some
+   extra infrastructure to make it work: you have to change the AUX file parser so that it does not
+   simply replace an identical citation key with its next representation. You have to be careful
+   to check whether the optional argument is present, and if it is different from the previous
+   citation, then it has to be treated as being unique.
 
 #. Look into whether the code can be simplified and user scripts still benefit if you move some
    bibulous module functions from module scope functions to Bibdata class methods.
-
-#. Simplify the ``parse_bibfield()`` method by taking some of the function's load off into a subroutine.
-
-#. The ``format_bibitem()`` method is another overly complex function that needs simplifying.
 
 #. BibTeX can apparently accept an optional argument to the ``\cite{}`` command and place it into
    the bibliography. Try replicating that functionality.
@@ -15,15 +19,12 @@ Python code to-do
    file is the longest label occurring in the list. For numeric formats, this is simplify
    the largest number. For alpha-formats, it needs to be more complicated.
 
-#. Make sure that when an exception has occurred, you still generate a valid BBL file (just
-   an incomplete one). So you will need to make use of some ``try...except`` blocks.
-
 #. Write a ``bibclean`` function which checks a ``*.bib`` file for errors. Include using
-   ``namefield_to_namelist()`` to check for name format errors. A common problem will be encoding
-   errors. For this, you can use ``fix_bad_unicode.py``, which attempts to undo encoding errors.
-   Actually, it looks like this code has been turned into a regular Python package ``ftfy``.
-   The file you have works for Python2 and not Python3, but the package is compatible with
-   both.
+   ``namefield_to_namelist()`` to check for name format errors.
+
+#. Common problems in multilanguage files are encoding errors. For this, you can try using
+   the Python package ``ftfy``, but this would require introducing into Bibulous an outside
+   dependency, and so I'm reluctant to do it without there being an urgent need.
 
 #. Implement a bibliography format in which repeated duplicates of author names are replaced
    with a long dash. (Or ``\textit{idem}`` instead of the dash?)
@@ -33,22 +34,9 @@ Python code to-do
    handle that case?
 
 #. ``format_edition()``, as currently implemented, will only work for English-language
-    bibliographies. This needs to be modified so that it can be made multilingual. This is actually
-    even more difficult than it sounds, since many languages actually use gender-dependent
-    ordinals, so that knowing the number alone is not sufficient.
-
-#. The LaTeX packages ``natbib`` and ``biblatex`` allow the user to change the form of citation tags
-   (text placed at the location of the ``\cite{}`` command in the LaTeX file). Bibulous, being only
-   a backend at the moment, can't do this. Maybe work with a LaTeX package maintainer to integrate
-   Bibulous into a more powerful front end? In addition, writing notes and annotations in the formatted
-   bibliography is better done in the document itself and not the database, since these are often
-   document-specific.
-
-   On page 130 of the Biblatex documentation, it lists a ``postnote`` option to the ``\cite{}``
-   command, in which the writer can enter in either a numeric page number to refer to, or a
-   string that is intended to be directly appended to the line. Find a way to implement this.
-   Maybe add a ``postnote`` field to the bibdata entry, and allow that field to be a list in case
-   more than one citation uses different page references to the same document?
+   bibliographies. This needs to be modified so that it can be made multilingual. This is actually
+   even more difficult than it sounds, since many languages actually use gender-dependent
+   ordinals, so that knowing the number alone is not sufficient.
 
 #. It may be useful for some users to extend the flexibility of the [|] notation to allow nested
    brackets.
@@ -63,14 +51,6 @@ Python testing to-do
 --------------------
 
 #. Add a test for locale-dependent sorting.
-
-#. Allow the style template parsing engine a means of setting, for example, fieldname
-   ``authors`` to get mapped to fieldname ``author``. Maybe something as simple as
-
-        entry.author = entry.authors
-
-   or something like that. This is not trivial because you can't just overwrite an
-   existing 'author' field.
 
 Template files to-do
 --------------------
