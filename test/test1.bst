@@ -31,7 +31,8 @@ edition_ordinal = <authorliststr>, \textit{<title>}[, <edition_ordinal>~ed.][, v
 
 
 OPTIONS:
-citation_order = citenum                  ## order the bibliography by "citekey" or "citenum" (or "nyt" etc.)
+citation_sort = citenum                   ## order the bibliography by "citekey" or "citenum" (or "nyt" etc.)
+citation_label = citenum                  ## label the reference items by their numerical order of appearance
 maxauthors = 9                            ## if more than 10 authors, then use "et al." format
 minauthors = 7                            ## if "maxauthors" exceeded, then display only the first "minauthors" and et al.
 maxeditors = 3                            ## if more than 5 editors, then use "et al." format

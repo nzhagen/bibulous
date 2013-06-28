@@ -1,23 +1,18 @@
 Python code to-do list
 ----------------------
 
-#. The LaTeX packages ``natbib`` and ``biblatex`` allow the user to change the form of citation tags
-   (text placed at the location of the ``\cite{}`` command in the LaTeX file). Add in this ability
-   to BIbulous by using the [...] of the ``\bibcite[...]{...} command``. NOTE! This requires some
-   extra infrastructure to make it work: you have to change the AUX file parser so that it does not
-   simply replace an identical citation key with its next representation. You have to be careful
-   to check whether the optional argument is present, and if it is different from the previous
-   citation, then it has to be treated as being unique.
+#. The ``\bibcite[...]{...}`` command: the current implementation doesn't do this correctly.
+   The ``[...]`` part needs to have a tag appropriate for placement as the item marker in the
+   reference list, and so cannot just be a sort key. We need a ``citetaglist`` or something.
+   But, even more we need a hook inside the BST file to determine the two features of citations:
+   how to format the reference item tags, and how to build the sort keys. You basically have the
+   latter, but don't build it explicitly inside the BST file. But move it here so that users
+   can manipulate it explicitly. So: (a) give instructions to users about how to overwrite the
+   generate_sortkey() function; (b) make a function generate_bibitem_tag() --- which can also
+   be overwritten by a user-defined function --- that generates the bibitem tag.
 
 #. Look into whether the code can be simplified and user scripts still benefit if you move some
    bibulous module functions from module scope functions to Bibdata class methods.
-
-#. BibTeX can apparently accept an optional argument to the ``\cite{}`` command and place it into
-   the bibliography. Try replicating that functionality.
-
-#. Remember that the mandatory argument to ``\thebibliography`` in the preamble of the BBL
-   file is the longest label occurring in the list. For numeric formats, this is simplify
-   the largest number. For alpha-formats, it needs to be more complicated.
 
 #. Write a ``bibclean`` function which checks a ``*.bib`` file for errors. Include using
    ``namefield_to_namelist()`` to check for name format errors.

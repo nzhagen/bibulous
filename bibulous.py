@@ -122,6 +122,7 @@ class Bibdata(object):
     write_citeextract
     write_authorextract
     replace_abbrevs_with_full
+    generate_bibitem_label
 
     Example
     -------
@@ -157,7 +158,8 @@ class Bibdata(object):
         self.options['undefstr'] = '???'
         self.options['replace_newlines'] = True
         self.options['namelist_format'] = 'first_name_first'
-        self.options['citation_order'] = 'citenum'
+        self.options['citation_sort'] = 'citenum'
+        self.options['citation_label'] = 'citekey'
         self.options['maxauthors'] = 100
         self.options['maxeditors'] = 100
         self.options['minauthors'] = 5
@@ -904,7 +906,7 @@ class Bibdata(object):
         ## ones. This happens in simple sort() but not when we use locale's "strcoll". So we have to
         ## separate the two cases manually. Also, use [::-1] on the negative integers because they
         ## need to be ordered from largest number to smallest.
-        if (self.options['citation_order'][0] == 'y'):
+        if (self.options['citation_sort'][0] == 'y'):
             firstdict = {k:sortdict[k] for k in sortdict if k[0] == '-'}
             seconddict = {k:sortdict[k] for k in sortdict if k[0] != '-'}
             self.citelist = sorted(firstdict.iterkeys(), cmp=locale.strcoll)[::-1]
@@ -913,7 +915,7 @@ class Bibdata(object):
             self.citelist = sorted(sortdict.iterkeys(), cmp=locale.strcoll)
 
         ## If using a citation order which is descending rather than ascending, then reverse the list.
-        if (self.options['citation_order'] == 'ydnt'):
+        if (self.options['citation_sort'] == 'ydnt'):
             self.citelist = self.citelist[::-1]
 
         ## Finally, now that we have them in the order we want, we keep only the citation keys, so
@@ -957,11 +959,15 @@ class Bibdata(object):
             print('Template: "' + self.bstdict[entry['entrytype']] + '"')
             print('Field data: ' + repr(entry))
 
-        if (self.options['citation_order'] in ('citenumber','citenum','none','unsrt')):
+        ## Although "citenum" or "citenumber" is really the only appropriate name for this sorting
+        ## order, we also provide "none", "plain", "unsrt", and "abbrv" for users used to the other
+        ## BibTeX names.
+        numeric_tag_styles = ('citenumber', 'citenum', 'none', 'unsrt', 'plain', 'abbrv')
+        if (self.options['citation_sort'] in numeric_tag_styles):
             itemstr = r'\bibitem{' + c + '}\n'
         else:
-            #citetag = '' if not self.citedict[c][1] else ', ' + self.citedict[c][1]
-            itemstr = r'\bibitem[' + c + ']{' + c + '}\n'
+            bibitem_tag = generate_bibitem_label(c)
+            itemstr = r'\bibitem[' + bibitem_tag + ']{' + c + '}\n'
 
         ## If the citation key is not in the database, replace the format string with a message to the
         ## fact.
@@ -1138,7 +1144,7 @@ class Bibdata(object):
         ## citeorder if just "citekey" then we *already* know how to sort it, so rather than return a
         ## warning go ahead and return the citekey so that it gets sorted properly. The fact that the
         ## key is not in the database will raise an error later.
-        citeorder = self.options['citation_order']
+        citeorder = self.options['citation_sort']
         if (citeorder == 'citekey'):
             return(citekey)
 
@@ -1633,6 +1639,30 @@ class Bibdata(object):
                 raise SyntaxError('if-else mismatch inside replace_abbrevs_with_full().')
 
         return(fieldstr, resultstr, end_of_field)
+
+    ## =============================
+    def generate_bibitem_label(self, citekey):
+        '''
+        Generate the bibitem label.
+
+        Parameters
+        ----------
+        citekey : str
+            The citation key.
+
+        Returns
+        -------
+        bibitem_label : str
+            The label to use for the reference list item.
+        '''
+
+        labelstyle = self.options['citation_label']
+
+        #zzz
+
+
+
+
 
 ## ================================================================================================
 ## END OF BIBDATA CLASS.
