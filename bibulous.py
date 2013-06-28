@@ -263,7 +263,6 @@ class Bibdata(object):
             ## Don't strip off leading and ending whitespace until after checking if '}' begins a
             ## line (as in the block above).
             line = line.strip()
-            #print('line=', line)        #zzz
 
             if line.startswith('@'):
                 brace_idx = line.find('{')             ## assume a form like "@ENTRYTYPE{"
@@ -1661,9 +1660,9 @@ class Bibdata(object):
 
         if ('name' in labelstyle):
             if ('author' in entry):
-                name = entry['authorlist'][0]['last']
+                name = purify_string(entry['authorlist'][0]['last'])
             elif ('editor' in entry):
-                name = entry['editorlist'][0]['last']
+                name = purify_string(entry['editorlist'][0]['last'])
             else:
                 name = 'Unknown'
 
@@ -1678,7 +1677,9 @@ class Bibdata(object):
         elif (labelstyle == 'name, year'):
             bibitem_label = name + ', ' + year
         elif (labelstyle == 'name (year)'):
-            bibitem_label = name + '(' + year + ')'
+            bibitem_label = name + ' (' + year + ')'
+        elif (labelstyle == 'citekey'):
+            bibitem_label = citekey
         elif (labelstyle == 'alpha'):
             if ('author' in entry):
                 namelist = entry['authorlist']
@@ -1686,18 +1687,25 @@ class Bibdata(object):
                 namelist = entry['editorlist']
 
             if (len(namelist) == 1):
-                name = namelist[0]['last'][0:3]
+                name = purify_string(namelist[0]['last'])[0:3]
             elif (len(namelist) == 2):
-                name = namelist[0]['last'][0] + namelist[1]['last'][0]
+                name = purify_string(namelist[0]['last'])[0]
+                name += purify_string(namelist[1]['last'])[0]
             elif (len(namelist) > 2):
-                name = namelist[0]['last'][0] + namelist[1]['last'][0] + namelist[2]['last'][0]
+                name = purify_string(namelist[0]['last'])[0]
+                name += purify_string(namelist[1]['last'])[0]
+                name += purify_string(namelist[2]['last'])[0]
 
             if ('year' in entry) and str_is_integer(entry['year']):
-                year = entry['year']
+                year = entry['year'][-2:]
             else:
                 year = self.options['undefstr'][0:2]
 
             bibitem_label = name + year
+        else:
+            warn('Warning 027: The reference list label style "' + labelstyle + '" is not ' + \
+                 'implemented ...', self.disable)
+            bibitem_label = 'Unknown-' + self.options['undefstr']
 
         return(bibitem_label)
 

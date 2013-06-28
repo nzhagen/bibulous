@@ -191,7 +191,7 @@ def run_test4():
     ## manually. Later below, we will try some other locale settings.
     thislocale = locale.setlocale(locale.LC_ALL,'en_US.UTF8'.encode('ascii','replace'))
 
-    ## Need to make a list of all the citation order options we want to try. Skip "citenum" since
+    ## Need to make a list of all the citation sort options we want to try. Skip "citenum" since
     ## that is the default, and so has been tested already.
     citation_sort_options = ['citekey', ## citekey
                              'nyt',     ## uses the first author's last name, the year, and then the title
@@ -212,14 +212,14 @@ def run_test4():
     bibobj.bibdata['preamble'] = '\n'
     #bibobj.debug = True     ## turn on debugging for citekey printing
 
-    for order in citation_sort_options:
+    for sortstyle in citation_sort_options:
         ## Delete the old citekeys so that the new test contains only the new keys.
-        print('Setting citation_sort = ' + order)
+        print('Setting citation_sort = ' + sortstyle)
         bibobj.citedict = {}
-        bibobj.options['citation_sort'] = order
+        bibobj.options['citation_sort'] = sortstyle
         bibobj.parse_auxfile(auxfile)      ## this generates the citations
-        write_preamble = (order == citation_sort_options[0])
-        write_postamble = (order == citation_sort_options[-1])
+        write_preamble = (sortstyle == citation_sort_options[0])
+        #write_postamble = (sortstyle == citation_sort_options[-1])
         bibobj.write_bblfile(write_preamble=write_preamble, write_postamble=False)
 
         filehandle = open(bblfile, 'a')
@@ -287,6 +287,54 @@ def run_test6():
 
     return(result)
 
+## ==================================================================================================
+def run_test7():
+    '''
+    Test #7 checks the operation of generating reference list labels.
+    '''
+
+    ## Although three of these files were copied from "test1", it is a bad idea to use the "test1.*"
+    ## files here because any changes to test1 would then require changes to the test7_target.bbl
+    ## as well.
+    bstfile = './test/test7.bst'
+    bibfile = './test/test7.bib'
+    bblfile = './test/test7.bbl'
+    auxfile = './test/test7.aux'
+    target_bblfile = './test/test7_target.bbl'
+
+    ## The default locale will be US english. Ironically, the locale argument needs to use an ASCII
+    ## string, and since the default string encoding here is Unicode, we have to re-encode it
+    ## manually. Later below, we will try some other locale settings.
+    thislocale = locale.setlocale(locale.LC_ALL,'en_US.UTF8'.encode('ascii','replace'))
+
+    ## Need to make a list of all the citation label options we want to try. Skip "citenum" since
+    ## that is the default, and so has been tested already.
+    citation_label_options = ('citekey', 'name-year', 'alpha', 'name, year', 'name (year)')
+
+    print('\n' + '='*75)
+    print('Running Bibulous Test #7')
+
+    bibobj = Bibdata([bibfile,auxfile,bblfile,bstfile], disable=[9])
+    bibobj.locale = thislocale
+    bibobj.bibdata['preamble'] = '\n'
+    #bibobj.debug = True     ## turn on debugging for citekey printing
+
+    for labelstyle in citation_label_options:
+        ## Delete the old citekeys so that the new test contains only the new keys.
+        print('Setting citation_label = ' + labelstyle)
+        bibobj.citedict = {}
+        bibobj.options['citation_label'] = labelstyle
+        bibobj.parse_auxfile(auxfile)      ## this generates the citations
+        write_preamble = (labelstyle == citation_label_options[0])
+        write_postamble = (labelstyle == citation_label_options[-1])
+        bibobj.write_bblfile(write_preamble=write_preamble, write_postamble=write_postamble)
+
+        filehandle = open(bblfile, 'a')
+        filehandle.write('\n\n')
+        filehandle.close()
+
+    return(bblfile, target_bblfile)
+
 ## =============================
 def check_file_match(testnum, outputfile, targetfile):
     if not isinstance(outputfile, list):
@@ -318,22 +366,27 @@ def check_file_match(testnum, outputfile, targetfile):
             alldiffs.extend(difflist)
 
     if (len(alldiffs) < 2):
+        test_passes = True
         print('TEST #%i PASSED' % testnum)
     else:
+        test_passes = False
         print('TEST #%i FAILED. FILE DIFFERENCES:' % testnum)
         for line in alldiffs: print(line, end='')
 
-    return(difflist)
+    return(test_passes)
 
 
 ## ==================================================================================================
 if (__name__ == '__main__'):
+    suite_pass = True
+
     ## Run test #1.
     (outputfile, targetfile) = run_test1()
     check_file_match(1, outputfile, targetfile)
 
     ## Run test #2.
     result = run_test2()
+    suite_pass *= result
     if result:
         print('TEST #2 PASSED')
     else:
@@ -341,22 +394,34 @@ if (__name__ == '__main__'):
 
     ## Run test #3.
     (outputfile, targetfile) = run_test3()
-    check_file_match(3, outputfile, targetfile)
+    result = check_file_match(3, outputfile, targetfile)
+    suite_pass *= result
 
     ## Run test #4.
     (outputfile, targetfile) = run_test4()
-    check_file_match(4, outputfile, targetfile)
+    result = check_file_match(4, outputfile, targetfile)
+    suite_pass *= result
 
     ## Run test #5.
     (outputfile, targetfile) = run_test5()
-    check_file_match(5, outputfile, targetfile)
+    result = check_file_match(5, outputfile, targetfile)
+    suite_pass *= result
 
     ## Run test #6.
     result = run_test6()
+    suite_pass *= result
     if result:
         print('TEST #6 PASSED')
     else:
         print('TEST #6 FAILED.')
 
-    print('DONE')
+    ## Run test #7.
+    (outputfile, targetfile) = run_test7()
+    result = check_file_match(7, outputfile, targetfile)
+    suite_pass *= result
+
+    if suite_pass:
+        print('THE CODE PASSES ALL TESTS IN THE TESTING SUITE.')
+    else:
+        print('===== FAILED THE TESTING SUITE! =====')
 
