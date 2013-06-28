@@ -1,13 +1,7 @@
 Python code to-do list
 ----------------------
 
-#. The ``\bibcite[...]{...}`` command: the current implementation doesn't do this correctly.
-   The ``[...]`` part needs to have a tag appropriate for placement as the item marker in the
-   reference list, and so cannot just be a sort key. We need a ``citetaglist`` or something.
-   But, even more we need a hook inside the BST file to determine the two features of citations:
-   how to format the reference item tags, and how to build the sort keys. You basically have the
-   latter, but don't build it explicitly inside the BST file. But move it here so that users
-   can manipulate it explicitly. So: (a) give instructions to users about how to overwrite the
+#. (a) give instructions to users about how to overwrite the
    generate_sortkey() function; (b) make a function generate_bibitem_tag() --- which can also
    be overwritten by a user-defined function --- that generates the bibitem tag.
 
@@ -44,8 +38,6 @@ Python code to-do list
 
 Python testing to-do
 --------------------
-
-#. Write a test for generate_bibitem_label(). This is probably best done by modifying test#4.
 
 #. Add a test for locale-dependent sorting.
 
