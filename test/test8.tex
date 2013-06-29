@@ -1,13 +1,8 @@
 \documentclass{article}
 \usepackage[utf8]{inputenc} %File encoding
+\usepackage{ifthen}             %% needed for the redefinition of \@cite below.
 
-\newcommand{\gls}[1]{#1}
 \newcommand{\citez}[1]{#1\protect\nocite{#1}}
-
-% \renewenvironment{glossary}%
-% {\begin{description}\setlength{\labelwidth}{35pt}%
-% \setlength{\leftmargin}{\labelwidth+\labelsep}}%
-% {\end{description}}%
 
 \renewenvironment{glossary}
    {\begin{list}{}{\setlength\labelsep{\linewidth}%
@@ -16,42 +11,26 @@
                    \let\makelabel\descriptionlabel}}
    {\end{list}}
 
-\newenvironment{listofacronyms}
-   {\begin{list}{}{\setlength\labelwidth{0pt}%
-                   \setlength\itemindent{-\leftmargin}%
-                   \let\makelabel\descriptionlabel}}
-   {\end{list}}
-
-\newenvironment{listofsymbols}
-   {\begin{list}{}{\setlength\labelwidth{0pt}%
-                   \setlength\itemindent{-\leftmargin}%
-                   \let\makelabel\descriptionlabel}}
-   {\end{list}}
+\makeatletter
+   \renewcommand\@biblabel[1]{#1}
+   \renewenvironment{thebibliography}[1]
+   {\section*{\refname}%
+       \list{}{\setlength\labelwidth{1.5cm}%
+          \leftmargin\labelwidth \advance\leftmargin\labelsep
+          \let\makelabel\descriptionlabel}}%
+   {\endlist}
+   \renewcommand{\@cite}[2]{{#1\ifthenelse{\boolean{@tempswa}}{,\nolinebreak[3] #2}{}}}
+\makeatother
 
 
 \begin{document}
 
-Our network uses \gls{AD}. By using \gls{AD} with \gls{MS} bases clients that have been installed using a \gls{glos:RespF} from \gls{CD}, we can expect a high level of standardization.
-
-\textbf{Some Greek symbols}: if you calculate with \gls{symb:Pi} you always get an irrational result, because \gls{symb:Pi} itself is irrational. As a matter of fact, there are \gls{symb:Phi} and \gls{symb:Lambda}, too.
-
-\section*{\textsf{Glossary}}
-
-\begin{glossary}
-   \item[Active directory] Active Directory is the directory service for Windows based networks, that allows central organization and administration of any network resource. It allows a single-sign-on concept independent from network topologies or network protocols. As a prerequisite you need a Windows Server acting as Domain Controller. This computer stores all necessary data, e.\,g.~usernames and corresponding passwords.
-   \item[Response file] A file that allows unattended software installation.
-\end{glossary}
-
-{\noindent}\rule{\linewidth}{2pt}
-
-\section{Section}
-
 Our network uses \citez{AD}. By using \citez{AD} with \citez{JS} bases clients that have been installed using a \citez{RF} from \citez{CD}, we can expect a high level of standardization.
 
-\textbf{Some Greek symbols}: if you calculate with \citez{sym:pi} you always get an irrational result, because \citez{sym:pi} itself is irrational. As a matter of fact, there are \citez{sym:phi} and \citez{sym:lambda}, too.
+If you calculate with \cite{sym:pi} you always get an irrational result, because \cite{sym:pi} itself is irrational. As a matter of fact, there are \cite{sym:phi} and \cite{sym:lambda}, too.
 
-\bibliographystyle{bibulous-glossaries}
-\bibliography{gloss}
+\bibliographystyle{test8}
+\bibliography{test8}
 
 
 \end{document}

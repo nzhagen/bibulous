@@ -346,10 +346,10 @@ class Bibdata(object):
             ## fake key onto the front of the string before calling "parse_bibfield()".
             fd = self.parse_bibfield('fakekey = ' + entrystr)
             if fd: self.bibdata['preamble'] += '\n' + fd['fakekey']
-        elif (entrytype in 'string'):
+        elif (entrytype == 'string'):
             fd = self.parse_bibfield(entrystr)
             if fd: self.abbrevs.update(fd)
-        elif (entrytype in 'acronym'):
+        elif (entrytype == 'acronym'):
             fd = self.parse_bibfield(entrystr)
             entrykey = fd.keys()[0]
             newentry = {'name':entrykey, 'description':fd[entrykey], 'entrytype':'acronym'}
