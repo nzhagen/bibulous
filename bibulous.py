@@ -130,7 +130,7 @@ class Bibdata(object):
     bibdata.write_bblfile()
     '''
 
-    def __init__(self, filename, disable=[], debug=False):
+    def __init__(self, filename, disable=None, debug=False):
         self.debug = debug
         self.abbrevs = {'jan':'1', 'feb':'2', 'mar':'3', 'apr':'4', 'may':'5', 'jun':'6',
                         'jul':'7', 'aug':'8', 'sep':'9', 'oct':'10', 'nov':'11', 'dec':'12'}
@@ -140,13 +140,19 @@ class Bibdata(object):
         self.citedict = {}  ## the dictionary containing the original data from the AUX file
         self.citelist = []  ##citation keys in the ordered they will be printed in the final result
         self.bstdict = {}
-        self.user_script = ''    ## any user-written Python scripts go here
-        self.user_variables = {}    ### any user-defined variables from the BST files
+        self.user_script = ''       ## any user-written Python scripts go here
+        self.user_variables = {}    ## any user-defined variables from the BST files
 
         ## Temporary variables for use in error messages while parsing files.
         self.filename = ''                      ## the current filename (for error messages)
         self.i = 0                              ## counter for line in file (for error messages)
-        self.disable = disable                  ## the list of warning message numbers to disable
+
+        ## On default initialization, we don't want to issue any warnings about "overwriting" the
+        ## default options. So if no "default" keyword is given, then turn off warning #9.
+        if (disable == None):
+            self.disable = [9]
+        else:
+            self.disable = disable              ## the list of warning message numbers to disable
 
         ## Put in default options settings. Note that "use_abbrevs" and "replace_newlines" are
         ## different from the other options in that they can *not* be defined in the style template
@@ -340,9 +346,14 @@ class Bibdata(object):
             ## fake key onto the front of the string before calling "parse_bibfield()".
             fd = self.parse_bibfield('fakekey = ' + entrystr)
             if fd: self.bibdata['preamble'] += '\n' + fd['fakekey']
-        elif (entrytype == 'string'):
+        elif (entrytype in 'string'):
             fd = self.parse_bibfield(entrystr)
             if fd: self.abbrevs.update(fd)
+        elif (entrytype in 'acronym'):
+            fd = self.parse_bibfield(entrystr)
+            entrykey = fd.keys()[0]
+            newentry = {'name':entrykey, 'description':fd[entrykey], 'entrytype':'acronym'}
+            if fd: self.bibdata[entrykey] = newentry
         else:
             ## First get the entry key. Then send the remainder of the entry string to the parser.
             idx = entrystr.find(',')
@@ -378,6 +389,11 @@ class Bibdata(object):
         ----------
         entrystr : str
             The string containing the entire contents of the bibliography entry.
+
+        Returns
+        -------
+        fd : dict
+            The dictionary of "field name" and "field value" pairs.
         '''
 
         entrystr = entrystr.strip()
@@ -958,6 +974,7 @@ class Bibdata(object):
             print('Template: "' + self.bstdict[entry['entrytype']] + '"')
             print('Field data: ' + repr(entry))
 
+
         ## Although "citenum" or "citenumber" is really the only appropriate name for this sorting
         ## order, we also provide "none", "plain", "unsrt", and "abbrv" for users used to the other
         ## BibTeX names.
@@ -965,8 +982,8 @@ class Bibdata(object):
         if (self.options['citation_label'] in numeric_tag_styles):
             itemstr = r'\bibitem{' + c + '}\n'
         else:
-            bibitem_tag = self.generate_bibitem_label(c)
-            itemstr = r'\bibitem[' + bibitem_tag + ']{' + c + '}\n'
+            bibitem_label = self.generate_bibitem_label(c)
+            itemstr = r'\bibitem[' + bibitem_label + ']{' + c + '}\n'
 
         ## If the citation key is not in the database, replace the format string with a message to the
         ## fact.
@@ -1663,8 +1680,10 @@ class Bibdata(object):
                 name = purify_string(entry['authorlist'][0]['last'])
             elif ('editor' in entry):
                 name = purify_string(entry['editorlist'][0]['last'])
+            elif ('name' in entry):
+                name = purify_string(entry['name'])
             else:
-                name = 'Unknown'
+                name = self.options['undefstr']
 
         if ('year' in labelstyle):
             if ('year' in entry) and str_is_integer(entry['year']):
@@ -1672,7 +1691,9 @@ class Bibdata(object):
             else:
                 year = self.options['undefstr']
 
-        if (labelstyle == 'name-year'):
+        if (labelstyle == 'name'):
+            bibitem_label = name
+        elif (labelstyle == 'name-year'):
             bibitem_label = name + '-' + year
         elif (labelstyle == 'name, year'):
             bibitem_label = name + ', ' + year
@@ -2696,38 +2717,63 @@ def purify_string(s):
     -------
     p : str
         The "purified" string.
-
-    Notes
-    -----
-    Currently `purify_string()` does not allow LaTeX markup such as \'i to refer to the Unicode
-    character which is correctly written as \'\i. Add functionality to allow that?
     '''
 
     p = unicode(s)
     if not ('\\' in p):
-        ## Remove braces if present.
+        ## If there are no LaTeX commands, then just remove any braces present.
         p = p.replace('{', '')
         p = p.replace('}', '')
         return(p)
 
-    ## Convert any LaTeX character encodings directly to their unicode equivalents.
-    p = latex_to_utf8(p)
+    ## If the string contains mathematical markup (i.e. $...$), then we have to treat that case
+    ## specially, since we don't want to run "purify" on mathematics --- it's not as easy as
+    ## simply replacing math markup with unicode equivalents. So, if we find math markup then
+    ## we split the string into math parts and non-math parts, purify the non-math ones, and
+    ## then piece it back together.
+    mathpattern = re.compile(r'(?<!\\)\$.*?(?<!\\)\$', re.UNICODE)
+    matchobj = re.search(r'(?<!\\)\$.*?(?<!\\)\$', s, re.UNICODE)
 
-    ## Next we look for LaTeX commands. LaTeX variables will have the form "\variable" followed
-    ## by either whitespace, '{', or '}'. A function will have the form "\functionname{...}"
-    ## where the ellipsis can be anything.
-    match = re.compile(r'\\\w+', re.UNICODE)
-    p = match.sub('', p)
+    if matchobj:
+        start_idx = []
+        end_idx = []
 
-    ## Finally, remove the braces used for LaTeX commands. We can't just replace '{' and '}'
-    ## wholesale, since the syntax allows '\{' and '\}' to produce text braces. So first we
-    ## remove the command braces, and then we swap '\{' for '{' etc at the end.
-    match = re.compile(r'(?<!\\){', re.UNICODE)
-    p = match.sub('', p, re.UNICODE)
-    match = re.compile(r'(?<!\\)}', re.UNICODE)
-    p = match.sub('', p, re.UNICODE)
-    p = p.replace('\\{', '{')
-    p = p.replace('\\}', '}')
+        for matchobj in re.finditer(r'(?<!\\)\$.*?(?<!\\)\$', s, re.UNICODE):
+            (start,end) = matchobj.span()
+            start_idx.append(start)
+            end_idx.append(end)
+
+        idx = sorted(list(set(start_idx + end_idx)))
+        if (idx[0] != 0):
+            idx = [0] + idx
+        if (idx[-1] != len(s)):
+            idx = idx + [len(s)]
+
+        p = ''
+        for i in range(len(idx)-1):
+            if (s[idx[i]] != '$'):
+                p += purify_string(s[idx[i]:idx[i+1]])
+            else:
+                p += s[idx[i]:idx[i+1]]
+    else:
+        ## Convert any LaTeX character encodings directly to their unicode equivalents.
+        p = latex_to_utf8(p)
+
+        ## Next we look for LaTeX commands. LaTeX variables will have the form "\variable" followed
+        ## by either whitespace, '{', or '}'. A function will have the form "\functionname{...}"
+        ## where the ellipsis can be anything.
+        match = re.compile(r'\\\w+', re.UNICODE)
+        p = match.sub('', p)
+
+        ## Finally, remove the braces used for LaTeX commands. We can't just replace '{' and '}'
+        ## wholesale, since the syntax allows '\{' and '\}' to produce text braces. So first we
+        ## remove the command braces, and then we swap '\{' for '{' etc at the end.
+        match = re.compile(r'(?<!\\){', re.UNICODE)
+        p = match.sub('', p, re.UNICODE)
+        match = re.compile(r'(?<!\\)}', re.UNICODE)
+        p = match.sub('', p, re.UNICODE)
+        p = p.replace('\\{', '{')
+        p = p.replace('\\}', '}')
 
     return(p)
 

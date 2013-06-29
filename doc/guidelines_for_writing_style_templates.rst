@@ -50,3 +50,10 @@ Guidelines for writing bibliography style templates
    where the different letters indicate (as in Biblatex) ``n`` = name (i.e. author's last name), ``y`` = year, ``t`` = title, ``v`` = volume, and ``a`` = alphabetic label (where the user is implementing some bibliography front-end that prints out alphabetic labels inside the ``.aux`` file). The ``d`` here means that the order should be *descending* rather than the default of ascending.
 
 #. A user wanting a localized form of quotation should use ``\enquote{<title>}`` rather than ````<title>''``, and add ``\usepackage{csquotes}`` to the preamble of the LaTeX document.
+
+Not yet documented
+==================
+
+#. Need to give instructions to users about how to overwrite the ``generate_sortkey()`` function for arbitrary citation sorting.
+
+#. Also need instructions on how to overwrite the ``generate_bibitem_label()`` function for generating the reference item labels.
