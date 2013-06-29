@@ -1,0 +1,22 @@
+\begin{thebibliography}{7}
+\providecommand{\enquote}[1]{``#1''}
+\providecommand{\url}[1]{\verb|#1|}
+\providecommand{\href}[2]{#2}
+
+
+\bibitem[AD]{AD}
+Active Directory
+\bibitem[CD]{CD}
+Compact Disc
+\bibitem[JS]{JS}
+Javascript
+\bibitem[Unknown]{RF}
+A file that allows unattended software installation.
+\bibitem[$\lambda$]{sym:lambda}
+Lambda indictes an eigenvalue in the mathematics  of linear algebra.
+\bibitem[$\phi$]{sym:phi}
+An angle.
+\bibitem[$\pi$]{sym:pi}
+A mathematical constant whose value is the ratio of any circle's circumference to its diameter.
+
+\end{thebibliography}
