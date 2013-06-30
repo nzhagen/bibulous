@@ -968,6 +968,8 @@ class Bibdata(object):
         '''
 
         c = citekey
+        if (c == 'preamble'):
+            return('')
 
         if debug:
             print('Formatting entry "' + citekey + '"')
@@ -1731,6 +1733,44 @@ class Bibdata(object):
         return(bibitem_label)
 
 
+    ## =============================
+    def write_auxfile(self, filename=None):
+        '''
+        Given the input database file(s) and style file(s), write out an AUX file containing
+        citations to all unique database entries.
+
+        Parameters
+        ----------
+        filename : str
+            The filename of the auxfile to write.
+        '''
+
+        if (filename == None):
+            filename = self.filedict['aux']
+
+        filehandle = open(filename, 'w')
+
+        for entry in self.bibdata:
+            filehandle.write('\\citation{' + entry + '}\n'.encode('utf-8'))
+
+        filehandle.write('\n')
+        filehandle.write('\\bibdata{')
+        for f in self.filedict['bib']:
+            filehandle.write(f)
+            if (f != self.filedict['bib'][-1]):
+                filehandle.write(',')
+        filehandle.write('}\n')
+        filehandle.write('\\bibstyle{')
+        for f in self.filedict['bst']:
+            filehandle.write(f)
+            if (f != self.filedict['bst'][-1]):
+                filehandle.write(',')
+        filehandle.write('}\n')
+        filehandle.close()
+        return
+
+
+
 ## ================================================================================================
 ## END OF BIBDATA CLASS.
 ## ================================================================================================
@@ -1763,8 +1803,8 @@ def get_bibfilenames(filename, debug=False):
     texfile = ''
 
     if isinstance(filename, basestring) and filename.endswith('.aux'):
-        auxfile = os.path.normpath(filename)
-        path = os.path.dirname(os.path.normpath(filename)) + '/'
+        auxfile = os.path.normpath(os.path.abspath(filename))
+        path = os.path.dirname(auxfile) + '/'
 
         s = open(filename, 'rU')
         for line in s.readlines():
@@ -1792,16 +1832,12 @@ def get_bibfilenames(filename, debug=False):
                 r += '.bib'
 
             ## If the filename has a relative address, convert it to an absolute one.
-            if r.startswith(r'./') or r.startswith(r'.\\'):
-                r = path + r[2:]
-            elif r.startswith('/'):
-                ## Linux absolute paths begin with a forward slash
-                pass
-            elif (r[0].isalpha() and r[1] == ':'):
-                ## Windows absolute paths begin with a drive letter and a colon.
-                pass
-            else:
+            ## Linux absolute paths begin with a forward slash
+            ## Windows absolute paths begin with a drive letter and a colon.
+            if not r.startswith('/') or (r[0].isalpha() and r[1] == ':'):
                 r = path + r
+            elif r.startswith('./'):
+                r = path + r[2:]
 
             bibfiles.append(r)
 
@@ -1817,16 +1853,12 @@ def get_bibfilenames(filename, debug=False):
                 r += '.bst'
 
             ## If the filename has a relative address, convert it to an absolute one.
-            if r.startswith('./') or r.startswith('.\\'):
-                r = path + r[2:]
-            elif r.startswith('/'):
-                ## Linux absolute paths begin with a forward slash
-                pass
-            elif (r[0].isalpha() and r[1] == ':'):
-                ## Windows absolute paths begin with a drive letter and a colon.
-                pass
-            else:
+            ## Linux absolute paths begin with a forward slash
+            ## Windows absolute paths begin with a drive letter and a colon.
+            if not r.startswith('/') or (r[0].isalpha() and r[1] == ':'):
                 r = path + r
+            elif r.startswith('./'):
+                r = path + r[2:]
 
             bstfiles.append(r)
 
@@ -1845,6 +1877,7 @@ def get_bibfilenames(filename, debug=False):
         ## All the work above was to locate the filenames from a single AUX file. However, if the
         ## input is a list of filenames, then constructing the filename dictionary is simple.
         for f in filename:
+            f = os.path.abspath(f)
             if f.endswith('.aux'): auxfile = os.path.normpath(f)
             elif f.endswith('.bib'): bibfiles.append(os.path.normpath(f))
             elif f.endswith('.bst'): bstfiles.append(os.path.normpath(f))
@@ -3593,7 +3626,7 @@ if (__name__ == '__main__'):
         arg_bstfile = './test/test1.bst'
         files = [arg_bibfile, arg_auxfile, arg_bstfile]
 
-    bibdata = Bibdata(files, debug=True)
+    bibdata = Bibdata(files, debug=False)
     bibdata.write_bblfile()
     print('Writing to BBL file = ' + bibdata.filedict['bbl'])
     #os.system('kwrite ' + bibdata.filedict['bbl'])
