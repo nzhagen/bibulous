@@ -1,0 +1,11 @@
+\begin{thebibliography}{1}
+\providecommand{\enquote}[1]{``#1''}
+\providecommand{\url}[1]{\verb|#1|}
+\providecommand{\href}[2]{#2}
+\setlength{\itemsep}{0pt}
+
+
+\bibitem{capitalized_field_names}
+H. Schmidt, ``Quantum-mechanical random-number generator,'' \textit{J. Appl. Phys.} \textbf{41}: 462--468 (1970).
+
+\end{thebibliography}

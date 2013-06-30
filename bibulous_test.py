@@ -40,7 +40,7 @@ import difflib      ## for comparing one string sequence with another
 from bibulous import Bibdata
 
 
-## ==================================================================================================
+## =================================================================================================
 def run_test1():
     '''
     Test #1 consists of a suite of single tests of options and features that are valid with the
@@ -64,7 +64,7 @@ def run_test1():
     print('Running Bibulous Test #1')
 
     bibobj = Bibdata([bibfile,auxfile,bblfile,bstfiles[0]], disable=[9,17])
-    bibobj.write_bblfile(write_preamble=True, write_postamble=False, bibsize='XX')
+    bibobj.write_bblfile(write_preamble=True, write_postamble=False, bibsize='ZZ')
     bstfiles = bstfiles[1:]
 
     for bstfile in bstfiles:
@@ -120,6 +120,7 @@ def run_test2():
         bibobj = Bibdata(filenames, disable=[4,9,11,18,20,21,25])
         bibobj.write_auxfile(auxfile)
         bibobj.parse_auxfile(auxfile)
+
         bibobj.write_bblfile()
         result = True
     except:
@@ -159,7 +160,7 @@ def run_test3():
 
     return(outputfiles, targetfiles)
 
-## ==================================================================================================
+## =================================================================================================
 def run_test4():
     '''
     Test #4 checks the operation of generating citation keys.
@@ -275,7 +276,7 @@ def run_test6():
 
     return(result)
 
-## ==================================================================================================
+## =================================================================================================
 def run_test7():
     '''
     Test #7 checks the operation of generating reference list labels.
@@ -323,7 +324,7 @@ def run_test7():
 
     return(bblfile, target_bblfile)
 
-## ==================================================================================================
+## =================================================================================================
 def run_test8():
     '''
     Test #8 flexes Bibulous' ability to generate glossaries, symbol lists, and acronym lists.
@@ -343,6 +344,39 @@ def run_test8():
     bibobj.write_bblfile()
 
     return(bblfile, target_bblfile)
+
+## =================================================================================================
+def run_test9():
+    '''
+    Test #9 is a pltform for running conditions in which the entire database needs to be re-read
+    with each test.
+    '''
+
+    bstfile =  ['./test/test9_case_sensitive_fieldnames.bst']
+    bibfiles = ['./test/test9_case_sensitive_fieldnames.bib']
+    auxfiles = ['./test/test9_case_sensitive_fieldnames.aux']
+    bblfile = './test/test9.bbl'
+    target_bblfile = './test/test9_target.bbl'
+
+    print('\n' + '='*75)
+    print('Running Bibulous Test #9')
+
+    for bibfile in bibfiles:
+        auxfile = bibfile[:-4] + '.aux'
+        bstfile = bibfile[:-4] + '.bst'
+        print('Reading ' + bibfile + ', ' + bstfile + ', and ' + auxfile)
+        bibobj = Bibdata([bibfile,auxfile,bblfile,bstfile], disable=[9])
+
+        ## Note: you have to parse the bibfile *after* reading the style options in order for this
+        ## to work right!
+        #bibobj.parse_bibfile(bibfile)
+        write_preamble = (bibfile == bibfiles[0])
+        write_postamble = (bibfile == bibfiles[-1])
+        bibobj.write_bblfile(write_preamble=write_preamble, write_postamble=write_postamble)
+        print('write_preamble,write_postamble=', write_preamble, write_postamble)
+
+    return(bblfile, target_bblfile)
+
 
 ## =============================
 def check_file_match(testnum, outputfile, targetfile):
@@ -385,32 +419,33 @@ def check_file_match(testnum, outputfile, targetfile):
     return(test_passes)
 
 
-## ==================================================================================================
+## ===============================================author_firstname_initials===================================================
 if (__name__ == '__main__'):
     suite_pass = True
 
     ## Run test #1.
     (outputfile, targetfile) = run_test1()
-    check_file_match(1, outputfile, targetfile)
-
-    ## Run test #2.
-    result = run_test2()
-    suite_pass *= result
-    if result:
-        print('TEST #2 PASSED')
-    else:
-        print('TEST #2 FAILED.')
-
-    ## Run test #3.
-    (outputfile, targetfile) = run_test3()
-    result = check_file_match(3, outputfile, targetfile)
+    result = check_file_match(1, outputfile, targetfile)
     suite_pass *= result
 
-    ## Run test #4.
-    (outputfile, targetfile) = run_test4()
-    result = check_file_match(4, outputfile, targetfile)
-    suite_pass *= result
-
+#    ## Run test #2.
+#    result = run_test2()
+#    suite_pass *= result
+#    if result:
+#        print('TEST #2 PASSED')
+#    else:
+#        print('TEST #2 FAILED.')
+#
+#    ## Run test #3.
+#    (outputfile, targetfile) = run_test3()
+#    result = check_file_match(3, outputfile, targetfile)
+#    suite_pass *= result
+#
+#    ## Run test #4.
+#    (outputfile, targetfile) = run_test4()
+#    result = check_file_match(4, outputfile, targetfile)
+#    suite_pass *= result
+#
     ## Run test #5.
     (outputfile, targetfile) = run_test5()
     result = check_file_match(5, outputfile, targetfile)
@@ -432,6 +467,11 @@ if (__name__ == '__main__'):
     ## Run test #8.
     (outputfile, targetfile) = run_test8()
     result = check_file_match(8, outputfile, targetfile)
+    suite_pass *= result
+
+    ## Run test #9.
+    (outputfile, targetfile) = run_test9()
+    result = check_file_match(9, outputfile, targetfile)
     suite_pass *= result
 
     if suite_pass:
