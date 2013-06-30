@@ -16,7 +16,7 @@ unpublished = misc
 
 OPTIONS:
 citation_sort = citekey                   ## order the reference list by "citekey" or "citenum" (or "nyt" etc.)
-citation_label = citenum                  ## label the reference items by their numerical order of appearance
+citation_label = citekey                  ## label the reference items by their numerical order of appearance
 maxauthors = 9                            ## if more than 10 authors, then use "et al." format
 minauthors = 9                            ## if "maxauthors" is exceeded, then display only the first "minauthors" and et al.
 maxeditors = 5                            ## if more than 5 editors, then use "et al." format

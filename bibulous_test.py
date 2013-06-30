@@ -111,27 +111,15 @@ def run_test2():
     print('\n' + '='*75)
     print('Running Bibulous Test #2')
 
-    filenames = bibfiles + [bblfile,bstfile]
-
     ## If no excepts are raised when reading the BIB file or writing the BBL file, then the test
     ## passes.
     try:
+        #bibobj = Bibdata(auxfile, disable=[4,9,11,18,20,21,25])
+        ## The two commented lines below are here in case you ever want to re-generate the AUX file.
+        filenames = bibfiles + [bblfile,bstfile]
         bibobj = Bibdata(filenames, disable=[4,9,11,18,20,21,25])
-
-        ## Build a large citation dictionary using all of the bibliography database entries.
-        citedict = {k:i for i,k in enumerate(bibobj.bibdata.keys())}
-        if ('abbrev' in citedict): del citedict['abbrev']
-        if ('preamble' in citedict): del citedict['preamble']
-        bibobj.citedict = citedict
-        f = open(auxfile, 'w')
-        for c in citedict:
-            f.write('\\citation{' + c + '}\n')
-        f.write('\\bibdata{')
-        for b in bibfiles[:-1]:
-            f.write(os.path.basename(b) + ',')
-        f.write(os.path.basename(bibfiles[-1]) + '}\n')
-        f.write('\\bibstyle{test2.bst}\n')
-        f.close()
+        bibobj.write_auxfile(auxfile)
+        bibobj.parse_auxfile(auxfile)
         bibobj.write_bblfile()
         result = True
     except:
