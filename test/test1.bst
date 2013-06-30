@@ -28,7 +28,7 @@ replace_newlines = <authorliststr>, \enquote{<title>,} \textit{<journal>} \textb
 quote_and_accent_detection = <authorliststr>, \enquote{<title>,} \textit{<journal>} \textbf{<volume>}: <startpage>--<endpage> (<year>).
 hyperlinked_title = <authorliststr>, \enquote{[\href{<url>}{<title>}|\href{<doi>}{<title>}|<title>|],} \textit{<journal>} \textbf{<volume>}: <startpage>--<endpage> (<year>).
 edition_ordinal = <authorliststr>, \textit{<title>}[, <edition_ordinal>~ed.][, vol.~<volume>] (<publisher>, <year>)[ Chap.~<chapter>][, pp.~<startpage>--<endpage>].[ <note>]
-
+capitalized_field_names1 = <authorliststr>, \enquote{<title>,} \textit{<journal>} \textbf{<volume>}: <startpage>--<endpage> (<year>).
 
 OPTIONS:
 citation_sort = citenum                   ## order the reference list by "citekey" or "citenum" (or "nyt" etc.)
@@ -58,6 +58,7 @@ use_firstname_initials = True             ## initialize all but the authors' las
 editorlist_format = first_name_first      ## use editorlist "Bugs Bunny, Daffy Duck, and Porky Pig" format
 namelist_format = first_name_first        ## defines values for both "authorlist_format" and "editorlist_format" at once
 use_name_ties = False                     ## whether or not to tie together initials with unbreaskable spaces ('~')
+case_sensitive_field_names = False        ## whether to allow field names to be case sensitive (i.e. "BOOK" will not be the same entrytype as "book")
 
 VARIABLES:
 

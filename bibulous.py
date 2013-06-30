@@ -185,6 +185,7 @@ class Bibdata(object):
         self.options['bibitemsep'] = None
         self.options['month_abbrev'] = True
         self.options['allow_scripts'] = False
+        self.options['case_sensitive_field_names'] = False
 
         ## Compile some patterns for use in regex searches.
         self.anybrace_pattern = re.compile(r'(?<!\\)[{}]', re.UNICODE)
@@ -204,17 +205,18 @@ class Bibdata(object):
         print('The Bibulous style template file(s): ' + unicode(self.filedict['bst']))
         print('The output formatted bibliography file: ' + unicode(self.filedict['bbl']))
 
-        ## If "filename" is a list of filenames, then convert them one by one in order.
-        if self.filedict['bib']:
-            for f in self.filedict['bib']:
-                self.parse_bibfile(f)
-
         if self.filedict['aux']:
             self.parse_auxfile(self.filedict['aux'])
 
+        ## Parsing the style file has to go *before* parsing the BIB file, so that any style options
+        ## that affect the way the data is parsed can take effect.
         if self.filedict['bst']:
             for f in self.filedict['bst']:
                 self.parse_bstfile(f)
+
+        if self.filedict['bib']:
+            for f in self.filedict['bib']:
+                self.parse_bibfile(f)
 
         return
 
@@ -411,6 +413,9 @@ class Bibdata(object):
 
             fieldkey = entrystr[:idx].strip()
             fieldstr = entrystr[idx+1:].strip()
+
+            if not self.options['case_sensitive_field_names']:
+                fieldkey = fieldkey.lower()
 
             if not fieldstr:
                 entrystr = ''
@@ -971,12 +976,6 @@ class Bibdata(object):
         if (c == 'preamble'):
             return('')
 
-        if debug:
-            print('Formatting entry "' + citekey + '"')
-            print('Template: "' + self.bstdict[entry['entrytype']] + '"')
-            print('Field data: ' + repr(entry))
-
-
         ## Although "citenum" or "citenumber" is really the only appropriate name for this sorting
         ## order, we also provide "none", "plain", "unsrt", and "abbrv" for users used to the other
         ## BibTeX names.
@@ -997,6 +996,11 @@ class Bibdata(object):
             entry = self.bibdata[c]
 
         entrytype = entry['entrytype']
+
+        if debug:
+            print('Formatting entry "' + citekey + '"')
+            print('Template: "' + self.bstdict[entrytype] + '"')
+            print('Field data: ' + repr(entry))
 
         ## If the journal format uses ProcSPIE like a journal, then you need to change the entrytype
         ## from "inproceedings" to "article", and add a "journal" field.

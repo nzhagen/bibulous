@@ -31,6 +31,7 @@ use_editor_firstname_initials = True      ## initialize all but the editors' las
 editorlist_format = first_name_first      ## use editorlist "Bugs Bunny, Daffy Duck, and Porky Pig" format
 namelist_format = first_name_first        ## defines values for both "authorlist_format" and "editorlist_format" at once
 use_name_ties = False                     ## whether or not to tie together initials with unbreaskable spaces ('~')
+case_sensitive_field_names = False        ## whether to allow field names to be case sensitive (i.e. "BOOK" will not be the same entrytype as "book")
 
 VARIABLES:
 

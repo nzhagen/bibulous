@@ -1,4 +1,4 @@
-\begin{thebibliography}{XX}
+\begin{thebibliography}{ZZ}
 \providecommand{\enquote}[1]{``#1''}
 \providecommand{\url}[1]{\verb|#1|}
 \providecommand{\href}[2]{#2}
@@ -62,6 +62,8 @@ P. J. C. Janssen, ``Sur l'{\'e}tude spectrale des protub{\'e}rances solaires [Sp
 R. Kaye, ``\href{http://dx.doi.org/10.1007/BF03025367}{Minesweeper is NP-complete},'' \textit{Mathematical Intelligencer} \textbf{22}: 9--15 (2000).
 \bibitem{edition_ordinal}
 M. Born and E. Wolf, \textit{Principles of Optics}, 7th~ed. (Cambridge Univ. Press, 1999).
+\bibitem{capitalized_field_names1}
+H. Schmidt, ``Quantum-mechanical random-number generator,'' \textit{J. Appl. Phys.} \textbf{41}: 462--468 (1970).
 \bibitem{force_sentence_case}
 P. Stoica and B. C. Ng, ``On the {C}ram{\'e}r-{R}ao bound under parametric constraints'' (1998).
 \bibitem{french_initials}
