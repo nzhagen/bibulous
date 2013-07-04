@@ -1,6 +1,12 @@
 Python code to-do list
 ----------------------
 
+#. Come to think of it, Bibulous' current approach to parsing the BIB file is going to be really
+   slow in the normal use case where it is given an AUX file with citation keys. Unless the AUX
+   file is not available, there is no need to do the full work of parsing the entire BIBfile.
+   The is, if we encounter a key which is not among the list of citekeys, then we can skip that
+   entry and go to the next. This should substantially speed things up.
+
 #. Look into whether the code can be simplified and user scripts still benefit if you move some
    bibulous module functions from module scope functions to Bibdata class methods.
 

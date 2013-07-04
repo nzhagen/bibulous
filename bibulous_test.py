@@ -114,10 +114,9 @@ def run_test2():
     ## If no excepts are raised when reading the BIB file or writing the BBL file, then the test
     ## passes.
     try:
-        #bibobj = Bibdata(auxfile, disable=[4,9,11,18,20,21,25])
-        ## The two commented lines below are here in case you ever want to re-generate the AUX file.
+        ## Don't import the AUX file --- regenerate it anew every time you run the test.
         filenames = bibfiles + [bblfile,bstfile]
-        bibobj = Bibdata(filenames, disable=[4,9,11,18,20,21,25])
+        bibobj = Bibdata(filenames, disable=[4,6,9,11,18,20,21,25])
         bibobj.write_auxfile(auxfile)
         bibobj.parse_auxfile(auxfile)
 
@@ -428,24 +427,24 @@ if (__name__ == '__main__'):
     result = check_file_match(1, outputfile, targetfile)
     suite_pass *= result
 
-#    ## Run test #2.
-#    result = run_test2()
-#    suite_pass *= result
-#    if result:
-#        print('TEST #2 PASSED')
-#    else:
-#        print('TEST #2 FAILED.')
-#
-#    ## Run test #3.
-#    (outputfile, targetfile) = run_test3()
-#    result = check_file_match(3, outputfile, targetfile)
-#    suite_pass *= result
-#
-#    ## Run test #4.
-#    (outputfile, targetfile) = run_test4()
-#    result = check_file_match(4, outputfile, targetfile)
-#    suite_pass *= result
-#
+    ## Run test #2.
+    result = run_test2()
+    suite_pass *= result
+    if result:
+        print('TEST #2 PASSED')
+    else:
+        print('TEST #2 FAILED.')
+
+    ## Run test #3.
+    (outputfile, targetfile) = run_test3()
+    result = check_file_match(3, outputfile, targetfile)
+    suite_pass *= result
+
+    ## Run test #4.
+    (outputfile, targetfile) = run_test4()
+    result = check_file_match(4, outputfile, targetfile)
+    suite_pass *= result
+
     ## Run test #5.
     (outputfile, targetfile) = run_test5()
     result = check_file_match(5, outputfile, targetfile)

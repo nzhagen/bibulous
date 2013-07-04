@@ -1270,7 +1270,7 @@ class Bibdata(object):
         volume = '0' if ('volume' not in bibentry) else unicode(bibentry['volume'])
 
         ## The different formatting options for the citation order are "nty"/"plain", "nyt", "nyvt",
-        ## "anyt", "anyvt", ynt", and "ydnt".
+        ## "anyt", "anyvt", ynt", "ydnt", "tny".
         if (citeorder in ('nyt','plain')):
             sortkey = presort + name + year + title
         elif (citeorder == 'nty'):
@@ -1279,8 +1279,8 @@ class Bibdata(object):
             sortkey = presort + name + year + volume + title
         elif (citeorder in ('ynt','ydnt')):
             sortkey = presort + year + name + title
-        elif (citeorder == 'title'):
-            sortkey = presort + title
+        elif (citeorder == 'tny'):
+            sortkey = presort + title + name + year
         elif (citeorder == 'alpha'):
             if (len(namelist) == 1):
                 concat_name = name[0:3]
@@ -1686,6 +1686,11 @@ class Bibdata(object):
         '''
 
         labelstyle = self.options['citation_label']
+        if not (citekey in self.bibdata):
+            warn('Warning 028: cannot find citation key "' + citekey + '" in the database. '
+                 'Ignoring and continuing ...', self.disable)
+            return(citekey)
+
         entry = self.bibdata[citekey]
 
         if ('name' in labelstyle):
@@ -3304,8 +3309,7 @@ def search_middlename_for_prefixes(namedict):
     middlenames = namedict['middle'].split(' ')
     prefix = []
     for m in middlenames[::-1]:
-        if m[0].islower():
-            #pdb.set_trace()
+        if m and m[0].islower():
             prefix.append(middlenames.pop())
         else:
             break
@@ -3600,6 +3604,7 @@ def warn(msg, disable=None):
 
     if show_warning:
         print(msg)
+
     return
 
 
