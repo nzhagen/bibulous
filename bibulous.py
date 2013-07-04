@@ -373,7 +373,10 @@ class Bibdata(object):
                      'Skipping ...', self.disable)
                 return(fd)
 
+            ## Get the entry key. If we are culling the database and the entry key is not among the
+            ## citation keys, then exit --- we don't need to add this to the database.
             entrykey = entrystr[:idx].strip()
+            if self.culldata and (entrykey not in self.citedict): return
             entrystr = entrystr[idx+1:]
 
             if not entrykey:
@@ -1923,7 +1926,7 @@ class Bibdata(object):
         self.filedict['aux'] = auxfile
         self.filedict['bbl'] = bblfile
 
-        if debug:
+        if self.debug:
             print('bib files: ' + repr(bibfiles))
             print('bst files: ' + repr(bstfiles))
             print('tex file: "' + unicode(texfile) + '"')
