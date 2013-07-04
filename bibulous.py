@@ -148,6 +148,7 @@ class Bibdata(object):
         self.user_script = ''       ## any user-written Python scripts go here
         self.user_variables = {}    ## any user-defined variables from the BST files
         self.culldata = culldata    ## whether to cull the database so that only cited entries are parsed
+        self.searchkeys = []        ## when culling data, this is the list of keys to limit parsing to
 
         ## Temporary variables for use in error messages while parsing files.
         self.filename = ''                      ## the current filename (for error messages)
@@ -216,6 +217,12 @@ class Bibdata(object):
         if self.filedict['aux']:
             self.parse_auxfile(self.filedict['aux'])
 
+        if self.culldata:
+            self.searchkeys = self.citedict.keys()
+
+        #zzz
+        print('SEARCHKEYS=', self.searchkeys)
+
         ## Parsing the style file has to go *before* parsing the BIB file, so that any style options
         ## that affect the way the data is parsed can take effect.
         if self.filedict['bst']:
@@ -225,6 +232,21 @@ class Bibdata(object):
         if self.filedict['bib']:
             for f in self.filedict['bib']:
                 self.parse_bibfile(f)
+
+        if self.culldata:
+            ## When culldata==True, things here get more complicated. The problem is that if a crossref
+            ## refers to an entry that was not among the citation keys, then the database parser will
+            ## not know to place that entry into the bibdata dictionary. Thus, if we happen to run
+            ## across an entry with missing data, and it has a crossref that is not in the databse,
+            ## then we have to go back and parse the database a second time, this time adding the
+            ## crossreferenced items. Once that's done, *then* we can add cross-referenced data into
+            ## the original cited entries.
+            crossref_list = []
+            for key in self.bibdata:
+                if ('crossref' in self.bibdata[key]):
+                    crossref_list.append(self.bibdata[key]['crossref'])
+            if crossref_list:
+                self.searchkeys = crossref_list
 
         return
 
@@ -376,7 +398,7 @@ class Bibdata(object):
             ## Get the entry key. If we are culling the database and the entry key is not among the
             ## citation keys, then exit --- we don't need to add this to the database.
             entrykey = entrystr[:idx].strip()
-            if self.culldata and (entrykey not in self.citedict): return
+            if self.searchkeys and (entrykey not in self.searchkeys): return
             entrystr = entrystr[idx+1:]
 
             if not entrykey:
@@ -1475,11 +1497,11 @@ class Bibdata(object):
 
         ## First check that the entrykey exists.
         if (entrykey not in self.bibdata):
-            return(False)
+            return
 
         bibentry = self.bibdata[entrykey]
         if ('crossref' not in self.bibdata[entrykey]):
-            return(False)
+            return
 
         if (fieldname == None):
             fieldnames = bibentry.keys()
@@ -1488,8 +1510,6 @@ class Bibdata(object):
                 fieldnames = fieldname
             else:
                 fieldnames = [fieldname]
-
-        foundit = False
 
         for field in fieldnames:
             if (field not in bibentry):
@@ -1507,14 +1527,12 @@ class Bibdata(object):
             for k in crossref_keys:
                 if (k not in self.bibdata[entrykey]):
                     self.bibdata[entrykey][k] = self.bibdata[self.bibdata[entrykey]['crossref']][k]
-                    foundit = True
 
             ## What a "booktitle" is in the entry is normally a "title" in the crossref.
             if ('title' in crossref_keys) and ('booktitle' not in self.bibdata[entrykey]):
                 self.bibdata[entrykey]['booktitle'] = self.bibdata[self.bibdata[entrykey]['crossref']]['title']
-                foundit = True
 
-        return(foundit)
+        return
 
     ## =============================
     def write_citeextract(self, outputfile, debug=False):

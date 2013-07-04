@@ -36,10 +36,6 @@ Python code to-do list
 Python testing to-do
 --------------------
 
-#. Add a test for locale-dependent sorting.
+#. Add a test for locale-dependent sorting? This requires a lot of work to set up for full
+   BIB-AUX-BBL mapping. So it may be best to wait for a more directed test to come along.
 
-Template files to-do
---------------------
-
-#. Try implementing some other BST formats, especially OSA's Opt. Lett. and SPIE's Opt. Eng.
-   Note that ``chicago.sty`` uses ``chicago.bst``, and ``apalike.sty`` uses ``apalike.bst``.
