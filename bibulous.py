@@ -818,8 +818,10 @@ class Bibdata(object):
         monthname_dict = {}
         for i in range(1,13):
             if self.options['month_abbrev']:
+                ## The abbreviated form (i.e. 'jan').
                 monthname_dict[unicode(i)] = locale.nl_langinfo(locale.__dict__['ABMON_'+unicode(i)]).title()
             else:
+                ## The full form (i.e. 'january').
                 monthname_dict[unicode(i)] = locale.nl_langinfo(locale.__dict__['MON_'+unicode(i)]).title()
 
         if write_preamble:
@@ -1277,6 +1279,8 @@ class Bibdata(object):
             sortkey = presort + name + year + volume + title
         elif (citeorder in ('ynt','ydnt')):
             sortkey = presort + year + name + title
+        elif (citeorder == 'title'):
+            sortkey = presort + title
         elif (citeorder == 'alpha'):
             if (len(namelist) == 1):
                 concat_name = name[0:3]
