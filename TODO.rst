@@ -36,8 +36,6 @@ Python code to-do list
 Python testing to-do
 --------------------
 
-#. Add to test1: .options['backrefstyle'], options['backrefs']
-
 #. Add a test for locale-dependent sorting.
 
 Template files to-do

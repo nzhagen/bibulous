@@ -26,4 +26,4 @@ if (__name__ == '__main__'):
 
     print('Writing citation extract BIB file = ' + outputfile)
     bibdata = Bibdata(auxfile)
-    bibdata.citeextract(outputfile, debug=False)
+    bibdata.write_citeextract(outputfile, debug=False)

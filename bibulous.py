@@ -169,8 +169,8 @@ class Bibdata(object):
         self.options['use_firstname_initials'] = True
         self.options['use_name_ties'] = False
         self.options['show_urls'] = False
-        self.options['backrefstyle'] = 'none'
-        self.options['backrefs'] = False
+        #self.options['backrefstyle'] = 'none'
+        #self.options['backrefs'] = False
         self.options['sort_case'] = True
         self.options['french_initials'] = False
         self.options['sort_with_prefix'] = False
@@ -363,8 +363,12 @@ class Bibdata(object):
             entrykey = entrystr[:idx].strip()
             entrystr = entrystr[idx+1:]
 
-            if (entrykey in self.bibdata):
-                warn('Warning 004: the entry ending on line #' + unicode(self.i) + ' of file "' + \
+            if not entrykey:
+                warn('Warning 004a: the entry ending on line #' + unicode(self.i) + ' of file "' + \
+                     self.filename + '" has an empty key. Ignoring and continuing ...', self.disable)
+                return
+            elif (entrykey in self.bibdata):
+                warn('Warning 004b: the entry ending on line #' + unicode(self.i) + ' of file "' + \
                      self.filename + '" has the same key ("' + entrykey + '") as a previous ' + \
                      'entry. Overwriting the entry and continuing ...', self.disable)
 
@@ -799,6 +803,10 @@ class Bibdata(object):
 
         if (filename == None):
             filename = self.filedict['bbl']
+        if not self.bstdict:
+            raise ImportError('Not template file was found. Aborting writing the BBL file ...')
+        if not self.citedict:
+            raise ImportError('Not AUX file was found. Aborting writing the BBL file ...')
 
         if not write_preamble:
             filehandle = open(filename, 'a')
