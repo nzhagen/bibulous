@@ -154,15 +154,10 @@ class Bibdata(object):
         else:
             self.disable = disable              ## the list of warning message numbers to disable
 
-        ## Put in default options settings. Note that "use_abbrevs" and "replace_newlines" are
-        ## different from the other options in that they can *not* be defined in the style template
-        ## files. This is because they are used when parsing the BIB file and not later, so it needs
-        ## to be defined prior to parsing the database.
+        ## Put in default options settings.
         self.options = {}
         self.options['use_abbrevs'] = True
-        self.options['replace_newlines'] = True
         self.options['undefstr'] = '???'
-        self.options['replace_newlines'] = True
         self.options['namelist_format'] = 'first_name_first'
         self.options['citation_sort'] = 'citenum'
         self.options['citation_label'] = 'citekey'
@@ -507,8 +502,8 @@ class Bibdata(object):
                         entrystr = fieldstr.strip()
                         break
 
-            resultstr = resultstr.strip()
-            if self.options['replace_newlines']: resultstr = resultstr.replace('\n',' ')
+            ## Strip off any unnecessary white space and remove any newlines.
+            resultstr = resultstr.strip().replace('\n',' ')
 
             ## Having braces around quotes can cause problems when parsing nested quotes, and
             ## do not provide any additional functionality.

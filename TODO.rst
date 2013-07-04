@@ -1,9 +1,6 @@
 Python code to-do list
 ----------------------
 
-#. Work with the ``glossaries`` package and see if you can replicate much of its functionality
-   using templates.
-
 #. Look into whether the code can be simplified and user scripts still benefit if you move some
    bibulous module functions from module scope functions to Bibdata class methods.
 
@@ -35,12 +32,11 @@ Python code to-do list
    encoded equivalents. If you work on this, the ``bibtexparser`` module has a good deal of code
    for starting on this.
 
-#. Currently ``purify_string()`` does not allow LaTeX markup such as \'i to refer to the Unicode
-   character which is correctly written as \'\i. Add functionality to allow that?
-
 
 Python testing to-do
 --------------------
+
+#. Add to test1: .options['backrefstyle'], options['backrefs']
 
 #. Add a test for locale-dependent sorting.
 

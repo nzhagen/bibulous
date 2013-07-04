@@ -475,7 +475,7 @@ if (__name__ == '__main__'):
     suite_pass *= result
 
     if suite_pass:
-        print('THE CODE PASSES ALL TESTS IN THE TESTING SUITE.')
+        print('***** THE CODE PASSES ALL TESTS IN THE TESTING SUITE. *****')
     else:
         print('===== FAILED THE TESTING SUITE! =====')
 
