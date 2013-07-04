@@ -372,7 +372,6 @@ def run_test9():
         write_preamble = (bibfile == bibfiles[0])
         write_postamble = (bibfile == bibfiles[-1])
         bibobj.write_bblfile(write_preamble=write_preamble, write_postamble=write_postamble)
-        print('write_preamble,write_postamble=', write_preamble, write_postamble)
 
     return(bblfile, target_bblfile)
 

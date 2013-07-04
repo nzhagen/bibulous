@@ -47,7 +47,7 @@ import pdb          ## put "pdb.set_trace()" at any place you want to interact w
 #sys.excepthook = info      ## go into debugger automatically on an exception
 
 __version__ = '1.0'
-__all__ = ['get_bibfilenames', 'sentence_case', 'stringsplit', 'finditer', 'namefield_to_namelist',
+__all__ = ['sentence_case', 'stringsplit', 'finditer', 'namefield_to_namelist',
            'namedict_to_formatted_namestr', 'initialize_name', 'get_delim_levels',
            'get_quote_levels', 'splitat', 'multisplit', 'enwrap_nested_string',
            'enwrap_nested_quotes', 'purify_string', 'latex_to_utf8', 'parse_bst_template_str',
@@ -104,6 +104,10 @@ class Bibdata(object):
         The regex used to search for a double-quote, i.e. `"`.
     startbrace_pattern : compiled regular expression object
         The regex used to search for a starting curly brace, `{`.
+    culldata : bool
+        Whether to cull the database so that only cited entries are parsed. Setting this to False \
+        means that the entire BIB file database will be parsed. When True, the BIB file parser \
+        will only parse those entries corresponding to keys in the citedict.
 
     Methods
     -------
@@ -123,6 +127,7 @@ class Bibdata(object):
     write_authorextract
     replace_abbrevs_with_full
     generate_bibitem_label
+    get_bibfilenames
 
     Example
     -------
@@ -130,18 +135,19 @@ class Bibdata(object):
     bibdata.write_bblfile()
     '''
 
-    def __init__(self, filename, disable=None, debug=False):
+    def __init__(self, filename, disable=None, culldata=True, debug=False):
         self.debug = debug
         self.abbrevs = {'jan':'1', 'feb':'2', 'mar':'3', 'apr':'4', 'may':'5', 'jun':'6',
                         'jul':'7', 'aug':'8', 'sep':'9', 'oct':'10', 'nov':'11', 'dec':'12'}
         self.locale = locale.setlocale(locale.LC_ALL,'')    ## set the locale to the user's default
         self.bibdata = {'preamble':''}
-        self.filedict = get_bibfilenames(filename, debug=debug)
+        self.filedict = {}  ## the dictionary containing all of the files associated with the bibliography
         self.citedict = {}  ## the dictionary containing the original data from the AUX file
-        self.citelist = []  ##citation keys in the ordered they will be printed in the final result
-        self.bstdict = {}
+        self.citelist = []  ## the *sorted* list of citation keys
+        self.bstdict = {}   ## the dictionary containing all information from template files
         self.user_script = ''       ## any user-written Python scripts go here
         self.user_variables = {}    ## any user-defined variables from the BST files
+        self.culldata = culldata    ## whether to cull the database so that only cited entries are parsed
 
         ## Temporary variables for use in error messages while parsing files.
         self.filename = ''                      ## the current filename (for error messages)
@@ -190,6 +196,13 @@ class Bibdata(object):
         self.abbrevkey_pattern = re.compile(r'(?<!\\)[,#]', re.UNICODE)
         self.anybraceorquote_pattern = re.compile(r'(?<!\\)[{}"]', re.UNICODE)
         self.integer_pattern = re.compile(r'^-?[0-9]+', re.UNICODE)
+
+        ## Get the list of filenames associated with the bibliography (AUX, BBL, BIB, TEX).
+        ## Additionally, if the input "filename" contains only the AUX file, then we assume
+        ## that the user wants only to parse that part if the database corresponding to the
+        ## citation keys in the AUX file. This default behavior can be overriden (so that the
+        ## entire database is parsed) is the optional keyword "cull_database" is set to False.
+        self.get_bibfilenames(filename)
 
         ## Print out some info on Bibulous and the files it is working on.
         print('This is Bibulous, version ' + unicode(__version__))
@@ -1785,142 +1798,144 @@ class Bibdata(object):
         filehandle.close()
         return
 
+    ## =============================
+    def get_bibfilenames(self, filename):
+        '''
+        If the input is a filename ending in '.aux', then read through the .aux file and locate the
+        lines `\bibdata{...}` and `\bibstyle{...}` to get the filename(s) for the bibliography database
+        and style template.
+
+        Also determine whether to set the "culldata" flag. If the input is a single AUX filename,
+        then the default is to set culldata=True. If the input is a list of filenames, then assume
+        that this is the complete list of files to use (i.e. ignore the contents of the AUX file
+        except for generating the citedict), and set culldata=False.
+
+        Parameters
+        ----------
+        filename : str
+            The "auxiliary" file, containing citation info, TOC info, etc.
+
+        Returns
+        -------
+        filedict : dict
+            A dictionary with keys 'bib' and 'bst', each entry of which contains a list of filenames.
+        '''
+
+        bibfiles = []
+        bstfiles = []
+        auxfile = ''
+        bblfile = ''
+        texfile = ''
+
+        if isinstance(filename, basestring) and filename.endswith('.aux'):
+            auxfile = os.path.normpath(os.path.abspath(filename))
+            path = os.path.dirname(auxfile) + '/'
+
+            s = open(filename, 'rU')
+            for line in s.readlines():
+                line = line.decode('utf-8').strip()
+                if line.startswith('%'): continue
+                if line.startswith('\\bibdata{'):
+                    line = line[9:]
+                    indx = line.index('}')
+                    bibres = line[:indx]
+                if line.startswith('\\bibstyle{'):
+                    line = line[10:]
+                    indx = line.index('}')
+                    bstres = line[:indx]
+
+            ## Now we have the strings from the ".tex" file that describing the bibliography filenames.
+            ## If these are lists of filenames, then split them out.
+            if (',' in bibres):
+                bibres = bibres.split(',')      ## if a list of files, then split up the list pieces
+            else:
+                bibres = [bibres]
+
+            for r in bibres:
+                ## If the filename is missing the extension, then add it.
+                if not r.endswith('.bib'):
+                    r += '.bib'
+
+                ## If the filename has a relative address, convert it to an absolute one.
+                ## Linux absolute paths begin with a forward slash
+                ## Windows absolute paths begin with a drive letter and a colon.
+                if not r.startswith('/') or (r[0].isalpha() and r[1] == ':'):
+                    r = path + r
+                elif r.startswith('./'):
+                    r = path + r[2:]
+
+                bibfiles.append(r)
+
+            ## Next do the same thing for the ".bst" files.
+            if (',' in bstres):
+                bstres = bstres.split(',')      ## if a list of files, then split up the list pieces
+            else:
+                bstres = [bstres]
+
+            for r in bstres:
+                ## If the filename is missing the extension, then add it.
+                if not r.endswith('.bst'):
+                    r += '.bst'
+
+                ## If the filename has a relative address, convert it to an absolute one.
+                ## Linux absolute paths begin with a forward slash
+                ## Windows absolute paths begin with a drive letter and a colon.
+                if not r.startswith('/') or (r[0].isalpha() and r[1] == ':'):
+                    r = path + r
+                elif r.startswith('./'):
+                    r = path + r[2:]
+
+                bstfiles.append(r)
+
+            ## Finally, normalize the file strings to work on any platform.
+            for i in range(len(bibfiles)):
+                bibfiles[i] = os.path.normpath(bibfiles[i])
+            for i in range(len(bstfiles)):
+                bstfiles[i] = os.path.normpath(bstfiles[i])
+
+        ## Or if the input is only a BIB file, then go off of that.
+        elif isinstance(filename, basestring) and filename.endswith('.bib'):
+            self.culldata = False
+            bibfiles = [os.path.normpath(filename)]
+
+        ## Or of the input is a list, then we can go through all the filenames in the list.
+        elif isinstance(filename, (list, tuple)):
+            self.culldata = False
+            ## All the work above was to locate the filenames from a single AUX file. However, if the
+            ## input is a list of filenames, then constructing the filename dictionary is simple.
+            for f in filename:
+                f = os.path.abspath(f)
+                if f.endswith('.aux'): auxfile = os.path.normpath(f)
+                elif f.endswith('.bib'): bibfiles.append(os.path.normpath(f))
+                elif f.endswith('.bst'): bstfiles.append(os.path.normpath(f))
+                elif f.endswith('.bbl'): bblfile = os.path.normpath(f)
+                elif f.endswith('.tex'): texfile = os.path.normpath(f)
+
+        if not bblfile:
+            bblfile = auxfile[:-4] + '.bbl'
+        if not texfile and auxfile:
+            texfile = auxfile[:-4] + '.tex'
+
+        ## Now that we have the filenames, build the dictionary of BibTeX-related files.
+        self.filedict['bib'] = bibfiles
+        self.filedict['bst'] = bstfiles
+        self.filedict['tex'] = texfile
+        self.filedict['aux'] = auxfile
+        self.filedict['bbl'] = bblfile
+
+        if debug:
+            print('bib files: ' + repr(bibfiles))
+            print('bst files: ' + repr(bstfiles))
+            print('tex file: "' + unicode(texfile) + '"')
+            print('aux file: "' + unicode(auxfile) + '"')
+            print('bbl file: "' + unicode(bblfile) + '"')
+
+        return()
 
 
 ## ================================================================================================
 ## END OF BIBDATA CLASS.
 ## ================================================================================================
-
-## =============================
-def get_bibfilenames(filename, debug=False):
-    '''
-    If the input is a filename ending in '.aux', then read through the .aux file and locate the
-    lines `\bibdata{...}` and `\bibstyle{...}` to get the filename(s) for the bibliography database
-    and style template.
-
-    If the input is a list of filenames, then assume that this is the complete list of files to
-    use.
-
-    Parameters
-    ----------
-    filename : str
-        The "auxiliary" file, containing citation info, TOC info, etc.
-
-    Returns
-    -------
-    filedict : dict
-        A dictionary with keys 'bib' and 'bst', each entry of which contains a list of filenames.
-    '''
-
-    bibfiles = []
-    bstfiles = []
-    auxfile = ''
-    bblfile = ''
-    texfile = ''
-
-    if isinstance(filename, basestring) and filename.endswith('.aux'):
-        auxfile = os.path.normpath(os.path.abspath(filename))
-        path = os.path.dirname(auxfile) + '/'
-
-        s = open(filename, 'rU')
-        for line in s.readlines():
-            line = line.decode('utf-8').strip()
-            if line.startswith('%'): continue
-            if line.startswith('\\bibdata{'):
-                line = line[9:]
-                indx = line.index('}')
-                bibres = line[:indx]
-            if line.startswith('\\bibstyle{'):
-                line = line[10:]
-                indx = line.index('}')
-                bstres = line[:indx]
-
-        ## Now we have the strings from the ".tex" file that describing the bibliography filenames.
-        ## If these are lists of filenames, then split them out.
-        if (',' in bibres):
-            bibres = bibres.split(',')      ## if a list of files, then split up the list pieces
-        else:
-            bibres = [bibres]
-
-        for r in bibres:
-            ## If the filename is missing the extension, then add it.
-            if not r.endswith('.bib'):
-                r += '.bib'
-
-            ## If the filename has a relative address, convert it to an absolute one.
-            ## Linux absolute paths begin with a forward slash
-            ## Windows absolute paths begin with a drive letter and a colon.
-            if not r.startswith('/') or (r[0].isalpha() and r[1] == ':'):
-                r = path + r
-            elif r.startswith('./'):
-                r = path + r[2:]
-
-            bibfiles.append(r)
-
-        ## Next do the same thing for the ".bst" files.
-        if (',' in bstres):
-            bstres = bstres.split(',')      ## if a list of files, then split up the list pieces
-        else:
-            bstres = [bstres]
-
-        for r in bstres:
-            ## If the filename is missing the extension, then add it.
-            if not r.endswith('.bst'):
-                r += '.bst'
-
-            ## If the filename has a relative address, convert it to an absolute one.
-            ## Linux absolute paths begin with a forward slash
-            ## Windows absolute paths begin with a drive letter and a colon.
-            if not r.startswith('/') or (r[0].isalpha() and r[1] == ':'):
-                r = path + r
-            elif r.startswith('./'):
-                r = path + r[2:]
-
-            bstfiles.append(r)
-
-        ## Finally, normalize the file strings to work on any platform.
-        for i in range(len(bibfiles)):
-            bibfiles[i] = os.path.normpath(bibfiles[i])
-        for i in range(len(bstfiles)):
-            bstfiles[i] = os.path.normpath(bstfiles[i])
-
-    ## Or if the input is only a BIB file, then go off of that.
-    elif isinstance(filename, basestring) and filename.endswith('.bib'):
-        bibfiles = [os.path.normpath(filename)]
-
-    ## Or of the input is a list, then we can go through all the filenames in the list.
-    elif isinstance(filename, (list, tuple)):
-        ## All the work above was to locate the filenames from a single AUX file. However, if the
-        ## input is a list of filenames, then constructing the filename dictionary is simple.
-        for f in filename:
-            f = os.path.abspath(f)
-            if f.endswith('.aux'): auxfile = os.path.normpath(f)
-            elif f.endswith('.bib'): bibfiles.append(os.path.normpath(f))
-            elif f.endswith('.bst'): bstfiles.append(os.path.normpath(f))
-            elif f.endswith('.bbl'): bblfile = os.path.normpath(f)
-            elif f.endswith('.tex'): texfile = os.path.normpath(f)
-
-    if not bblfile:
-        bblfile = auxfile[:-4] + '.bbl'
-    if not texfile and auxfile:
-        texfile = auxfile[:-4] + '.tex'
-
-    ## Now that we have the filenames, build the dictionary of BibTeX-related files.
-    filedict = {}
-    filedict['bib'] = bibfiles
-    filedict['bst'] = bstfiles
-    filedict['tex'] = texfile
-    filedict['aux'] = auxfile
-    filedict['bbl'] = bblfile
-
-    if debug:
-        print('bib files: ' + repr(bibfiles))
-        print('bst files: ' + repr(bstfiles))
-        print('tex file: "' + unicode(texfile) + '"')
-        print('aux file: "' + unicode(auxfile) + '"')
-        print('bbl file: "' + unicode(bblfile) + '"')
-
-    return(filedict)
 
 ## ===================================
 def sentence_case(s):
