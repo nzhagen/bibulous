@@ -34,6 +34,6 @@ if (__name__ == '__main__'):
               'filename (as are all subsequent files).')
         sys.exit(2)
 
-    bibdata = Bibdata(auxfile)
+    bibdata = Bibdata(auxfile, culldata=False)
     print('Writing BIB author extract file = ' + outputfile)
     bibdata.write_authorextract(authorstr, outputfile, debug=False)

@@ -1,5 +1,17 @@
-Python code to-do list
-----------------------
+Python code to-do list: goals for version 2.0
+---------------------------------------------
+
+The primary goal for version 2.0 is to incorporate a closer integration with a front-end.
+
+#. Add templates for sortkeys
+
+#. Add templates for citation labels
+
+#. Allow direct integration with front-end for generating glossaries, etc. Need another
+   template for those?
+
+#. Add a feature that maps one of the "special fields to a new variable name, so that other
+   languages can take advantage of the already available functions for processing specials.
 
 #. Look into whether the code can be simplified and user scripts still benefit if you move some
    bibulous module functions from module scope functions to Bibdata class methods.
@@ -9,10 +21,12 @@ Python code to-do list
 
 #. Common problems in multilanguage files are encoding errors. For this, you can try using
    the Python package ``ftfy``, but this would require introducing into Bibulous an outside
-   dependency, and so I'm reluctant to do it without there being an urgent need.
+   dependency, and so I'm reluctant to do it without there being an urgent need. Note that
+   ``chardet.py`` attempts automatic detection of the encoding of an input file/string.
+   That also may come in handy.
 
 #. Implement a bibliography format in which repeated duplicates of author names are replaced
-   with a long dash. (Or ``\textit{idem}`` instead of the dash?)
+   with a long dash. (Or ``\textit{idem}`` instead of the dash.)
 
 #. Currently Arabic prefixes of names, like al-Turabi, will produce a space between the ``al-``
    and the last name. Need to fix. Or maybe just let users make their own template script to

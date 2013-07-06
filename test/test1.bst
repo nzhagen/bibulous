@@ -29,6 +29,7 @@ quote_and_accent_detection = <authorliststr>, \enquote{<title>,} \textit{<journa
 hyperlinked_title = <authorliststr>, \enquote{[\href{<url>}{<title>}|\href{<doi>}{<title>}|<title>|],} \textit{<journal>} \textbf{<volume>}: <startpage>--<endpage> (<year>).
 edition_ordinal = <authorliststr>, \textit{<title>}[, <edition_ordinal>~ed.][, vol.~<volume>] (<publisher>, <year>)[ Chap.~<chapter>][, pp.~<startpage>--<endpage>].[ <note>]
 capitalized_field_names1 = <authorliststr>, \enquote{<title>,} \textit{<journal>} \textbf{<volume>}: <startpage>--<endpage> (<year>).
+multilingual = = <authorliststr>, \enquote{<title>} (<year>).
 
 OPTIONS:
 citation_sort = citenum                   ## order the reference list by "citekey" or "citenum" (or "nyt" etc.)
