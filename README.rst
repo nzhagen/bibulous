@@ -33,7 +33,7 @@ Developers
 
 Bibulous is a brand new project, and so it has so far been a solo effort. Anyone interested in helping out is welcome to join; just send an email to the developers mailing list and we will try to help you get involved and show you the ropes. And, this being the maintainer's first open source project, any suggestions by experienced developers are welcome.
 
-Guidelines for developers are given in ``developer_guide.rst``, and includes an overview of the project's strategy and overall code structure. Note that a bug tracking system has not yet been set up for the project.
+Guidelines for developers are given in ``developer_guide.rst``, and includes an overview of the project's strategy and overall code structure. Note that a bug tracking system has not yet been set up for the project. HTML-based documentation is provided in ``/bibulous/doc/_build/html/index.html``, and a corresponding PDF file in ``/home/repos/bibulous/doc/_build/latex/Bibulous.pdf``. The ``setup.py`` and ``MANIFEST.in`` files provided in the repository base directory are used to create a Python package using the ``disutils`` distribution utilities module.
 
 License
 -------
