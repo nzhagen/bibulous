@@ -98,34 +98,6 @@ and begin inserting the variables one-by-one into the template. If any data is m
 check for cross-references and use crossref data to fill in missing values.</li>
 </ol>
 <dl class="function">
-<dt id="bibulous.get_bibfilenames">
-<tt class="descclassname">bibulous.</tt><tt class="descname">get_bibfilenames</tt><big>(</big><em>filename</em>, <em>debug=False</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#get_bibfilenames"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.get_bibfilenames" title="Permalink to this definition">¶</a></dt>
-<dd><p>If the input is a filename ending in &#8216;.aux&#8217;, then read through the .aux file and locate the
-lines <cite>ibdata{...}</cite> and <cite>ibstyle{...}</cite> to get the filename(s) for the bibliography database
-and style template.</p>
-<p>If the input is a list of filenames, then assume that this is the complete list of files to
-use.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>filename</strong> : str</p>
-<blockquote>
-<div><p>The &#8220;auxiliary&#8221; file, containing citation info, TOC info, etc.</p>
-</div></blockquote>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>filedict</strong> : dict</p>
-<blockquote class="last">
-<div><p>A dictionary with keys &#8216;bib&#8217; and &#8216;bst&#8217;, each entry of which contains a list of filenames.</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
 <dt id="bibulous.sentence_case">
 <tt class="descclassname">bibulous.</tt><tt class="descname">sentence_case</tt><big>(</big><em>s</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#sentence_case"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.sentence_case" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reduce the case of the string to lower case, except for the first character in the string, and
@@ -537,9 +509,6 @@ are no nested operators inside (i.e. when the number of delimiters found is &lt;
 </tr>
 </tbody>
 </table>
-<p class="rubric">Notes</p>
-<p>Currently <cite>purify_string()</cite> does not allow LaTeX markup such as &#8216;i to refer to the Unicode
-character which is correctly written as &#8216;i. Add functionality to allow that?</p>
 </dd></dl>
 
 <dl class="function">
@@ -885,7 +854,7 @@ useful for user scripts.</p>
 
 <dl class="class">
 <dt id="bibulous.Bibdata">
-<em class="property">class </em><tt class="descclassname">bibulous.</tt><tt class="descname">Bibdata</tt><big>(</big><em>filename</em>, <em>disable=</em><span class="optional">[</span><span class="optional">]</span>, <em>debug=False</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#Bibdata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.Bibdata" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">bibulous.</tt><tt class="descname">Bibdata</tt><big>(</big><em>filename</em>, <em>disable=None</em>, <em>culldata=True</em>, <em>debug=False</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#Bibdata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.Bibdata" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bibdata is a class to hold all data related to a bibliography database, a citation list, and a
 style template.</p>
 <p>To initialize the class, either call it with the filename of the &#8221;.aux&#8221; file containing the
@@ -896,9 +865,9 @@ file, but with &#8221;.bbl&#8221; as its extension.</p>
 <p class="rubric">Attributes</p>
 <table border="1" class="docutils">
 <colgroup>
-<col width="9%" />
-<col width="14%" />
-<col width="77%" />
+<col width="7%" />
+<col width="11%" />
+<col width="82%" />
 </colgroup>
 <tbody valign="top">
 <tr class="row-odd"><td>abbrevs</td>
@@ -915,7 +884,7 @@ file, but with &#8221;.bbl&#8221; as its extension.</p>
 </tr>
 <tr class="row-even"><td>citedict</td>
 <td>dict</td>
-<td>The dictionary of citation keys and their corresponding numerical order of citation.</td>
+<td>The dictionary of citation keys, and their corresponding numerical order of citation.</td>
 </tr>
 <tr class="row-odd"><td>debug</td>
 <td>bool</td>
@@ -962,6 +931,10 @@ the others contain only a single filename.</td>
 <td>compiled regular expression object</td>
 <td>The regex used to search for a starting curly brace, <cite>{</cite>.</td>
 </tr>
+<tr class="row-even"><td>culldata</td>
+<td>bool</td>
+<td>Whether to cull the database so that only cited entries are parsed. Setting this to False         means that the entire BIB file database will be parsed. When True, the BIB file parser         will only parse those entries corresponding to keys in the citedict.</td>
+</tr>
 </tbody>
 </table>
 <p class="rubric">Methods</p>
@@ -981,7 +954,7 @@ the others contain only a single filename.</td>
 <td>For a given string representing the raw contents of a BibTeX-format bibliography entry,</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#bibulous.Bibdata.parse_auxfile" title="bibulous.Bibdata.parse_auxfile"><tt class="xref py py-obj docutils literal"><span class="pre">parse_auxfile</span></tt></a>(filename[,&nbsp;debug])</td>
-<td>Read in an &#8221;.aux&#8221; file and convert the <cite>citation{}</cite> entries found there into a dictionary of citekeys and citation order number.</td>
+<td>Read in an <cite>.aux</cite> file and convert the <cite>citation{}</cite> entries found there into a dictionary of citekeys and citation order number.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#bibulous.Bibdata.parse_bstfile" title="bibulous.Bibdata.parse_bstfile"><tt class="xref py py-obj docutils literal"><span class="pre">parse_bstfile</span></tt></a>(filename)</td>
 <td>Convert a Bibulous-type bibliography style template into a dictionary.</td>
@@ -1015,6 +988,12 @@ the others contain only a single filename.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#bibulous.Bibdata.replace_abbrevs_with_full" title="bibulous.Bibdata.replace_abbrevs_with_full"><tt class="xref py py-obj docutils literal"><span class="pre">replace_abbrevs_with_full</span></tt></a>(fieldstr,&nbsp;resultstr)</td>
 <td>Given an input str, locate the abbreviation key within it and replace the abbreviation with its full form.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#bibulous.Bibdata.generate_bibitem_label" title="bibulous.Bibdata.generate_bibitem_label"><tt class="xref py py-obj docutils literal"><span class="pre">generate_bibitem_label</span></tt></a>(citekey)</td>
+<td>Generate the bibitem label.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#bibulous.Bibdata.get_bibfilenames" title="bibulous.Bibdata.get_bibfilenames"><tt class="xref py py-obj docutils literal"><span class="pre">get_bibfilenames</span></tt></a>(filename)</td>
+<td>If the input is a filename ending in &#8216;.aux&#8217;, then read through the .aux file and locate the lines <cite>ibdata{...}</cite> and <cite>ibstyle{...}</cite> to get the filename(s) for the bibliography database and style template.</td>
 </tr>
 </tbody>
 </table>
@@ -1052,11 +1031,11 @@ person).</p>
 <dt id="bibulous.Bibdata.format_bibitem">
 <tt class="descname">format_bibitem</tt><big>(</big><em>citekey</em>, <em>debug=False</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#Bibdata.format_bibitem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.Bibdata.format_bibitem" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create the &#8220;ibitem{...}&#8221; string to insert into the &#8221;.bbl&#8221; file.</p>
-<p>This is the workhorse function of Bibulous. For a given key, find the resulting entry
-in the bibliography database. From the entry&#8217;s <cite>entrytype</cite>, lookup the relevant template
-in bstdict and start replacing template variables with formatted elements of the database
-entry. Once you&#8217;ve replaced all template variables, you&#8217;re done formatting that entry.</p>
-<p>This function is also where we compile any scripts present in the BST files.</p>
+<p>This is the workhorse function of Bibulous. For a given citation key, find the resulting
+entry in the bibliography database. From the entry&#8217;s <cite>entrytype</cite>, lookup the relevant
+template in bstdict and start replacing template variables with formatted elements of the
+database entry. Once you&#8217;ve replaced all template variables, you&#8217;re done formatting that
+entry. Write the result to the BBL file.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1109,6 +1088,30 @@ format according to the directives in the bibliography style template.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="bibulous.Bibdata.generate_bibitem_label">
+<tt class="descname">generate_bibitem_label</tt><big>(</big><em>citekey</em><big>)</big><a class="headerlink" href="#bibulous.Bibdata.generate_bibitem_label" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate the bibitem label.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>citekey</strong> : str</p>
+<blockquote>
+<div><p>The citation key.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>bibitem_label</strong> : str</p>
+<blockquote class="last">
+<div><p>The label to use for the reference list item.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="bibulous.Bibdata.generate_sortkey">
 <tt class="descname">generate_sortkey</tt><big>(</big><em>citekey</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#Bibdata.generate_sortkey"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.Bibdata.generate_sortkey" title="Permalink to this definition">¶</a></dt>
 <dd><p>From a bibliography entry and the formatting template options, generate a sorting key for the
@@ -1126,6 +1129,36 @@ entry.</p>
 <tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>sortkey</strong> : str</p>
 <blockquote class="last">
 <div><p>A string to use as a sorting key.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="bibulous.Bibdata.get_bibfilenames">
+<tt class="descname">get_bibfilenames</tt><big>(</big><em>filename</em><big>)</big><a class="headerlink" href="#bibulous.Bibdata.get_bibfilenames" title="Permalink to this definition">¶</a></dt>
+<dd><p>If the input is a filename ending in &#8216;.aux&#8217;, then read through the .aux file and locate the
+lines <cite>ibdata{...}</cite> and <cite>ibstyle{...}</cite> to get the filename(s) for the bibliography database
+and style template.</p>
+<p>Also determine whether to set the &#8220;culldata&#8221; flag. If the input is a single AUX filename,
+then the default is to set culldata=True. If the input is a list of filenames, then assume
+that this is the complete list of files to use (i.e. ignore the contents of the AUX file
+except for generating the citedict), and set culldata=False.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>filename</strong> : str</p>
+<blockquote>
+<div><p>The &#8220;auxiliary&#8221; file, containing citation info, TOC info, etc.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>filedict</strong> : dict</p>
+<blockquote class="last">
+<div><p>A dictionary with keys &#8216;bib&#8217; and &#8216;bst&#8217;, each entry of which contains a list of filenames.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -1167,7 +1200,7 @@ main entry&#8217;s fields.</p>
 <dl class="method">
 <dt id="bibulous.Bibdata.parse_auxfile">
 <tt class="descname">parse_auxfile</tt><big>(</big><em>filename</em>, <em>debug=False</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#Bibdata.parse_auxfile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.Bibdata.parse_auxfile" title="Permalink to this definition">¶</a></dt>
-<dd><p>Read in an &#8221;.aux&#8221; file and convert the <cite>citation{}</cite> entries found there into a dictionary
+<dd><p>Read in an <cite>.aux</cite> file and convert the <cite>citation{}</cite> entries found there into a dictionary
 of citekeys and citation order number.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1175,7 +1208,7 @@ of citekeys and citation order number.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>filename</strong> : str</p>
 <blockquote class="last">
-<div><p>The filename of the &#8221;.aux&#8221; file to parse.</p>
+<div><p>The filename of the <cite>.aux</cite> file to parse.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -1199,7 +1232,7 @@ abbreviations, and the bibliography database dictionary.</p>
 </div></blockquote>
 <p><strong>entrytype</strong> : str</p>
 <blockquote class="last">
-<div><p>The type of entry (&#8220;article&#8221;, &#8220;preamble&#8221;, etc.).</p>
+<div><p>The type of entry (<cite>article</cite>, <cite>preamble</cite>, etc.).</p>
 </div></blockquote>
 </td>
 </tr>
@@ -1218,8 +1251,14 @@ names and field values.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>entrystr</strong> : str</p>
-<blockquote class="last">
+<blockquote>
 <div><p>The string containing the entire contents of the bibliography entry.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>fd</strong> : dict</p>
+<blockquote class="last">
+<div><p>The dictionary of &#8220;field name&#8221; and &#8220;field value&#8221; pairs.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -1319,6 +1358,25 @@ or {&#8216;first&#8217;:&#8217;Bugs&#8217;, &#8216;last&#8217;:&#8217;Bunny&#821
 <p><strong>outputfile</strong> : str, optional</p>
 <blockquote class="last">
 <div><p>The filename of the extracted BIB file to write.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="bibulous.Bibdata.write_auxfile">
+<tt class="descname">write_auxfile</tt><big>(</big><em>filename=None</em><big>)</big><a class="headerlink" href="#bibulous.Bibdata.write_auxfile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given the input database file(s) and style file(s), write out an AUX file containing
+citations to all unique database entries.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>filename</strong> : str</p>
+<blockquote class="last">
+<div><p>The filename of the auxfile to write.</p>
 </div></blockquote>
 </td>
 </tr>

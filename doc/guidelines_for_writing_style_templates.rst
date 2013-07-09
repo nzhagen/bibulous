@@ -5,7 +5,8 @@ Guidelines for writing bibliography style templates
 
 #. A line which begins with an entrytype name followed by an ``=`` sign defines the bibliographic format for that entrytype. For example::
 
-      article = <authorlist>, ``<title>,'' <journal>, <volume>, [<startpage>--<endpage>|<eid>|]  (<year>). [<note>.]
+      article = <authorlist>, ``<title>,'' <journal>, <volume>, ...
+                 [<startpage>--<endpage>|<eid>|]  (<year>). [<note>.]
 
    Here the ``article`` entrytype will be typeset so that the list of authors is followed by the article title in double quotes, the journal name in standard font (i.e. not italics), the volume number, the page range, and the year.
 

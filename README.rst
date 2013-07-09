@@ -14,8 +14,10 @@ Example
 
 For a very simple bibliography, consisting of only journal articles and books, a complete style template file may consist of just two lines:::
 
-   article = <authorlist>, \enquote{<title>,} \textit{<journal>} \textbf{<volume>}: [<startpage>--<endpage>|<startpage>|<eid>|] (<year>).[ <note>]
-   book = [<authorlist>|<editorlist>|], \textit{<title>} (<publisher>, <year>)[, pp.~<startpage>--<endpage>].[ <note>]
+   article = <authorlist>, \enquote{<title>,} \textit{<journal>} \textbf{<volume>}: ...
+                [<startpage>--<endpage>|<startpage>|<eid>|] (<year>).[ <note>]
+   book = [<authorlist>|<editorlist>|], \textit{<title>} (<publisher>, <year>)...
+                [, pp.~<startpage>--<endpage>].[ <note>]
 
 The ``<variable>`` notation indicates that the corresponding bibliography entry's field is to be inserted into the template there. The ``[...|...]`` notation behaves similar to an if...elseif statement, checking whether a given field is defined within the bibliography entry. If not defined, then it attempts to implement the instruction in the block following the next | character.
 
