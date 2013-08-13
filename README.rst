@@ -1,5 +1,6 @@
-Overview
-========
+=================
+Bibulous Overview
+=================
 
 Bibulous is a drop-in replacement for BibTeX that makes use of style templates instead of BibTeX's BST language. The code is written in Python and, like BibTeX itself, is open source.
 
@@ -9,8 +10,16 @@ Bibulous incorporates this template approach, and at the same time implements ma
 
 Bibulous' “style template” files allow a user to visualize the entire bibliography format structure in a concise way within a single page of text. Moreover, the template is structured with its own Python-like mini-language, intended to allow uses to create flexible formatting instructions quickly and easily. The example below illustrates the simplicity of the format.
 
+Installation
+============
+
+Installing using pip. ::
+
+   pip install bibulous
+    
+
 Example
--------
+=======
 
 For a very simple bibliography, consisting of only journal articles and books, a complete style template file may consist of just two lines:::
 
@@ -26,19 +35,19 @@ We can read the above article template as indicating the following structure for
 One can read the book template similarly, and find that it has different required and optional fields. The simplicity of the format allows one to customize databases to suit any use. For example, to use a bibliography entrytype ``本`` instead of ``book``, then all that is necessary is to go into the template file and change ``book`` to ``本``. Of, if you wish to add a new field, such as translator, then if it has been added to the ``.bib`` database file, one need only add some text to the template, say ``(: <translator>)`` to insert that into every bibliography entry which has translator defined for that entrytype.
 
 Installing and instructions
----------------------------
+===========================
 
 Instructions for installing Bibulous, and for seamlessly integrating it into your normal LaTeX workflow, are given in the ``INSTALL.rst`` file. Users can also consult the user guide (``user_guide.rst``) for further information and tutorials. A ``FAQ`` page is also available.
 
 Developers
-----------
+==========
 
 Bibulous is a brand new project, and so it has so far been a solo effort. Anyone interested in helping out is welcome to join; just send an email to the developers mailing list and we will try to help you get involved and show you the ropes. And, this being the maintainer's first open source project, any suggestions by experienced developers are welcome.
 
 Guidelines for developers are given in ``developer_guide.rst``, and includes an overview of the project's strategy and overall code structure. Note that a bug tracking system has not yet been set up for the project. HTML-based documentation is provided in ``/bibulous/doc/_build/html/index.html``, and a corresponding PDF file in ``/home/repos/bibulous/doc/_build/latex/Bibulous.pdf``. The ``setup.py`` and ``MANIFEST.in`` files provided in the repository base directory are used to create a Python package using the ``disutils`` distribution utilities module.
 
 License
--------
+=======
 
 Bibulous is released under the MIT/X11 license, meaning that it is free and open source, and that it can be used without restriction in other programs, commercial or not. The license is given in the file ``LICENSE.txt``, the text of which is reproduced here:
 
