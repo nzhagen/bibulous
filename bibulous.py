@@ -188,6 +188,10 @@ class Bibdata(object):
         self.options['month_abbrev'] = True
         self.options['allow_scripts'] = False
         self.options['case_sensitive_field_names'] = False
+        self.options['use_citeextract'] = True
+
+        ## Some switches for internal use.
+        self.parse_only_entrykeys = False
 
         ## Compile some patterns for use in regex searches.
         self.anybrace_pattern = re.compile(r'(?<!\\)[{}]', re.UNICODE)
@@ -219,9 +223,6 @@ class Bibdata(object):
 
         if self.culldata:
             self.searchkeys = self.citedict.keys()
-
-        #zzz
-        print('SEARCHKEYS=', self.searchkeys)
 
         ## Parsing the style file has to go *before* parsing the BIB file, so that any style options
         ## that affect the way the data is parsed can take effect.
@@ -412,8 +413,9 @@ class Bibdata(object):
 
             self.bibdata[entrykey] = {}
             self.bibdata[entrykey]['entrytype'] = entrytype
-            fd = self.parse_bibfield(entrystr)
-            if fd: self.bibdata[entrykey].update(fd)
+            if not self.parse_only_entrykeys:
+                fd = self.parse_bibfield(entrystr)
+                if fd: self.bibdata[entrykey].update(fd)
 
         return
 
@@ -1848,6 +1850,9 @@ class Bibdata(object):
         bblfile = ''
         texfile = ''
 
+        bibres = None
+        bstres = None
+
         if isinstance(filename, basestring) and filename.endswith('.aux'):
             auxfile = os.path.normpath(os.path.abspath(filename))
             path = os.path.dirname(auxfile) + '/'
@@ -1864,6 +1869,11 @@ class Bibdata(object):
                     line = line[10:]
                     indx = line.index('}')
                     bstres = line[:indx]
+
+            if (bibres == None):
+                raise ValueError('Cannot find a bibliography database specified in "' + filename + '"')
+            if (bstres == None):
+                raise ValueError('Cannot find a bibliography template specified in "' + filename + '"')
 
             ## Now we have the strings from the ".tex" file that describing the bibliography filenames.
             ## If these are lists of filenames, then split them out.
