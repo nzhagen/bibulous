@@ -87,7 +87,7 @@ def run_test1():
 
     return(bblfile, target_bblfile)
 
-## =============================
+## =================================================================================================
 def run_test2():
     '''
     Test #2 loads a number of large .bib database files to put the BibTeX parser and the BBL file
@@ -127,37 +127,24 @@ def run_test2():
 
     return(result)
 
-## =============================
+## =================================================================================================
 def run_test3():
     '''
-    Test #3 tests that the "authorextract" and "citeextract" methods function correctly.
+    Test #3 tests that the "authorextract" method functions correctly.
     '''
 
     auxfile = './test/test2.aux'        ## re-use the huge database
     authorstr = 'John W. Tukey'
-    outputfile1 = './test/test3_authorextract.bib'
-    targetfile1 = './test/test3_authorextract_target.bib'
+    outputfile = './test/test3_authorextract.bib'
+    targetfile = './test/test3_authorextract_target.bib'
 
     print('\n' + '='*75)
     print('Running Bibulous Test #3 for author "' + authorstr + '"')
 
     bibobj = Bibdata(auxfile, disable=[4,9,21])
-    bibobj.write_authorextract(authorstr, outputfile1, debug=False)
+    bibobj.write_authorextract(authorstr, outputfile)
 
-    ## Next do the cite-extract check.
-    auxfile = './test/test3_citeextract.aux'
-    outputfile2 = './test/test3_citeextract.bib'
-    targetfile2 = './test/test3_citeextract_target.bib'
-
-    ## Delete the old citekeys so that the new test contains only the new keys.
-    bibobj.citedict = {}
-    bibobj.parse_auxfile(auxfile)
-    bibobj.write_citeextract(outputfile2, debug=False)
-
-    outputfiles = [outputfile1, outputfile2]
-    targetfiles = [targetfile1, targetfile2]
-
-    return(outputfiles, targetfiles)
+    return(outputfile, targetfile)
 
 ## =================================================================================================
 def run_test4():
@@ -237,7 +224,7 @@ def run_test4():
 
     return(bblfile, target_bblfile)
 
-## =============================
+## =================================================================================================
 def run_test5():
     '''
     Test #5 flexes the Python API.
@@ -255,7 +242,7 @@ def run_test5():
 
     return(bblfile, targetfile)
 
-## =============================
+## =================================================================================================
 def run_test6():
     '''
     Test #6 makes sure to raise an exception when attempting to load a BibTeX-format BST file.
@@ -417,7 +404,7 @@ def check_file_match(testnum, outputfile, targetfile):
     return(test_passes)
 
 
-## ===============================================author_firstname_initials===================================================
+## ==================================================================================================
 if (__name__ == '__main__'):
     suite_pass = True
 

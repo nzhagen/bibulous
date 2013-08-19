@@ -6,22 +6,28 @@
 Bibulous is a drop-in replacement for BibTeX, with the primary advantage that the bibliography
 template format is compact and *very* easy to modify.
 
-The basic program flow is as follows:
+The basic program flow upon object initialization is as follows:
 
 1. Read the `.aux` file and get the names of the bibliography databases (`.bib` files),
-   the style templates (.bst files) to use, and the entire set of citations.
-2. Read in all of the bibliography database files into one long dictionary (`bibdata`),
-   replacing any abbreviations with their full form. Cross-referenced data is *not* yet
-   inserted at this point. That is delayed until the time of writing the BBL file in order
-   to speed up parsing.
-3. Read in the Bibulous style template file as a dictionary (`bstdict`).
-4. Now that all the information is collected, go through each citation key, find the
+   the style templates (`.bst` files) to use, and the entire set of citations.
+2. Read in the Bibulous style template `.bst` file as a dictionary (`bstdict`). This also
+   allows us to set options for how to parse the database file(s).
+3. Look for the `-extract.bib` "extracted" database file. If it exists, then read it in.
+   Compare the entrykeys in the the extracted database to the citation keys in the `.aux`
+   file. If any of the latter are not within the extracted database, then re-extract the
+   database from the main database file. Otherwise, continue with the extracted database.
+4. If the extracted database doesn't exist, or need to be replaced, then read in all of
+   the bibliography database files into one long dictionary (`bibdata`), replacing any
+   abbreviations with their full form. Cross-referenced data is *not* yet inserted at
+   this point. That is delayed until the time of writing the BBL file in order to speed up
+   parsing.
+5. Now that all the information is collected, go through each citation key, find the
    corresponding entry key in `bibdata`. From the entry type, select a template from `bstdict`
    and begin inserting the variables one-by-one into the template. If any data is missing,
    check for cross-references and use crossref data to fill in missing values.
 '''
 
-from __future__ import unicode_literals, print_function, division     ## for Python3 compatibility
+from __future__ import unicode_literals, print_function, division
 import re
 import os
 import sys
@@ -29,6 +35,7 @@ import codecs       ## for importing UTF8-encoded files
 import locale       ## for language internationalization and localization
 import getopt       ## for getting command-line options
 import traceback    ## for getting full traceback info in exceptions
+import copy         ### for the "deepcopy" command
 from math import log10
 import pdb          ## put "pdb.set_trace()" at any place you want to interact with pdb
 
@@ -61,11 +68,12 @@ class Bibdata(object):
     Bibdata is a class to hold all data related to a bibliography database, a citation list, and a
     style template.
 
-    To initialize the class, either call it with the filename of the ".aux" file containing the
-    relevant file locations (for the ".bib" database files and the ".bst" template files) or simply
-    call it with a list of all filenames to be used (".bib", ".bst" and ".aux"). The output file
-    (the LaTeX-formatted bibliography) is assumed to have the same filename root as the ".aux"
-    file, but with ".bbl" as its extension.
+    To initialize the class, either call it with the filename of the `.aux` file containing the
+    relevant file locations (for the `.bib` database files and the `.bst` template files) or simply
+    call it with a list of all filenames to be used (i.e. `database_name.bib`,
+    `style_template_name.bst` and `main_filename.aux`). The output file (the LaTeX-formatted
+    bibliography) is assumed to have the same filename root as the `.aux` file, but with `.bbl` as
+    its extension.
 
     Attributes
     ----------
@@ -107,7 +115,12 @@ class Bibdata(object):
     culldata : bool
         Whether to cull the database so that only cited entries are parsed. Setting this to False \
         means that the entire BIB file database will be parsed. When True, the BIB file parser \
-        will only parse those entries corresponding to keys in the citedict.
+        will only parse those entries corresponding to keys in the citedict. Setting this to True \
+        provides significant speedups for large databases.
+    parse_only_entrykeys : bool
+        When comparing a database file against a citation list, all we are initially interested in \
+        are the entrykeys and not the data. So, in our first pass through the database, we can use \
+        this flag to skip the data.
 
     Methods
     -------
@@ -128,6 +141,8 @@ class Bibdata(object):
     replace_abbrevs_with_full
     generate_bibitem_label
     get_bibfilenames
+    check_citekeys_in_datakeys
+    add_crossrefs_to_searchkeys
 
     Example
     -------
@@ -149,6 +164,7 @@ class Bibdata(object):
         self.user_variables = {}    ## any user-defined variables from the BST files
         self.culldata = culldata    ## whether to cull the database so that only cited entries are parsed
         self.searchkeys = []        ## when culling data, this is the list of keys to limit parsing to
+        self.parse_only_entrykeys = False  ## don't parse the data in the database; get only entrykeys
 
         ## Temporary variables for use in error messages while parsing files.
         self.filename = ''                      ## the current filename (for error messages)
@@ -190,9 +206,6 @@ class Bibdata(object):
         self.options['case_sensitive_field_names'] = False
         self.options['use_citeextract'] = True
 
-        ## Some switches for internal use.
-        self.parse_only_entrykeys = False
-
         ## Compile some patterns for use in regex searches.
         self.anybrace_pattern = re.compile(r'(?<!\\)[{}]', re.UNICODE)
         self.startbrace_pattern = re.compile(r'(?<!\\){', re.UNICODE)
@@ -221,33 +234,40 @@ class Bibdata(object):
         if self.filedict['aux']:
             self.parse_auxfile(self.filedict['aux'])
 
-        if self.culldata:
-            self.searchkeys = self.citedict.keys()
-
         ## Parsing the style file has to go *before* parsing the BIB file, so that any style options
         ## that affect the way the data is parsed can take effect.
         if self.filedict['bst']:
             for f in self.filedict['bst']:
                 self.parse_bstfile(f)
 
+        ## Next, get the list of entrykeys in the database file(s), and compare them against the
+        ## list of citation keys.
         if self.filedict['bib']:
-            for f in self.filedict['bib']:
-                self.parse_bibfile(f)
+            if self.citedict and self.options['use_citeextract'] and os.path.exists(self.filedict['extract']):
+                self.parse_only_entrykeys = True
+                self.parse_bibfile(self.filedict['extract'])
+                self.parse_only_entrykeys = False
+                is_complete = self.check_citekeys_in_datakeys()
+                ## Clear the bibliography database, or we will get "overwrite" errors when we parse
+                ## it again below (since right now all we have are entrykeys).
+                self.bibdata = {}
+            else:
+                is_complete = False
 
-        if self.culldata:
-            ## When culldata==True, things here get more complicated. The problem is that if a crossref
-            ## refers to an entry that was not among the citation keys, then the database parser will
-            ## not know to place that entry into the bibdata dictionary. Thus, if we happen to run
-            ## across an entry with missing data, and it has a crossref that is not in the databse,
-            ## then we have to go back and parse the database a second time, this time adding the
-            ## crossreferenced items. Once that's done, *then* we can add cross-referenced data into
-            ## the original cited entries.
-            crossref_list = []
-            for key in self.bibdata:
-                if ('crossref' in self.bibdata[key]):
-                    crossref_list.append(self.bibdata[key]['crossref'])
-            if crossref_list:
-                self.searchkeys = crossref_list
+            ## If the current database is complete, then just go ahead and use it. If not, then parse
+            ## the main database file(s).
+            if is_complete:
+                self.parse_bibfile(self.filedict['extract'])
+            else:
+                if self.culldata:
+                    self.searchkeys = self.citedict.keys()
+                for f in self.filedict['bib']:
+                    self.parse_bibfile(f)
+                if self.culldata:
+                    self.add_crossrefs_to_searchkeys()
+                ## Write out the extracted database.
+                if self.options['use_citeextract']:
+                    self.write_citeextract(self.filedict['extract'])
 
         return
 
@@ -345,7 +365,7 @@ class Bibdata(object):
                     break
 
             if (entry_brace_level == 0):
-                entrystr += line[:endpos-1]         ## use "-1" to remove the final closing brace
+                entrystr += line[:endpos-1]      ## the "-1" here to remove the final closing brace
                 self.parse_bibentry(entrystr, entrytype)
                 entrystr = ''
             else:
@@ -396,8 +416,9 @@ class Bibdata(object):
                      'Skipping ...', self.disable)
                 return(fd)
 
-            ## Get the entry key. If we are culling the database and the entry key is not among the
-            ## citation keys, then exit --- we don't need to add this to the database.
+            ## Get the entry key. If we are culling the database (self.culldata == True) and the
+            ## entry key is not among the citation keys, then exit --- we don't need to add this
+            ## to the database.
             entrykey = entrystr[:idx].strip()
             if self.searchkeys and (entrykey not in self.searchkeys): return
             entrystr = entrystr[idx+1:]
@@ -413,6 +434,7 @@ class Bibdata(object):
 
             self.bibdata[entrykey] = {}
             self.bibdata[entrykey]['entrytype'] = entrytype
+
             if not self.parse_only_entrykeys:
                 fd = self.parse_bibfield(entrystr)
                 if fd: self.bibdata[entrykey].update(fd)
@@ -1537,10 +1559,10 @@ class Bibdata(object):
         return
 
     ## =============================
-    def write_citeextract(self, outputfile, debug=False):
+    def write_citeextract(self, outputfile):
         '''
         Extract a sub-database from a large bibliography database, with the former containing only \
-        those entries cited in the .aux file.
+        those entries cited in the .aux file (and any relevant cross-references).
 
         Parameters
         ----------
@@ -1550,13 +1572,28 @@ class Bibdata(object):
             The filename to use for writing the extracted BIB file.
         '''
 
-        ## A dict comprehension to extract only the relevant items in "bibdata".
-        bibextract = {c: self.bibdata[c] for c in self.citedict}
+        ## The "citedict" contains only those items directly cited, but we also need any cross-
+        ## referenced items as well, so let's add those.
+        crossref_list = []
+        for key in self.citedict:
+            if ('crossref' in self.bibdata[key]):
+                crossref_list.append(self.bibdata[key]['crossref'])
+
+        citekeylist = self.citedict.keys()
+        if crossref_list: citekeylist.extend(crossref_list)
+        #print(citekeylist)     #zzz
+        #print('PREAMBLE:\n', self.bibdata['preamble'])  #zzz
+
+        ## A dict comprehension to extract only the relevant items in "bibdata". Note that these
+        ## entries are mapped by reference and not by value --- any changes to "bibextract" will
+        ## also be reflected in "self.bibdata" is the change is to a mutable entry (such as a list
+        ## or a dict).
+        bibextract = {c:self.bibdata[c] for c in citekeylist}
         export_bibfile(bibextract, outputfile)
         return
 
     ## =============================
-    def write_authorextract(self, searchname, outputfile=None, debug=False):
+    def write_authorextract(self, searchname, outputfile=None):
         '''
         Extract a sub-database from a large bibliography database, with the former containing only \
         those entries citing the given author/editor.
@@ -1623,13 +1660,13 @@ class Bibdata(object):
 
                         if (thisname == searchname[namekey]):
                             key_matches += 1
-                            if debug: print('Found match in entry "' + k + '": name[' + namekey + '] = ' + name[namekey])
+                            if self.debug: print('Found match in entry "' + k + '": name[' + namekey + '] = ' + name[namekey])
 
                 if (key_matches == nkeys):
                     #print(k, bibdata[k]['author'])
                     bibextract[k] = self.bibdata[k]
                     nentries += 1
-                    if debug: print('Match FULL NAME in entry "' + k + '": ' + repr(name))
+                    if self.debug: print('Match FULL NAME in entry "' + k + '": ' + repr(name))
 
         export_bibfile(bibextract, outputfile)
 
@@ -1791,6 +1828,9 @@ class Bibdata(object):
         Given the input database file(s) and style file(s), write out an AUX file containing
         citations to all unique database entries.
 
+        This function is only provided as a utility, and is not actually used except during
+        troubleshooting.
+
         Parameters
         ----------
         filename : str
@@ -1824,11 +1864,11 @@ class Bibdata(object):
     ## =============================
     def get_bibfilenames(self, filename):
         '''
-        If the input is a filename ending in '.aux', then read through the .aux file and locate the
-        lines `\bibdata{...}` and `\bibstyle{...}` to get the filename(s) for the bibliography database
-        and style template.
+        If the input is a filename ending in `.aux`, then read through the `.aux` file and locate
+        the lines `\bibdata{...}` and `\bibstyle{...}` to get the filename(s) for the bibliography
+        database and style template.
 
-        Also determine whether to set the "culldata" flag. If the input is a single AUX filename,
+        Also determine whether to set the `culldata` flag. If the input is a single AUX filename,
         then the default is to set culldata=True. If the input is a list of filenames, then assume
         that this is the complete list of files to use (i.e. ignore the contents of the AUX file
         except for generating the citedict), and set culldata=False.
@@ -1841,7 +1881,8 @@ class Bibdata(object):
         Returns
         -------
         filedict : dict
-            A dictionary with keys 'bib' and 'bst', each entry of which contains a list of filenames.
+            A dictionary with keys `aux`, `bbl`, `bib`, `bst`, `extract`, and `tex`, each entry of \
+            which contains a list of filenames.
         '''
 
         bibfiles = []
@@ -1849,6 +1890,7 @@ class Bibdata(object):
         auxfile = ''
         bblfile = ''
         texfile = ''
+        extractfile = ''
 
         bibres = None
         bstres = None
@@ -1946,6 +1988,8 @@ class Bibdata(object):
             bblfile = auxfile[:-4] + '.bbl'
         if not texfile and auxfile:
             texfile = auxfile[:-4] + '.tex'
+        if not extractfile:
+            extractfile = auxfile[:-4] + '-extract.bib'
 
         ## Now that we have the filenames, build the dictionary of BibTeX-related files.
         self.filedict['bib'] = bibfiles
@@ -1953,6 +1997,7 @@ class Bibdata(object):
         self.filedict['tex'] = texfile
         self.filedict['aux'] = auxfile
         self.filedict['bbl'] = bblfile
+        self.filedict['extract'] = extractfile
 
         if self.debug:
             print('bib files: ' + repr(bibfiles))
@@ -1960,9 +2005,56 @@ class Bibdata(object):
             print('tex file: "' + unicode(texfile) + '"')
             print('aux file: "' + unicode(auxfile) + '"')
             print('bbl file: "' + unicode(bblfile) + '"')
+            print('ext file: "' + unicode(extractfile) + '"')
 
         return()
 
+    ## =============================
+    def check_citekeys_in_datakeys(self):
+        '''
+        Check to see if all of the citation keys (from the AUX file) exist within the current
+        set of database entrykeys.
+
+        Returns
+        -------
+        is_complete : bool
+            True if all citations exist in the database, False otherwise.
+        '''
+
+        citekeys = set(self.citedict.keys())
+        datakeys = set(self.bibdata.keys())
+        diff = citekeys.difference(datakeys)
+
+        if self.debug:
+            print('Checking the overlap between citation keys and database keys ...')
+            print('The list of keys not found in the current database:')
+            print(diff)
+
+        if diff:
+            return(False)
+        else:
+            return(True)
+
+    ## =============================
+    def add_crossrefs_to_searchkeys(self):
+        '''
+        Add any cross-referenced entrykeys into the `searchkeys`, the list which is used to cull
+        the database so that only necessary entries are parsed.
+        '''
+
+        ## When self.culldata==True, the problem is that if a crossref refers to an entry that was
+        ## not among the citation keys, then the database parser will not know to place that entry
+        ## into the bibdata dictionary. Thus, if we happen to run across an entry with missing data,
+        ## and it has a crossref that is not in the database, then we have to go back and parse the
+        ## database a second time, this time adding the crossreferenced items. Once that's done,
+        ## *then* we can add cross-referenced data into the original cited entries.
+        crossref_list = []
+        for key in self.bibdata:
+            if ('crossref' in self.bibdata[key]):
+                crossref_list.append(self.bibdata[key]['crossref'])
+        if crossref_list:
+            self.searchkeys = crossref_list
+        return
 
 ## ================================================================================================
 ## END OF BIBDATA CLASS.
@@ -3434,11 +3526,20 @@ def export_bibfile(bibdata, filename):
 
     assert isinstance(filename, basestring), 'Input "filename" must be a string.'
     f = open(filename, 'w')
+    f = codecs.open(filename, 'w', 'utf-8')
+
+    if ('preamble' in bibdata):
+        f.write(bibdata['preamble'])
 
     for key in bibdata:
-        entry = bibdata[key]
+        if (key == 'preamble'): continue
+
+        ## Since you're about to delete an item from the "entry" dictionary, and it is a view into
+        ## the main database dictionary, you need to make a deep copy of it first before deleteing
+        ## or else it will delete the entry from the main database as well!
+        entry = copy.deepcopy(bibdata[key])
         f.write('@' + entry['entrytype'].upper() + '{' + key + ',\n')
-        del bibdata[key]['entrytype']
+        del entry['entrytype']
         nkeys = len(entry.keys())
 
         ## Write out the entries.
