@@ -1580,7 +1580,8 @@ class Bibdata(object):
         ## referenced items as well, so let's add those.
         crossref_list = []
         for key in self.citedict:
-            if ('crossref' in self.bibdata[key]):
+            if key not in self.bibdata: continue
+            if ('crossref' in self.bibdata[key]) and (self.bibdata[key]['crossref'] in self.bibdata):
                 crossref_list.append(self.bibdata[key]['crossref'])
 
         citekeylist = self.citedict.keys()
@@ -1592,7 +1593,7 @@ class Bibdata(object):
         ## entries are mapped by reference and not by value --- any changes to "bibextract" will
         ## also be reflected in "self.bibdata" is the change is to a mutable entry (such as a list
         ## or a dict).
-        bibextract = {c:self.bibdata[c] for c in citekeylist}
+        bibextract = {c:self.bibdata[c] for c in citekeylist if c in self.bibdata}
         abbrevs = self.abbrevs if write_abbrevs else None
         export_bibfile(bibextract, outputfile, abbrevs)
         return
