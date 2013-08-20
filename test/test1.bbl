@@ -4,6 +4,7 @@
 \providecommand{\href}[2]{#2}
 \setlength{\itemsep}{0pt}
 
+\providecommand{\um}{$\mu$m}
 
 \bibitem{initialize1}
 {Lord} Kelvin, ``On vortex motion'' (1869).
@@ -66,22 +67,22 @@ H. Schmidt, ``Quantum-mechanical random-number generator,'' \textit{J. Appl. Phy
 \bibitem{multilingual}
 = Someone, ``ユーザー別サイト 体中文 크로스 플랫폼으로 מדורים מבוקשים أفضل البحوث Σὲ γνωρίζω ἀπὸ Десятую Международную แผ่นดินฮั่นเสื่อมโทรมแสนสังเวช ∮ E⋅da = Q, n → ∞, ∑ f(i) = ∏ g(i) français langue étrangère mañana olé'' (2222).
 \bibitem{force_sentence_case}
-\textit{Warning: citation key "force_sentence_case" is not in the bibliography database.}.
+P. Stoica and B. C. Ng, ``On the {C}ram{\'e}r-{R}ao bound under parametric constraints'' (1998).
 \bibitem{french_initials}
-\textit{Warning: citation key "french_initials" is not in the bibliography database.}.
+A. Perot and Ch. Fabry, ``Sur l'application de ph{\'e}nom{\`e}nes d'interf{\'e}rence {\`a} la solution de divers probl{\`e}mes de spectroscopie et de m{\'e}trologie'' (1899).
 \bibitem{use_name_ties}
-\textit{Warning: citation key "use_name_ties" is not in the bibliography database.}.
+F.~M.~M. Prefix Last and F. Prefix Last, Suffix, ``None'' (0000).
 \bibitem{period_after_initial}
-\textit{Warning: citation key "period_after_initial" is not in the bibliography database.}.
+B R Bunny, ``Looney tunes'' (2001).
 \bibitem{terse_inits}
-\textit{Warning: citation key "terse_inits" is not in the bibliography database.}.
+DD Duck, ``Looney tunes'' (2001).
 \bibitem{author_firstname_initials}
-\textit{Warning: citation key "author_firstname_initials" is not in the bibliography database.}.
+Alain Aspect, Philippe Grangier, and G{\'e}rard Roger, ``Experimental realization of Einstein-Podolsky-Rosen-Bohm \textit{Gedenkenexperiment}: a new violation of Bell's inequalities'' (1982).
 \bibitem{editor_firstname_initials}
-\textit{Warning: citation key "editor_firstname_initials" is not in the bibliography database.}.
-\bibitem[citation_label1]{citation_label1}
-\textit{Warning: citation key "citation_label1" is not in the bibliography database.}.
-\bibitem[citation_label2]{citation_label2}
-\textit{Warning: citation key "citation_label2" is not in the bibliography database.}.
+David B. Chenault and Dennis H. Goldstein, eds, ``Polarization: Measurement, Analysis, and Remote Sensing X'' (2012).
+\bibitem[Duck-2001]{citation_label1}
+D. D. Duck, ``Looney tunes'' (2001).
+\bibitem[Duck-2001]{citation_label2}
+D. D. Duck, ed., ``Looney tunes'' (2001).
 
 \end{thebibliography}

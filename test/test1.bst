@@ -60,6 +60,7 @@ editorlist_format = first_name_first      ## use editorlist "Bugs Bunny, Daffy D
 namelist_format = first_name_first        ## defines values for both "authorlist_format" and "editorlist_format" at once
 use_name_ties = False                     ## whether or not to tie together initials with unbreaskable spaces ('~')
 case_sensitive_field_names = False        ## whether to allow field names to be case sensitive (i.e. "BOOK" will not be the same entrytype as "book")
+use_citeextract = False                   ## turn off cite extraction, since this interferes with using multiple BIB file inputs
 
 VARIABLES:
 

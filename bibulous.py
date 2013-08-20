@@ -250,7 +250,7 @@ class Bibdata(object):
                 is_complete = self.check_citekeys_in_datakeys()
                 ## Clear the bibliography database, or we will get "overwrite" errors when we parse
                 ## it again below (since right now all we have are entrykeys).
-                self.bibdata = {}
+                self.bibdata = {'preamble':''}
             else:
                 is_complete = False
 
@@ -1559,7 +1559,7 @@ class Bibdata(object):
         return
 
     ## =============================
-    def write_citeextract(self, outputfile):
+    def write_citeextract(self, outputfile, write_abbrevs=False):
         '''
         Extract a sub-database from a large bibliography database, with the former containing only \
         those entries cited in the .aux file (and any relevant cross-references).
@@ -1570,6 +1570,10 @@ class Bibdata(object):
             The dictionary filenames must have keys "aux",  "bst", and "bib".
         outputfile : str, optional
             The filename to use for writing the extracted BIB file.
+        write_abbrevs : bool
+            Whether or not to write the abbreviations to the BIB file. Since the abbreviations are \
+            already inserted into the database entries, they are no longer needed, but may be \
+            useful for future editing and adding of entries to the database file.
         '''
 
         ## The "citedict" contains only those items directly cited, but we also need any cross-
@@ -1589,11 +1593,12 @@ class Bibdata(object):
         ## also be reflected in "self.bibdata" is the change is to a mutable entry (such as a list
         ## or a dict).
         bibextract = {c:self.bibdata[c] for c in citekeylist}
-        export_bibfile(bibextract, outputfile)
+        abbrevs = self.abbrevs if write_abbrevs else None
+        export_bibfile(bibextract, outputfile, abbrevs)
         return
 
     ## =============================
-    def write_authorextract(self, searchname, outputfile=None):
+    def write_authorextract(self, searchname, outputfile=None, write_abbrevs=False):
         '''
         Extract a sub-database from a large bibliography database, with the former containing only \
         those entries citing the given author/editor.
@@ -1605,6 +1610,10 @@ class Bibdata(object):
             or {'first':'Bugs', 'last':'Bunny', 'middle':'E'}.
         outputfile : str, optional
             The filename of the extracted BIB file to write.
+        write_abbrevs : bool
+            Whether or not to write the abbreviations to the BIB file. Since the abbreviations are \
+            already inserted into the database entries, they are no longer needed, but may be \
+            useful for future editing and adding of entries to the database file.
         '''
 
         if not isinstance(searchname, basestring):
@@ -1668,7 +1677,8 @@ class Bibdata(object):
                     nentries += 1
                     if self.debug: print('Match FULL NAME in entry "' + k + '": ' + repr(name))
 
-        export_bibfile(bibextract, outputfile)
+        abbrevs = self.abbrevs if write_abbrevs else None
+        export_bibfile(bibextract, outputfile, abbrevs)
 
         return
 
@@ -3512,7 +3522,7 @@ def create_edition_ordinal(bibentry, disable=None):
     return(editionstr)
 
 ## =============================
-def export_bibfile(bibdata, filename):
+def export_bibfile(bibdata, filename, abbrevs=None):
     '''
     Write a bibliography database dictionary into a .bib file.
 
@@ -3522,14 +3532,22 @@ def export_bibfile(bibdata, filename):
         The filename of the file to write.
     bibdata : dict
         The bibliography dictionary to write out.
+    abbrevs : dict, optional
+        The dictionary of abbreviations to write to the BIB file.
     '''
 
     assert isinstance(filename, basestring), 'Input "filename" must be a string.'
-    f = open(filename, 'w')
-    f = codecs.open(filename, 'w', 'utf-8')
+    filehandle = open(filename, 'w')
+    filehandle = codecs.open(filename, 'w', 'utf-8')
 
     if ('preamble' in bibdata):
-        f.write(bibdata['preamble'])
+        filehandle.write(bibdata['preamble'])
+        filehandle.write('\n\n')
+
+    if (abbrevs != None):
+        for abbrev in abbrevs:
+            filehandle.write('@STRING{' + abbrev + ' = ' + abbrevs[abbrev] + '}\n')
+        filehandle.write('\n')
 
     for key in bibdata:
         if (key == 'preamble'): continue
@@ -3538,24 +3556,24 @@ def export_bibfile(bibdata, filename):
         ## the main database dictionary, you need to make a deep copy of it first before deleteing
         ## or else it will delete the entry from the main database as well!
         entry = copy.deepcopy(bibdata[key])
-        f.write('@' + entry['entrytype'].upper() + '{' + key + ',\n')
+        filehandle.write('@' + entry['entrytype'].upper() + '{' + key + ',\n')
         del entry['entrytype']
         nkeys = len(entry.keys())
 
         ## Write out the entries.
         for i,k in enumerate(entry):
-            f.write('  ' + k + ' = {' + unicode(entry[k]) + '}')
+            filehandle.write('  ' + k + ' = {' + unicode(entry[k]) + '}')
 
             ## If this is the last field in the dictionary, then do not end the line with a
             ## trailing comma.
             if (i == (nkeys-1)):
-                f.write('\n')
+                filehandle.write('\n')
             else:
-                f.write(',\n')
+                filehandle.write(',\n')
 
-        f.write('}\n\n')
+        filehandle.write('}\n\n')
 
-    f.close()
+    filehandle.close()
     return
 
 ## =============================
