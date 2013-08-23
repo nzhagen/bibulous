@@ -403,6 +403,8 @@ class Bibdata(object):
             fd = self.parse_bibfield(entrystr)
             if fd: self.abbrevs.update(fd)
         elif (entrytype == 'acronym'):
+            ## Acronym entrytypes have an identical form to "string" types, but we map them into a
+            ## dictionary like a regular field, so we can access them as regular database entries.
             fd = self.parse_bibfield(entrystr)
             entrykey = fd.keys()[0]
             newentry = {'name':entrykey, 'description':fd[entrykey], 'entrytype':'acronym'}
@@ -1056,7 +1058,7 @@ class Bibdata(object):
         ## If the citation key is not in the database, replace the format string with a message to the
         ## fact.
         if (c not in self.bibdata):
-            msg = 'citation key "' + c + '" is not in the bibliography database.'
+            msg = 'citation key "' + c + '" is not in the bibliography database'
             warn('Warning 010: ' + msg, self.disable)
             return(itemstr + '\\textit{Warning: ' + msg + '}.')
         else:
@@ -1075,7 +1077,7 @@ class Bibdata(object):
             ('series' in entry) and (entry['series'] in ['Proc. SPIE','procspie']):
             entrytype = 'article'
             entry['entrytype'] = 'article'
-            entry['journal'] = 'Proc. SPIE'
+            entry['journal'] = 'Proc.\\ SPIE'
 
         if (entrytype in self.bstdict):
             templatestr = self.bstdict[entrytype]
@@ -1092,7 +1094,7 @@ class Bibdata(object):
         if (num_obrackets != num_cbrackets):
             msg = 'In the template for entrytype "' + entrytype + '" there are ' + \
                   unicode(num_obrackets) + ' open brackets "[", but ' + unicode(num_cbrackets) + \
-                  ' close brackets "]" in the formatting string.'
+                  ' close brackets "]" in the formatting string'
             warn('Warning 012: ' + msg, self.disable)
             return(itemstr + '\\testit{' + msg + '}.')
 
@@ -1129,7 +1131,7 @@ class Bibdata(object):
             end_idx = templatestr.index(']')
             if not (start_idx < end_idx):
                 msg = 'A closed bracket "]" occurs before an open bracket "[" in the format ' + \
-                      'string "' + templatestr + '".'
+                      'string "' + templatestr + '"'
                 warn('Warning 013: ' + msg, self.disable)
                 return(itemstr + '\\testit{' + msg + '}.')
 
@@ -1586,8 +1588,6 @@ class Bibdata(object):
 
         citekeylist = self.citedict.keys()
         if crossref_list: citekeylist.extend(crossref_list)
-        #print(citekeylist)     #zzz
-        #print('PREAMBLE:\n', self.bibdata['preamble'])  #zzz
 
         ## A dict comprehension to extract only the relevant items in "bibdata". Note that these
         ## entries are mapped by reference and not by value --- any changes to "bibextract" will
