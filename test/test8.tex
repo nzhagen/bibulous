@@ -2,7 +2,7 @@
 \usepackage[utf8]{inputenc} %File encoding
 \usepackage{ifthen}             %% needed for the redefinition of \@cite below.
 
-\newcommand{\citez}[1]{#1\protect\nocite{#1}}
+\newcommand{\citename}[1]{#1\protect\nocite{#1}}
 
 \renewenvironment{glossary}
    {\begin{list}{}{\setlength\labelsep{\linewidth}%
@@ -25,7 +25,7 @@
 
 \begin{document}
 
-Our network uses \citez{AD}. By using \citez{AD} with \citez{JS} bases clients that have been installed using a \citez{RF} from \citez{CD}, we can expect a high level of standardization.
+Our network uses \citename{AD}. By using \citename{AD} with \citename{JS} bases clients that have been installed using a \citename{RF} from \citename{CD}, we can expect a high level of standardization.
 
 If you calculate with \cite{sym:pi} you always get an irrational result, because \cite{sym:pi} itself is irrational. As a matter of fact, there are \cite{sym:phi} and \cite{sym:lambda}, too.
 
