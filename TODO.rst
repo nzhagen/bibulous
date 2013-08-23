@@ -53,3 +53,8 @@ Python testing to-do
 - Add a test for locale-dependent sorting? This requires a lot of work to set up for full
   BIB-AUX-BBL mapping. So it may be best to wait for a more directed test to come along.
 
+- Test what happens to citation sorting styles like nyt when one or more of the name, 
+  year, or title fields are missing.
+ 
+- Test that Bibulous prints a warning message, and does not emit an exception, when the
+  AUX file contains a citation key that does not exist in the database.
