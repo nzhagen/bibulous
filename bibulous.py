@@ -233,6 +233,8 @@ class Bibdata(object):
 
         if self.filedict['aux']:
             self.parse_auxfile(self.filedict['aux'])
+            if ('*' in self.citedict):
+                self.culldata = False
 
         ## Parsing the style file has to go *before* parsing the BIB file, so that any style options
         ## that affect the way the data is parsed can take effect.
@@ -265,6 +267,11 @@ class Bibdata(object):
                     self.parse_bibfile(f)
                 if self.culldata:
                     self.add_crossrefs_to_searchkeys()
+                if ('*' in self.citedict):
+                    for i,key in enumerate(self.bibdata.keys()):
+                        self.citedict[key] = i
+                    if ('preamble' in self.citedict): del self.citedict['preamble']
+                    if ('*' in self.citedict): del self.citedict['*']
                 ## Write out the extracted database.
                 if self.options['use_citeextract']:
                     self.write_citeextract(self.filedict['extract'])

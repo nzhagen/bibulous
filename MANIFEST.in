@@ -1,6 +1,5 @@
 include bibulous.py
 include bibulous_test.py
-include bibulous_citeextract.py
 include bibulous_authorextract.py
 
 include README.rst
