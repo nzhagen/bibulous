@@ -928,41 +928,45 @@ class Bibdata(object):
             ## cause the entry to be deleted, so we need the check below to see if the return
             ## string is empty before writing it to the file.
             for c in self.citelist:
+                if (c not in self.bibdata):
+                    msg = 'citation key "' + c + '" is not in the bibliography database'
+                    warn('Warning 029: ' + msg, self.disable)
+                    return(itemstr + '\\textit{Warning: ' + msg + '}.')
+
                 ## Verbose output is for debugging.
                 if verbose: print('Writing entry "' + c + '" to "' + filename + '" ...')
-
-                self.insert_crossref_data(c)
-                self.create_namelist(c, 'author')
-                self.create_namelist(c, 'editor')
 
                 ## Before inserting entries into the BBL file, we do "difficult" BIB parsing jobs
                 ## here: insert cross-reference data, format author and editor name lists, generate
                 ## the "edition_ordinal", etc. Doing it here means that we don't have to add lots
-                ## of extra checks later, allowing for simpler code.
-                if (c in self.bibdata):
-                    entry = self.bibdata[c]
+                ## of extra checks later.
+                self.insert_crossref_data(c)
+                self.create_namelist(c, 'author')
+                self.create_namelist(c, 'editor')
 
-                    if ('edition' in entry):
-                        entry['edition_ordinal'] = create_edition_ordinal(entry,
-                                                            disable=self.disable)
+                entry = self.bibdata[c]
 
-                    if ('pages' in entry):
-                        (startpage,endpage) = parse_pagerange(entry['pages'], c, self.disable)
-                        entry['startpage'] = startpage
-                        entry['endpage'] = endpage
+                if ('edition' in entry):
+                    entry['edition_ordinal'] = create_edition_ordinal(entry,
+                                                        disable=self.disable)
 
-                    ## The "month" is stored in the bibdata dictionary as a string representing an
-                    ## integer from 1 to 12. Here we need to translate it to a string name.
-                    if ('month' in entry):
-                        if entry['month'].isdigit():
-                            monthname = monthname_dict[entry['month']]
-                        else:
-                            monthname = entry['month']
-                        entry['monthname'] = monthname
+                if ('pages' in entry):
+                    (startpage,endpage) = parse_pagerange(entry['pages'], c, self.disable)
+                    entry['startpage'] = startpage
+                    entry['endpage'] = endpage
 
-                    if ('doi' in entry):
-                        if not entry['doi'].startswith('http://dx.doi.org/'):
-                            entry['doi'] = 'http://dx.doi.org/' + entry['doi']
+                ## The "month" is stored in the bibdata dictionary as a string representing an
+                ## integer from 1 to 12. Here we need to translate it to a string name.
+                if ('month' in entry):
+                    if entry['month'].isdigit():
+                        monthname = monthname_dict[entry['month']]
+                    else:
+                        monthname = entry['month']
+                    entry['monthname'] = monthname
+
+                if ('doi' in entry):
+                    if not entry['doi'].startswith('http://dx.doi.org/'):
+                        entry['doi'] = 'http://dx.doi.org/' + entry['doi']
 
                 ## Now that we have generated all of the "special" fields, we can call the bibitem
                 ## formatter to generate the output for this entry.

@@ -4,10 +4,10 @@
 \providecommand{\href}[2]{#2}
 
 
-\bibitem{caesar}
-Gaius Julius Caesar, \textit{Commentarii de Bello Gallico} \textit{Commentaries on the Gallic War} (145 BCE). [In Latin.]
 \bibitem{cicero}
 Marcus Tullius Cicero, \textit{De re publica} \textit{On the republic} (51 BCE). [In Latin.]
+\bibitem{caesar}
+Gaius Julius Caesar, \textit{Commentarii de Bello Gallico} \textit{Commentaries on the Gallic War} (45 BCE). [In Latin.]
 \bibitem{tacitus}
 Publius Cornelius Tacitus, \textit{Ab excessu divi Augusti} \textit{Annals of Imperial Rome} (117 CE). [In Latin.]
 \bibitem{aurelius}

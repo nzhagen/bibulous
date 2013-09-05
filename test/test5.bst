@@ -14,7 +14,7 @@ namelist_format = first_name_first        ## defines values for both "authorlist
 allow_scripts = True                      ## whether to allow user scripts in BST files
 yearstyle = BCE/CE                        ## whether to use 'BCE/CE' after the year number or the older 'BC/AD' form
 document_language = Japanese              ## whether the document is for a Japanese audience
-
+use_citeextract = False                   ## turn off cite extraction, since this interferes with using multiple BIB file inputs
 
 VARIABLES:
 year_bce = format_yearstyle(entry['year'], options)

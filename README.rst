@@ -16,7 +16,7 @@ Installation
 Installing using pip. ::
 
    pip install bibulous
-    
+
 
 Example
 =======
