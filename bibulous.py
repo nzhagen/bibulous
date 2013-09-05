@@ -60,7 +60,7 @@ __all__ = ['sentence_case', 'stringsplit', 'finditer', 'namefield_to_namelist',
            'enwrap_nested_quotes', 'purify_string', 'latex_to_utf8', 'parse_bst_template_str',
            'namestr_to_namedict', 'search_middlename_for_prefixes', 'create_edition_ordinal',
            'export_bibfile', 'parse_pagerange', 'parse_nameabbrev', 'make_sortkey_unique',
-           'filter_script', 'str_is_integer', 'warn']
+           'filter_script', 'str_is_integer', 'warn', 'format_namelist']
 
 
 class Bibdata(object):
@@ -134,7 +134,6 @@ class Bibdata(object):
     format_bibitem
     generate_sortkey
     create_namelist
-    format_namelist
     insert_crossref_data
     write_citeextract
     write_authorextract
@@ -165,6 +164,11 @@ class Bibdata(object):
         self.culldata = culldata    ## whether to cull the database so that only cited entries are parsed
         self.searchkeys = []        ## when culling data, this is the list of keys to limit parsing to
         self.parse_only_entrykeys = False  ## don't parse the data in the database; get only entrykeys
+
+        ## Put in the default special templates.
+        self.specials = {}
+        self.specials['citelabel'] = '<citekey>'
+        self.specials['sortkey'] = '<citekey>'
 
         ## Temporary variables for use in error messages while parsing files.
         self.filename = ''                      ## the current filename (for error messages)
@@ -1053,7 +1057,7 @@ class Bibdata(object):
             return('')
 
         ## Although "citenum" or "citenumber" is really the only appropriate name for this sorting
-        ## order, we also provide "none", "plain", "unsrt", and "abbrv" for users used to the other
+        ## order, we also provide "none", "plain", "unsrt", and "abbrv" for those used to the other
         ## BibTeX names.
         numeric_tag_styles = ('citenumber', 'citenum', 'none', 'unsrt', 'plain', 'abbrv')
         if (self.options['citation_label'] in numeric_tag_styles):
@@ -1125,9 +1129,9 @@ class Bibdata(object):
         ## the "parse_bst_template_str()" call below to ensure that these variables are defined
         ## when they are evaluated there.
         if ('<authorliststr>' in templatestr) and ('authorlist' in entry):
-            entry['authorliststr'] = self.format_namelist(entry['authorlist'], 'author')
+            entry['authorliststr'] = format_namelist(entry['authorlist'], self.options, 'author')
         if ('<editorliststr>' in templatestr) and ('editorlist' in entry):
-            entry['editorliststr'] = self.format_namelist(entry['editorlist'], 'editor')
+            entry['editorliststr'] = format_namelist(entry['editorlist'], self.options, 'editor')
 
         ## Next, do a nested search. From the beginning of the formatting string look for the first
         ## '[', and the first ']'. If they are out of order, raise an exception. Note that this
@@ -1350,6 +1354,8 @@ class Bibdata(object):
             sortkey = presort + name + year + volume + title
         elif (citeorder in ('ynt','ydnt')):
             sortkey = presort + year + name + title
+        elif (citeorder in ('ytn','ydtn')):
+            sortkey = presort + year + title + name
         elif (citeorder == 'tny'):
             sortkey = presort + title + name + year
         elif (citeorder == 'alpha'):
@@ -1423,87 +1429,6 @@ class Bibdata(object):
         self.bibdata[key][nametype+'list'] = namelist
 
         return
-
-    ## =============================
-    def format_namelist(self, namelist, nametype):
-        '''
-        Format a list of dictionaries (one dict for each person) into a long string, with the
-        format according to the directives in the bibliography style template.
-
-        Parameters
-        ----------
-        namelist : str
-            The list of dictionaries containing all of the names to be formatted.
-        nametype : str, {'author', 'editor'}
-            Whether the names are for authors or editors.
-
-        Returns
-        -------
-        namestr : str
-            The formatted form of the "name string". This is generally a list of authors or list \
-            of editors.
-        '''
-
-        use_first_inits = self.options['use_firstname_initials']
-        namelist_format = self.options['namelist_format']
-
-        ## First get all of the options variables needed below, depending on whether the function is
-        ## operating on a list of authors or a list of editors. Second, insert "authorlist" into the
-        ## bibliography database entry so that other functions can have access to it. (This is the
-        ## "author" or "editor" string parsed into individual names, so that each person's name is
-        ## represented by a dictionary, and the whole set of names is a list of dicts.)
-        if (nametype == 'author'):
-            maxnames = self.options['maxauthors']
-            minnames = self.options['minauthors']
-        elif (nametype == 'editor'):
-            maxnames = self.options['maxeditors']
-            minnames = self.options['mineditors']
-
-        ## This next block generates the list "namelist", which is a list of strings, with each
-        ## element of `namelist` being a single author's name. That single author's name is encoded
-        ## as a dictionary with keys "first", "middle", "prefix", "last", and "suffix".
-        npersons = len(namelist)
-        new_namelist = []
-        for person in namelist:
-            ## The BibTeX standard states that a final author in the authors field of "and others"
-            ## should be taken as meaning to use \textit{et al.} at the end of the author list.
-            if ('others' in person['last']) and ('first' not in person):
-                npersons -= 1
-                maxnames = npersons - 1
-                continue
-
-            ## From the person's name dictionary, create a string of the name in the format
-            ## desired for the final BBL file.
-            formatted_name = namedict_to_formatted_namestr(person, options=self.options,
-                                                           use_firstname_initials=use_first_inits,
-                                                           namelist_format=namelist_format)
-            new_namelist.append(formatted_name)
-
-        ## Now that we have the complete list of pre-formatted names, we need to join them together
-        ## into a single string that can be inserted into the template.
-        if (npersons == 1):
-            namestr = new_namelist[0]
-        elif (npersons == 2):
-            namestr = ' and '.join(new_namelist)
-        elif (npersons > 2) and (npersons <= maxnames):
-            ## Make a string in which each person's name is separated by a comma, except the last name,
-            ## which has a comma then "and" before the name.
-            namestr = ', '.join(new_namelist[:-1]) + ', and ' + new_namelist[-1]
-        elif (npersons > maxnames):
-            ## If the number of names in the list exceeds the maximum, then truncate the list to the
-            ## first "minnames" only, and add "et al." to the end of the string giving all the names.
-            namestr = ', '.join(new_namelist[:minnames]) + r', \textit{et al.}'
-        else:
-            raise ValueError('How did you get here?')
-
-        ## Add a tag onto the end if describing an editorlist.
-        if (nametype == 'editor'):
-            if (npersons == 1):
-                namestr += ', ed.'
-            else:
-                namestr += ', eds'
-
-        return(namestr)
 
     ## =============================
     def insert_crossref_data(self, entrykey, fieldname=None):
@@ -2229,7 +2154,7 @@ def namefield_to_namelist(namefield, key=None, nameabbrev=None, disable=None):
         warn('Warning 017b: The name string in entry "' + unicode(key) + '" has ", and", which is '
              'likely a typo. Continuing on anyway ...', disable)
 
-    if (nameabbrev != None):
+    if (nameabbrev != None) and (key != None):
         for key in nameabbrev:
             if key in namefield: namefield = namefield.replace(key, nameabbrev[key])
 
@@ -3779,6 +3704,89 @@ def warn(msg, disable=None):
         print(msg)
 
     return
+
+## =============================
+def format_namelist(namelist, options, nametype='author'):
+    '''
+    Format a list of dictionaries (one dict for each person) into a long string, with the
+    format according to the directives in the bibliography style template.
+
+    Parameters
+    ----------
+    namelist : str
+        The list of dictionaries containing all of the names to be formatted.
+    nametype : str, {'author', 'editor'}, optional
+        Whether the names are for authors or editors.
+    options : dict
+        The dictionary of keyword-based options.
+
+    Returns
+    -------
+    namestr : str
+        The formatted form of the "name string". This is generally a list of authors or list \
+        of editors.
+    '''
+
+    use_first_inits = options['use_firstname_initials']
+    namelist_format = options['namelist_format']
+
+    ## First get all of the options variables needed below, depending on whether the function is
+    ## operating on a list of authors or a list of editors. Second, insert "authorlist" into the
+    ## bibliography database entry so that other functions can have access to it. (This is the
+    ## "author" or "editor" string parsed into individual names, so that each person's name is
+    ## represented by a dictionary, and the whole set of names is a list of dicts.)
+    if (nametype == 'author'):
+        maxnames = options['maxauthors']
+        minnames = options['minauthors']
+    elif (nametype == 'editor'):
+        maxnames = options['maxeditors']
+        minnames = options['mineditors']
+
+    ## This next block generates the list "namelist", which is a list of strings, with each
+    ## element of `namelist` being a single author's name. That single author's name is encoded
+    ## as a dictionary with keys "first", "middle", "prefix", "last", and "suffix".
+    npersons = len(namelist)
+    new_namelist = []
+    for person in namelist:
+        ## The BibTeX standard states that a final author in the authors field of "and others"
+        ## should be taken as meaning to use \textit{et al.} at the end of the author list.
+        if ('others' in person['last']) and ('first' not in person):
+            npersons -= 1
+            maxnames = npersons - 1
+            continue
+
+        ## From the person's name dictionary, create a string of the name in the format
+        ## desired for the final BBL file.
+        formatted_name = namedict_to_formatted_namestr(person, options=options,
+                                                       use_firstname_initials=use_first_inits,
+                                                       namelist_format=namelist_format)
+        new_namelist.append(formatted_name)
+
+    ## Now that we have the complete list of pre-formatted names, we need to join them together
+    ## into a single string that can be inserted into the template.
+    if (npersons == 1):
+        namestr = new_namelist[0]
+    elif (npersons == 2):
+        namestr = ' and '.join(new_namelist)
+    elif (npersons > 2) and (npersons <= maxnames):
+        ## Make a string in which each person's name is separated by a comma, except the last name,
+        ## which has a comma then "and" before the name.
+        namestr = ', '.join(new_namelist[:-1]) + ', and ' + new_namelist[-1]
+    elif (npersons > maxnames):
+        ## If the number of names in the list exceeds the maximum, then truncate the list to the
+        ## first "minnames" only, and add "et al." to the end of the string giving all the names.
+        namestr = ', '.join(new_namelist[:minnames]) + r', \textit{et al.}'
+    else:
+        raise ValueError('How did you get here?')
+
+    ## Add a tag onto the end if describing an editorlist.
+    if (nametype == 'editor'):
+        if (npersons == 1):
+            namestr += ', ed.'
+        else:
+            namestr += ', eds'
+
+    return(namestr)
 
 
 ## ==================================================================================================
