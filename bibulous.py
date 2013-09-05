@@ -60,7 +60,8 @@ __all__ = ['sentence_case', 'stringsplit', 'finditer', 'namefield_to_namelist',
            'enwrap_nested_quotes', 'purify_string', 'latex_to_utf8', 'parse_bst_template_str',
            'namestr_to_namedict', 'search_middlename_for_prefixes', 'create_edition_ordinal',
            'export_bibfile', 'parse_pagerange', 'parse_nameabbrev', 'make_sortkey_unique',
-           'filter_script', 'str_is_integer', 'warn', 'format_namelist']
+           'filter_script', 'str_is_integer', 'warn', 'format_namelist',
+           'remove_template_options_brackets']
 
 
 class Bibdata(object):
@@ -167,8 +168,8 @@ class Bibdata(object):
 
         ## Put in the default special templates.
         self.specials = {}
-        self.specials['citelabel'] = '<citekey>'
-        self.specials['sortkey'] = '<citekey>'
+        self.specials['citelabel'] = '<citenum>'
+        self.specials['sortkey'] = '<citenum>'
 
         ## Temporary variables for use in error messages while parsing files.
         self.filename = ''                      ## the current filename (for error messages)
@@ -1140,26 +1141,12 @@ class Bibdata(object):
         if ('<editorliststr>' in templatestr) and ('editorlist' in entry):
             entry['editorliststr'] = format_namelist(entry['editorlist'], self.options, 'editor')
 
-        ## Next, do a nested search. From the beginning of the formatting string look for the first
-        ## '[', and the first ']'. If they are out of order, raise an exception. Note that this
-        ## assumes that the square brackets cannot be nested.
-        for i in range(num_obrackets):
-            start_idx = templatestr.index('[')
-            end_idx = templatestr.index(']')
-            if not (start_idx < end_idx):
-                msg = 'A closed bracket "]" occurs before an open bracket "[" in the format ' + \
-                      'string "' + templatestr + '"'
-                warn('Warning 013: ' + msg, self.disable)
-                return(itemstr + '\\textit{' + msg + '}.')
-
-            ## Remove the outer square brackets, and use the resulting substring as an input to the
-            ## parser.
-            substr = templatestr[start_idx+1:end_idx]
-
-            ## In each options train, go through and replace the whole train with the one block that
-            ## has a defined value.
-            res = parse_bst_template_str(substr, entry, variables, undefstr=self.options['undefstr'])
-            templatestr = templatestr[:start_idx] + res + templatestr[end_idx+1:]
+        #zzz
+        try:
+            templatestr = remove_template_options_brackets(templatestr, entry, variables, undefstr=self.options['undefstr'])
+        except SyntaxError, err:
+            itemstr = itemstr + '\\textit{' + err + '}.'
+            warn('Warning 013: ' + err, self.disable)
 
         if ('<title>' in templatestr) and ('title' in entry):
             if self.options['force_sentence_case']:
@@ -3787,6 +3774,54 @@ def format_namelist(namelist, options, nametype='author'):
 
     return(namestr)
 
+## =============================
+def remove_template_options_brackets(templatestr, entry, variables, undefstr='???'):
+    '''
+    Given a template string, go through each options sequence [...] and search for undefined
+    variables. In each sequence, return only the block of each sequence in which all variables
+    are defined.
+
+    Note that the "undefstr" input is only used when the options sequence ends with "|]" (i.e.
+    at least one of the blocks is required to be defined) but we find that none of the blocks
+    have all their variables defined. When this happens, the code replaces the entire block
+    with the "undefstr".
+
+    Parameters
+    ----------
+    templatestr : str
+        The string defining the template to analyze.
+    entry : dict
+        The bibliography database entry inside which to look for variables.
+    variables : list of str
+        The variables to look for.
+    undefstr : str, optional
+        The string to replace any required but undefined variables with.
+    '''
+
+    num_obrackets = templatestr.count('[')
+    num_cbrackets = templatestr.count(']')
+
+    ## Do a nested search. From the beginning of the formatting string look for the first '[', and
+    ## the first ']'. If they are out of order, raise an exception. Note that this assumes that the
+    ## square brackets cannot be nested.
+    for i in range(num_obrackets):
+        start_idx = templatestr.index('[')
+        end_idx = templatestr.index(']')
+        if not (start_idx < end_idx):
+            msg = 'A closed bracket "]" occurs before an open bracket "[" in the format ' + \
+                  'string "' + templatestr + '"'
+            raise SyntaxError(msg)
+
+        ## Remove the outer square brackets, and use the resulting substring as an input to the
+        ## parser.
+        substr = templatestr[start_idx+1:end_idx]
+
+        ## In each options train, go through and replace the whole train with the one block that
+        ## has a defined value.
+        res = parse_bst_template_str(substr, entry, variables, undefstr=undefstr)
+        templatestr = templatestr[:start_idx] + res + templatestr[end_idx+1:]
+
+    return(templatestr)
 
 ## ==================================================================================================
 
