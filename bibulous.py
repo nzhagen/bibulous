@@ -1124,6 +1124,9 @@ class Bibdata(object):
                 user_var_value = eval(self.user_variables[user_var_name])
                 self.bibdata[c][user_var_name] = user_var_value
 
+                ## Add the user variables to the list of "variables" to track.
+                variables.append('<' + user_var_name + '>')
+
         ## Next go through the template and replace each variable with the appropriate string from
         ## the database. Start with the three special cases. This block of code has to go before
         ## the "parse_bst_template_str()" call below to ensure that these variables are defined
@@ -1183,13 +1186,6 @@ class Bibdata(object):
                 ## Check if the variable is defined and that it is not None (or empty string).
                 if (varname in entry) and entry[varname]:
                     templatestr = templatestr.replace(var, unicode(entry[varname]))
-                elif (varname in self.user_variables) and self.options['allow_scripts']:
-                    user_var_value = eval(self.user_variables[varname])
-
-                    if user_var_value:
-                        templatestr = templatestr.replace(var, unicode(user_var_value))
-                    else:
-                        templatestr = templatestr.replace(var, self.options['undefstr'])
                 else:
                     templatestr = templatestr.replace(var, self.options['undefstr'])
 
@@ -3137,8 +3133,8 @@ def parse_bst_template_str(bst_template_str, bibentry, variables, undefstr='???'
     -------
     parse_bst_template_str() is given an options train "[<title>|<booktitle>]" and begins to
     look into the bibliography entry. It does not find a "title" entry but does find a "booktitle"
-    entry. So, the function returns "<booktitle>", thereby replacing the train with the proper
-    defined variable.
+    entry. So, the function returns "<booktitle>", without square brackets, thereby replacing
+    the train with the proper defined variable.
     '''
 
     ## Divide up the format string into

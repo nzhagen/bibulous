@@ -13,8 +13,9 @@ The primary goal for version 2.0 is to incorporate a closer integration with a f
 - Allow direct integration with front-end for generating glossaries, etc. Need another
   template for those?
 
-- Add a feature that maps one of the "special fields to a new variable name, so that other
-  languages can take advantage of the already available functions for processing specials.
+- Add a feature that maps one of the "special fields to a new variable name, so that non-
+  English language templates can take advantage of the already available functions for
+  processing specials.
 
 - Look into whether the code can be simplified and user scripts still benefit if you move some
   bibulous module functions from module scope functions to Bibdata class methods.
@@ -45,7 +46,7 @@ The primary goal for version 2.0 is to incorporate a closer integration with a f
 
 - For people who want to write TeX/LaTeX files in Unicode, but need to deliver an ascii file
   to a journal for their internal processing, maybe you can write a function which does the
-  inverse of purify_string(). That is, it converts Unicode characters into their LaTeX
+  inverse of purify_string(). That is, convert Unicode characters into their LaTeX-
   encoded equivalents. If you work on this, the ``bibtexparser`` module has a good deal of code
   for starting on this.
 
@@ -61,3 +62,7 @@ Python testing to-do
 
 - Test that Bibulous prints a warning message, and does not emit an exception, when the
   AUX file contains a citation key that does not exist in the database.
+
+- Look into the "descending" citation sorting order. It _should_ go as descending year, then
+  _regular_ (ascending) order for name/title. Check that the one is descending and the other
+  ascending.
