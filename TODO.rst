@@ -66,3 +66,7 @@ Python testing to-do
 - Look into the "descending" citation sorting order. It _should_ go as descending year, then
   _regular_ (ascending) order for name/title. Check that the one is descending and the other
   ascending.
+
+- Once you have the special templates stuff worked out, go back into the code and remove the
+  stuff that uses "sortname", "sorttitle", and "sortyear". You will need to keep "sortkey"
+  though.

@@ -328,7 +328,6 @@ class Bibdata(object):
                     warn('Warning 001a: line#' + unicode(self.i) + ' of "' + self.filename + '" has '
                           'data outside of an entry {...} block. Skipping all contents until the '
                           'next entry ...', self.disable)
-                    #raise ValueError
                 continue
 
             ## Don't strip off leading and ending whitespace until after checking if '}' begins a
@@ -354,7 +353,6 @@ class Bibdata(object):
                     warn('Warning 001b: line#' + unicode(self.i) + ' of "' + self.filename + \
                          '" has data outside of an entry {...} block. Skipping all contents ' + \
                          'until the next entry ...', self.disable)
-                    #raise ValueError
                 continue
 
             ## Look if the entry ends with this line. If so, append it to "entrystr" and call the
@@ -372,7 +370,6 @@ class Bibdata(object):
                         warn('Warning 002b: line#' + unicode(self.i) + ' of "' + self.filename + \
                              '" has data outside of an entry {...} block. Skipping all ' + \
                              'contents until the next entry ...', self.disable)
-                        #raise ValueError
                     endpos = match.end()
                     break
 
@@ -483,7 +480,6 @@ class Bibdata(object):
                 warn('Warning 005: the entry ending on line #' + unicode(self.i) + ' of file "' + \
                      self.filename + '" is an abbreviation-type entry but does not have an "=" '
                      'for defining the end of the abbreviation key. Skipping ...', self.disable)
-                #raise ValueError
                 return(fd)
 
             fieldkey = entrystr[:idx].strip()
@@ -931,7 +927,7 @@ class Bibdata(object):
             for c in self.citelist:
                 if (c not in self.bibdata):
                     msg = 'citation key "' + c + '" is not in the bibliography database'
-                    warn('Warning 029: ' + msg, self.disable)
+                    warn('Warning 010b: ' + msg, self.disable)
                     return(itemstr + '\\textit{Warning: ' + msg + '}.')
 
                 ## Verbose output is for debugging.
@@ -1075,7 +1071,7 @@ class Bibdata(object):
         ## fact.
         if (c not in self.bibdata):
             msg = 'citation key "' + c + '" is not in the bibliography database'
-            warn('Warning 010: ' + msg, self.disable)
+            warn('Warning 010c: ' + msg, self.disable)
             return(itemstr + '\\textit{Warning: ' + msg + '}.')
         else:
             entry = self.bibdata[c]
@@ -1238,7 +1234,7 @@ class Bibdata(object):
 
         if citekey not in self.bibdata:
             msg = '"' + citekey + '" is not in the bibliography database.'
-            warn('Warning 014: ' + msg, self.disable)
+            warn('Warning 010a: ' + msg, self.disable)
             return('Warning: ' + msg)
 
         ## If we are ordering by the order of appearance of the citations in the text, then the key
@@ -1689,7 +1685,7 @@ class Bibdata(object):
 
         labelstyle = self.options['citation_label']
         if not (citekey in self.bibdata):
-            warn('Warning 028: cannot find citation key "' + citekey + '" in the database. '
+            warn('Warning 014: cannot find citation key "' + citekey + '" in the database. '
                  'Ignoring and continuing ...', self.disable)
             return(citekey)
 
