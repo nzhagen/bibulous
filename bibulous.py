@@ -1135,8 +1135,7 @@ class Bibdata(object):
 
         ## Next, do a nested search. From the beginning of the formatting string look for the first
         ## '[', and the first ']'. If they are out of order, raise an exception. Note that this
-        ## assumes that the square brackets cannot be nested. (Is there something important which
-        ## would require that functionality?)
+        ## assumes that the square brackets cannot be nested.
         for i in range(num_obrackets):
             start_idx = templatestr.index('[')
             end_idx = templatestr.index(']')
@@ -1144,7 +1143,7 @@ class Bibdata(object):
                 msg = 'A closed bracket "]" occurs before an open bracket "[" in the format ' + \
                       'string "' + templatestr + '"'
                 warn('Warning 013: ' + msg, self.disable)
-                return(itemstr + '\\testit{' + msg + '}.')
+                return(itemstr + '\\textit{' + msg + '}.')
 
             ## Remove the outer square brackets, and use the resulting substring as an input to the
             ## parser.
