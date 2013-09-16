@@ -31,10 +31,13 @@ edition_ordinal = <authorliststr>, \textit{<title>}[, <edition_ordinal>~ed.][, v
 capitalized_field_names1 = <authorliststr>, \enquote{<title>,} \textit{<journal>} \textbf{<volume>}: <startpage>--<endpage> (<year>).
 multilingual = <authorliststr>, \enquote{<title>} (<year>).
 arabic = <authorliststr>, \enquote{<title>} (<year>).
+user_defined_field = <authorliststr>, \enquote{<title>,} <group> (<year>).
 
 SPECIAL-TEMPLATES:
 citelabel = None
 sortkey = <citenum>
+group = [<institution>|<organization>|<corporation>|]
+author = <著者名>
 
 OPTIONS:
 maxauthors = 9                            ## if more than 10 authors, then use "et al." format

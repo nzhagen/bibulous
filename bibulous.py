@@ -146,6 +146,7 @@ class Bibdata(object):
     get_bibfilenames
     check_citekeys_in_datakeys
     add_crossrefs_to_searchkeys
+    insert_specials
 
     Example
     -------
@@ -167,6 +168,7 @@ class Bibdata(object):
         self.culldata = culldata    ## whether to cull the database so that only cited entries are parsed
         self.searchkeys = []        ## when culling data, this is the list of keys to limit parsing to
         self.parse_only_entrykeys = False  ## don't parse the data in the database; get only entrykeys
+        self.nested_templates = []  ## which entrytype templates have nested option blocks
 
         if (uselocale == None):
             self.locale = locale.setlocale(locale.LC_ALL,'')    ## set the locale to the user's default
@@ -223,6 +225,24 @@ class Bibdata(object):
         self.abbrevkey_pattern = re.compile(r'(?<!\\)[,#]', re.UNICODE)
         self.anybraceorquote_pattern = re.compile(r'(?<!\\)[{}"]', re.UNICODE)
         self.integer_pattern = re.compile(r'^-?[0-9]+', re.UNICODE)
+
+        ## Create an inverse dictionary for the month names. The month names are determined by the
+        ## user's default locale.
+        self.monthname_dict = {}
+        for i in range(1,13):
+            if self.options['month_abbrev'] and not (platform.system() == 'Windows'):
+                ## The abbreviated form (i.e. 'jan').
+                self.monthname_dict[unicode(i)] = locale.nl_langinfo(locale.__dict__['ABMON_'+unicode(i)]).title()
+            elif self.options['month_abbrev'] and(platform.system() == 'Windows'):
+                self.monthname_dict = {'1':'Jan', '2':'Feb', '3':'Mar', '4':'Apr', '5':'May', '6':'Jun',
+                                  '7':'Jul', '8':'Aug', '9':'Sep', '10':'Oct', '11':'Nov', '12':'Dec'}
+            elif (platform.system() == 'Windows'):
+                self.monthname_dict = {'1':'January', '2':'February', '3':'March', '4':'April',
+                                  '5':'May', '6':'June', '7':'July', '8':'August', '9':'September',
+                                  '10':'October', '11':'November', '12':'December'}
+            else:
+                ## The full form (i.e. 'january').
+                self.monthname_dict[unicode(i)] = locale.nl_langinfo(locale.__dict__['MON_'+unicode(i)]).title()
 
         ## Get the list of filenames associated with the bibliography (AUX, BBL, BIB, TEX).
         ## Additionally, if the input "filename" contains only the AUX file, then we assume
@@ -800,6 +820,13 @@ class Bibdata(object):
                              '" from [' + self.bstdict[var] + '] to [' + value + '] ...',
                              self.disable)
                     self.bstdict[var] = value
+
+                    ## Find out if the template has nested option blocks. If so, then add it to
+                    ## the list of nested templates.
+                    levels = get_delim_levels(value, ('[',']'))
+                    if (2 in levels):
+                        self.nested_templates.append(var)
+
                     if self.debug:
                         print('Setting BST entrytype template "' + var + '" to value "' + value + '"')
 
@@ -870,7 +897,7 @@ class Bibdata(object):
 
     ## =============================
     def write_bblfile(self, filename=None, write_preamble=True, write_postamble=True, bibsize=None,
-                      verbose=False):
+                      debug=False):
         '''
         Given a bibliography database `bibdata`, a dictionary containing the citations called out \
         `citedict`, and a bibliography style template `bstdict` write the LaTeX-format file for the \
@@ -906,24 +933,6 @@ class Bibdata(object):
         else:
             filehandle = open(filename, 'w')
 
-        ## Create an inverse dictionary for the month names. The month names are determined by the
-        ## user's default locale.
-        monthname_dict = {}
-        for i in range(1,13):
-            if self.options['month_abbrev'] and not (platform.system() == 'Windows'):
-                ## The abbreviated form (i.e. 'jan').
-                monthname_dict[unicode(i)] = locale.nl_langinfo(locale.__dict__['ABMON_'+unicode(i)]).title()
-            elif self.options['month_abbrev'] and(platform.system() == 'Windows'):
-                monthname_dict = {'1':'Jan', '2':'Feb', '3':'Mar', '4':'Apr', '5':'May', '6':'Jun',
-                                  '7':'Jul', '8':'Aug', '9':'Sep', '10':'Oct', '11':'Nov', '12':'Dec'}
-            elif (platform.system() == 'Windows'):
-                monthname_dict = {'1':'January', '2':'February', '3':'March', '4':'April',
-                                  '5':'May', '6':'June', '7':'July', '8':'August', '9':'September',
-                                  '10':'October', '11':'November', '12':'December'}
-            else:
-                ## The full form (i.e. 'january').
-                monthname_dict[unicode(i)] = locale.nl_langinfo(locale.__dict__['MON_'+unicode(i)]).title()
-
         if write_preamble:
             if not bibsize: bibsize = repr(len(self.citedict))
             filehandle.write('\\begin{thebibliography}{' + bibsize + '}\n'.encode('utf-8'))
@@ -958,39 +967,14 @@ class Bibdata(object):
                     warn('Warning 010b: ' + msg, self.disable)
 
                 ## Verbose output is for debugging.
-                if verbose: print('Writing entry "' + c + '" to "' + filename + '" ...')
+                if debug: print('Writing entry "' + c + '" to "' + filename + '" ...')
 
                 ## Before inserting entries into the BBL file, we do "difficult" BIB parsing jobs
                 ## here: insert cross-reference data, format author and editor name lists, generate
                 ## the "edition_ordinal", etc. Doing it here means that we don't have to add lots
                 ## of extra checks later.
                 self.insert_crossref_data(c)
-                self.create_namelist(c, 'author')
-                self.create_namelist(c, 'editor')
-
-                entry = self.bibdata[c]
-
-                if ('edition' in entry):
-                    entry['edition_ordinal'] = create_edition_ordinal(entry,
-                                                        disable=self.disable)
-
-                if ('pages' in entry):
-                    (startpage,endpage) = parse_pagerange(entry['pages'], c, self.disable)
-                    entry['startpage'] = startpage
-                    entry['endpage'] = endpage
-
-                ## The "month" is stored in the bibdata dictionary as a string representing an
-                ## integer from 1 to 12. Here we need to translate it to a string name.
-                if ('month' in entry):
-                    if entry['month'].isdigit():
-                        monthname = monthname_dict[entry['month']]
-                    else:
-                        monthname = entry['month']
-                    entry['monthname'] = monthname
-
-                if ('doi' in entry):
-                    if not entry['doi'].startswith('http://dx.doi.org/'):
-                        entry['doi'] = 'http://dx.doi.org/' + entry['doi']
+                self.insert_specials(c)
 
                 ## Now that we have generated all of the "special" fields, we can call the bibitem
                 ## formatter to generate the output for this entry.
@@ -1007,7 +991,6 @@ class Bibdata(object):
             filehandle.close()
 
         return
-
 
     ## ===================================
     def create_citation_list(self):
@@ -1213,8 +1196,8 @@ class Bibdata(object):
             itemstr = itemstr.replace(r'{\makegreaterthan}', '>')
         if (r'{\makelessthan}' in itemstr):
             itemstr = itemstr.replace(r'{\makelessthan}', '<')
-        if (r'{\makehashsign}' in templatestr):
-            templatestr = templatestr.replace(r'{\makehashsign}', '\\#')
+        #if (r'{\makehashsign}' in templatestr):
+        #    templatestr = templatestr.replace(r'{\makehashsign}', '\\#')
 
         ## If there are nested operators on the string, replace all even-level operators with \{}.
         ## Is there any need to do this with \textbf{} and \texttt{} as well?
@@ -1361,8 +1344,8 @@ class Bibdata(object):
             templatestr = templatestr.replace(r'{\makegreaterthan}', '>')
         if (r'{\makelessthan}' in templatestr):
             templatestr = templatestr.replace(r'{\makelessthan}', '<')
-        if (r'{\makehashsign}' in templatestr):
-            templatestr = templatestr.replace(r'{\makehashsign}', '\\#')
+        #if (r'{\makehashsign}' in templatestr):
+        #    templatestr = templatestr.replace(r'{\makehashsign}', '\\#')
 
         sortkey = purify_string(templatestr)
         sortkey = sortkey.replace(' ','')
@@ -1776,8 +1759,8 @@ class Bibdata(object):
             templatestr = templatestr.replace(r'{\makegreaterthan}', '>')
         if (r'{\makelessthan}' in templatestr):
             templatestr = templatestr.replace(r'{\makelessthan}', '<')
-        if (r'{\makehashsign}' in templatestr):
-            templatestr = templatestr.replace(r'{\makehashsign}', '\\#')
+        #if (r'{\makehashsign}' in templatestr):
+        #    templatestr = templatestr.replace(r'{\makehashsign}', '\\#')
 
         citelabel = purify_string(templatestr)
 
@@ -1785,7 +1768,6 @@ class Bibdata(object):
             print('citekey=%s: citelabel=%s' % (citekey, citelabel))
 
         return(citelabel)
-
 
     ## =============================
     def write_auxfile(self, filename=None):
@@ -2019,6 +2001,92 @@ class Bibdata(object):
                 crossref_list.append(self.bibdata[key]['crossref'])
         if crossref_list:
             self.searchkeys = crossref_list
+        return
+
+    ## =============================
+    def insert_specials(self, entrykey):
+        '''
+        Insert "special" fields into a database entry.
+
+        Parameters
+        ----------
+        entrykey : str
+            The key of the entry to which we want to add special fields.
+        '''
+
+        self.create_namelist(entrykey, 'author')
+        self.create_namelist(entrykey, 'editor')
+        entry = self.bibdata[entrykey]
+
+        if ('edition' in entry):
+            entry['edition_ordinal'] = create_edition_ordinal(entry, disable=self.disable)
+
+        if ('pages' in entry):
+            (startpage,endpage) = parse_pagerange(entry['pages'], entrykey, self.disable)
+            entry['startpage'] = startpage
+            entry['endpage'] = endpage
+
+        ## The "month" is stored in the bibdata dictionary as a string representing an
+        ## integer from 1 to 12. Here we need to translate it to a string name.
+        if ('month' in entry):
+            if entry['month'].isdigit():
+                monthname = self.monthname_dict[entry['month']]
+            else:
+                monthname = entry['month']
+            entry['monthname'] = monthname
+
+        if ('doi' in entry):
+            if not entry['doi'].startswith('http://dx.doi.org/'):
+                entry['doi'] = 'http://dx.doi.org/' + entry['doi']
+
+        ## Next loop through the keys in the "specials" dictionary. These are variable definitions
+        ## from the SPECIAL-TEMPLATES section of the style file. Note that we do want to deal with
+        ## only *user-defined* specials, so we have to eliminate the fixed list of specials from
+        ## the list of keys.
+        special_keys = self.specials.keys()
+        fixed_specials_list = ['citelabel', 'sortkey']
+        special_keys = [item for item in special_keys if item not in fixed_specials_list]
+        for key in special_keys:
+            ## Only insert the user-defined special field if the field is missing.
+            if (key in entry):
+                continue
+
+            variables = re.findall(r'<.*?>', self.specials[key])
+            templatestr = remove_template_options_brackets(self.specials[key], entry, variables, \
+                                                            undefstr=self.options['undefstr'])
+
+            ## Go ahead and replace all of the template variables with the corresponding fields.
+            for var in variables:
+                if (var in templatestr):
+                    varname = var[1:-1]     ## remove angle brackets to extract just the name
+                    ## Check if the variable is defined and that it is not None (or empty string).
+                    if (varname in entry) and entry[varname]:
+                        templatestr = templatestr.replace(var, unicode(entry[varname]))
+                    else:
+                        templatestr = templatestr.replace(var, '')
+
+            ## Now that we've replaced template variables, go ahead and replace the special commands.
+            if (r'{\makeopenbracket}' in templatestr):
+                templatestr = templatestr.replace(r'{\makeopenbracket}', '[')
+            if (r'{\makeclosebracket}' in templatestr):
+                templatestr = templatestr.replace(r'{\makeclosebracket}', ']')
+            if (r'{\makeverticalbar}' in templatestr):
+                templatestr = templatestr.replace(r'{\makeverticalbar}', '|')
+            if (r'{\makegreaterthan}' in templatestr):
+                templatestr = templatestr.replace(r'{\makegreaterthan}', '>')
+            if (r'{\makelessthan}' in templatestr):
+                templatestr = templatestr.replace(r'{\makelessthan}', '<')
+            #if (r'{\makehashsign}' in templatestr):
+            #    templatestr = templatestr.replace(r'{\makehashsign}', '\\#')
+
+            self.bibdata[entrykey][key] = templatestr
+
+        ## If any of the user-defined variables here map a field into the "author" or "editor"
+        ## field, then we need to create the "authorlist" and "editorlist" fields as well.
+        if ('author' in entry) and ('authorlist' not in entry):
+            self.create_namelist(entrykey, 'author')
+        if ('editor' in entry) and ('editorlist' not in entry):
+            self.create_namelist(entrykey, 'editor')
         return
 
 ## ================================================================================================
@@ -3172,11 +3240,6 @@ def parse_bst_template_str(bst_template_str, bibentry, variables, undefstr='???'
     entry. So, the function returns "<booktitle>", without square brackets, thereby replacing
     the train with the proper defined variable.
     '''
-
-    ## Divide up the format string into independent blocks. First we need to check for nesting.
-    ## If nested blocks exist, then call the function recursively.
-    #zzz
-
 
     block_train = bst_template_str.split('|')
     nblocks = len(block_train)

@@ -19,13 +19,9 @@ The primary goal for version 2.0 is to incorporate a closer integration with a f
 - Allow direct integration with front-end for: generating glossaries, customizing the
   appearance of citation labels, etc.
 
-- ``format_bibitem()``, ``generate_sortkey()``, and ``generate_bibitem_label()`` all use very
-  similar code for implementing template strings. How can we consolidate the underlying
-  functionality into a single subroutine?
-
-- Add a feature that maps one of the "special" fields to a new variable name, so that non-
-  English language templates can take advantage of the already available functions for
-  processing specials.
+- ``format_bibitem()``, ``generate_sortkey()``, ``generate_bibitem_label()``, and
+  ``insert_specials()``  all use very similar code for implementing template strings.
+  How can we consolidate the underlying functionality into a single subroutine?
 
 - Look into whether the code can be simplified and user scripts still benefit if you move some
   bibulous module functions from module scope functions to Bibdata class methods.
