@@ -35,7 +35,8 @@ import codecs       ## for importing UTF8-encoded files
 import locale       ## for language internationalization and localization
 import getopt       ## for getting command-line options
 import traceback    ## for getting full traceback info in exceptions
-import copy         ### for the "deepcopy" command
+import copy         ## for the "deepcopy" command
+import platform     ## for determining the OS of the system
 from math import log10
 import pdb          ## put "pdb.set_trace()" at any place you want to interact with pdb
 
@@ -56,12 +57,12 @@ import pdb          ## put "pdb.set_trace()" at any place you want to interact w
 __version__ = '1.0'
 __all__ = ['sentence_case', 'stringsplit', 'finditer', 'namefield_to_namelist',
            'namedict_to_formatted_namestr', 'initialize_name', 'get_delim_levels',
-           'get_quote_levels', 'splitat', 'multisplit', 'enwrap_nested_string',
+           'show_levels_debug', 'get_quote_levels', 'splitat', 'multisplit', 'enwrap_nested_string',
            'enwrap_nested_quotes', 'purify_string', 'latex_to_utf8', 'parse_bst_template_str',
            'namestr_to_namedict', 'search_middlename_for_prefixes', 'create_edition_ordinal',
            'export_bibfile', 'parse_pagerange', 'parse_nameabbrev', 'make_sortkey_unique',
            'filter_script', 'str_is_integer', 'warn', 'format_namelist',
-           'remove_template_options_brackets']
+           'remove_template_options_brackets', 'create_citation_alpha']
 
 
 class Bibdata(object):
@@ -101,6 +102,8 @@ class Bibdata(object):
         (For error messages and debugging) The line of the file currently being parsed.
     options : dict
         The dictionary containing the various option settings from the style template (BST) files.
+    specials : dict
+        The dictionary containing the special templates from the BST file(s).
     abbrevkey_pattern : compiled regular expression object
         The regex used to search for abbreviation keys.
     anybrace_pattern : compiled regular expression object
@@ -150,11 +153,10 @@ class Bibdata(object):
     bibdata.write_bblfile()
     '''
 
-    def __init__(self, filename, disable=None, culldata=True, debug=False):
+    def __init__(self, filename, disable=None, culldata=True, uselocale=None, debug=False):
         self.debug = debug
         self.abbrevs = {'jan':'1', 'feb':'2', 'mar':'3', 'apr':'4', 'may':'5', 'jun':'6',
                         'jul':'7', 'aug':'8', 'sep':'9', 'oct':'10', 'nov':'11', 'dec':'12'}
-        self.locale = locale.setlocale(locale.LC_ALL,'')    ## set the locale to the user's default
         self.bibdata = {'preamble':''}
         self.filedict = {}  ## the dictionary containing all of the files associated with the bibliography
         self.citedict = {}  ## the dictionary containing the original data from the AUX file
@@ -165,6 +167,11 @@ class Bibdata(object):
         self.culldata = culldata    ## whether to cull the database so that only cited entries are parsed
         self.searchkeys = []        ## when culling data, this is the list of keys to limit parsing to
         self.parse_only_entrykeys = False  ## don't parse the data in the database; get only entrykeys
+
+        if (uselocale == None):
+            self.locale = locale.setlocale(locale.LC_ALL,'')    ## set the locale to the user's default
+        else:
+            self.locale = locale.setlocale(locale.LC_ALL,uselocale)    ## set the locale to the user's default
 
         ## Put in the default special templates.
         self.specials = {}
@@ -187,8 +194,6 @@ class Bibdata(object):
         self.options['use_abbrevs'] = True
         self.options['undefstr'] = '???'
         self.options['namelist_format'] = 'first_name_first'
-        self.options['citation_sort'] = 'citenum'
-        self.options['citation_label'] = 'citekey'
         self.options['maxauthors'] = 100
         self.options['maxeditors'] = 100
         self.options['minauthors'] = 5
@@ -201,7 +206,6 @@ class Bibdata(object):
         #self.options['backrefs'] = False
         self.options['sort_case'] = True
         self.options['french_initials'] = False
-        self.options['sort_with_prefix'] = False
         self.options['period_after_initial'] = True
         self.options['terse_inits'] = False
         self.options['force_sentence_case'] = False
@@ -234,7 +238,7 @@ class Bibdata(object):
         print('The top-level auxiliary file: ' + unicode(self.filedict['aux']))
         print('The bibliography database file(s): ' + unicode(self.filedict['bib']))
         print('The Bibulous style template file(s): ' + unicode(self.filedict['bst']))
-        print('The output formatted bibliography file: ' + unicode(self.filedict['bbl']))
+        print('The output formatted bibliography file: ' + unicode(self.filedict['bbl']) + '\n')
 
         if self.filedict['aux']:
             self.parse_auxfile(self.filedict['aux'])
@@ -662,7 +666,7 @@ class Bibdata(object):
         '''
 
         self.filename = filename
-        #filehandle = open(os.path.normpath(filename), 'rU')
+        filehandle = open(os.path.normpath(filename), 'rU')
         filehandle = codecs.open(os.path.normpath(filename), 'r', 'utf-8')
 
         ## For the "definition_pattern", rather than matching the initial string up to the first
@@ -686,7 +690,11 @@ class Bibdata(object):
 
             if line.strip().startswith('TEMPLATES:'):
                 section = 'TEMPLATES'
-                continuation = line.endswith('...')
+                continuation = False
+                continue
+            elif line.strip().startswith('SPECIAL-TEMPLATES:'):
+                section = 'SPECIAL-TEMPLATES'
+                continuation = False
                 continue
             elif line.strip().startswith('OPTIONS:'):
                 section = 'OPTIONS'
@@ -751,7 +759,7 @@ class Bibdata(object):
                 self.user_variables[var] = filter_script(value)
                 if self.debug:
                     print('Adding user variable "' + var + '" with value "' + value + '" ...')
-            elif (section in ('TEMPLATES','OPTIONS')):
+            elif (section in ('TEMPLATES','OPTIONS','SPECIAL-TEMPLATES')):
                 ## Skip empty lines. It is tempting to put this line above here, but resist the
                 ## temptation -- putting it higher above would remove empty lines from the Python
                 ## scripts in the DEFINITIONS section, which would make troubleshooting those
@@ -793,7 +801,7 @@ class Bibdata(object):
                              self.disable)
                     self.bstdict[var] = value
                     if self.debug:
-                        print('Setting BST variable "' + var + '" to value "' + value + '"')
+                        print('Setting BST entrytype template "' + var + '" to value "' + value + '"')
 
                 elif (section == 'OPTIONS'):
                     ## The variable defines an option rather than an entrytype. Check whether this definition is
@@ -811,6 +819,17 @@ class Bibdata(object):
                     elif (value in ('True','False')):
                         value = (value == 'True')
                     self.options[var] = value
+
+                elif (section == 'SPECIAL-TEMPLATES'):
+                    ## The line defines an entrytype template. Check whether this definition is
+                    ## overwriting an already existing definition.
+                    if (var in self.specials) and (self.specials[var] != value):
+                        warn('Warning 009c: overwriting the existing special template variable "' + \
+                             var + '" from [' + self.specials[var] + '] to [' + value + '] ...',
+                             self.disable)
+                    self.specials[var] = value
+                    if self.debug:
+                        print('Setting BST special template "' + var + '" to value "' + value + '"')
 
         filehandle.close()
 
@@ -839,11 +858,13 @@ class Bibdata(object):
             exec(self.user_script, globals())
 
         if self.debug:
-            ## When displaying the bst dictionary, show it in sorted form.
+            ## When displaying the BST dictionary, show it in sorted form.
             for key in sorted(self.bstdict, key=self.bstdict.get, cmp=locale.strcoll):
                 print('entrytype.' + key + ': ' + unicode(self.bstdict[key]))
             for key in sorted(self.options, key=self.options.get):
                 print('options.' + key + ': ' + unicode(self.options[key]))
+            for key in sorted(self.specials, key=self.specials.get):
+                print('specials.' + key + ': ' + unicode(self.specials[key]))
 
         return
 
@@ -876,9 +897,9 @@ class Bibdata(object):
         if (filename == None):
             filename = self.filedict['bbl']
         if not self.bstdict:
-            raise ImportError('Not template file was found. Aborting writing the BBL file ...')
+            raise ImportError('No template file was found. Aborting writing the BBL file ...')
         if not self.citedict:
-            raise ImportError('Not AUX file was found. Aborting writing the BBL file ...')
+            raise ImportError('No AUX file was found. Aborting writing the BBL file ...')
 
         if not write_preamble:
             filehandle = open(filename, 'a')
@@ -889,9 +910,16 @@ class Bibdata(object):
         ## user's default locale.
         monthname_dict = {}
         for i in range(1,13):
-            if self.options['month_abbrev']:
+            if self.options['month_abbrev'] and not (platform.system() == 'Windows'):
                 ## The abbreviated form (i.e. 'jan').
                 monthname_dict[unicode(i)] = locale.nl_langinfo(locale.__dict__['ABMON_'+unicode(i)]).title()
+            elif self.options['month_abbrev'] and(platform.system() == 'Windows'):
+                monthname_dict = {'1':'Jan', '2':'Feb', '3':'Mar', '4':'Apr', '5':'May', '6':'Jun',
+                                  '7':'Jul', '8':'Aug', '9':'Sep', '10':'Oct', '11':'Nov', '12':'Dec'}
+            elif (platform.system() == 'Windows'):
+                monthname_dict = {'1':'January', '2':'February', '3':'March', '4':'April',
+                                  '5':'May', '6':'June', '7':'July', '8':'August', '9':'September',
+                                  '10':'October', '11':'November', '12':'December'}
             else:
                 ## The full form (i.e. 'january').
                 monthname_dict[unicode(i)] = locale.nl_langinfo(locale.__dict__['MON_'+unicode(i)]).title()
@@ -928,7 +956,6 @@ class Bibdata(object):
                 if (c not in self.bibdata):
                     msg = 'citation key "' + c + '" is not in the bibliography database'
                     warn('Warning 010b: ' + msg, self.disable)
-                    return(itemstr + '\\textit{Warning: ' + msg + '}.')
 
                 ## Verbose output is for debugging.
                 if verbose: print('Writing entry "' + c + '" to "' + filename + '" ...')
@@ -971,15 +998,14 @@ class Bibdata(object):
                 if (s != ''):
                     ## Need two line EOL's here and not one so that backrefs can work properly.
                     filehandle.write((s + '\n').encode('utf-8'))
-        except:
+        except Exception, err:
+            ## Swallow the exception
+            print('Exception encountered: ' + repr(err))
+        finally:
             if write_postamble:
                 filehandle.write('\n\\end{thebibliography}\n'.encode('utf-8'))
             filehandle.close()
-            raise           ## re-raise the exception
 
-        if write_postamble:
-            filehandle.write('\n\\end{thebibliography}\n'.encode('utf-8'))
-        filehandle.close()
         return
 
 
@@ -1007,7 +1033,8 @@ class Bibdata(object):
         ## ones. This happens in simple sort() but not when we use locale's "strcoll". So we have to
         ## separate the two cases manually. Also, use [::-1] on the negative integers because they
         ## need to be ordered from largest number to smallest.
-        if (self.options['citation_sort'][0] == 'y'):
+        variables = re.findall(r'<.*?>', self.specials['sortkey'])
+        if (variables[0] in ['<year>','<sortyear>']):
             firstdict = {k:sortdict[k] for k in sortdict if k[0] == '-'}
             seconddict = {k:sortdict[k] for k in sortdict if k[0] != '-'}
             self.citelist = sorted(firstdict.iterkeys(), cmp=locale.strcoll)[::-1]
@@ -1016,7 +1043,7 @@ class Bibdata(object):
             self.citelist = sorted(sortdict.iterkeys(), cmp=locale.strcoll)
 
         ## If using a citation order which is descending rather than ascending, then reverse the list.
-        if (self.options['citation_sort'] == 'ydnt'):
+        if (self.specials['sortkey'][0] == '-'):
             self.citelist = self.citelist[::-1]
 
         ## Finally, now that we have them in the order we want, we keep only the citation keys, so
@@ -1057,14 +1084,10 @@ class Bibdata(object):
         if (c == 'preamble'):
             return('')
 
-        ## Although "citenum" or "citenumber" is really the only appropriate name for this sorting
-        ## order, we also provide "none", "plain", "unsrt", and "abbrv" for those used to the other
-        ## BibTeX names.
-        numeric_tag_styles = ('citenumber', 'citenum', 'none', 'unsrt', 'plain', 'abbrv')
-        if (self.options['citation_label'] in numeric_tag_styles):
+        bibitem_label = self.generate_bibitem_label(c)
+        if (bibitem_label == None):
             itemstr = r'\bibitem{' + c + '}\n'
         else:
-            bibitem_label = self.generate_bibitem_label(c)
             itemstr = r'\bibitem[' + bibitem_label + ']{' + c + '}\n'
 
         ## If the citation key is not in the database, replace the format string with a message to the
@@ -1137,12 +1160,12 @@ class Bibdata(object):
         if ('<editorliststr>' in templatestr) and ('editorlist' in entry):
             entry['editorliststr'] = format_namelist(entry['editorlist'], self.options, 'editor')
 
-        #zzz
         try:
             templatestr = remove_template_options_brackets(templatestr, entry, variables, undefstr=self.options['undefstr'])
         except SyntaxError, err:
             itemstr = itemstr + '\\textit{' + err + '}.'
             warn('Warning 013: ' + err, self.disable)
+            return(itemstr)
 
         if ('<title>' in templatestr) and ('title' in entry):
             if self.options['force_sentence_case']:
@@ -1190,6 +1213,8 @@ class Bibdata(object):
             itemstr = itemstr.replace(r'{\makegreaterthan}', '>')
         if (r'{\makelessthan}' in itemstr):
             itemstr = itemstr.replace(r'{\makelessthan}', '<')
+        if (r'{\makehashsign}' in templatestr):
+            templatestr = templatestr.replace(r'{\makehashsign}', '\\#')
 
         ## If there are nested operators on the string, replace all even-level operators with \{}.
         ## Is there any need to do this with \textbf{} and \texttt{} as well?
@@ -1224,147 +1249,129 @@ class Bibdata(object):
             A string to use as a sorting key.
         '''
 
-        ## When a given citation key is not found in the database, return a warning. However, if the
-        ## citeorder if just "citekey" then we *already* know how to sort it, so rather than return a
-        ## warning go ahead and return the citekey so that it gets sorted properly. The fact that the
-        ## key is not in the database will raise an error later.
-        citeorder = self.options['citation_sort']
-        if (citeorder == 'citekey'):
-            return(citekey)
-
         if citekey not in self.bibdata:
             msg = '"' + citekey + '" is not in the bibliography database.'
             warn('Warning 010a: ' + msg, self.disable)
             return('Warning: ' + msg)
 
-        ## If we are ordering by the order of appearance of the citations in the text, then the key
-        ## is most likely an integer type rather than a string, which causes problems. We can
-        ## use "unicode()" to convert the int-type to string, but this won't sort properly --- "10"
-        ## will get sorted between "1" and "2". So we need to pad with zeros. How many zeros depends
-        ## on how many citations there are.
-        if (citeorder in ('citenum','citenumber')):
-            ncites = len(self.citedict)
-            ndigits = 1 + int(log10(ncites))
-            sortkey = unicode(self.citedict[citekey]).zfill(ndigits)
-            return(sortkey)
+        ## Define the variable "citenum". Since
+        ## the number value in "citedict" is an integer type rather than a string, which causes
+        ## problems. We can use "unicode()" to convert the int-type to string, but this won't sort
+        ## properly --- "10" will get sorted between "1" and "2". So we need to pad with zeros.
+        ## How many zeros depends on how many citations there are. Hence the "zfill" command below.
+        ncites = len(self.citedict)
+        ndigits = 1 + int(log10(ncites))
+        citenum = unicode(self.citedict[citekey]).zfill(ndigits)
 
-        ## If the citation order used is "citenum", then any sortkey field in the entry is ignored.
-        bibentry = self.bibdata[citekey]
-        if ('sortkey' in bibentry):
-            return(bibentry['sortkey'])
+        entry = self.bibdata[citekey]
 
-        namelist = []
-
-        ## Use the name abbreviation (if it exists) in the sortkey.
-        if ('sortname' in bibentry) and ('nameabbrev' in bibentry['sortname']):
-            nameabbrev_dict = parse_nameabbrev(bibentry['sortname']['nameabbrev'])
-        elif ('nameabbrev' in bibentry):
-            nameabbrev_dict = parse_nameabbrev(bibentry['nameabbrev'])
+        ## Define the variable "citeyear", to use in place of the entry field "year". This is
+        ## necessary to make sure that alphabetical sorting treats numbers correctly, we need to
+        ## append zeros so that, say, "10" does not get sorted before "2". Note that this
+        ## formatting should work for years between -999 and +9999.
+        if ('year' in entry):
+            if str_is_integer(entry['year']):
+                citeyear = unicode('%04i' % int(entry['year']))
+            else:
+                citeyear = entry['year']
         else:
-            nameabbrev_dict = None
+            citeyear = '9999'
 
-        ## Extract the last name of the first author.
-        if ('sortname' in bibentry):
-            namelist = namefield_to_namelist(bibentry['sortname'], key=citekey,
-                                             nameabbrev=nameabbrev_dict, disable=self.disable)
-            name = namelist[0]['last']
-            if ('first' in namelist[0]): name += namelist[0]['first']
-            if ('middle' in namelist[0]): name += namelist[0]['middle']
-        else:
-            if ('author' in bibentry):
+        templatestr = self.specials['sortkey']
+        variables = re.findall(r'<.*?>', templatestr)
+
+        ## If the template begins with a '-', then remove it.
+        if templatestr.startswith('-'):
+            templatestr = templatestr[1:]
+
+        ## If one of the "name" elements are in the template, then you will need to obtain those
+        ## from the author/editor name lists.
+        if ('<name.last>' in templatestr) or ('<name.first>' in templatestr) or \
+            ('<name.prefix>' in templatestr) or ('<name.suffix>' in templatestr):
+            if ('author' in entry) and ('authorlist' not in entry):
                 self.create_namelist(citekey, 'author')
-                namelist = self.bibdata[citekey]['authorlist']
-                name = namelist[0]['last']
-                if self.options['sort_with_prefix'] and ('prefix' in namelist[0]):
-                    name = namelist[0]['prefix'] + name
-                if ('first' in namelist[0]): name += namelist[0]['first']
-                if ('middle' in namelist[0]): name += namelist[0]['middle']
-            elif ('editor' in bibentry):
+            if ('editor' in entry) and ('editorlist' not in entry):
                 self.create_namelist(citekey, 'editor')
-                namelist = self.bibdata[citekey]['editorlist']
-                name = namelist[0]['last']
-                if self.options['sort_with_prefix'] and ('prefix' in namelist[0]):
-                    name = namelist[0]['prefix'] + name
-                if ('first' in namelist[0]): name += namelist[0]['first']
-                if ('middle' in namelist[0]): name += namelist[0]['middle']
-            elif ('organization' in bibentry):
-                name = bibentry['organization']
-            elif ('institution' in bibentry):
-                name = bibentry['institution']
+
+            if ('authorlist' in entry):
+                thisname = entry['authorlist'][0]
+                name_first = '' if ('first' not in thisname) else thisname['first']
+                name_last = thisname['last']
+                name_prefix = '' if ('prefix' not in thisname) else thisname['prefix']
+                name_suffix = '' if ('suffix' not in thisname) else thisname['suffix']
+            elif ('editorlist' in entry):
+                thisname = entry['editorlist'][0]
+                name_first = '' if ('first' not in thisname) else thisname['first']
+                name_last = thisname['last']
+                name_prefix = '' if ('prefix' not in thisname) else thisname['prefix']
+                name_suffix = '' if ('suffix' not in thisname) else thisname['suffix']
             else:
-                name = ''
+                name_first = ''
+                name_last = ''
+                name_prefix = ''
+                name_suffix = ''
 
-        ## Names that have initials will have unwanted '.'s in them.
-        name = name.replace('.','')
+        ## Before we parse the template string to remove any undefined variables, we need to make
+        ## sure that ehe entry has all the proper variables in it.
+        if ('<citekey>' in templatestr) and ('citekey' not in entry):
+            entry['citekey'] = citekey
+        if ('<citenum>' in templatestr) and ('citenum' not in entry):
+            entry['citenum'] = citenum
+        if ('<name.last>' in templatestr):
+            entry['name.last'] = name_last
+        if ('<name.first>' in templatestr):
+            entry['name.first'] = name_first
+        if ('<name.prefix>' in templatestr):
+            entry['name.prefix'] = name_prefix
+        if ('<name.suffix>' in templatestr):
+            entry['name.suffix'] = name_suffix
+        if ('<citealpha>' in templatestr):
+            entry['citealpha'] = create_citation_alpha(entry)
 
-        ## To make sure that alphabetical sorting treats numbers correctly, we need to append zeros
-        ## so that, say, "10" does not get sorted before "2". Note that this formatting should work
-        ## for years between -999 and +9999.
-        if ('sortyear' in bibentry):
-            if str_is_integer(bibentry['sortyear']):
-                year = unicode('%04i' % int(bibentry['sortyear']))
-            else:
-                year = bibentry['sortyear']
-        elif ('year' in bibentry):
-            if str_is_integer(bibentry['year']):
-                year = unicode('%04i' % int(bibentry['year']))
-            else:
-                year = bibentry['year']
-        else:
-            year = '9999'
+        templatestr = remove_template_options_brackets(templatestr, entry, variables, \
+                                                        undefstr=self.options['undefstr'])
 
-        ## "presort" is a string appended to the beginning of each sortkey. This can be useful for
-        ## grouping entries.
-        presort = '' if ('presort' not in bibentry) else unicode(bibentry['presort'])
+        ## Replace any "special" variables first before going on to the "regular" variables.
+        if ('<year>' in templatestr):
+            templatestr = templatestr.replace('<year>', citeyear)
 
-        ## "sorttitle" is an alternative title used for sorting. Can be useful if the title contains
-        ## special characters and LaTeX commands.
-        if ('sorttitle' in bibentry):
-            title = bibentry['sorttitle']
-        else:
-            title = '' if ('title' not in bibentry) else bibentry['title']
+        ## Remove the special cases from the variables list --- we already replaced these above.
+        ## (Right now there is only <year> here, but we can add more.)
+        specials_list = ('<year>')
+        variables = [item for item in variables if item not in specials_list]
 
-        volume = '0' if ('volume' not in bibentry) else unicode(bibentry['volume'])
-
-        ## The different formatting options for the citation order are "nty"/"plain", "nyt", "nyvt",
-        ## "anyt", "anyvt", ynt", "ydnt", "tny".
-        if (citeorder in ('nyt','plain')):
-            sortkey = presort + name + year + title
-        elif (citeorder == 'nty'):
-            sortkey = presort + name + title + year
-        elif (citeorder == 'nyvt'):
-            sortkey = presort + name + year + volume + title
-        elif (citeorder in ('ynt','ydnt')):
-            sortkey = presort + year + name + title
-        elif (citeorder in ('ytn','ydtn')):
-            sortkey = presort + year + title + name
-        elif (citeorder == 'tny'):
-            sortkey = presort + title + name + year
-        elif (citeorder == 'alpha'):
-            if (len(namelist) == 1):
-                concat_name = name[0:3]
-            elif (len(namelist) > 1):
-                if namelist:
-                    concat_name = ''
-                    for name in namelist:
-                        concat_name += name['last'].strip('{}')[0]
-                    #concat_name = ''.join([name['last'].strip('{}')[0] for name in namelist])
+        ## Go ahead and replace all of the template variables with the corresponding fields.
+        for var in variables:
+            if (var in templatestr):
+                varname = var[1:-1]     ## remove angle brackets to extract just the name
+                ## Check if the variable is defined and that it is not None (or empty string).
+                if (varname in entry) and entry[varname]:
+                    templatestr = templatestr.replace(var, unicode(entry[varname]))
                 else:
-                    concat_name = name[0:3]
-            sortkey = presort + concat_name[0:3] + year[-2:]
-        elif (citeorder == 'anyt'):
-            alpha = '' if ('alphalabel' not in bibentry) else bibentry['alphalabel']
-            sortkey = presort + alpha + name + year + title
-        elif (citeorder == 'anyvt'):
-            alpha = '' if ('alphalabel' not in bibentry) else bibentry['alphalabel']
-            sortkey = presort + alpha + name + year + volume + title
-        else:
-            raise KeyError('That citation sort order ("' + citeorder + '") is not supported.')
+                    templatestr = templatestr.replace(var, '')
 
-        sortkey = purify_string(sortkey)
+        ## Now that we've replaced template variables, go ahead and replace the special commands.
+        if (r'{\makeopenbracket}' in templatestr):
+            templatestr = templatestr.replace(r'{\makeopenbracket}', '[')
+        if (r'{\makeclosebracket}' in templatestr):
+            templatestr = templatestr.replace(r'{\makeclosebracket}', ']')
+        if (r'{\makeverticalbar}' in templatestr):
+            templatestr = templatestr.replace(r'{\makeverticalbar}', '|')
+        if (r'{\makegreaterthan}' in templatestr):
+            templatestr = templatestr.replace(r'{\makegreaterthan}', '>')
+        if (r'{\makelessthan}' in templatestr):
+            templatestr = templatestr.replace(r'{\makelessthan}', '<')
+        if (r'{\makehashsign}' in templatestr):
+            templatestr = templatestr.replace(r'{\makehashsign}', '\\#')
+
+        sortkey = purify_string(templatestr)
+        sortkey = sortkey.replace(' ','')
 
         if not self.options['sort_case']:
             sortkey = sortkey.lower()
+
+        if self.debug:
+            print('citekey "%s: sortkey = %s' % (citekey, sortkey))
 
         return(sortkey)
 
@@ -1451,26 +1458,23 @@ class Bibdata(object):
             else:
                 fieldnames = [fieldname]
 
-        for field in fieldnames:
-            if (field not in bibentry):
-                continue
+        ## Check that the crossreferenced entry actually exists. If not, then just move on.
+        if (self.bibdata[entrykey]['crossref'] in self.bibdata):
+            crossref_keys = self.bibdata[self.bibdata[entrykey]['crossref']]
+        else:
+            warn('Warning 015: bad cross reference. Entry "' + entrykey + '" refers to ' + \
+                 'entry "' + self.bibdata[entrykey]['crossref'] + '", which doesn\'t exist.',
+                 self.disable)
+            return
 
-            ## Check that the crossreferenced entry actually exists. If not, then just move on.
-            if (self.bibdata[entrykey]['crossref'] in self.bibdata):
-                crossref_keys = self.bibdata[self.bibdata[entrykey]['crossref']]
-            else:
-                warn('Warning 015: bad cross reference. Entry "' + entrykey + '" refers to ' + \
-                     'entry "' + self.bibdata[entrykey]['crossref'] + '", which doesn\'t exist.',
-                     self.disable)
-                continue
+        for k in crossref_keys:
+            if (k in bibentry): continue
+            if (k not in self.bibdata[entrykey]):
+                self.bibdata[entrykey][k] = self.bibdata[self.bibdata[entrykey]['crossref']][k]
 
-            for k in crossref_keys:
-                if (k not in self.bibdata[entrykey]):
-                    self.bibdata[entrykey][k] = self.bibdata[self.bibdata[entrykey]['crossref']][k]
-
-            ## What a "booktitle" is in the entry is normally a "title" in the crossref.
-            if ('title' in crossref_keys) and ('booktitle' not in self.bibdata[entrykey]):
-                self.bibdata[entrykey]['booktitle'] = self.bibdata[self.bibdata[entrykey]['crossref']]['title']
+        ## What a "booktitle" is in the entry is normally a "title" in the crossref.
+        if ('title' in crossref_keys) and ('booktitle' not in self.bibdata[entrykey]):
+            self.bibdata[entrykey]['booktitle'] = self.bibdata[self.bibdata[entrykey]['crossref']]['title']
 
         return
 
@@ -1679,72 +1683,108 @@ class Bibdata(object):
 
         Returns
         -------
-        bibitem_label : str
-            The label to use for the reference list item.
+        citelabel : str
+            The citation label to use for the item.
         '''
 
-        labelstyle = self.options['citation_label']
         if not (citekey in self.bibdata):
-            warn('Warning 014: cannot find citation key "' + citekey + '" in the database. '
+            warn('Warning 010d: cannot find citation key "' + citekey + '" in the database. '
                  'Ignoring and continuing ...', self.disable)
             return(citekey)
 
         entry = self.bibdata[citekey]
 
-        if ('name' in labelstyle):
-            if ('author' in entry):
-                name = purify_string(entry['authorlist'][0]['last'])
-            elif ('editor' in entry):
-                name = purify_string(entry['editorlist'][0]['last'])
-            elif ('name' in entry):
-                name = purify_string(entry['name'])
+        ## Define the variable "citenum".
+        citenum = unicode(self.citedict[citekey])
+
+        templatestr = self.specials['citelabel']
+        if (templatestr == 'None'):
+            return(None)
+
+        variables = re.findall(r'<.*?>', templatestr)
+
+        ## If one of the "name" elements are in the template, then you will need to obtain those
+        ## from the author/editor name lists.
+        if ('<name.last>' in templatestr) or ('<name.first>' in templatestr) or \
+            ('<name.prefix>' in templatestr) or ('<name.suffix>' in templatestr):
+            if ('author' in entry) and ('authorlist' not in entry):
+                self.create_namelist(citekey, 'author')
+            if ('editor' in entry) and ('editorlist' not in entry):
+                self.create_namelist(citekey, 'editor')
+
+            if ('authorlist' in entry):
+                thisname = entry['authorlist'][0]
+                name_first = '' if ('first' not in thisname) else thisname['first']
+                name_last = thisname['last']
+                name_prefix = '' if ('prefix' not in thisname) else thisname['prefix']
+                name_suffix = '' if ('suffix' not in thisname) else thisname['suffix']
+            elif ('editorlist' in entry):
+                thisname = entry['editorlist'][0]
+                name_first = '' if ('first' not in thisname) else thisname['first']
+                name_last = thisname['last']
+                name_prefix = '' if ('prefix' not in thisname) else thisname['prefix']
+                name_suffix = '' if ('suffix' not in thisname) else thisname['suffix']
             else:
-                name = self.options['undefstr']
+                name_first = ''
+                name_last = ''
+                name_prefix = ''
+                name_suffix = ''
 
-        if ('year' in labelstyle):
-            if ('year' in entry) and str_is_integer(entry['year']):
-                year = entry['year']
-            else:
-                year = self.options['undefstr']
+        ## Before we parse the template string to remove any undefined variables, we need to make
+        ## sure that ehe entry has all the proper variables in it.
+        if ('<citekey>' in templatestr) and ('citekey' not in entry):
+            entry['citekey'] = citekey
+        if ('<citenum>' in templatestr) and ('citenum' not in entry):
+            entry['citenum'] = citenum
+        if ('<name.last>' in templatestr):
+            entry['name.last'] = name_last
+        if ('<name.first>' in templatestr):
+            entry['name.first'] = name_first
+        if ('<name.prefix>' in templatestr):
+            entry['name.prefix'] = name_prefix
+        if ('<name.suffix>' in templatestr):
+            entry['name.suffix'] = name_suffix
+        if ('<citealpha>' in templatestr):
+            entry['citealpha'] = create_citation_alpha(entry)
 
-        if (labelstyle == 'name'):
-            bibitem_label = name
-        elif (labelstyle == 'name-year'):
-            bibitem_label = name + '-' + year
-        elif (labelstyle == 'name, year'):
-            bibitem_label = name + ', ' + year
-        elif (labelstyle == 'name (year)'):
-            bibitem_label = name + ' (' + year + ')'
-        elif (labelstyle == 'citekey'):
-            bibitem_label = citekey
-        elif (labelstyle == 'alpha'):
-            if ('author' in entry):
-                namelist = entry['authorlist']
-            elif ('editor' in entry):
-                namelist = entry['editorlist']
+        templatestr = remove_template_options_brackets(templatestr, entry, variables, \
+                                                        undefstr=self.options['undefstr'])
 
-            if (len(namelist) == 1):
-                name = purify_string(namelist[0]['last'])[0:3]
-            elif (len(namelist) == 2):
-                name = purify_string(namelist[0]['last'])[0]
-                name += purify_string(namelist[1]['last'])[0]
-            elif (len(namelist) > 2):
-                name = purify_string(namelist[0]['last'])[0]
-                name += purify_string(namelist[1]['last'])[0]
-                name += purify_string(namelist[2]['last'])[0]
+        ## Remove the special cases from the variables list --- we already replaced these above.
+        ## (Right now there is only <title> here, but we can add more.)
+        #specials_list = ('<citekey>','<citenum>')
+        #variables = [item for item in variables if item not in specials_list]
 
-            if ('year' in entry) and str_is_integer(entry['year']):
-                year = entry['year'][-2:]
-            else:
-                year = self.options['undefstr'][0:2]
+        ## Go ahead and replace all of the template variables with the corresponding fields.
+        for var in variables:
+            if (var in templatestr):
+                varname = var[1:-1]     ## remove angle brackets to extract just the name
+                ## Check if the variable is defined and that it is not None (or empty string).
+                if (varname in entry) and entry[varname]:
+                    templatestr = templatestr.replace(var, unicode(entry[varname]))
+                else:
+                    templatestr = templatestr.replace(var, '')
 
-            bibitem_label = name + year
-        else:
-            warn('Warning 027: The reference list label style "' + labelstyle + '" is not ' + \
-                 'implemented ...', self.disable)
-            bibitem_label = 'Unknown-' + self.options['undefstr']
+        ## Now that we've replaced template variables, go ahead and replace the special commands.
+        if (r'{\makeopenbracket}' in templatestr):
+            templatestr = templatestr.replace(r'{\makeopenbracket}', '[')
+        if (r'{\makeclosebracket}' in templatestr):
+            templatestr = templatestr.replace(r'{\makeclosebracket}', ']')
+        if (r'{\makeverticalbar}' in templatestr):
+            templatestr = templatestr.replace(r'{\makeverticalbar}', '|')
+        if (r'{\makegreaterthan}' in templatestr):
+            templatestr = templatestr.replace(r'{\makegreaterthan}', '>')
+        if (r'{\makelessthan}' in templatestr):
+            templatestr = templatestr.replace(r'{\makelessthan}', '<')
+        if (r'{\makehashsign}' in templatestr):
+            templatestr = templatestr.replace(r'{\makehashsign}', '\\#')
 
-        return(bibitem_label)
+        citelabel = purify_string(templatestr)
+
+        if self.debug:
+            print('citekey=%s: citelabel=%s' % (citekey, citelabel))
+
+        return(citelabel)
 
 
     ## =============================
@@ -1822,7 +1862,7 @@ class Bibdata(object):
 
         if isinstance(filename, basestring) and filename.endswith('.aux'):
             auxfile = os.path.normpath(os.path.abspath(filename))
-            path = os.path.dirname(auxfile) + '/'
+            path = os.path.normpath(os.path.dirname(auxfile))
 
             s = open(filename, 'rU')
             for line in s.readlines():
@@ -1855,12 +1895,12 @@ class Bibdata(object):
                     r += '.bib'
 
                 ## If the filename has a relative address, convert it to an absolute one.
-                ## Linux absolute paths begin with a forward slash
+                ## Linux absolute paths begin with a forward slash.
                 ## Windows absolute paths begin with a drive letter and a colon.
                 if not r.startswith('/') or (r[0].isalpha() and r[1] == ':'):
-                    r = path + r
+                    r = os.path.normpath(os.path.join(path, r))
                 elif r.startswith('./'):
-                    r = path + r[2:]
+                    r = os.path.normpath(os.path.join(path, r[2:]))
 
                 bibfiles.append(r)
 
@@ -1879,9 +1919,9 @@ class Bibdata(object):
                 ## Linux absolute paths begin with a forward slash
                 ## Windows absolute paths begin with a drive letter and a colon.
                 if not r.startswith('/') or (r[0].isalpha() and r[1] == ':'):
-                    r = path + r
+                    r = os.path.normpath(os.path.join(path, r))
                 elif r.startswith('./'):
-                    r = path + r[2:]
+                    r = os.path.normpath(os.path.join(path, r[2:]))
 
                 bstfiles.append(r)
 
@@ -2350,16 +2390,17 @@ def get_delim_levels(s, delims=('{','}'), operator=None):
     ----------
     s : str
         The string to characterize.
-    ldelim : str
-        The left-hand-side delimiter.
-    rdelim : str
-        The right-hand-side delimiter.
-    is_regex : bool
-        Whether the delimiters are expressed as regular expressions or as simple strings.
+    delims : tuple of two strings
+        The (left-hand-side delimiter, right-hand-side delimiter).
+    operator : str
+        The "operator" string that appears to the left of the delimiter. For example, \
+        operator=r'\textbf' allows the code to look for nested structures like `{...}` and \
+        simultaneously for structures like `\textbf{...}`, and be able to keep track of which is \
+        which.
 
     Returns
     -------
-    oplevels : list of ints
+    levels : list of ints
         A list giving the operator delimiter level (or "brace level" if no operator is given) of \
         each character in the string.
     '''
@@ -2393,6 +2434,13 @@ def get_delim_levels(s, delims=('{','}'), operator=None):
 def show_levels_debug(s, levels):
     '''
     A debugging tool for showing delimiter levels and the input string next to one another.
+
+    Parameters
+    ----------
+    s : str
+        The string used to determine the delimiter levels.
+    levels : list of ints
+        The list of delimiter levels at each character position in the string.
     '''
     q = 0   ## counter for the character ending a line
     if ('\n' in s):
@@ -2402,7 +2450,8 @@ def show_levels_debug(s, levels):
             q += len(line)
     else:
         print(s)
-        print(unicode(levels)[2:-1].replace(',','').replace(' ',''))
+        #print(unicode(levels)[2:-1].replace(',','').replace(' ',''))
+        print(unicode(levels)[1:-1].replace(',','').replace(' ',''))
     return
 
 ## ===================================
@@ -2414,16 +2463,16 @@ def get_quote_levels(s, disable=None, debug=False):
     ----------
     s : str
         The string to analyze.
-    disable : list of int, optional
+    disable : list of ints, optional
         The list of warning message numbers to ignore.
 
     Returns
     -------
-    alevels : list
+    alevels : list of ints
         The double-quote-level for (``,'') pairs in the string.
-    blevels : list
+    blevels : list of ints
         The single-quote-level for (`,') pairs in the string.
-    clevels : list
+    clevels : list of ints
         The neutral-quote-level for (",") pairs in the string.
 
     Notes
@@ -3124,7 +3173,11 @@ def parse_bst_template_str(bst_template_str, bibentry, variables, undefstr='???'
     the train with the proper defined variable.
     '''
 
-    ## Divide up the format string into
+    ## Divide up the format string into independent blocks. First we need to check for nesting.
+    ## If nested blocks exist, then call the function recursively.
+    #zzz
+
+
     block_train = bst_template_str.split('|')
     nblocks = len(block_train)
 
@@ -3819,10 +3872,59 @@ def remove_template_options_brackets(templatestr, entry, variables, undefstr='??
 
     return(templatestr)
 
+## =============================
+def create_citation_alpha(entry):
+    '''
+    Create an alpha-style citation key (typically the first three letters of the author's last
+    name, followed by the last two numbers of the year).
+
+    Parameters
+    ----------
+    entry : dict
+        The bibliography entry.
+
+    Returns
+    -------
+    alpha : str
+        The alpha-style citation key.
+    '''
+
+    if ('authorlist' in entry):
+        namelist = entry['authorlist']
+    elif ('editorlist' in entry):
+        namelist = entry['editorlist']
+    elif ('author' in entry):
+        namelist = namefield_to_namelist(entry['author'])
+    elif ('editor' in entry):
+        namelist = namefield_to_namelist(entry['editor'])
+    else:
+        return('UNDEFINED')
+
+    ## Note: you need to run "purify" before extracting the first three letters, because the
+    ## first character might be a curly brace that purify can get rid of, or the first three
+    ## characters might be something like "\AA" which should be extracted as a single
+    ## unicode character.
+    if (len(namelist) == 1):
+        concat_name = purify_string(namelist[0]['last'])[0:3]
+    elif (len(namelist) > 1):
+        concat_name = ''
+        for name in namelist:
+            concat_name += purify_string(name['last'].strip('{}'))[0]
+
+    if ('year' in entry):
+        year = entry['year'][-2:]
+    else:
+        year = '??'
+
+    alpha = concat_name[0:3] + year
+
+    return(alpha)
+
 ## ==================================================================================================
 
 if (__name__ == '__main__'):
     print('sys.argv=', sys.argv)
+    uselocale = None
     if (len(sys.argv) > 1):
         try:
             (opts, args) = getopt.getopt(sys.argv[1:], '', ['locale='])
@@ -3834,7 +3936,7 @@ if (__name__ == '__main__'):
 
         for o,a in opts:
             if (o == '--locale'):
-                locale = a
+                uselocale = a
             else:
                 assert False, "unhandled option"
 
@@ -3853,7 +3955,7 @@ if (__name__ == '__main__'):
         arg_bstfile = './test/test1.bst'
         files = [arg_bibfile, arg_auxfile, arg_bstfile]
 
-    bibdata = Bibdata(files, debug=False)
+    bibdata = Bibdata(files, uselocale=uselocale, debug=False)
     bibdata.write_bblfile()
     print('Writing to BBL file = ' + bibdata.filedict['bbl'])
     #os.system('kwrite ' + bibdata.filedict['bbl'])

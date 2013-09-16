@@ -53,8 +53,7 @@ def run_test1():
                 './test/test1_use_name_ties.bst',
                 './test/test1_period_after_initial.bst',
                 './test/test1_terse_inits.bst',
-                './test/test1_author_firstname_initials.bst',
-                './test/test1_citation_label.bst')
+                './test/test1_author_firstname_initials.bst')
     bibfile = './test/test1.bib'
     bblfile = './test/test1.bbl'
     auxfile = './test/test1.aux'
@@ -168,16 +167,14 @@ def run_test4():
 
     ## Need to make a list of all the citation sort options we want to try. Skip "citenum" since
     ## that is the default, and so has been tested already.
-    citation_sort_options = ['citekey', ## citekey
-                             'nyt',     ## uses the first author's last name, the year, and then the title
-                             'alpha',   ## uses three letters of author's last name plus last two numbers in the year
-                             'plain',   ## (same as nyt)
-                             'nty',     ## name-title-year
-                             'nyvt',    ## name-year-volume-title
-                             'anyt',    ## labelalpha-name-year-title
-                             'anyvt',   ## labelalpha-name-year-volume-title
-                             'ynt',     ## year-name-title
-                             'ydnt']    ## year-name-title: in descending order
+    sortkeys = ['<citekey>',
+                '[<sortname>|<name.last>]<name.first>[<sortyear>|<year>][<sorttitle>|<title>]',
+                '[<sortname>|<name.last>]<name.first>[<sorttitle>|<title>][<sortyear>|<year>]',
+                '[<sortname>|<name.last>]<name.first>[<sortyear>|<year>]<volume>[<sorttitle>|<title>]',
+                '[<alphalabel>][<sortname>|<name.last>]<name.first>[<sortyear>|<year>][<sorttitle>|<title>]',
+                '[<alphalabel>][<sortname>|<name.last>]<name.first>[<sortyear>|<year>]<volume>[<sorttitle>|<title>]',
+                '[<sortyear>|<year>][<sortname>|<name.last>]<name.first>[<sorttitle>|<title>]',
+                '-[<sortyear>|<year>][<sortname>|<name.last>]<name.first>[<sorttitle>|<title>]']    ## in descending order
 
     print('\n' + '='*75)
     print('Running Bibulous Test #4')
@@ -187,14 +184,14 @@ def run_test4():
     bibobj.bibdata['preamble'] = '\n'
     #bibobj.debug = True     ## turn on debugging for citekey printing
 
-    for sortstyle in citation_sort_options:
+    for sortkey in sortkeys:
         ## Delete the old citekeys so that the new test contains only the new keys.
-        print('Setting citation_sort = ' + sortstyle)
+        print('Setting sortkey = ' + sortkey)
         bibobj.citedict = {}
-        bibobj.options['citation_sort'] = sortstyle
+        bibobj.specials['sortkey'] = sortkey
         bibobj.parse_auxfile(auxfile)      ## this generates the citations
-        write_preamble = (sortstyle == citation_sort_options[0])
-        #write_postamble = (sortstyle == citation_sort_options[-1])
+        write_preamble = (sortkey == sortkeys[0])
+        #write_postamble = (sortkey == sortkeys[-1])
         bibobj.write_bblfile(write_preamble=write_preamble, write_postamble=False)
 
         filehandle = open(bblfile, 'a')
@@ -204,18 +201,8 @@ def run_test4():
     ## Delete the old citekeys so that the new test contains only the new keys.
     print('Setting option sort_case = True')
     bibobj.citedict = {}
-    bibobj.options['citation_sort'] = 'nyt'
+    bibobj.specials['sortkey'] = '[<sortname>|<name.last>][<name.first>][<sortyear>|<year>][<sorttitle>|<title>]'
     bibobj.options['sort_case'] = True
-    bibobj.parse_auxfile(auxfile)      ## this generates the citations
-    bibobj.write_bblfile(write_preamble=False, write_postamble=False)
-    filehandle = open(bblfile, 'a')
-    filehandle.write('\n\n')
-    filehandle.close()
-
-    ## Delete the old citekeys so that the new test contains only the new keys.
-    print('Setting option sort_with_prefix = True')
-    bibobj.citedict = {}
-    bibobj.options['sort_with_prefix'] = True
     bibobj.parse_auxfile(auxfile)      ## this generates the citations
     bibobj.write_bblfile(write_preamble=False, write_postamble=True)
     filehandle = open(bblfile, 'a')
@@ -284,7 +271,11 @@ def run_test7():
 
     ## Need to make a list of all the citation label options we want to try. Skip "citenum" since
     ## that is the default, and so has been tested already.
-    citation_label_options = ('citekey', 'name-year', 'alpha', 'name, year', 'name (year)')
+    citelabels = ['<citekey>',
+                  '<name.last>-<year>',
+                  '<citealpha>',
+                  '<name.last>, <year>',
+                  '<name.last> (<year>)']
 
     print('\n' + '='*75)
     print('Running Bibulous Test #7')
@@ -294,14 +285,14 @@ def run_test7():
     bibobj.bibdata['preamble'] = '\n'
     #bibobj.debug = True     ## turn on debugging for citekey printing
 
-    for labelstyle in citation_label_options:
+    for citelabel in citelabels:
         ## Delete the old citekeys so that the new test contains only the new keys.
-        print('Setting citation_label = ' + labelstyle)
+        print('Setting citation_label = ' + citelabel)
         bibobj.citedict = {}
-        bibobj.options['citation_label'] = labelstyle
+        bibobj.specials['citelabel'] = citelabel
         bibobj.parse_auxfile(auxfile)      ## this generates the citations
-        write_preamble = (labelstyle == citation_label_options[0])
-        write_postamble = (labelstyle == citation_label_options[-1])
+        write_preamble = (citelabel == citelabels[0])
+        write_postamble = (citelabel == citelabels[-1])
         bibobj.write_bblfile(write_preamble=write_preamble, write_postamble=write_postamble)
 
         filehandle = open(bblfile, 'a')

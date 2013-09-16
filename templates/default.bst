@@ -16,9 +16,11 @@ techreport = [<authorliststr>, |<editorliststr>, ]``<title>,'' <institution>, Te
 ##book = [<authorliststr>|], \textit{<title>}, [<edition_ordinal>~ed., ][vol.~<volume>, ](<publisher>, <year>)[ Chap.~<chapter>][, pp.~<startpage>--<endpage>].[ <note>]
 ##inproceedings = <authorliststr>, \enquote{<title>,} [in \textit{<booktitle>}, <editorliststr>, <series> |in \textit{<booktitle>}, <series> |in \textit{<booktitle>}, ][<editorliststr>, ]\textbf{<volume>}[, pp.~<startpage>--<endpage>|, <eid>] (<year>).[ <note>]
 
+SPECIAL-TEMPLATES:
+sortkey = <citekey>                       ## order the reference list by "citekey"
+citelabel = <citekey>                     ## the type of label to use for the reference list items
+
 OPTIONS:
-citation_sort = citekey                   ## order the reference list by "citekey" or "citenum" (or "nyt" etc.)
-citation_label = citekey                  ## the type of label to use for the reference list items
 maxauthors = 9                            ## if more than 10 authors, then use "et al." format
 minauthors = 9                            ## if "maxauthors" exceeded, then display only the first "minauthors" and et al.
 maxeditors = 5                            ## if more than 5 editors, then use "et al." format
@@ -27,7 +29,6 @@ procspie_as_journal = True                ## treat SPIE conference proceedings l
 sort_case = False                         ## whether to use case-sensitive citation sorting (default is False)
 use_abbrevs = True                        ## whether to use the abbreviation strings (mainly useful for debugging)
 french_initials = False                   ## whether to use French initials (i.e. Jean-Paul -> J.-P. and not J., also Philippe -> Ph. not P.)
-sort_with_prefix = False                  ## whether or not to use a person's prefix in front of the last name for sorting order. Should probably be used with option "sort_case=True".
 period_after_initial = True               ## whether to add a '.' after a person's initials.
 terse_inits = False                       ## whether to format initials as, for example, "DE" rather than "D. E.". This setting overrides the "period_after_initial" option.
 bibitemsep = 0pt                          ## the extra vertical separation between each bibliography entry. Defining this option *overrides* LaTeX's existing definition for \bibitemsep.

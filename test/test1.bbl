@@ -1,4 +1,4 @@
-\begin{thebibliography}{ZZ}
+\begin{thebibliography}{31}
 \providecommand{\enquote}[1]{``#1''}
 \providecommand{\url}[1]{\verb|#1|}
 \providecommand{\href}[2]{#2}
@@ -65,24 +65,8 @@ M. Born and E. Wolf, \textit{Principles of Optics}, 7th~ed. (Cambridge Univ. Pre
 \bibitem{capitalized_field_names1}
 H. Schmidt, ``Quantum-mechanical random-number generator,'' \textit{J. Appl. Phys.} \textbf{41}: 462--468 (1970).
 \bibitem{multilingual}
-= Someone, ``ユーザー別サイト 体中文 크로스 플랫폼으로 מדורים מבוקשים أفضل البحوث Σὲ γνωρίζω ἀπὸ Десятую Международную แผ่นดินฮั่นเสื่อมโทรมแสนสังเวช ∮ E⋅da = Q, n → ∞, ∑ f(i) = ∏ g(i) français langue étrangère mañana olé'' (2222).
-\bibitem{force_sentence_case}
-P. Stoica and B. C. Ng, ``On the {C}ram{\'e}r-{R}ao bound under parametric constraints'' (1998).
-\bibitem{french_initials}
-A. Perot and Ch. Fabry, ``Sur l'application de ph{\'e}nom{\`e}nes d'interf{\'e}rence {\`a} la solution de divers probl{\`e}mes de spectroscopie et de m{\'e}trologie'' (1899).
-\bibitem{use_name_ties}
-F.~M.~M. Prefix Last and F. Prefix Last, Suffix, ``None'' (0000).
-\bibitem{period_after_initial}
-B R Bunny, ``Looney tunes'' (2001).
-\bibitem{terse_inits}
-DD Duck, ``Looney tunes'' (2001).
-\bibitem{author_firstname_initials}
-Alain Aspect, Philippe Grangier, and G{\'e}rard Roger, ``Experimental realization of Einstein-Podolsky-Rosen-Bohm \textit{Gedenkenexperiment}: a new violation of Bell's inequalities'' (1982).
-\bibitem{editor_firstname_initials}
-David B. Chenault and Dennis H. Goldstein, eds, ``Polarization: Measurement, Analysis, and Remote Sensing X'' (2012).
-\bibitem[Duck-2001]{citation_label1}
-D. D. Duck, ``Looney tunes'' (2001).
-\bibitem[Duck-2001]{citation_label2}
-D. D. Duck, ed., ``Looney tunes'' (2001).
+Someone, ``ユーザー別サイト 体中文 크로스 플랫폼으로 מדורים מבוקשים أفضل البحوث Σὲ γνωρίζω ἀπὸ Десятую Международную แผ่นดินฮั่นเสื่อมโทรมแสนสังเวช ∮ E⋅da = Q, n → ∞, ∑ f(i) = ∏ g(i) français langue étrangère mañana olé'' (2222).
+\bibitem{arabic}
+S. W. S. Arabic, ``सच्चिदानन्द हीरानन्द वात्स्यायन'' (2013).
 
 \end{thebibliography}

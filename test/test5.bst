@@ -6,10 +6,12 @@ collection = [<for_japanese_audience><editor_ja>, <title_ja>, <volume>巻 (<publ
               <for_english_audience><editorliststr>, <title_ja> (<title_romaji>) {\makeopenbracket}<title>{\makeclosebracket}, vol.~<volume> (<publisher>, <address>, <year>).|]
 
 
+SPECIAL-TEMPLATES:
+citelabel = None
+sortkey = <year><name.last><title>
+
 OPTIONS:
 use_firstname_initials = False            ## initialize all but the authors' last names
-citation_sort = ynt                       ## order the reference list by "citekey" or "citenum" (or "nyt" etc.)
-citation_label = citenum                  ## label the reference items by their numerical order of appearance
 namelist_format = first_name_first        ## defines values for both "authorlist_format" and "editorlist_format" at once
 allow_scripts = True                      ## whether to allow user scripts in BST files
 yearstyle = BCE/CE                        ## whether to use 'BCE/CE' after the year number or the older 'BC/AD' form

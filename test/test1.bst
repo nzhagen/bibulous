@@ -29,11 +29,14 @@ quote_and_accent_detection = <authorliststr>, \enquote{<title>,} \textit{<journa
 hyperlinked_title = <authorliststr>, \enquote{[\href{<url>}{<title>}|\href{<doi>}{<title>}|<title>|],} \textit{<journal>} \textbf{<volume>}: <startpage>--<endpage> (<year>).
 edition_ordinal = <authorliststr>, \textit{<title>}[, <edition_ordinal>~ed.][, vol.~<volume>] (<publisher>, <year>)[ Chap.~<chapter>][, pp.~<startpage>--<endpage>].[ <note>]
 capitalized_field_names1 = <authorliststr>, \enquote{<title>,} \textit{<journal>} \textbf{<volume>}: <startpage>--<endpage> (<year>).
-multilingual = = <authorliststr>, \enquote{<title>} (<year>).
+multilingual = <authorliststr>, \enquote{<title>} (<year>).
+arabic = <authorliststr>, \enquote{<title>} (<year>).
+
+SPECIAL-TEMPLATES:
+citelabel = None
+sortkey = <citenum>
 
 OPTIONS:
-citation_sort = citenum                   ## order the reference list by "citekey" or "citenum" (or "nyt" etc.)
-citation_label = citenum                  ## label the reference items by their numerical order of appearance
 maxauthors = 9                            ## if more than 10 authors, then use "et al." format
 minauthors = 7                            ## if "maxauthors" exceeded, then display only the first "minauthors" and et al.
 maxeditors = 3                            ## if more than 5 editors, then use "et al." format
@@ -44,14 +47,11 @@ backrefs = False                          ## whether to implement backreferences
 backrefstyle = none                       ## can be one of {"none", "three", "two", "two+", "three+", "all+"}
 hyperref = False                          ## whether to turn on (True) or off (False). If "hyperref" package is loaded, the default value is True, else default is False.
 french_initials = False                   ## whether to use French initials (i.e. Jean-Paul -> J.-P. and not J., also Philippe -> Ph. not P.)
-sort_with_prefix = False                  ## whether or not to use a person's prefix in front of the last name for sorting order. Should probably be used with option "sort_case=True".
 period_after_initial = True               ## whether to add a '.' after a person's initials.
 terse_inits = False                       ## whether to format initials as, for example, "DE" rather than "D. E."
 bibitemsep = 0pt                          ## the extra vertical separation between each bibliography entry. Defining this option *overrides* LaTeX's existing definition for \bibitemsep.
 month_abbrev = True                       ## whether to use abbreviated month names (i.e. "Jan" instead of "January").
-use_name_ties = False                     ## whether to use ties ('~') instead of spaces to glue together initials.
 replace_newlines = True                   ## whether to remove newlines from the database entry fields
-missing_data_exceptions = False           ## whether to raise an exception when Bibulous finds a missing but required field.
 undefstr = ???                            ## what string to replace undefined required fields with
 force_sentence_case = False               ## Whether to reduce all but the first letter (and brace-protected letters) to lower case
 authorlist_format = first_name_first      ## use authorlist "Bugs Bunny, Daffy Duck, and Porky Pig" format

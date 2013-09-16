@@ -14,9 +14,11 @@ proceedings = <editorliststr>, \textit{<title>}, [vol.~<volume>][, <edition_ordi
 techreport = [<authorliststr>, |<editorliststr>, ]``<title>,'' <institution>, Tech.\ Report <number> (<year>).[ <note>]
 unpublished = misc
 
+SPECIAL-TEMPLATES:
+citelabel = None
+sortkey = <citenum>
+
 OPTIONS:
-citation_sort = citekey                   ## order the reference list by "citekey" or "citenum" (or "nyt" etc.)
-citation_label = citekey                  ## label the reference items by their numerical order of appearance
 maxauthors = 9                            ## if more than 10 authors, then use "et al." format
 minauthors = 9                            ## if "maxauthors" is exceeded, then display only the first "minauthors" and et al.
 maxeditors = 5                            ## if more than 5 editors, then use "et al." format
@@ -28,11 +30,9 @@ backrefstyle = none                       ## can be one of {"none", "three", "tw
 hyperref = False                          ## whether to turn on (True) or off (False). If "hyperref" package is loaded, the default value is True, else default is False.
 use_abbrevs = True                        ## whether to use the abbreviation strings (mainly useful for debugging)
 french_initials = False                   ## whether to use French initials (i.e. Jean-Paul -> J.-P. and not J., also Philippe -> Ph. not P.)
-sort_with_prefix = False                  ## whether or not to use a person's prefix in front of the last name for sorting order. Should probably be used with option "sort_case=True".
 period_after_initial = True               ## whether to add a '.' after a person's initials.
 terse_inits = False                       ## whether to format initials as, for example, "DE" rather than "D. E."
 bibitemsep = 0pt                          ## the extra vertical separation between each bibliography entry. Defining this option *overrides* LaTeX's existing definition for \bibitemsep.
-missing_data_exceptions = False           ## whether to raise an exception when Bibulous finds a missing but required field.
 undefstr = ???                            ## what string to replace undefined required fields with
 force_sentence_case = False               ## Whether to reduce all but the first letter (and brace-protected letters) to lower case
 namelist_format = first_name_first        ## use authorlist (or editorlist) "Bugs Bunny, Daffy Duck, and Porky Pig" format
