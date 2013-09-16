@@ -61,7 +61,7 @@ __all__ = ['sentence_case', 'stringsplit', 'finditer', 'namefield_to_namelist',
            'enwrap_nested_quotes', 'purify_string', 'latex_to_utf8', 'parse_bst_template_str',
            'namestr_to_namedict', 'search_middlename_for_prefixes', 'create_edition_ordinal',
            'export_bibfile', 'parse_pagerange', 'parse_nameabbrev', 'make_sortkey_unique',
-           'filter_script', 'str_is_integer', 'warn', 'format_namelist',
+           'filter_script', 'str_is_integer', 'bib_warning', 'format_namelist',
            'remove_template_options_brackets', 'create_citation_alpha']
 
 
@@ -349,7 +349,7 @@ class Bibdata(object):
                 self.parse_bibentry(entrystr, entrytype)       ## close out the entry
                 entrystr = ''
                 if (line[1:].strip() != ''):
-                    warn('Warning 001a: line#' + unicode(self.i) + ' of "' + self.filename + '" has '
+                    bib_warning('Warning 001a: line#' + unicode(self.i) + ' of "' + self.filename + '" has '
                           'data outside of an entry {...} block. Skipping all contents until the '
                           'next entry ...', self.disable)
                 continue
@@ -361,7 +361,7 @@ class Bibdata(object):
             if line.startswith('@'):
                 brace_idx = line.find('{')             ## assume a form like "@ENTRYTYPE{"
                 if (brace_idx == -1):
-                    warn('Warning 002a: open brace not found for the entry beginning on line#' + \
+                    bib_warning('Warning 002a: open brace not found for the entry beginning on line#' + \
                          unicode(self.i) + ' of "' + self.filename + '". Skipping to next entry ...',
                          self.disable)
                     entry_brace_level = 0
@@ -374,7 +374,7 @@ class Bibdata(object):
             ## the next entry.
             if (entry_brace_level == 0):
                 if (line.strip() != ''):
-                    warn('Warning 001b: line#' + unicode(self.i) + ' of "' + self.filename + \
+                    bib_warning('Warning 001b: line#' + unicode(self.i) + ' of "' + self.filename + \
                          '" has data outside of an entry {...} block. Skipping all contents ' + \
                          'until the next entry ...', self.disable)
                 continue
@@ -391,7 +391,7 @@ class Bibdata(object):
                 if (entry_brace_level == 0):
                     ## If we've found the final brace, then check if there is anything after it.
                     if (line[match.end():].strip() != ''):
-                        warn('Warning 002b: line#' + unicode(self.i) + ' of "' + self.filename + \
+                        bib_warning('Warning 002b: line#' + unicode(self.i) + ' of "' + self.filename + \
                              '" has data outside of an entry {...} block. Skipping all ' + \
                              'contents until the next entry ...', self.disable)
                     endpos = match.end()
@@ -446,7 +446,7 @@ class Bibdata(object):
             ## First get the entry key. Then send the remainder of the entry string to the parser.
             idx = entrystr.find(',')
             if (idx == -1):
-                warn('Warning 003: the entry ending on line #' + unicode(self.i) + ' of file "' + \
+                bib_warning('Warning 003: the entry ending on line #' + unicode(self.i) + ' of file "' + \
                      self.filename + '" is does not have an "," for defining the entry key. '
                      'Skipping ...', self.disable)
                 return(fd)
@@ -459,11 +459,11 @@ class Bibdata(object):
             entrystr = entrystr[idx+1:]
 
             if not entrykey:
-                warn('Warning 004a: the entry ending on line #' + unicode(self.i) + ' of file "' + \
+                bib_warning('Warning 004a: the entry ending on line #' + unicode(self.i) + ' of file "' + \
                      self.filename + '" has an empty key. Ignoring and continuing ...', self.disable)
                 return
             elif (entrykey in self.bibdata):
-                warn('Warning 004b: the entry ending on line #' + unicode(self.i) + ' of file "' + \
+                bib_warning('Warning 004b: the entry ending on line #' + unicode(self.i) + ' of file "' + \
                      self.filename + '" has the same key ("' + entrykey + '") as a previous ' + \
                      'entry. Overwriting the entry and continuing ...', self.disable)
 
@@ -501,7 +501,7 @@ class Bibdata(object):
             ## First locate the field key.
             idx = entrystr.find('=')
             if (idx == -1):
-                warn('Warning 005: the entry ending on line #' + unicode(self.i) + ' of file "' + \
+                bib_warning('Warning 005: the entry ending on line #' + unicode(self.i) + ' of file "' + \
                      self.filename + '" is an abbreviation-type entry but does not have an "=" '
                      'for defining the end of the abbreviation key. Skipping ...', self.disable)
                 return(fd)
@@ -586,7 +586,7 @@ class Bibdata(object):
                             if abbrevkey in self.abbrevs:
                                 resultstr += self.abbrevs[abbrevkey].strip()
                             else:
-                                warn('Warning 006: for the entry ending on line #' + \
+                                bib_warning('Warning 006: for the entry ending on line #' + \
                                      unicode(self.i) + ' of file "' + self.filename + \
                                      '", cannot find the abbreviation key "' + abbrevkey + \
                                      '". Skipping ...', self.disable)
@@ -653,7 +653,7 @@ class Bibdata(object):
         ## dictionary of keys giving the citation keys with values equal to the citation order
         ## number.
         if not keylist:
-            warn('Warning 007: no citations found in AUX file "' + filename + '"', self.disable)
+            bib_warning('Warning 007: no citations found in AUX file "' + filename + '"', self.disable)
         else:
             q = 1                       ## citation order counter
             self.citedict[keylist[0]] = q
@@ -731,32 +731,32 @@ class Bibdata(object):
 
             if (section == 'DEFINITIONS'):
                 if ('__' in line):
-                    warn('Warning 026a: Python script line #' + str(i) + ' of file "' + filename + \
+                    bib_warning('Warning 026a: Python script line #' + str(i) + ' of file "' + filename + \
                          '" contains an invalid use of "__".\nAborting script evaluation ...',
                          self.disable)
                     abort_script = True
                 if re.search(r'\sos.\S', line, re.UNICODE):
-                    warn('Warning 026b: Python script line #' + str(i) + ' of file "' + filename + \
+                    bib_warning('Warning 026b: Python script line #' + str(i) + ' of file "' + filename + \
                          '" contains an invalid call to the "os" module.\n' + \
                          'Aborting script evaluation ...', self.disable)
                     abort_script = True
                 if re.search(r'\ssys.\S', line, re.UNICODE):
-                    warn('Warning 026c: Python script line #' + str(i) + ' of file "' + filename + \
+                    bib_warning('Warning 026c: Python script line #' + str(i) + ' of file "' + filename + \
                          '" contains an invalid call to the "sys" module.\n' + \
                          'Aborting script evaluation ...', self.disable)
                     abort_script = True
                 if re.search(r'\scodecs.\S', line, re.UNICODE):
-                    warn('Warning 026c: Python script line #' + str(i) + ' of file "' + filename + \
+                    bib_warning('Warning 026c: Python script line #' + str(i) + ' of file "' + filename + \
                          '" contains an invalid call to the "codecs" module.\n' + \
                          'Aborting script evaluation ...', self.disable)
                     abort_script = True
                 if re.search(r'^import\s', line, re.UNICODE):
-                    warn('Warning 026d: Python script line #' + str(i) + ' of file "' + filename + \
+                    bib_warning('Warning 026d: Python script line #' + str(i) + ' of file "' + filename + \
                          '" contains an invalid call to "import".\n' + \
                          'Aborting script evaluation ...', self.disable)
                     abort_script = True
                 if re.search(r'^import\s', line, re.UNICODE):
-                    warn('Warning 026e: Python script line #' + str(i) + ' of file "' + filename + \
+                    bib_warning('Warning 026e: Python script line #' + str(i) + ' of file "' + filename + \
                          '" contains an invalid call to the "open()" function.\n' + \
                          'Aborting script evaluation ...', self.disable)
                     abort_script = True
@@ -770,7 +770,7 @@ class Bibdata(object):
                 if not line: continue
                 matchobj = re.search(definition_pattern, line)
                 if (matchobj == None):
-                    warn('Warning 008a: line #' + str(i) + ' of file "' + filename + '" does ' + \
+                    bib_warning('Warning 008a: line #' + str(i) + ' of file "' + filename + '" does ' + \
                          'not contain a valid variable definition.\n Skipping ...', self.disable)
                     continue
                 (start,end) = matchobj.span()
@@ -794,7 +794,7 @@ class Bibdata(object):
 
                     matchobj = re.search(definition_pattern, line)
                     if (matchobj == None):
-                        warn('Warning 008b: line #' + str(i) + ' of file "' + filename + '" does ' + \
+                        bib_warning('Warning 008b: line #' + str(i) + ' of file "' + filename + '" does ' + \
                              'not contain a valid variable definition.\n Skipping ...', self.disable)
                         continue
 
@@ -816,7 +816,7 @@ class Bibdata(object):
                     ## The line defines an entrytype template. Check whether this definition is
                     ## overwriting an already existing definition.
                     if (var in self.bstdict) and (self.bstdict[var] != value):
-                        warn('Warning 009a: overwriting the existing template variable "' + var + \
+                        bib_warning('Warning 009a: overwriting the existing template variable "' + var + \
                              '" from [' + self.bstdict[var] + '] to [' + value + '] ...',
                              self.disable)
                     self.bstdict[var] = value
@@ -834,7 +834,7 @@ class Bibdata(object):
                     ## The variable defines an option rather than an entrytype. Check whether this definition is
                     ## overwriting an already existing definition.
                     if (var in self.options) and (str(self.options[var]) != value):\
-                        warn('Warning 009b: overwriting the existing template option "' + var + \
+                        bib_warning('Warning 009b: overwriting the existing template option "' + var + \
                              '" from [' + unicode(self.options[var]) + '] to [' + \
                              unicode(value) + '] ...', self.disable)
                     ## If the value is numeric or bool, then convert the datatype from string.
@@ -851,7 +851,7 @@ class Bibdata(object):
                     ## The line defines an entrytype template. Check whether this definition is
                     ## overwriting an already existing definition.
                     if (var in self.specials) and (self.specials[var] != value):
-                        warn('Warning 009c: overwriting the existing special template variable "' + \
+                        bib_warning('Warning 009c: overwriting the existing special template variable "' + \
                              var + '" from [' + self.specials[var] + '] to [' + value + '] ...',
                              self.disable)
                     self.specials[var] = value
@@ -964,7 +964,7 @@ class Bibdata(object):
             for c in self.citelist:
                 if (c not in self.bibdata):
                     msg = 'citation key "' + c + '" is not in the bibliography database'
-                    warn('Warning 010b: ' + msg, self.disable)
+                    bib_warning('Warning 010b: ' + msg, self.disable)
 
                 ## Verbose output is for debugging.
                 if debug: print('Writing entry "' + c + '" to "' + filename + '" ...')
@@ -1077,7 +1077,7 @@ class Bibdata(object):
         ## fact.
         if (c not in self.bibdata):
             msg = 'citation key "' + c + '" is not in the bibliography database'
-            warn('Warning 010c: ' + msg, self.disable)
+            bib_warning('Warning 010c: ' + msg, self.disable)
             return(itemstr + '\\textit{Warning: ' + msg + '}.')
         else:
             entry = self.bibdata[c]
@@ -1102,7 +1102,7 @@ class Bibdata(object):
         else:
             msg = 'entrytype "' + entrytype + '" does not have a template defined ' + \
                   'in the .bst file'
-            warn('Warning 011: ' + msg, self.disable)
+            bib_warning('Warning 011: ' + msg, self.disable)
             return(itemstr + '\\textit{Warning: ' + msg + '}.')
 
         ## Process the optional arguments. First check the syntax. Make sure that there are the same
@@ -1113,7 +1113,7 @@ class Bibdata(object):
             msg = 'In the template for entrytype "' + entrytype + '" there are ' + \
                   unicode(num_obrackets) + ' open brackets "[", but ' + unicode(num_cbrackets) + \
                   ' close brackets "]" in the formatting string'
-            warn('Warning 012: ' + msg, self.disable)
+            bib_warning('Warning 012: ' + msg, self.disable)
             return(itemstr + '\\testit{' + msg + '}.')
 
         ## Get the list of all the variables used by the template string.
@@ -1147,7 +1147,7 @@ class Bibdata(object):
             templatestr = remove_template_options_brackets(templatestr, entry, variables, undefstr=self.options['undefstr'])
         except SyntaxError, err:
             itemstr = itemstr + '\\textit{' + err + '}.'
-            warn('Warning 013: ' + err, self.disable)
+            bib_warning('Warning 013: ' + err, self.disable)
             return(itemstr)
 
         if ('<title>' in templatestr) and ('title' in entry):
@@ -1186,6 +1186,8 @@ class Bibdata(object):
         itemstr = itemstr + templatestr
 
         ## Now that we've replaced template variables, go ahead and replace the special commands.
+        ## We need to replace the hash symbol too because that indicates a comment when placed
+        ## inside a template string.
         if (r'{\makeopenbracket}' in itemstr):
             itemstr = itemstr.replace(r'{\makeopenbracket}', '[')
         if (r'{\makeclosebracket}' in itemstr):
@@ -1196,8 +1198,8 @@ class Bibdata(object):
             itemstr = itemstr.replace(r'{\makegreaterthan}', '>')
         if (r'{\makelessthan}' in itemstr):
             itemstr = itemstr.replace(r'{\makelessthan}', '<')
-        #if (r'{\makehashsign}' in templatestr):
-        #    templatestr = templatestr.replace(r'{\makehashsign}', '\\#')
+        if (r'{\makehashsign}' in templatestr):
+            templatestr = templatestr.replace(r'{\makehashsign}', '\\#')
 
         ## If there are nested operators on the string, replace all even-level operators with \{}.
         ## Is there any need to do this with \textbf{} and \texttt{} as well?
@@ -1234,7 +1236,7 @@ class Bibdata(object):
 
         if citekey not in self.bibdata:
             msg = '"' + citekey + '" is not in the bibliography database.'
-            warn('Warning 010a: ' + msg, self.disable)
+            bib_warning('Warning 010a: ' + msg, self.disable)
             return('Warning: ' + msg)
 
         ## Define the variable "citenum". Since
@@ -1334,18 +1336,20 @@ class Bibdata(object):
                     templatestr = templatestr.replace(var, '')
 
         ## Now that we've replaced template variables, go ahead and replace the special commands.
-        if (r'{\makeopenbracket}' in templatestr):
-            templatestr = templatestr.replace(r'{\makeopenbracket}', '[')
-        if (r'{\makeclosebracket}' in templatestr):
-            templatestr = templatestr.replace(r'{\makeclosebracket}', ']')
-        if (r'{\makeverticalbar}' in templatestr):
-            templatestr = templatestr.replace(r'{\makeverticalbar}', '|')
-        if (r'{\makegreaterthan}' in templatestr):
-            templatestr = templatestr.replace(r'{\makegreaterthan}', '>')
-        if (r'{\makelessthan}' in templatestr):
-            templatestr = templatestr.replace(r'{\makelessthan}', '<')
-        #if (r'{\makehashsign}' in templatestr):
-        #    templatestr = templatestr.replace(r'{\makehashsign}', '\\#')
+        ## We need to replace the hash symbol too because that indicates a comment when placed
+        ## inside a template string.
+        if (r'{\makeopenbracket}' in itemstr):
+            itemstr = itemstr.replace(r'{\makeopenbracket}', '[')
+        if (r'{\makeclosebracket}' in itemstr):
+            itemstr = itemstr.replace(r'{\makeclosebracket}', ']')
+        if (r'{\makeverticalbar}' in itemstr):
+            itemstr = itemstr.replace(r'{\makeverticalbar}', '|')
+        if (r'{\makegreaterthan}' in itemstr):
+            itemstr = itemstr.replace(r'{\makegreaterthan}', '>')
+        if (r'{\makelessthan}' in itemstr):
+            itemstr = itemstr.replace(r'{\makelessthan}', '<')
+        if (r'{\makehashsign}' in templatestr):
+            templatestr = templatestr.replace(r'{\makehashsign}', '\\#')
 
         sortkey = purify_string(templatestr)
         sortkey = sortkey.replace(' ','')
@@ -1445,7 +1449,7 @@ class Bibdata(object):
         if (self.bibdata[entrykey]['crossref'] in self.bibdata):
             crossref_keys = self.bibdata[self.bibdata[entrykey]['crossref']]
         else:
-            warn('Warning 015: bad cross reference. Entry "' + entrykey + '" refers to ' + \
+            bib_warning('Warning 015: bad cross reference. Entry "' + entrykey + '" refers to ' + \
                  'entry "' + self.bibdata[entrykey]['crossref'] + '", which doesn\'t exist.',
                  self.disable)
             return
@@ -1624,7 +1628,7 @@ class Bibdata(object):
                 if abbrevkey.isdigit() or not self.options['use_abbrevs']:
                     resultstr += unicode(abbrevkey)
                 elif (abbrevkey not in self.abbrevs):
-                    warn('Warning 016a: for the entry ending on line #' + unicode(self.i) + \
+                    bib_warning('Warning 016a: for the entry ending on line #' + unicode(self.i) + \
                          ' of file "' + self.filename + '", cannot find the '
                          'abbreviation key "' + abbrevkey + '". Skipping ...', self.disable)
                     resultstr += self.options['undefstr']
@@ -1639,7 +1643,7 @@ class Bibdata(object):
                 if abbrevkey.isdigit() or not self.options['use_abbrevs']:
                     resultstr += unicode(abbrevkey)
                 elif (abbrevkey not in self.abbrevs):
-                    warn('Warning 016b: for the entry ending on line #' + unicode(self.i) + \
+                    bib_warning('Warning 016b: for the entry ending on line #' + unicode(self.i) + \
                          ' of file "' + self.filename + '", cannot find the '
                          'abbreviation key "' + abbrevkey + '". Skipping ...', self.disable)
                     resultstr += self.options['undefstr']
@@ -1671,7 +1675,7 @@ class Bibdata(object):
         '''
 
         if not (citekey in self.bibdata):
-            warn('Warning 010d: cannot find citation key "' + citekey + '" in the database. '
+            bib_warning('Warning 010d: cannot find citation key "' + citekey + '" in the database. '
                  'Ignoring and continuing ...', self.disable)
             return(citekey)
 
@@ -1749,18 +1753,20 @@ class Bibdata(object):
                     templatestr = templatestr.replace(var, '')
 
         ## Now that we've replaced template variables, go ahead and replace the special commands.
-        if (r'{\makeopenbracket}' in templatestr):
-            templatestr = templatestr.replace(r'{\makeopenbracket}', '[')
-        if (r'{\makeclosebracket}' in templatestr):
-            templatestr = templatestr.replace(r'{\makeclosebracket}', ']')
-        if (r'{\makeverticalbar}' in templatestr):
-            templatestr = templatestr.replace(r'{\makeverticalbar}', '|')
-        if (r'{\makegreaterthan}' in templatestr):
-            templatestr = templatestr.replace(r'{\makegreaterthan}', '>')
-        if (r'{\makelessthan}' in templatestr):
-            templatestr = templatestr.replace(r'{\makelessthan}', '<')
-        #if (r'{\makehashsign}' in templatestr):
-        #    templatestr = templatestr.replace(r'{\makehashsign}', '\\#')
+        ## We need to replace the hash symbol too because that indicates a comment when placed
+        ## inside a template string.
+        if (r'{\makeopenbracket}' in itemstr):
+            itemstr = itemstr.replace(r'{\makeopenbracket}', '[')
+        if (r'{\makeclosebracket}' in itemstr):
+            itemstr = itemstr.replace(r'{\makeclosebracket}', ']')
+        if (r'{\makeverticalbar}' in itemstr):
+            itemstr = itemstr.replace(r'{\makeverticalbar}', '|')
+        if (r'{\makegreaterthan}' in itemstr):
+            itemstr = itemstr.replace(r'{\makegreaterthan}', '>')
+        if (r'{\makelessthan}' in itemstr):
+            itemstr = itemstr.replace(r'{\makelessthan}', '<')
+        if (r'{\makehashsign}' in templatestr):
+            templatestr = templatestr.replace(r'{\makehashsign}', '\\#')
 
         citelabel = purify_string(templatestr)
 
@@ -2066,18 +2072,20 @@ class Bibdata(object):
                         templatestr = templatestr.replace(var, '')
 
             ## Now that we've replaced template variables, go ahead and replace the special commands.
-            if (r'{\makeopenbracket}' in templatestr):
-                templatestr = templatestr.replace(r'{\makeopenbracket}', '[')
-            if (r'{\makeclosebracket}' in templatestr):
-                templatestr = templatestr.replace(r'{\makeclosebracket}', ']')
-            if (r'{\makeverticalbar}' in templatestr):
-                templatestr = templatestr.replace(r'{\makeverticalbar}', '|')
-            if (r'{\makegreaterthan}' in templatestr):
-                templatestr = templatestr.replace(r'{\makegreaterthan}', '>')
-            if (r'{\makelessthan}' in templatestr):
-                templatestr = templatestr.replace(r'{\makelessthan}', '<')
-            #if (r'{\makehashsign}' in templatestr):
-            #    templatestr = templatestr.replace(r'{\makehashsign}', '\\#')
+            ## We need to replace the hash symbol too because that indicates a comment when placed
+            ## inside a template string.
+            if (r'{\makeopenbracket}' in itemstr):
+                itemstr = itemstr.replace(r'{\makeopenbracket}', '[')
+            if (r'{\makeclosebracket}' in itemstr):
+                itemstr = itemstr.replace(r'{\makeclosebracket}', ']')
+            if (r'{\makeverticalbar}' in itemstr):
+                itemstr = itemstr.replace(r'{\makeverticalbar}', '|')
+            if (r'{\makegreaterthan}' in itemstr):
+                itemstr = itemstr.replace(r'{\makegreaterthan}', '>')
+            if (r'{\makelessthan}' in itemstr):
+                itemstr = itemstr.replace(r'{\makelessthan}', '<')
+            if (r'{\makehashsign}' in templatestr):
+                templatestr = templatestr.replace(r'{\makehashsign}', '\\#')
 
             self.bibdata[entrykey][key] = templatestr
 
@@ -2238,10 +2246,10 @@ def namefield_to_namelist(namefield, key=None, nameabbrev=None, disable=None):
 
     ## Look for common typos.
     if re.search('\sand,\s', namefield, re.UNICODE):
-        warn('Warning 017a: The name string in entry "' + unicode(key) + '" has " and, ", which is '
+        bib_warning('Warning 017a: The name string in entry "' + unicode(key) + '" has " and, ", which is '
              'likely a typo. Continuing on anyway ...', disable)
     if re.search(', and', namefield, re.UNICODE):
-        warn('Warning 017b: The name string in entry "' + unicode(key) + '" has ", and", which is '
+        bib_warning('Warning 017b: The name string in entry "' + unicode(key) + '" has ", and", which is '
              'likely a typo. Continuing on anyway ...', disable)
 
     if (nameabbrev != None) and (key != None):
@@ -2582,15 +2590,15 @@ def get_quote_levels(s, disable=None, debug=False):
 
 
     if (alevels[-1] > 0):
-        warn('Warning 018a: found mismatched "``"..."''" quote pairs in the input string "' + s + \
+        bib_warning('Warning 018a: found mismatched "``"..."''" quote pairs in the input string "' + s + \
              '". Ignoring the problem and continuing on ...', disable)
         alevels[-1] = 0
     if (blevels[-1] > 0):
-        warn('Warning 018b: found mismatched "`"..."\'" quote pairs in the input string "' + s + \
+        bib_warning('Warning 018b: found mismatched "`"..."\'" quote pairs in the input string "' + s + \
              '". Ignoring the problem and continuing on ...', disable)
         blevels[-1] = 0
     if (clevels[-1] > 0):
-        warn('Warning 018c: found mismatched '"'...'"' quote pairs in the input string "' + s + \
+        bib_warning('Warning 018c: found mismatched '"'...'"' quote pairs in the input string "' + s + \
              '". Ignoring the problem and continuing on ...', disable)
         clevels[-1] = 0
 
@@ -2719,7 +2727,7 @@ def enwrap_nested_string(s, delims=('{','}'), odd_operator=r'\textbf', even_oper
 
     oplevels = get_delim_levels(s, delims, odd_operator)
     if (oplevels[-1] > 0):
-        warn('Warning 019: found mismatched "{","}" brace pairs in the input string. '
+        bib_warning('Warning 019: found mismatched "{","}" brace pairs in the input string. '
              'Ignoring the problem and continuing on ...', disable)
         return(s)
 
@@ -2772,7 +2780,7 @@ def enwrap_nested_quotes(s, disable=None, debug=False):
     ## flag these cases to inform the user that they need to modify the source to tell the parser
     ## what they want to do.
     if ("```" in s) or ("'''" in s):
-        warn('Warning 020: the input string ["' + s + '"] contains multiple unseparated quote '
+        bib_warning('Warning 020: the input string ["' + s + '"] contains multiple unseparated quote '
              'characters. Bibulous cannot unnest the single and double quotes from this set, so '
              'the separate quotations must be physically separated like ``{\:}`, for example. '
              'Ignoring the quotation marks and continuing ...', disable)
@@ -3348,7 +3356,7 @@ def namestr_to_namedict(namestr, disable=None):
             for match in re.finditer(r'(?<!\\)\.(?!-)', n_temp):
                 i = match.start()
                 if (z[i] == 0):
-                    warn('Warning 021: The name token "' + n + '" in namestring "' + namestr + \
+                    bib_warning('Warning 021: The name token "' + n + '" in namestring "' + namestr + \
                          '" has a "." inside it, which may be a typo. Ignoring ...', disable)
 
         namedict = {}
@@ -3388,7 +3396,7 @@ def namestr_to_namedict(namestr, disable=None):
         third_nametokens = thirdpart.strip().split(' ')
 
         if (len(second_nametokens) != 1):
-            warn('Warning 022: the BibTeX format for namestr="' + namestr + '" is malformed.' + \
+            bib_warning('Warning 022: the BibTeX format for namestr="' + namestr + '" is malformed.' + \
                  '\nThere should be only one name in the second part of the three comma-' \
                  'separated name elements.', disable)
             return({'last':'???'})
@@ -3429,7 +3437,7 @@ def namestr_to_namedict(namestr, disable=None):
         namedict['suffix'] = fifthpart.strip()
 
     else:
-        warn('Warning 023: the BibTeX format for namestr="' + namestr + '" is malformed.' + \
+        bib_warning('Warning 023: the BibTeX format for namestr="' + namestr + '" is malformed.' + \
              '\nThere should never be more than four commas in a given name.', disable)
         return({'last':'???'})
 
@@ -3546,7 +3554,7 @@ def create_edition_ordinal(bibentry, disable=None):
         editionstr = edition_number + 'th'
     else:
         if ('edition' in bibentry):
-            warn('Warning 024: the edition number "' + unicode(edition_number) + '" given for ' + \
+            bib_warning('Warning 024: the edition number "' + unicode(edition_number) + '" given for ' + \
                  'entry ' + key + ' is invalid. Ignoring', disable)
             editionstr = options['undefstr']
 
@@ -3649,10 +3657,10 @@ def parse_pagerange(pages_str, citekey=None, disable=None):
     if startpage.isdigit() and endpage and endpage.isdigit():
         if int(endpage) < int(startpage):
             if (citekey != None):
-                warn('Warning 025a: the "pages" field in entry "' + citekey + '" has a malformed '
+                bib_warning('Warning 025a: the "pages" field in entry "' + citekey + '" has a malformed '
                      'page range (endpage < startpage). Ignoring ...', disable)
             else:
-                warn('Warning 025b: the "pages" field "' + pages_str + '" is malformed, since '
+                bib_warning('Warning 025b: the "pages" field "' + pages_str + '" is malformed, since '
                      'endpage < startpage. Ignoring ...', disable)
 
     return(startpage, endpage)
@@ -3773,7 +3781,7 @@ def str_is_integer(s):
         return(False)
 
 ## =============================
-def warn(msg, disable=None):
+def bib_warning(msg, disable=None):
     '''
     Print a warning message, with the option to disable any given message.
 
