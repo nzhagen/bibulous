@@ -23,9 +23,10 @@
 \contentsline {section}{\numberline {5.8}Generating sortkeys}{17}{section.5.8}
 \contentsline {section}{\numberline {5.9}Testing}{17}{section.5.9}
 \contentsline {section}{\numberline {5.10}Generating the documentation}{18}{section.5.10}
-\contentsline {chapter}{\numberline {6}Overview}{19}{chapter.6}
-\contentsline {section}{\numberline {6.1}Example}{19}{section.6.1}
-\contentsline {section}{\numberline {6.2}Installing and instructions}{20}{section.6.2}
-\contentsline {section}{\numberline {6.3}Developers}{20}{section.6.3}
-\contentsline {section}{\numberline {6.4}License}{20}{section.6.4}
-\contentsline {chapter}{\numberline {7}Indices and tables}{23}{chapter.7}
+\contentsline {chapter}{\numberline {6}Bibulous Overview}{19}{chapter.6}
+\contentsline {section}{\numberline {6.1}Installation}{19}{section.6.1}
+\contentsline {section}{\numberline {6.2}Example}{19}{section.6.2}
+\contentsline {section}{\numberline {6.3}Installing and instructions}{20}{section.6.3}
+\contentsline {section}{\numberline {6.4}Developers}{20}{section.6.4}
+\contentsline {section}{\numberline {6.5}License}{20}{section.6.5}
+\contentsline {section}{\numberline {6.6}Indices and tables}{21}{section.6.6}

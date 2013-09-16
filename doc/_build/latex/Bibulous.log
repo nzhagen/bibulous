@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012/Debian) (format=pdflatex 2013.5.23)  9 JUL 2013 18:48
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012/Debian) (format=pdflatex 2013.8.21)  16 SEP 2013 16:46
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -871,7 +871,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 117--117
 
  []
 
-<banner.pdf, id=104, 1882.71153pt x 493.97911pt>
+<banner.pdf, id=108, 1882.71153pt x 493.97911pt>
 File: banner.pdf Graphic file (type pdf)
  <use banner.pdf>
 Package pdftex.def Info: banner.pdf used on input line 117.
@@ -936,7 +936,7 @@ LaTeX Font Info:    Try loading font information for T1+pcr on input line 126.
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1pcr.fd
 File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
 )
-<screenshot_for_kile_instructions.png, id=168, 765.6103pt x 552.82825pt>
+<screenshot_for_kile_instructions.png, id=173, 765.6103pt x 552.82825pt>
 File: screenshot_for_kile_instructions.png Graphic file (type png)
 
 <use screenshot_for_kile_instructions.png>
@@ -944,7 +944,7 @@ Package pdftex.def Info: screenshot_for_kile_instructions.png used on input lin
 e 139.
 (pdftex.def)             Requested size: 230.18253pt x 166.20404pt.
 
-<screenshot_for_kile_instructions2.png, id=170, 765.6103pt x 552.82825pt>
+<screenshot_for_kile_instructions2.png, id=175, 765.6103pt x 552.82825pt>
 File: screenshot_for_kile_instructions2.png Graphic file (type png)
 
 <use screenshot_for_kile_instructions2.png>
@@ -952,14 +952,14 @@ Package pdftex.def Info: screenshot_for_kile_instructions2.png used on input li
 ne 141.
 (pdftex.def)             Requested size: 230.18253pt x 166.20404pt.
  [3 <./screenshot_for_kile_instructions.png>] <original_Winedt5_setup.png, id=1
-80, 708.6475pt x 558.085pt>
+85, 708.6475pt x 558.085pt>
 File: original_Winedt5_setup.png Graphic file (type png)
 
 <use original_Winedt5_setup.png>
 Package pdftex.def Info: original_Winedt5_setup.png used on input line 166.
 (pdftex.def)             Requested size: 230.18253pt x 181.27328pt.
 
-<modified_Winedt5_setup.png, id=181, 708.6475pt x 558.085pt>
+<modified_Winedt5_setup.png, id=186, 708.6475pt x 558.085pt>
 File: modified_Winedt5_setup.png Graphic file (type png)
 
 <use modified_Winedt5_setup.png>
@@ -1007,26 +1007,22 @@ Underfull \hbox (badness 10000) in paragraph at lines 481--482
 Chapter 6.
 [19
 
-] [20] [21] [22
-
-]
-Chapter 7.
-(./Bibulous.ind)
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 632.
- [23]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 632.
+] [20] (./Bibulous.ind)
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 641.
+ [21]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 641.
  (./Bibulous.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 632.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 632.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 641.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 641.
 Package rerunfilecheck Info: File `Bibulous.out' has not changed.
-(rerunfilecheck)             Checksum: 4D34D1DEA72D33C85B28C8F0A4C59BCF;1676.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 632.
+(rerunfilecheck)             Checksum: 32873642C69FE7CB27D1880CEEA7C756;1755.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 641.
  ) 
 Here is how much of TeX's memory you used:
- 8952 strings out of 495036
- 124240 string characters out of 3180976
- 222232 words of memory out of 3000000
- 11848 multiletter control sequences out of 15000+200000
+ 8953 strings out of 495036
+ 124283 string characters out of 3180976
+ 222291 words of memory out of 3000000
+ 11850 multiletter control sequences out of 15000+200000
  55056 words of font info for 61 fonts, out of 3000000 for 9000
  15 hyphenation exceptions out of 8191
  36i,12n,45p,1323b,424s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -1036,10 +1032,10 @@ fonts/type1/urw/helvetic/uhvb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/
 urw/helvetic/uhvbo8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/u
 tmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr
 /share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Bibulous.pdf (27 pages, 477634 bytes).
+Output written on Bibulous.pdf (25 pages, 468232 bytes).
 PDF statistics:
- 366 PDF objects out of 1000 (max. 8388607)
- 318 compressed objects within 4 object streams
- 106 named destinations out of 1000 (max. 500000)
- 226 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 363 PDF objects out of 1000 (max. 8388607)
+ 317 compressed objects within 4 object streams
+ 105 named destinations out of 1000 (max. 500000)
+ 234 words of extra memory for PDF output out of 10000 (max. 10000000)
 

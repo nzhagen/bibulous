@@ -3,7 +3,7 @@ from distutils.core import setup
 
 setup(
     name = "bibulous",
-    py_modules = ["bibulous, bibulous_test, bibulous_authorextract, bibulous_citeextract"],
+    py_modules = ["bibulous, bibulous_test, bibulous_authorextract"],
     version = "1.0",
     description = "Replacement for BibTeX",
     author = "Nathan Hagen",

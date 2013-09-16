@@ -14,8 +14,8 @@
 
 
 \title{Bibulous Documentation}
-\date{July 09, 2013}
-\release{1.0}
+\date{September 16, 2013}
+\release{1.2}
 \author{Bibulous developers}
 \newcommand{\sphinxlogo}{\includegraphics{banner.pdf}\par}
 \renewcommand{\releasename}{Release}
@@ -534,8 +534,8 @@ Finally, run \code{bibulous\_test.py} to check the result. This script will load
 From the bibulous repository \code{doc/} subfolder, run \code{make html} to generate the HTML documentation. The result can be found in \code{doc/\_build/html/}, with \code{index.html} as the main file. To generate the PDF documentation, run \code{make latexpdf} from the \code{doc/} subfolder, with the result found at \code{doc/\_build/latex/Bibulous.pdf}.
 
 
-\chapter{Overview}
-\label{index:overview}
+\chapter{Bibulous Overview}
+\label{index:bibulous-overview}
 Bibulous is a drop-in replacement for BibTeX that makes use of style templates instead of BibTeX's BST language. The code is written in Python and, like BibTeX itself, is open source.
 
 Bibulous developed out of frustration with the complexity of creating bibliography styles using BibTeX's obscure language, and also from the realization that because bibliographies are highly structured, one should be able to specify them simply and flexibly using a template approach. There should be no need to learn a new language just to build a bibliography style, and specifying a style should taken only a matter of minutes.
@@ -543,6 +543,15 @@ Bibulous developed out of frustration with the complexity of creating bibliograp
 Bibulous incorporates this template approach, and at the same time implements many of the modern enhancements to BibTeX, such as the ability to work with languages other than English, better support for allowing non-standard bibliography entry types, functionality for enhanced citation styles, and increased options for author name formatting, among others. The fact that Bibulous is agnostic to the names of fields in bibliography database files (\code{.bib}) means that one can use the same database and same LaTeX commands for generating each of: a bibliography, a glossary, a publications list for a CV, an annotated bibliography, and more, all within the same file and only by specifying a different style template for each case.
 
 Bibulous' “style template” files allow a user to visualize the entire bibliography format structure in a concise way within a single page of text. Moreover, the template is structured with its own Python-like mini-language, intended to allow uses to create flexible formatting instructions quickly and easily. The example below illustrates the simplicity of the format.
+
+
+\section{Installation}
+\label{index:installation}
+Installing using pip.
+
+\begin{Verbatim}[commandchars=\\\{\}]
+pip install bibulous
+\end{Verbatim}
 
 
 \section{Example}
@@ -597,7 +606,7 @@ DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
-\chapter{Indices and tables}
+\section{Indices and tables}
 \label{index:indices-and-tables}\begin{itemize}
 \item {} 
 \emph{genindex}
