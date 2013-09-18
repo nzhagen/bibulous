@@ -37,6 +37,7 @@ import locale
 import traceback    ## for getting full traceback info in exceptions
 import pdb          ## put "pdb.set_trace()" at any place you want to interact with pdb
 import difflib      ## for comparing one string sequence with another
+import getopt
 from bibulous import Bibdata
 
 
@@ -114,14 +115,15 @@ def run_test2():
     ## passes.
     try:
         ## Don't import the AUX file --- regenerate it anew every time you run the test.
-        filenames = bibfiles + [bblfile,bstfile]
-        bibobj = Bibdata(filenames, disable=[4,6,9,11,18,20,21,25])
-        bibobj.write_auxfile(auxfile)
-        bibobj.parse_auxfile(auxfile)
-
+        #filenames = bibfiles + [bblfile,bstfile]
+        #bibobj = Bibdata(filenames, disable=[4,6,9,11,18,20,21,25])
+        #bibobj.write_auxfile(auxfile)
+        #bibobj.parse_auxfile(auxfile)
+        bibobj = Bibdata(auxfile, disable=[4,6,9,11,18,20,21,25])
         bibobj.write_bblfile()
         result = True
-    except:
+    except getopt.GetoptError as err:
+        print('Error encountered: ' + err)
         result = False
 
     return(result)
@@ -399,56 +401,56 @@ def check_file_match(testnum, outputfile, targetfile):
 if (__name__ == '__main__'):
     suite_pass = True
 
-    ## Run test #1.
-    (outputfile, targetfile) = run_test1()
-    result = check_file_match(1, outputfile, targetfile)
-    suite_pass *= result
-
-    ## Run test #2.
-    result = run_test2()
-    suite_pass *= result
-    if result:
-        print('TEST #2 PASSED')
-    else:
-        print('TEST #2 FAILED.')
-
-    ## Run test #3.
-    (outputfile, targetfile) = run_test3()
-    result = check_file_match(3, outputfile, targetfile)
-    suite_pass *= result
-
-    ## Run test #4.
-    (outputfile, targetfile) = run_test4()
-    result = check_file_match(4, outputfile, targetfile)
-    suite_pass *= result
+#    ## Run test #1.
+#    (outputfile, targetfile) = run_test1()
+#    result = check_file_match(1, outputfile, targetfile)
+#    suite_pass *= result
+#
+#    ## Run test #2.
+#    result = run_test2()
+#    suite_pass *= result
+#    if result:
+#        print('TEST #2 PASSED')
+#    else:
+#        print('TEST #2 FAILED.')
+#
+#    ## Run test #3.
+#    (outputfile, targetfile) = run_test3()
+#    result = check_file_match(3, outputfile, targetfile)
+#    suite_pass *= result
+#
+#    ## Run test #4.
+#    (outputfile, targetfile) = run_test4()
+#    result = check_file_match(4, outputfile, targetfile)
+#    suite_pass *= result
 
     ## Run test #5.
     (outputfile, targetfile) = run_test5()
     result = check_file_match(5, outputfile, targetfile)
     suite_pass *= result
 
-    ## Run test #6.
-    result = run_test6()
-    suite_pass *= result
-    if result:
-        print('TEST #6 PASSED')
-    else:
-        print('TEST #6 FAILED.')
-
-    ## Run test #7.
-    (outputfile, targetfile) = run_test7()
-    result = check_file_match(7, outputfile, targetfile)
-    suite_pass *= result
-
-    ## Run test #8.
-    (outputfile, targetfile) = run_test8()
-    result = check_file_match(8, outputfile, targetfile)
-    suite_pass *= result
-
-    ## Run test #9.
-    (outputfile, targetfile) = run_test9()
-    result = check_file_match(9, outputfile, targetfile)
-    suite_pass *= result
+#    ## Run test #6.
+#    result = run_test6()
+#    suite_pass *= result
+#    if result:
+#        print('TEST #6 PASSED')
+#    else:
+#        print('TEST #6 FAILED.')
+#
+#    ## Run test #7.
+#    (outputfile, targetfile) = run_test7()
+#    result = check_file_match(7, outputfile, targetfile)
+#    suite_pass *= result
+#
+#    ## Run test #8.
+#    (outputfile, targetfile) = run_test8()
+#    result = check_file_match(8, outputfile, targetfile)
+#    suite_pass *= result
+#
+#    ## Run test #9.
+#    (outputfile, targetfile) = run_test9()
+#    result = check_file_match(9, outputfile, targetfile)
+#    suite_pass *= result
 
     if suite_pass:
         print('***** THE CODE PASSES ALL TESTS IN THE TESTING SUITE. *****')

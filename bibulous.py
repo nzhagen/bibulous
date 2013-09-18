@@ -147,6 +147,7 @@ class Bibdata(object):
     check_citekeys_in_datakeys
     add_crossrefs_to_searchkeys
     insert_specials
+    validate_templatestr
 
     Example
     -------
@@ -298,7 +299,8 @@ class Bibdata(object):
                     self.add_crossrefs_to_searchkeys()
                 if ('*' in self.citedict):
                     for i,key in enumerate(self.bibdata.keys()):
-                        self.citedict[key] = i
+                        if (key != 'preamble'):
+                            self.citedict[key] = i
                     if ('preamble' in self.citedict): del self.citedict['preamble']
                     if ('*' in self.citedict): del self.citedict['*']
                 ## Write out the extracted database.
@@ -884,6 +886,10 @@ class Bibdata(object):
                 print('Evaluating the user script:\n' + 'v'*50 + '\n' + self.user_script + '^'*50 + '\n')
             exec(self.user_script, globals())
 
+        ## Next validate all of the template strings to check for formattnig errors.
+        for key in self.bstdict:
+            self.validate_templatestr(self.bstdict[key])
+
         if self.debug:
             ## When displaying the BST dictionary, show it in sorted form.
             for key in sorted(self.bstdict, key=self.bstdict.get, cmp=locale.strcoll):
@@ -953,7 +959,8 @@ class Bibdata(object):
 
         ## Use a try-except block here, so that if any exception is raised then we can make sure to
         ## produce a valid BBL file.
-        try:
+        #try:
+        if True: #zzz
             ## First Define a list which contains the citation keys, sorted in the order in which
             ## we need for writing into the BBL file.
             self.create_citation_list()
@@ -982,10 +989,11 @@ class Bibdata(object):
                 if (s != ''):
                     ## Need two line EOL's here and not one so that backrefs can work properly.
                     filehandle.write((s + '\n').encode('utf-8'))
-        except Exception, err:
-            ## Swallow the exception
-            print('Exception encountered: ' + repr(err))
-        finally:
+#        except Exception, err:
+#            ## Swallow the exception
+#            print('Exception encountered: ' + repr(err))
+#        finally:
+        if True: #zzz
             if write_postamble:
                 filehandle.write('\n\\end{thebibliography}\n'.encode('utf-8'))
             filehandle.close()
@@ -1104,17 +1112,6 @@ class Bibdata(object):
                   'in the .bst file'
             bib_warning('Warning 011: ' + msg, self.disable)
             return(itemstr + '\\textit{Warning: ' + msg + '}.')
-
-        ## Process the optional arguments. First check the syntax. Make sure that there are the same
-        ## number of open as closed brackets.
-        num_obrackets = templatestr.count('[')
-        num_cbrackets = templatestr.count(']')
-        if (num_obrackets != num_cbrackets):
-            msg = 'In the template for entrytype "' + entrytype + '" there are ' + \
-                  unicode(num_obrackets) + ' open brackets "[", but ' + unicode(num_cbrackets) + \
-                  ' close brackets "]" in the formatting string'
-            bib_warning('Warning 012: ' + msg, self.disable)
-            return(itemstr + '\\testit{' + msg + '}.')
 
         ## Get the list of all the variables used by the template string.
         variables = re.findall(r'<.*?>', templatestr)
@@ -1338,16 +1335,16 @@ class Bibdata(object):
         ## Now that we've replaced template variables, go ahead and replace the special commands.
         ## We need to replace the hash symbol too because that indicates a comment when placed
         ## inside a template string.
-        if (r'{\makeopenbracket}' in itemstr):
-            itemstr = itemstr.replace(r'{\makeopenbracket}', '[')
-        if (r'{\makeclosebracket}' in itemstr):
-            itemstr = itemstr.replace(r'{\makeclosebracket}', ']')
-        if (r'{\makeverticalbar}' in itemstr):
-            itemstr = itemstr.replace(r'{\makeverticalbar}', '|')
-        if (r'{\makegreaterthan}' in itemstr):
-            itemstr = itemstr.replace(r'{\makegreaterthan}', '>')
-        if (r'{\makelessthan}' in itemstr):
-            itemstr = itemstr.replace(r'{\makelessthan}', '<')
+        if (r'{\makeopenbracket}' in templatestr):
+            templatestr = templatestr.replace(r'{\makeopenbracket}', '[')
+        if (r'{\makeclosebracket}' in templatestr):
+            templatestr = templatestr.replace(r'{\makeclosebracket}', ']')
+        if (r'{\makeverticalbar}' in templatestr):
+            templatestr = templatestr.replace(r'{\makeverticalbar}', '|')
+        if (r'{\makegreaterthan}' in templatestr):
+            templatestr = templatestr.replace(r'{\makegreaterthan}', '>')
+        if (r'{\makelessthan}' in templatestr):
+            templatestr = templatestr.replace(r'{\makelessthan}', '<')
         if (r'{\makehashsign}' in templatestr):
             templatestr = templatestr.replace(r'{\makehashsign}', '\\#')
 
@@ -1755,16 +1752,16 @@ class Bibdata(object):
         ## Now that we've replaced template variables, go ahead and replace the special commands.
         ## We need to replace the hash symbol too because that indicates a comment when placed
         ## inside a template string.
-        if (r'{\makeopenbracket}' in itemstr):
-            itemstr = itemstr.replace(r'{\makeopenbracket}', '[')
-        if (r'{\makeclosebracket}' in itemstr):
-            itemstr = itemstr.replace(r'{\makeclosebracket}', ']')
-        if (r'{\makeverticalbar}' in itemstr):
-            itemstr = itemstr.replace(r'{\makeverticalbar}', '|')
-        if (r'{\makegreaterthan}' in itemstr):
-            itemstr = itemstr.replace(r'{\makegreaterthan}', '>')
-        if (r'{\makelessthan}' in itemstr):
-            itemstr = itemstr.replace(r'{\makelessthan}', '<')
+        if (r'{\makeopenbracket}' in templatestr):
+            templatestr = templatestr.replace(r'{\makeopenbracket}', '[')
+        if (r'{\makeclosebracket}' in templatestr):
+            templatestr = templatestr.replace(r'{\makeclosebracket}', ']')
+        if (r'{\makeverticalbar}' in templatestr):
+            templatestr = templatestr.replace(r'{\makeverticalbar}', '|')
+        if (r'{\makegreaterthan}' in templatestr):
+            templatestr = templatestr.replace(r'{\makegreaterthan}', '>')
+        if (r'{\makelessthan}' in templatestr):
+            templatestr = templatestr.replace(r'{\makelessthan}', '<')
         if (r'{\makehashsign}' in templatestr):
             templatestr = templatestr.replace(r'{\makehashsign}', '\\#')
 
@@ -2074,16 +2071,16 @@ class Bibdata(object):
             ## Now that we've replaced template variables, go ahead and replace the special commands.
             ## We need to replace the hash symbol too because that indicates a comment when placed
             ## inside a template string.
-            if (r'{\makeopenbracket}' in itemstr):
-                itemstr = itemstr.replace(r'{\makeopenbracket}', '[')
-            if (r'{\makeclosebracket}' in itemstr):
-                itemstr = itemstr.replace(r'{\makeclosebracket}', ']')
-            if (r'{\makeverticalbar}' in itemstr):
-                itemstr = itemstr.replace(r'{\makeverticalbar}', '|')
-            if (r'{\makegreaterthan}' in itemstr):
-                itemstr = itemstr.replace(r'{\makegreaterthan}', '>')
-            if (r'{\makelessthan}' in itemstr):
-                itemstr = itemstr.replace(r'{\makelessthan}', '<')
+            if (r'{\makeopenbracket}' in templatestr):
+                templatestr = templatestr.replace(r'{\makeopenbracket}', '[')
+            if (r'{\makeclosebracket}' in templatestr):
+                templatestr = templatestr.replace(r'{\makeclosebracket}', ']')
+            if (r'{\makeverticalbar}' in templatestr):
+                templatestr = templatestr.replace(r'{\makeverticalbar}', '|')
+            if (r'{\makegreaterthan}' in templatestr):
+                templatestr = templatestr.replace(r'{\makegreaterthan}', '>')
+            if (r'{\makelessthan}' in templatestr):
+                templatestr = templatestr.replace(r'{\makelessthan}', '<')
             if (r'{\makehashsign}' in templatestr):
                 templatestr = templatestr.replace(r'{\makehashsign}', '\\#')
 
@@ -2096,6 +2093,61 @@ class Bibdata(object):
         if ('editor' in entry) and ('editorlist' not in entry):
             self.create_namelist(entrykey, 'editor')
         return
+
+    ## =============================
+    def validate_templatestr(self, templatestr):
+        '''
+        Validate the template string so that it contains no formatting errors.
+
+        Parameters
+        ----------
+        templatestr : str
+            The template string to be validated.
+
+        Returns
+        -------
+        okay : bool
+            Whether or not the template is properly formatted.
+        '''
+
+        okay = True
+
+        ## Make sure that there are the same number of open as closed brackets.
+        num_obrackets = templatestr.count('[')
+        num_cbrackets = templatestr.count(']')
+        if (num_obrackets != num_cbrackets):
+            msg = 'In the template for entrytype "' + entrytype + '" there are ' + \
+                  unicode(num_obrackets) + ' open brackets "[", but ' + unicode(num_cbrackets) + \
+                  ' close brackets "]" in the formatting string'
+            bib_warning('Warning 012: ' + msg, self.disable)
+            okay = False
+
+        ## Check that no ']' appears before a '['.
+        levels = get_delim_levels(templatestr, ('[',']'))
+        if (-1 in levels):
+            msg = 'A closed bracket "]" occurs before a corresponding open bracket "[" in the ' + \
+                  'template string "' + templatestr + '"'
+            bib_warning('Warning 027: ' + msg, self.disable)
+            okay = False
+
+        ## Finally, check that no '[', ']', or '|' appear inside a variable name.
+        variables = re.findall(r'<.*?>', templatestr)
+        for var in variables:
+            if ('[' in var):
+                msg = 'An invalid "[" character appears inside the template variable "' + var + '"'
+                bib_warning('Warning 028a: ' + msg, self.disable)
+                okay = False
+            if (']' in var):
+                msg = 'An invalid "]" character appears inside the template variable "' + var + '"'
+                bib_warning('Warning 028b: ' + msg, self.disable)
+                okay = False
+            if ('|' in var):
+                msg = 'An invalid "|" character appears inside the template variable "' + var + '"'
+                bib_warning('Warning 028c: ' + msg, self.disable)
+                okay = False
+
+        return(okay)
+
 
 ## ================================================================================================
 ## END OF BIBDATA CLASS.
@@ -3922,15 +3974,10 @@ def remove_template_options_brackets(templatestr, entry, variables, undefstr='??
     num_cbrackets = templatestr.count(']')
 
     ## Do a nested search. From the beginning of the formatting string look for the first '[', and
-    ## the first ']'. If they are out of order, raise an exception. Note that this assumes that the
-    ## square brackets cannot be nested.
+    ## the first ']'. Note that this assumes that the square brackets cannot be nested.
     for i in range(num_obrackets):
         start_idx = templatestr.index('[')
         end_idx = templatestr.index(']')
-        if not (start_idx < end_idx):
-            msg = 'A closed bracket "]" occurs before an open bracket "[" in the format ' + \
-                  'string "' + templatestr + '"'
-            raise SyntaxError(msg)
 
         ## Remove the outer square brackets, and use the resulting substring as an input to the
         ## parser.
