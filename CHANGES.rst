@@ -12,7 +12,7 @@ version 1.1 (19-Aug-2013)
   when there are no new citations added to the auxiliary file.
 
 
-version 1.2 (11-Sep-2013)
+version 1.2 (19-Sep-2013)
 -------------------------
 
 - Moved the way that citation labels and sortkeys are generated from using keywords to using

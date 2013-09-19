@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 # pylint: disable-msg=C0321
+# pylint: max-line-length=120
+# pylint: max-module-lines=10000
 # See the LICENSE.rst file for licensing information.
 '''
 Bibulous is a drop-in replacement for BibTeX, with the primary advantage that the bibliography
@@ -34,11 +36,11 @@ import sys
 import codecs       ## for importing UTF8-encoded files
 import locale       ## for language internationalization and localization
 import getopt       ## for getting command-line options
-import traceback    ## for getting full traceback info in exceptions
 import copy         ## for the "deepcopy" command
 import platform     ## for determining the OS of the system
 from math import log10
-import pdb          ## put "pdb.set_trace()" at any place you want to interact with pdb
+#import pdb          ## put "pdb.set_trace()" at any place you want to interact with pdb
+#import traceback    ## for getting full traceback info in exceptions
 
 #def info(type, value, tb):
 #   #if (not sys.stderr.isatty() or
@@ -55,47 +57,43 @@ import pdb          ## put "pdb.set_trace()" at any place you want to interact w
 #sys.excepthook = info      ## go into debugger automatically on an exception
 
 __version__ = '1.0'
-__all__ = ['sentence_case', 'stringsplit', 'finditer', 'namefield_to_namelist',
-           'namedict_to_formatted_namestr', 'initialize_name', 'get_delim_levels',
-           'show_levels_debug', 'get_quote_levels', 'splitat', 'multisplit', 'enwrap_nested_string',
-           'enwrap_nested_quotes', 'purify_string', 'latex_to_utf8', 'parse_bst_template_str',
-           'namestr_to_namedict', 'search_middlename_for_prefixes', 'create_edition_ordinal',
-           'export_bibfile', 'parse_pagerange', 'parse_nameabbrev', 'make_sortkey_unique',
-           'filter_script', 'str_is_integer', 'bib_warning', 'format_namelist',
-           'remove_template_options_brackets', 'create_citation_alpha']
+__all__ = ['sentence_case', 'stringsplit', 'finditer', 'namefield_to_namelist', 'namedict_to_formatted_namestr',
+           'initialize_name', 'get_delim_levels', 'show_levels_debug', 'get_quote_levels', 'splitat', 'multisplit',
+           'enwrap_nested_string', 'enwrap_nested_quotes', 'purify_string', 'latex_to_utf8', 'namestr_to_namedict',
+           'search_middlename_for_prefixes', 'create_edition_ordinal', 'export_bibfile', 'parse_pagerange',
+           'parse_nameabbrev', 'make_sortkey_unique', 'filter_script', 'str_is_integer', 'bib_warning',
+           'format_namelist', 'create_citation_alpha', 'remove_nested_template_options_brackets',
+           'remove_template_options_brackets', 'simplify_template', 'toplevel_split']
 
 
 class Bibdata(object):
     '''
-    Bibdata is a class to hold all data related to a bibliography database, a citation list, and a
-    style template.
+    Bibdata is a class to hold all data related to a bibliography database, a citation list, and a style template.
 
-    To initialize the class, either call it with the filename of the `.aux` file containing the
-    relevant file locations (for the `.bib` database files and the `.bst` template files) or simply
-    call it with a list of all filenames to be used (i.e. `database_name.bib`,
-    `style_template_name.bst` and `main_filename.aux`). The output file (the LaTeX-formatted
-    bibliography) is assumed to have the same filename root as the `.aux` file, but with `.bbl` as
-    its extension.
+    To initialize the class, either call it with the filename of the `.aux` file containing the relevant file locations
+    (for the `.bib` database files and the `.bst` template files) or simply call it with a list of all filenames to be
+    used (i.e. `database_name.bib`, `style_template_name.bst` and `main_filename.aux`). The output file (the LaTeX-
+    formatted bibliography) is assumed to have the same filename root as the `.aux` file, but with `.bbl` as its
+    extension.
 
     Attributes
     ----------
     abbrevs : dict
-        The list of abbreviations given in the bibliography database file(s). The dictionary keys \
-        are the abbreviations, and the values are their full forms.
+        The list of abbreviations given in the bibliography database file(s). The dictionary keys are the \
+        abbreviations, and the values are their full forms.
     bibdata : dict
-        The database of bibliography entries and fields derived from parsing the bibliography \
-        database file(s).
+        The database of bibliography entries and fields derived from parsing the bibliography database file(s).
     bstdict : dict
-        The style template for formatting the bibliography. The dictionary keys are the \
-        entrytypes, with the dictionary values their string template.
+        The style template for formatting the bibliography. The dictionary keys are the entrytypes, with the dictionary
+        values their string template.
     citedict : dict
         The dictionary of citation keys, and their corresponding numerical order of citation.
     debug : bool
         Whether to turn on debugging features.
     filedict : dict
-        The ditionary of filenames associated with the bibliographic data. The dictionary consists \
-        of keys `bib`, `bst`, `aux`, `tex`, and `bbl`. The first two are lists of filenames, while
-        the others contain only a single filename.
+        The ditionary of filenames associated with the bibliographic data. The dictionary consists of keys `bib`, \
+        `bst`, `aux`, `tex`, and `bbl`. The first two are lists of filenames, while the others contain only a single \
+        filename.
     filename : str
         (For error messages and debugging) The name of the file currently being parsed.
     i : int
@@ -117,14 +115,12 @@ class Bibdata(object):
     startbrace_pattern : compiled regular expression object
         The regex used to search for a starting curly brace, `{`.
     culldata : bool
-        Whether to cull the database so that only cited entries are parsed. Setting this to False \
-        means that the entire BIB file database will be parsed. When True, the BIB file parser \
-        will only parse those entries corresponding to keys in the citedict. Setting this to True \
-        provides significant speedups for large databases.
+        Whether to cull the database so that only cited entries are parsed. Setting this to False means that the entire \
+        BIB file database will be parsed. When True, the BIB file parser will only parse those entries corresponding to \
+        keys in the citedict. Setting this to True provides significant speedups for large databases.
     parse_only_entrykeys : bool
-        When comparing a database file against a citation list, all we are initially interested in \
-        are the entrykeys and not the data. So, in our first pass through the database, we can use \
-        this flag to skip the data.
+        When comparing a database file against a citation list, all we are initially interested in are the entrykeys \
+        and not the data. So, in our first pass through the database, we can use this flag to skip the data.
 
     Methods
     -------
@@ -160,10 +156,10 @@ class Bibdata(object):
         self.abbrevs = {'jan':'1', 'feb':'2', 'mar':'3', 'apr':'4', 'may':'5', 'jun':'6',
                         'jul':'7', 'aug':'8', 'sep':'9', 'oct':'10', 'nov':'11', 'dec':'12'}
         self.bibdata = {'preamble':''}
-        self.filedict = {}  ## the dictionary containing all of the files associated with the bibliography
-        self.citedict = {}  ## the dictionary containing the original data from the AUX file
-        self.citelist = []  ## the *sorted* list of citation keys
-        self.bstdict = {}   ## the dictionary containing all information from template files
+        self.filedict = {}          ## the dictionary containing all of the files associated with the bibliography
+        self.citedict = {}          ## the dictionary containing the original data from the AUX file
+        self.citelist = []          ## the *sorted* list of citation keys
+        self.bstdict = {}           ## the dictionary containing all information from template files
         self.user_script = ''       ## any user-written Python scripts go here
         self.user_variables = {}    ## any user-defined variables from the BST files
         self.culldata = culldata    ## whether to cull the database so that only cited entries are parsed
@@ -185,8 +181,8 @@ class Bibdata(object):
         self.filename = ''                      ## the current filename (for error messages)
         self.i = 0                              ## counter for line in file (for error messages)
 
-        ## On default initialization, we don't want to issue any warnings about "overwriting" the
-        ## default options. So if no "default" keyword is given, then turn off warning #9.
+        ## On default initialization, we don't want to issue any warnings about "overwriting" the default options. So
+        ## if no "default" keyword is given, then turn off warning #9.
         if (disable == None):
             self.disable = [9]
         else:
@@ -227,8 +223,8 @@ class Bibdata(object):
         self.anybraceorquote_pattern = re.compile(r'(?<!\\)[{}"]', re.UNICODE)
         self.integer_pattern = re.compile(r'^-?[0-9]+', re.UNICODE)
 
-        ## Create an inverse dictionary for the month names. The month names are determined by the
-        ## user's default locale.
+        ## Create an inverse dictionary for the month names. The month names are determined by the user's default
+        ## locale.
         self.monthname_dict = {}
         for i in range(1,13):
             if self.options['month_abbrev'] and not (platform.system() == 'Windows'):
@@ -236,20 +232,19 @@ class Bibdata(object):
                 self.monthname_dict[unicode(i)] = locale.nl_langinfo(locale.__dict__['ABMON_'+unicode(i)]).title()
             elif self.options['month_abbrev'] and(platform.system() == 'Windows'):
                 self.monthname_dict = {'1':'Jan', '2':'Feb', '3':'Mar', '4':'Apr', '5':'May', '6':'Jun',
-                                  '7':'Jul', '8':'Aug', '9':'Sep', '10':'Oct', '11':'Nov', '12':'Dec'}
+                                       '7':'Jul', '8':'Aug', '9':'Sep', '10':'Oct', '11':'Nov', '12':'Dec'}
             elif (platform.system() == 'Windows'):
                 self.monthname_dict = {'1':'January', '2':'February', '3':'March', '4':'April',
-                                  '5':'May', '6':'June', '7':'July', '8':'August', '9':'September',
-                                  '10':'October', '11':'November', '12':'December'}
+                                       '5':'May', '6':'June', '7':'July', '8':'August', '9':'September',
+                                       '10':'October', '11':'November', '12':'December'}
             else:
                 ## The full form (i.e. 'january').
                 self.monthname_dict[unicode(i)] = locale.nl_langinfo(locale.__dict__['MON_'+unicode(i)]).title()
 
-        ## Get the list of filenames associated with the bibliography (AUX, BBL, BIB, TEX).
-        ## Additionally, if the input "filename" contains only the AUX file, then we assume
-        ## that the user wants only to parse that part if the database corresponding to the
-        ## citation keys in the AUX file. This default behavior can be overriden (so that the
-        ## entire database is parsed) is the optional keyword "cull_database" is set to False.
+        ## Get the list of filenames associated with the bibliography (AUX, BBL, BIB, TEX). Additionally, if the input
+        ## "filename" contains only the AUX file, then we assume that the user wants only to parse that part if the
+        ## database corresponding to the citation keys in the AUX file. This default behavior can be overriden (so that
+        ## the entire database is parsed) is the optional keyword "cull_database" is set to False.
         self.get_bibfilenames(filename)
 
         ## Print out some info on Bibulous and the files it is working on.
@@ -266,28 +261,27 @@ class Bibdata(object):
             if ('*' in self.citedict):
                 self.culldata = False
 
-        ## Parsing the style file has to go *before* parsing the BIB file, so that any style options
-        ## that affect the way the data is parsed can take effect.
+        ## Parsing the style file has to go *before* parsing the BIB file, so that any style options that affect the way
+        ## the data is parsed can take effect.
         if self.filedict['bst']:
             for f in self.filedict['bst']:
                 self.parse_bstfile(f)
 
-        ## Next, get the list of entrykeys in the database file(s), and compare them against the
-        ## list of citation keys.
+        ## Next, get the list of entrykeys in the database file(s), and compare them against the list of citation keys.
         if self.filedict['bib']:
             if self.citedict and self.options['use_citeextract'] and os.path.exists(self.filedict['extract']):
                 self.parse_only_entrykeys = True
                 self.parse_bibfile(self.filedict['extract'])
                 self.parse_only_entrykeys = False
                 is_complete = self.check_citekeys_in_datakeys()
-                ## Clear the bibliography database, or we will get "overwrite" errors when we parse
-                ## it again below (since right now all we have are entrykeys).
+                ## Clear the bibliography database, or we will get "overwrite" errors when we parse it again below
+                ## (since right now all we have are entrykeys).
                 self.bibdata = {'preamble':''}
             else:
                 is_complete = False
 
-            ## If the current database is complete, then just go ahead and use it. If not, then parse
-            ## the main database file(s).
+            ## If the current database is complete, then just go ahead and use it. If not, then parse the main database
+            ## file(s).
             if is_complete:
                 self.parse_bibfile(self.filedict['extract'])
             else:
@@ -324,16 +318,15 @@ class Bibdata(object):
         #filehandle = open(os.path.normpath(self.filename), 'rU')
         filehandle = codecs.open(os.path.normpath(self.filename), 'r', 'utf-8')
 
-        ## This next block parses the lines in the file into a dictionary. The tricky part here is
-        ## that the BibTeX format allows for multiline entries. So we have to look for places where
-        ## a line does not end in a comma, and check the following line to see if it a continuation
-        ## of that line. Unfortunately, this means we need to read the whole file into memory ---
-        ## not just one line at a time.
+        ## This next block parses the lines in the file into a dictionary. The tricky part here is that the BibTeX
+        ## format allows for multiline entries. So we have to look for places where a line does not end in a comma, and
+        ## check the following line to see if it a continuation of that line. Unfortunately, this means we need to read
+        ## the whole file into memory --- not just one line at a time.
         entry_brace_level = 0
 
-        ## The variable "entrystr" contains all of the contents of the entry between the entrytype
-        ## definition "@____{" and the closing brace "}". Once we've obtained all of the (in general
-        ## multiline) contents, then we hand them off to parse_bibentry() to format them.
+        ## The variable "entrystr" contains all of the contents of the entry between the entrytype definition "@____{"
+        ## and the closing brace "}". Once we've obtained all of the (in general multiline) contents, then we hand them
+        ## off to parse_bibentry() to format them.
         entrystr = ''
         entrytype = None
         self.i = 0           ## line number counter --- for error messages only
@@ -345,19 +338,17 @@ class Bibdata(object):
             if not line: continue
             if line.strip().startswith('%'): continue
             if line.startswith('}'):
-                ## If a line *starts* with a closing brace, then assume the intent is to close the
-                ## current entry.
+                ## If a line *starts* with a closing brace, then assume the intent is to close the current entry.
                 entry_brace_level = 0
                 self.parse_bibentry(entrystr, entrytype)       ## close out the entry
                 entrystr = ''
                 if (line[1:].strip() != ''):
-                    bib_warning('Warning 001a: line#' + unicode(self.i) + ' of "' + self.filename + '" has '
-                          'data outside of an entry {...} block. Skipping all contents until the '
-                          'next entry ...', self.disable)
+                    bib_warning('Warning 001a: line#' + unicode(self.i) + ' of "' + self.filename + '" has data outside'
+                          ' of an entry {...} block. Skipping all contents until the next entry ...', self.disable)
                 continue
 
-            ## Don't strip off leading and ending whitespace until after checking if '}' begins a
-            ## line (as in the block above).
+            ## Don't strip off leading and ending whitespace until after checking if '}' begins a line (as in the block
+            ## above).
             line = line.strip()
 
             if line.startswith('@'):
@@ -372,17 +363,16 @@ class Bibdata(object):
                 line = line[brace_idx+1:]
                 entry_brace_level = 1
 
-            ## If we are not current inside an active entry, then skip the line and wait until the
-            ## the next entry.
+            ## If we are not current inside an active entry, then skip the line and wait until the the next entry.
             if (entry_brace_level == 0):
                 if (line.strip() != ''):
-                    bib_warning('Warning 001b: line#' + unicode(self.i) + ' of "' + self.filename + \
-                         '" has data outside of an entry {...} block. Skipping all contents ' + \
-                         'until the next entry ...', self.disable)
+                    bib_warning('Warning 001b: line#' + unicode(self.i) + ' of "' + self.filename + '" has data ' + \
+                                'outside of an entry {...} block. Skipping all contents until the next entry ...',
+                                self.disable)
                 continue
 
-            ## Look if the entry ends with this line. If so, append it to "entrystr" and call the
-            ## entry parser. If not, then simply append to the string and continue.
+            ## Look if the entry ends with this line. If so, append it to "entrystr" and call the entry parser. If not,
+            ## then simply append to the string and continue.
             endpos = len(line)
 
             for match in re.finditer(self.anybrace_pattern, line):
@@ -412,9 +402,9 @@ class Bibdata(object):
     ## =============================
     def parse_bibentry(self, entrystr, entrytype):
         '''
-        Given a string representing the entire contents of the BibTeX-format bibliography entry,
-        parse the contents and place them into the bibliography preamble string, the set of
-        abbreviations, and the bibliography database dictionary.
+        Given a string representing the entire contents of the BibTeX-format bibliography entry, parse the contents and
+        place them into the bibliography preamble string, the set of abbreviations, and the bibliography database
+        dictionary.
 
         Parameters
         ----------
@@ -430,16 +420,16 @@ class Bibdata(object):
         if (entrytype == 'comment'):
             pass
         elif (entrytype == 'preamble'):
-            ## In order to use the same "parse_bibfield()" function as all the other options, add a
-            ## fake key onto the front of the string before calling "parse_bibfield()".
+            ## In order to use the same "parse_bibfield()" function as all the other options, add a fake key onto the
+            ## front of the string before calling "parse_bibfield()".
             fd = self.parse_bibfield('fakekey = ' + entrystr)
             if fd: self.bibdata['preamble'] += '\n' + fd['fakekey']
         elif (entrytype == 'string'):
             fd = self.parse_bibfield(entrystr)
             if fd: self.abbrevs.update(fd)
         elif (entrytype == 'acronym'):
-            ## Acronym entrytypes have an identical form to "string" types, but we map them into a
-            ## dictionary like a regular field, so we can access them as regular database entries.
+            ## Acronym entrytypes have an identical form to "string" types, but we map them into a dictionary like a
+            ## regular field, so we can access them as regular database entries.
             fd = self.parse_bibfield(entrystr)
             entrykey = fd.keys()[0]
             newentry = {'name':entrykey, 'description':fd[entrykey], 'entrytype':'acronym'}
@@ -453,9 +443,8 @@ class Bibdata(object):
                      'Skipping ...', self.disable)
                 return(fd)
 
-            ## Get the entry key. If we are culling the database (self.culldata == True) and the
-            ## entry key is not among the citation keys, then exit --- we don't need to add this
-            ## to the database.
+            ## Get the entry key. If we are culling the database (self.culldata == True) and the entry key is not among
+            ## the citation keys, then exit --- we don't need to add this to the database.
             entrykey = entrystr[:idx].strip()
             if self.searchkeys and (entrykey not in self.searchkeys): return
             entrystr = entrystr[idx+1:]
@@ -481,9 +470,8 @@ class Bibdata(object):
     ## =============================
     def parse_bibfield(self, entrystr):
         '''
-        For a given string representing the raw contents of a BibTeX-format bibliography entry,
-        parse the contents into a dictionary of key:value pairs corresponding to the field
-        names and field values.
+        For a given string representing the raw contents of a BibTeX-format bibliography entry, parse the contents into
+        a dictionary of key:value pairs corresponding to the field names and field values.
 
         Parameters
         ----------
@@ -518,16 +506,15 @@ class Bibdata(object):
                 entrystr = ''
                 continue
 
-            ## Next we go through the field contents, which may involve concatenating. When we
-            ## reach the end of an individual field, we return the "result string" and
-            ## truncate the entry string to remove the part we just finished parsing.
+            ## Next we go through the field contents, which may involve concatenating. When we reach the end of an
+            ## individual field, we return the "result string" and truncate the entry string to remove the part we just
+            ## finished parsing.
             resultstr = ''
             while fieldstr:
                 firstchar = fieldstr[0]
 
                 if (firstchar == ','):
-                    ## Reached the end of the field, truncate the entry string return to the outer
-                    ## loop over fields.
+                    ## Reached the end of the field, truncate the entry string return to the outer loop over fields.
                     fd[fieldkey] = resultstr
                     entrystr = fieldstr[1:].strip()
                     break
@@ -535,9 +522,8 @@ class Bibdata(object):
                     ## Reached a concatenation operator. Just skip it.
                     fieldstr = fieldstr[1:].strip()
                 elif (firstchar == '"'):
-                    ## Search for the content string that resolves the double-quote delimiter.
-                    ## Once you've found the end delimiter, append the content string to the
-                    ## result string.
+                    ## Search for the content string that resolves the double-quote delimiter. Once you've found the
+                    ## end delimiter, append the content string to the result string.
                     endpos = len(fieldstr)
                     entry_brace_level = 0
                     for match in re.finditer(self.anybraceorquote_pattern, fieldstr[1:]):
@@ -552,8 +538,8 @@ class Bibdata(object):
                     fieldstr = fieldstr[endpos+1:].strip()
                     if not fieldstr: entrystr = ''
                 elif (firstchar == '{'):
-                    ## Search for the endbrace that resolves the brace level. Once you've found it,
-                    ## add the intervening contents to the result string.
+                    ## Search for the endbrace that resolves the brace level. Once you've found it, add the intervening
+                    ## contents to the result string.
                     endpos = len(fieldstr)
                     entry_brace_level = 1
                     for match in re.finditer(self.anybrace_pattern, fieldstr[1:]):
@@ -568,19 +554,17 @@ class Bibdata(object):
                     fieldstr = fieldstr[endpos+1:].strip()
                     if not fieldstr: entrystr = ''
                 else:
-                    ## If the fieldstr doesn't begin with '"' or '{' or '#', then the next set of
-                    ## characters must be an abbreviation key. An abbrev key ends with a whitespace
-                    ## followed by either '#' or ',' (or the end of the field). Anything else is a
-                    ## syntax error.
+                    ## If the fieldstr doesn't begin with '"' or '{' or '#', then the next set of characters must be an
+                    ## abbreviation key. An abbrev key ends with a whitespace followed by either '#' or ',' (or the end
+                    ## of the field). Anything else is a syntax error.
                     endpos = len(fieldstr)
                     end_of_field = False
 
-                    ## The "abbrevkey_pattern" searches for the first '#' or ',' that is not
-                    ## preceded by a backslash. If this pattern is found, then we've found the
-                    ## *end* of the abbreviation key.
+                    ## The "abbrevkey_pattern" searches for the first '#' or ',' that is not preceded by a backslash. If
+                    ## this pattern is found, then we've found the *end* of the abbreviation key.
                     if not re.search(self.abbrevkey_pattern, fieldstr):
-                        ## If the "abbrevkey" is an integer, then it's not actually an abbreviation.
-                        ## Convert it to a string and insert the number itself.
+                        ## If the "abbrevkey" is an integer, then it's not actually an abbreviation. Convert it to a
+                        ## string and insert the number itself.
                         abbrevkey = fieldstr
                         if re.match(self.integer_pattern, abbrevkey):
                             resultstr += unicode(abbrevkey)
@@ -588,18 +572,17 @@ class Bibdata(object):
                             if abbrevkey in self.abbrevs:
                                 resultstr += self.abbrevs[abbrevkey].strip()
                             else:
-                                bib_warning('Warning 006: for the entry ending on line #' + \
-                                     unicode(self.i) + ' of file "' + self.filename + \
-                                     '", cannot find the abbreviation key "' + abbrevkey + \
-                                     '". Skipping ...', self.disable)
+                                bib_warning('Warning 006: for the entry ending on line #' + unicode(self.i) + \
+                                    ' of file "' + self.filename + '", cannot find the abbreviation key "' +
+                                    abbrevkey + '". Skipping ...', self.disable)
                                 resultstr = self.options['undefstr']
                         fieldstr = ''
                         end_of_field = True
                     else:
                         (fieldstr, resultstr, end_of_field) = self.replace_abbrevs_with_full(fieldstr, resultstr)
 
-                    ## Since we found the comma at the end of this field's contents, we break here
-                    ## to return to the loop over fields.
+                    ## Since we found the comma at the end of this field's contents, we break here to return to the loop
+                    ## over fields.
                     if end_of_field:
                         entrystr = fieldstr.strip()
                         break
@@ -607,8 +590,8 @@ class Bibdata(object):
             ## Strip off any unnecessary white space and remove any newlines.
             resultstr = resultstr.strip().replace('\n',' ')
 
-            ## Having braces around quotes can cause problems when parsing nested quotes, and
-            ## do not provide any additional functionality.
+            ## Having braces around quotes can cause problems when parsing nested quotes, and do not provide any
+            ## additional functionality.
             if ('{"}') in resultstr:
                 resultstr = resultstr.replace('{"}', '"')
             if ("{'}") in resultstr:
@@ -623,8 +606,8 @@ class Bibdata(object):
     ## =============================
     def parse_auxfile(self, filename, debug=False):
         '''
-        Read in an `.aux` file and convert the `\citation{}` entries found there into a dictionary
-        of citekeys and citation order number.
+        Read in an `.aux` file and convert the `\citation{}` entries found there into a dictionary of citekeys and
+        citation order number.
 
         Parameters
         ----------
@@ -637,23 +620,22 @@ class Bibdata(object):
         #filehandle = open(os.path.normpath(self.filename), 'rU')
         filehandle = codecs.open(os.path.normpath(filename), 'r', 'utf-8')
 
-        ## First go through the file and grab the list of citation keys. Once we get them all, then
-        ## we can go through the list and figure out the numbering.
+        ## First go through the file and grab the list of citation keys. Once we get them all, then we can go through
+        ## the list and figure out the numbering.
         keylist = []
         for line in filehandle:
             line = line.strip()
             if not line.startswith(r'\citation{'): continue
 
-            ## Remove the "\citeation{" from the front and the "}" from the back. If multiple
-            ## citations are given, then split them using the comma.
+            ## Remove the "\citeation{" from the front and the "}" from the back. If multiple citations are given,
+            ## then split them using the comma.
             items = line[10:-1].split(',')
             for item in items:
                 keylist.append(item)
         filehandle.close()
 
-        ## If you didn't find any citations in the file, issue a warning. Otherwise, build a
-        ## dictionary of keys giving the citation keys with values equal to the citation order
-        ## number.
+        ## If you didn't find any citations in the file, issue a warning. Otherwise, build a dictionary of keys giving
+        ## the citation keys with values equal to the citation order number.
         if not keylist:
             bib_warning('Warning 007: no citations found in AUX file "' + filename + '"', self.disable)
         else:
@@ -665,8 +647,8 @@ class Bibdata(object):
                 self.citedict[key] = q
 
         if debug:
-            ## When displaying the dictionary, show it in order-sorted form. Remember to use
-            ## the user's locale for the sort.
+            ## When displaying the dictionary, show it in order-sorted form. Remember to use the user's locale for the
+            ## sort.
             for key in sorted(self.citedict, key=self.citedict.get, cmp=locale.strcoll):
                 print(key + ': ' + unicode(self.citedict[key]))
 
@@ -677,9 +659,9 @@ class Bibdata(object):
         '''
         Convert a Bibulous-type bibliography style template into a dictionary.
 
-        The resulting dictionary consists of keys which are the various entrytypes, and values which \
-        are the template strings. In addition, any formatting options are stored in the "options" key \
-        as a dictionary of option_name:option_value pairs.
+        The resulting dictionary consists of keys which are the various entrytypes, and values which are the template
+        strings. In addition, any formatting options are stored in the "options" key as a dictionary of
+        option_name:option_value pairs.
 
         Parameters
         ----------
@@ -691,12 +673,12 @@ class Bibdata(object):
         filehandle = open(os.path.normpath(filename), 'rU')
         filehandle = codecs.open(os.path.normpath(filename), 'r', 'utf-8')
 
-        ## For the "definition_pattern", rather than matching the initial string up to the first
-        ## whitespace character, we match a whitespace-equals-whitespace
+        ## For the "definition_pattern", rather than matching the initial string up to the first whitespace character,
+        ## we match a whitespace-equals-whitespace
         definition_pattern = re.compile(r'\s=\s', re.UNICODE)
         section = 'TEMPLATES'
-        continuation = False    ## whether the current line is a continuation of the previous
-        abort_script = False    ## if an unsafe object is being used, abort the user_script eval
+        continuation = False        ## whether the current line is a continuation of the previous
+        abort_script = False        ## if an unsafe object is being used, abort the user_script eval
 
         for i,line in enumerate(filehandle):
             ## Ignore any comment lines, and remove any comments from data lines.
@@ -707,8 +689,8 @@ class Bibdata(object):
                 if not line.strip(): continue       ## if the line contained only a comment
 
             if ('EXECUTE {' in line) or ('EXECUTE{' in line) or ('FUNCTION {' in line):
-                raise ImportError('The style template file "' + filename + '" appears to be BibTeX '
-                                  'format, not Bibulous. Aborting...')
+                raise ImportError('The style template file "' + filename + '" appears to be BibTeX format, not '
+                                  'Bibulous. Aborting...')
 
             if line.strip().startswith('TEMPLATES:'):
                 section = 'TEMPLATES'
@@ -733,34 +715,28 @@ class Bibdata(object):
 
             if (section == 'DEFINITIONS'):
                 if ('__' in line):
-                    bib_warning('Warning 026a: Python script line #' + str(i) + ' of file "' + filename + \
-                         '" contains an invalid use of "__".\nAborting script evaluation ...',
-                         self.disable)
+                    bib_warning('Warning 026a: Python script line #' + str(i) + ' of file "' + filename + '" contains' \
+                         ' an invalid use of "__".\nAborting script evaluation ...', self.disable)
                     abort_script = True
                 if re.search(r'\sos.\S', line, re.UNICODE):
-                    bib_warning('Warning 026b: Python script line #' + str(i) + ' of file "' + filename + \
-                         '" contains an invalid call to the "os" module.\n' + \
-                         'Aborting script evaluation ...', self.disable)
+                    bib_warning('Warning 026b: Python script line #' + str(i) + ' of file "' + filename + '" contains' \
+                         ' an invalid call to the "os" module.\nAborting script evaluation ...', self.disable)
                     abort_script = True
                 if re.search(r'\ssys.\S', line, re.UNICODE):
-                    bib_warning('Warning 026c: Python script line #' + str(i) + ' of file "' + filename + \
-                         '" contains an invalid call to the "sys" module.\n' + \
-                         'Aborting script evaluation ...', self.disable)
+                    bib_warning('Warning 026c: Python script line #' + str(i) + ' of file "' + filename + '" contains' \
+                         ' an invalid call to the "sys" module.\nAborting script evaluation ...', self.disable)
                     abort_script = True
                 if re.search(r'\scodecs.\S', line, re.UNICODE):
-                    bib_warning('Warning 026c: Python script line #' + str(i) + ' of file "' + filename + \
-                         '" contains an invalid call to the "codecs" module.\n' + \
-                         'Aborting script evaluation ...', self.disable)
+                    bib_warning('Warning 026c: Python script line #' + str(i) + ' of file "' + filename + '" contains' \
+                         ' an invalid call to the "codecs" module.\nAborting script evaluation ...', self.disable)
                     abort_script = True
                 if re.search(r'^import\s', line, re.UNICODE):
-                    bib_warning('Warning 026d: Python script line #' + str(i) + ' of file "' + filename + \
-                         '" contains an invalid call to "import".\n' + \
-                         'Aborting script evaluation ...', self.disable)
+                    bib_warning('Warning 026d: Python script line #' + str(i) + ' of file "' + filename + '" contains' \
+                         ' an invalid call to "import".\nAborting script evaluation ...', self.disable)
                     abort_script = True
                 if re.search(r'^import\s', line, re.UNICODE):
-                    bib_warning('Warning 026e: Python script line #' + str(i) + ' of file "' + filename + \
-                         '" contains an invalid call to the "open()" function.\n' + \
-                         'Aborting script evaluation ...', self.disable)
+                    bib_warning('Warning 026e: Python script line #' + str(i) + ' of file "' + filename + '" contains' \
+                         ' an invalid call to the "open()" function.\nAborting script evaluation ...', self.disable)
                     abort_script = True
 
                 self.user_script += line
@@ -772,8 +748,8 @@ class Bibdata(object):
                 if not line: continue
                 matchobj = re.search(definition_pattern, line)
                 if (matchobj == None):
-                    bib_warning('Warning 008a: line #' + str(i) + ' of file "' + filename + '" does ' + \
-                         'not contain a valid variable definition.\n Skipping ...', self.disable)
+                    bib_warning('Warning 008a: line #' + str(i) + ' of file "' + filename + '" does not contain' + \
+                         ' a valid variable definition.\n Skipping ...', self.disable)
                     continue
                 (start,end) = matchobj.span()
                 var = line[:start].strip()
@@ -782,30 +758,27 @@ class Bibdata(object):
                 if self.debug:
                     print('Adding user variable "' + var + '" with value "' + value + '" ...')
             elif (section in ('TEMPLATES','OPTIONS','SPECIAL-TEMPLATES')):
-                ## Skip empty lines. It is tempting to put this line above here, but resist the
-                ## temptation -- putting it higher above would remove empty lines from the Python
-                ## scripts in the DEFINITIONS section, which would make troubleshooting those
-                ## more difficult.
+                ## Skip empty lines. It is tempting to put this line above here, but resist the temptation -- putting it
+                ## higher above would remove empty lines from the Python scripts in the DEFINITIONS section, which would
+                ## make troubleshooting those more difficult.
                 if not line: continue
                 if not continuation:
-                    ## If the line ends with an ellpsis, then remove the ellipsis and set
-                    ## continuation to True.
+                    ## If the line ends with an ellpsis, then remove the ellipsis and set continuation to True.
                     if line.endswith('...'):
                         line = line[:-3].strip()
                         continuation = True
 
                     matchobj = re.search(definition_pattern, line)
                     if (matchobj == None):
-                        bib_warning('Warning 008b: line #' + str(i) + ' of file "' + filename + '" does ' + \
-                             'not contain a valid variable definition.\n Skipping ...', self.disable)
+                        bib_warning('Warning 008b: line #' + str(i) + ' of file "' + filename + '" does not contain' + \
+                             ' a valid variable definition.\n Skipping ...', self.disable)
                         continue
 
                     (start,end) = matchobj.span()
                     var = line[:start].strip()
                     value = line[end:].strip()
                 else:
-                    ## If the line ends with an ellpsis, then remove the ellipsis and set
-                    ## continuation to True.
+                    ## If the line ends with an ellpsis, then remove the ellipsis and set continuation to True.
                     if line.endswith('...'):
                         line = line[:-3].strip()
                         continuation = True
@@ -815,12 +788,11 @@ class Bibdata(object):
                     value += line.strip()
 
                 if (section == 'TEMPLATES'):
-                    ## The line defines an entrytype template. Check whether this definition is
-                    ## overwriting an already existing definition.
+                    ## The line defines an entrytype template. Check whether this definition is overwriting an already
+                    ## existing definition.
                     if (var in self.bstdict) and (self.bstdict[var] != value):
                         bib_warning('Warning 009a: overwriting the existing template variable "' + var + \
-                             '" from [' + self.bstdict[var] + '] to [' + value + '] ...',
-                             self.disable)
+                             '" from [' + self.bstdict[var] + '] to [' + value + '] ...', self.disable)
                     self.bstdict[var] = value
 
                     ## Find out if the template has nested option blocks. If so, then add it to
@@ -836,9 +808,8 @@ class Bibdata(object):
                     ## The variable defines an option rather than an entrytype. Check whether this definition is
                     ## overwriting an already existing definition.
                     if (var in self.options) and (str(self.options[var]) != value):\
-                        bib_warning('Warning 009b: overwriting the existing template option "' + var + \
-                             '" from [' + unicode(self.options[var]) + '] to [' + \
-                             unicode(value) + '] ...', self.disable)
+                        bib_warning('Warning 009b: overwriting the existing template option "' + var + '" from [' + \
+                             unicode(self.options[var]) + '] to [' + unicode(value) + '] ...', self.disable)
                     ## If the value is numeric or bool, then convert the datatype from string.
                     if self.debug:
                         print('Setting BST option "' + var + '" to value "' + value + '"')
@@ -850,12 +821,11 @@ class Bibdata(object):
                     self.options[var] = value
 
                 elif (section == 'SPECIAL-TEMPLATES'):
-                    ## The line defines an entrytype template. Check whether this definition is
-                    ## overwriting an already existing definition.
+                    ## The line defines an entrytype template. Check whether this definition is overwriting an already
+                    ## existing definition.
                     if (var in self.specials) and (self.specials[var] != value):
-                        bib_warning('Warning 009c: overwriting the existing special template variable "' + \
-                             var + '" from [' + self.specials[var] + '] to [' + value + '] ...',
-                             self.disable)
+                        bib_warning('Warning 009c: overwriting the existing special template variable "' + var + \
+                             '" from [' + self.specials[var] + '] to [' + value + '] ...', self.disable)
                     self.specials[var] = value
                     if self.debug:
                         print('Setting BST special template "' + var + '" to value "' + value + '"')
@@ -869,26 +839,26 @@ class Bibdata(object):
         if ('terse_inits' in self.options) and  self.options['terse_inits']:
             self.options['period_after_initial'] = False
 
-        ## Next check to see whether any of the template definitions are simply maps to one
-        ## of the other definitions. For example, one BST file may have a line of the form
+        ## Next check to see whether any of the template definitions are simply maps to one of the other definitions.
+        ## For example, one BST file may have a line of the form
         ##      inbook = incollection
-        ## which implies that the template for "inbook" should be mapped to the same template
-        ## as defined for the "incollection" entrytype.
+        ## which implies that the template for "inbook" should be mapped to the same template as defined for the
+        ## "incollection" entrytype.
         for key in self.bstdict:
             nwords = len(re.findall(r'\w+', self.bstdict[key]))
             if (nwords == 1) and ('<' not in self.bstdict[key]):
                 self.bstdict[key] = self.bstdict[self.bstdict[key]]
 
-        ## If the user defined any functions, then we want to evaluate them in a way such that
-        ## they are available in other functions.
+        ## If the user defined any functions, then we want to evaluate them in a way such that they are available in
+        ## other functions.
         if self.user_script and self.options['allow_scripts']:
             if self.debug:
                 print('Evaluating the user script:\n' + 'v'*50 + '\n' + self.user_script + '^'*50 + '\n')
             exec(self.user_script, globals())
 
-        ## Next validate all of the template strings to check for formattnig errors.
+        ## Next validate all of the template strings to check for formatting errors.
         for key in self.bstdict:
-            self.validate_templatestr(self.bstdict[key])
+            self.validate_templatestr(self.bstdict[key], key)
 
         if self.debug:
             ## When displaying the BST dictionary, show it in sorted form.
@@ -905,24 +875,23 @@ class Bibdata(object):
     def write_bblfile(self, filename=None, write_preamble=True, write_postamble=True, bibsize=None,
                       debug=False):
         '''
-        Given a bibliography database `bibdata`, a dictionary containing the citations called out \
-        `citedict`, and a bibliography style template `bstdict` write the LaTeX-format file for the \
-        formatted bibliography.
+        Given a bibliography database `bibdata`, a dictionary containing the citations called out `citedict`, and a
+        bibliography style template `bstdict` write the LaTeX-format file for the formatted bibliography.
 
-        Start with the preamble and then loop over the citations one by one, formatting each entry \
-        one at a time, and put `\end{thebibliography}` at the end when done.
+        Start with the preamble and then loop over the citations one by one, formatting each entry one at a time, and
+        put `\end{thebibliography}` at the end when done.
 
         Parameters
         ----------
         filename : str, optional
-            The filename of the ".bbl" file to write. (Default is to take the AUX file and change \
-            its extension to ".bbl".)
+            The filename of the ".bbl" file to write. (Default is to take the AUX file and change its extension to \
+            ".bbl".)
         write_preamble : bool, optional
-            Whether to write the preamble. (Setting this to False can be useful when writing the \
-            bibliography in separate steps, as in the testing suite.)
+            Whether to write the preamble. (Setting this to False can be useful when writing the bibliography in \
+            separate steps, as in the testing suite.)
         write_postamble : bool, optional
-            Whether to write the postamble. (Setting this to False can be useful when writing the \
-            bibliography in separate steps, as in the testing suite.)
+            Whether to write the postamble. (Setting this to False can be useful when writing the bibliography in \
+            separate steps, as in the testing suite.)
         bibsize : str, optional
             A string the length of which is used to determine the label margin for the bibliography.
         '''
@@ -957,17 +926,16 @@ class Bibdata(object):
 
             filehandle.write('\n\n'.encode('utf-8'))
 
-        ## Use a try-except block here, so that if any exception is raised then we can make sure to
-        ## produce a valid BBL file.
-        #try:
-        if True: #zzz
-            ## First Define a list which contains the citation keys, sorted in the order in which
-            ## we need for writing into the BBL file.
+        ## Use a try-except block here, so that if any exception is raised then we can make sure to produce a valid
+        ## BBL file.
+        try:
+            ## First Define a list which contains the citation keys, sorted in the order in which we need for writing
+            ## into the BBL file.
             self.create_citation_list()
 
-            ## Write out each individual bibliography entry. Some formatting options will actually
-            ## cause the entry to be deleted, so we need the check below to see if the return
-            ## string is empty before writing it to the file.
+            ## Write out each individual bibliography entry. Some formatting options will actually cause the entry to
+            ## be deleted, so we need the check below to see if the return string is empty before writing it to the
+            ## file.
             for c in self.citelist:
                 if (c not in self.bibdata):
                     msg = 'citation key "' + c + '" is not in the bibliography database'
@@ -976,24 +944,22 @@ class Bibdata(object):
                 ## Verbose output is for debugging.
                 if debug: print('Writing entry "' + c + '" to "' + filename + '" ...')
 
-                ## Before inserting entries into the BBL file, we do "difficult" BIB parsing jobs
-                ## here: insert cross-reference data, format author and editor name lists, generate
-                ## the "edition_ordinal", etc. Doing it here means that we don't have to add lots
-                ## of extra checks later.
+                ## Before inserting entries into the BBL file, we do "difficult" BIB parsing jobs here: insert cross-
+                ## reference data, format author and editor name lists, generate the "edition_ordinal", etc. Doing it
+                ## here means that we don't have to add lots of extra checks later.
                 self.insert_crossref_data(c)
                 self.insert_specials(c)
 
-                ## Now that we have generated all of the "special" fields, we can call the bibitem
-                ## formatter to generate the output for this entry.
+                ## Now that we have generated all of the "special" fields, we can call the bibitem formatter to generate
+                ## the output for this entry.
                 s = self.format_bibitem(c)
                 if (s != ''):
                     ## Need two line EOL's here and not one so that backrefs can work properly.
                     filehandle.write((s + '\n').encode('utf-8'))
-#        except Exception, err:
-#            ## Swallow the exception
-#            print('Exception encountered: ' + repr(err))
-#        finally:
-        if True: #zzz
+        except Exception, err:
+            ## Swallow the exception
+            print('Exception encountered: ' + repr(err))
+        finally:
             if write_postamble:
                 filehandle.write('\n\\end{thebibliography}\n'.encode('utf-8'))
             filehandle.close()
@@ -1006,24 +972,23 @@ class Bibdata(object):
         Create the list of citation keys, sorted into the proper order.
         '''
 
-        ## Create a temporary dictionary to hold the citation keys (as dictionary values) and the
-        ## strings we wish to use for sorting (as the dictionary keys).
+        ## Create a temporary dictionary to hold the citation keys (as dictionary values) and the strings we wish to
+        ## use for sorting (as the dictionary keys).
         sortdict = {}
 
-        ## Generate a sortkey for each citation. If the sortkey is already present in the
-        ## dictionary, it will replace the the old entry with the new, and we would lose a citation
-        ## in the process. To prevent this, we need to make sure that it is unique.
+        ## Generate a sortkey for each citation. If the sortkey is already present in the dictionary, it will replace
+        ## the the old entry with the new, and we would lose a citation in the process. To prevent this, we need to
+        ## make sure that it is unique.
         for c in self.citedict:
             sortkey = self.generate_sortkey(c)
             if (sortkey in sortdict):
                 sortkey = make_sortkey_unique(sortkey, sortdict)
             sortdict[sortkey] = unicode(c)      ## use "unicode()" to convert to string in case the key is an integer
 
-        ## This part can be a little tricky. If the sortkey is generated such that it begins with an
-        ## integer, then we should make sure that negative-values get sorted in front of positive
-        ## ones. This happens in simple sort() but not when we use locale's "strcoll". So we have to
-        ## separate the two cases manually. Also, use [::-1] on the negative integers because they
-        ## need to be ordered from largest number to smallest.
+        ## This part can be a little tricky. If the sortkey is generated such that it begins with an integer, then we
+        ## should make sure that negative-values get sorted in front of positive ones. This happens in simple sort() but
+        ## not when we use locale's "strcoll". So we have to separate the two cases manually. Also, use [::-1] on the
+        ## negative integers because they need to be ordered from largest number to smallest.
         variables = re.findall(r'<.*?>', self.specials['sortkey'])
         if (variables[0] in ['<year>','<sortyear>']):
             firstdict = {k:sortdict[k] for k in sortdict if k[0] == '-'}
@@ -1037,8 +1002,8 @@ class Bibdata(object):
         if (self.specials['sortkey'][0] == '-'):
             self.citelist = self.citelist[::-1]
 
-        ## Finally, now that we have them in the order we want, we keep only the citation keys, so
-        ## that we know which entry maps to which in the ".aux" file.
+        ## Finally, now that we have them in the order we want, we keep only the citation keys, so that we know which
+        ## entry maps to which in the ".aux" file.
         self.citelist = [sortdict[a] for a in self.citelist]
         for c in self.citelist:
             sortkey = (key for key,value in sortdict.items() if value==c).next()
@@ -1052,11 +1017,10 @@ class Bibdata(object):
         '''
         Create the "\bibitem{...}" string to insert into the ".bbl" file.
 
-        This is the workhorse function of Bibulous. For a given citation key, find the resulting
-        entry in the bibliography database. From the entry's `entrytype`, lookup the relevant
-        template in bstdict and start replacing template variables with formatted elements of the
-        database entry. Once you've replaced all template variables, you're done formatting that
-        entry. Write the result to the BBL file.
+        This is the workhorse function of Bibulous. For a given citation key, find the resulting entry in the
+        bibliography database. From the entry's `entrytype`, lookup the relevant template in bstdict and start replacing
+        template variables with formatted elements of the database entry. Once you've replaced all template variables,
+        you're done formatting that entry. Write the result to the BBL file.
 
         Parameters
         ----------
@@ -1066,9 +1030,8 @@ class Bibdata(object):
         Returns
         -------
         itemstr : str
-            The string containing the \bibitem{} citation key and LaTeX-formatted string for the
-            formatted bibliography. (That is, this string is designed to be inserted directly into
-            the LaTeX document.)
+            The string containing the \bibitem{} citation key and LaTeX-formatted string for the formatted \
+            bibliography. (That is, this string is designed to be inserted directly into the LaTeX document.)
         '''
 
         c = citekey
@@ -1081,8 +1044,7 @@ class Bibdata(object):
         else:
             itemstr = r'\bibitem[' + bibitem_label + ']{' + c + '}\n'
 
-        ## If the citation key is not in the database, replace the format string with a message to the
-        ## fact.
+        ## If the citation key is not in the database, replace the format string with a message to the fact.
         if (c not in self.bibdata):
             msg = 'citation key "' + c + '" is not in the bibliography database'
             bib_warning('Warning 010c: ' + msg, self.disable)
@@ -1097,8 +1059,8 @@ class Bibdata(object):
             print('Template: "' + self.bstdict[entrytype] + '"')
             print('Field data: ' + repr(entry))
 
-        ## If the journal format uses ProcSPIE like a journal, then you need to change the entrytype
-        ## from "inproceedings" to "article", and add a "journal" field.
+        ## If the journal format uses ProcSPIE like a journal, then you need to change the entrytype from
+        ## "inproceedings" to "article", and add a "journal" field.
         if self.options['procspie_as_journal'] and (entrytype == 'inproceedings') and \
             ('series' in entry) and (entry['series'] in ['Proc. SPIE','procspie']):
             entrytype = 'article'
@@ -1116,9 +1078,9 @@ class Bibdata(object):
         ## Get the list of all the variables used by the template string.
         variables = re.findall(r'<.*?>', templatestr)
 
-        ## Before checking which variables are defined and which not, we first need to evaluate the
-        ## user-defined variables or else they will always be "undefined". To make this work, we
-        ## also need to provide the user shortcut names:
+        ## Before checking which variables are defined and which not, we first need to evaluate the user-defined
+        ## variables or else they will always be "undefined". To make this work, we also need to provide the user
+        ## shortcut names:
         if self.user_variables and self.options['allow_scripts']:
             options = self.options
             citedict = self.citedict
@@ -1131,17 +1093,21 @@ class Bibdata(object):
                 ## Add the user variables to the list of "variables" to track.
                 variables.append('<' + user_var_name + '>')
 
-        ## Next go through the template and replace each variable with the appropriate string from
-        ## the database. Start with the three special cases. This block of code has to go before
-        ## the "parse_bst_template_str()" call below to ensure that these variables are defined
-        ## when they are evaluated there.
+        ## Next go through the template and replace each variable with the appropriate string from the database. Start
+        ## with the three special cases. This block of code has to go before the "simplify_template()" call below to
+        ## ensure that these variables are defined when they are evaluated there.
         if ('<authorliststr>' in templatestr) and ('authorlist' in entry):
             entry['authorliststr'] = format_namelist(entry['authorlist'], self.options, 'author')
         if ('<editorliststr>' in templatestr) and ('editorlist' in entry):
             entry['editorliststr'] = format_namelist(entry['editorlist'], self.options, 'editor')
 
         try:
-            templatestr = remove_template_options_brackets(templatestr, entry, variables, undefstr=self.options['undefstr'])
+            if (entry['entrytype'] in self.nested_templates):
+                templatestr = remove_nested_template_options_brackets(templatestr, entry, variables,
+                                                                      undefstr=self.options['undefstr'])
+            else:
+                templatestr = remove_template_options_brackets(templatestr, entry, variables,
+                                                               undefstr=self.options['undefstr'])
         except SyntaxError, err:
             itemstr = itemstr + '\\textit{' + err + '}.'
             bib_warning('Warning 013: ' + err, self.disable)
@@ -1153,10 +1119,9 @@ class Bibdata(object):
             else:
                 title = entry['title']
 
-            ## If the template string has punctuation right after the title, and the title itself
-            ## also has punctuation, then you may get something like "Title?," where the two
-            ## punctuation marks conflict. In that case, keep the title's punctuation and drop the
-            ## template's.
+            ## If the template string has punctuation right after the title, and the title itself also has punctuation,
+            ## then you may get something like "Title?," where the two punctuation marks conflict. In that case, keep
+            ## the title's punctuation and drop the template's.
             if title.endswith(('?','!')):
                 idx = templatestr.index('<title>')
                 if (templatestr[idx + len('<title>')] in (',','.','!','?',';',':')):
@@ -1165,8 +1130,8 @@ class Bibdata(object):
             else:
                 templatestr = templatestr.replace('<title>', title)
 
-        ## Remove the special cases from the variables list --- we already replaced these above.
-        ## (Right now there is only <title> here, but we can add more.)
+        ## Remove the special cases from the variables list --- we already replaced these above. (Right now there is
+        ## only <title> here, but we can add more.)
         specials_list = ('<title>')
         variables = [item for item in variables if item not in specials_list]
 
@@ -1182,9 +1147,8 @@ class Bibdata(object):
         ## Add the template string onto the "\bibitem{...}\n" line in front of it.
         itemstr = itemstr + templatestr
 
-        ## Now that we've replaced template variables, go ahead and replace the special commands.
-        ## We need to replace the hash symbol too because that indicates a comment when placed
-        ## inside a template string.
+        ## Now that we've replaced template variables, go ahead and replace the special commands. We need to replace the
+        ## hash symbol too because that indicates a comment when placed inside a template string.
         if (r'{\makeopenbracket}' in itemstr):
             itemstr = itemstr.replace(r'{\makeopenbracket}', '[')
         if (r'{\makeclosebracket}' in itemstr):
@@ -1198,8 +1162,8 @@ class Bibdata(object):
         if (r'{\makehashsign}' in templatestr):
             templatestr = templatestr.replace(r'{\makehashsign}', '\\#')
 
-        ## If there are nested operators on the string, replace all even-level operators with \{}.
-        ## Is there any need to do this with \textbf{} and \texttt{} as well?
+        ## If there are nested operators on the string, replace all even-level operators with \{}. Is there any need to
+        ## do this with \textbf{} and \texttt{} as well?
         if (itemstr.count('\\textit{') > 1):
             itemstr = enwrap_nested_string(itemstr, delims=('{','}'), odd_operator=r'\textit', \
                                            even_operator=r'\textup')
@@ -1207,9 +1171,9 @@ class Bibdata(object):
             itemstr = enwrap_nested_string(itemstr, delims=('{','}'), odd_operator=r'\textbf', \
                                            even_operator=r'\textmd')
 
-        ## If there are any nested quotation marks in the string, then we need to modify the
-        ## formatting properly. If there are any apostrophes or foreign words that use apostrophes
-        ## in the string then the current code will raise an exception.
+        ## If there are any nested quotation marks in the string, then we need to modify the formatting properly. If
+        ## there are any apostrophes or foreign words that use apostrophes in the string then the current code will
+        ## raise an exception.
         itemstr = enwrap_nested_quotes(itemstr, disable=self.disable)
 
         return(itemstr)
@@ -1217,8 +1181,7 @@ class Bibdata(object):
     ## ===================================
     def generate_sortkey(self, citekey):
         '''
-        From a bibliography entry and the formatting template options, generate a sorting key for the
-        entry.
+        From a bibliography entry and the formatting template options, generate a sorting key for the entry.
 
         Parameters
         ----------
@@ -1236,21 +1199,19 @@ class Bibdata(object):
             bib_warning('Warning 010a: ' + msg, self.disable)
             return('Warning: ' + msg)
 
-        ## Define the variable "citenum". Since
-        ## the number value in "citedict" is an integer type rather than a string, which causes
-        ## problems. We can use "unicode()" to convert the int-type to string, but this won't sort
-        ## properly --- "10" will get sorted between "1" and "2". So we need to pad with zeros.
-        ## How many zeros depends on how many citations there are. Hence the "zfill" command below.
+        ## Define the variable "citenum". Since the number value in "citedict" is an integer type rather than a string,
+        ## which causes problems. We can use "unicode()" to convert the int-type to string, but this won't sort
+        ## properly --- "10" will get sorted between "1" and "2". So we need to pad with zeros. How many zeros depends
+        ## on how many citations there are. Hence the "zfill" command below.
         ncites = len(self.citedict)
         ndigits = 1 + int(log10(ncites))
         citenum = unicode(self.citedict[citekey]).zfill(ndigits)
 
         entry = self.bibdata[citekey]
 
-        ## Define the variable "citeyear", to use in place of the entry field "year". This is
-        ## necessary to make sure that alphabetical sorting treats numbers correctly, we need to
-        ## append zeros so that, say, "10" does not get sorted before "2". Note that this
-        ## formatting should work for years between -999 and +9999.
+        ## Define the variable "citeyear", to use in place of the entry field "year". This is necessary to make sure
+        ## that alphabetical sorting treats numbers correctly, we need to append zeros so that, say, "10" does not get
+        ## sorted before "2". Note that this formatting should work for years between -999 and +9999.
         if ('year' in entry):
             if str_is_integer(entry['year']):
                 citeyear = unicode('%04i' % int(entry['year']))
@@ -1266,10 +1227,10 @@ class Bibdata(object):
         if templatestr.startswith('-'):
             templatestr = templatestr[1:]
 
-        ## If one of the "name" elements are in the template, then you will need to obtain those
-        ## from the author/editor name lists.
-        if ('<name.last>' in templatestr) or ('<name.first>' in templatestr) or \
-            ('<name.prefix>' in templatestr) or ('<name.suffix>' in templatestr):
+        ## If one of the "name" elements are in the template, then you will need to obtain those from the author/editor
+        ## name lists.
+        if ('<name.last>' in templatestr) or ('<name.first>' in templatestr) or ('<name.prefix>' in templatestr) or \
+                ('<name.suffix>' in templatestr):
             if ('author' in entry) and ('authorlist' not in entry):
                 self.create_namelist(citekey, 'author')
             if ('editor' in entry) and ('editorlist' not in entry):
@@ -1293,8 +1254,8 @@ class Bibdata(object):
                 name_prefix = ''
                 name_suffix = ''
 
-        ## Before we parse the template string to remove any undefined variables, we need to make
-        ## sure that ehe entry has all the proper variables in it.
+        ## Before we parse the template string to remove any undefined variables, we need to make sure that ehe entry
+        ## has all the proper variables in it.
         if ('<citekey>' in templatestr) and ('citekey' not in entry):
             entry['citekey'] = citekey
         if ('<citenum>' in templatestr) and ('citenum' not in entry):
@@ -1310,15 +1271,19 @@ class Bibdata(object):
         if ('<citealpha>' in templatestr):
             entry['citealpha'] = create_citation_alpha(entry)
 
-        templatestr = remove_template_options_brackets(templatestr, entry, variables, \
-                                                        undefstr=self.options['undefstr'])
+        if (entry['entrytype'] in self.nested_templates):
+            templatestr = remove_nested_template_options_brackets(templatestr, entry, variables,
+                                                                  undefstr=self.options['undefstr'])
+        else:
+            templatestr = remove_template_options_brackets(templatestr, entry, variables,
+                                                           undefstr=self.options['undefstr'])
 
         ## Replace any "special" variables first before going on to the "regular" variables.
         if ('<year>' in templatestr):
             templatestr = templatestr.replace('<year>', citeyear)
 
-        ## Remove the special cases from the variables list --- we already replaced these above.
-        ## (Right now there is only <year> here, but we can add more.)
+        ## Remove the special cases from the variables list --- we already replaced these above. (Right now there is
+        ## only <year> here, but we can add more.)
         specials_list = ('<year>')
         variables = [item for item in variables if item not in specials_list]
 
@@ -1332,9 +1297,8 @@ class Bibdata(object):
                 else:
                     templatestr = templatestr.replace(var, '')
 
-        ## Now that we've replaced template variables, go ahead and replace the special commands.
-        ## We need to replace the hash symbol too because that indicates a comment when placed
-        ## inside a template string.
+        ## Now that we've replaced template variables, go ahead and replace the special commands. We need to replace
+        ## the hash symbol too because that indicates a comment when placed inside a template string.
         if (r'{\makeopenbracket}' in templatestr):
             templatestr = templatestr.replace(r'{\makeopenbracket}', '[')
         if (r'{\makeclosebracket}' in templatestr):
@@ -1362,9 +1326,8 @@ class Bibdata(object):
     ## =============================
     def create_namelist(self, key, nametype):
         '''
-        Deconstruct the bibfile string following "author = ..." (or "editor = ..."), and create a
-        new field `authorlist` or `editorlist` that is a list of dictionaries (one dict for each
-        person).
+        Deconstruct the bibfile string following "author = ..." (or "editor = ..."), and create a new field `authorlist`
+        or `editorlist` that is a list of dictionaries (one dict for each person).
 
         Parameters
         ----------
@@ -1378,9 +1341,8 @@ class Bibdata(object):
         if (key not in self.bibdata):
             return
 
-        ## If the name field does not exist, we can't define name dictionaries, so exit. Note that
-        ## we need not check for cross-reference data, since we will assume that has already been
-        ## done.
+        ## If the name field does not exist, we can't define name dictionaries, so exit. Note that we need not check for
+        ## cross-reference data, since we will assume that has already been done.
         if (nametype not in self.bibdata[key]):
             return
 
@@ -1388,17 +1350,17 @@ class Bibdata(object):
         if (nametype+'list' in self.bibdata[key]):
             return
 
-        ## The name abbreviations are assumed to be used for generating initials, and so skip
-        ## using abbrevations when not initializing.
+        ## The name abbreviations are assumed to be used for generating initials, and so skip using abbrevations when
+        ## not initializing.
         if (self.options['use_firstname_initials']) and ('nameabbrev' in self.bibdata[key]):
             nameabbrev_dict = parse_nameabbrev(self.bibdata[key]['nameabbrev'])
         else:
             nameabbrev_dict = None
 
-        ## Convert the raw string containing author/editor names in the BibTeX field into a list
-        ## of dictionaries --- one dict for each person.
-        namelist = namefield_to_namelist(self.bibdata[key][nametype], key=key,
-                                         nameabbrev=nameabbrev_dict, disable=self.disable)
+        ## Convert the raw string containing author/editor names in the BibTeX field into a list of dictionaries --- one
+        ## dict for each person.
+        namelist = namefield_to_namelist(self.bibdata[key][nametype], key=key, nameabbrev=nameabbrev_dict,
+                                         disable=self.disable)
         self.bibdata[key][nametype+'list'] = namelist
 
         return
@@ -1408,9 +1370,8 @@ class Bibdata(object):
         '''
         Insert crossref info into a bibliography database dictionary.
 
-        Loop through a bibliography database dictionary and, for each entry which has a "crossref"
-        field, locate the crossref entry and insert any missing bibliographic information into the
-        main entry's fields.
+        Loop through a bibliography database dictionary and, for each entry which has a "crossref" field, locate the
+        crossref entry and insert any missing bibliographic information into the main entry's fields.
 
         Parameters
         ----------
@@ -1422,8 +1383,8 @@ class Bibdata(object):
         Returns
         -------
         foundit : bool
-            Whether the function found a crossref for the queried field. If multiple fieldnames \
-            were input, then foundit will be True if a crossref is located for any one of them.
+            Whether the function found a crossref for the queried field. If multiple fieldnames were input, then \
+            `foundit` will be True if a crossref is located for any one of them.
         '''
 
         ## First check that the entrykey exists.
@@ -1442,18 +1403,17 @@ class Bibdata(object):
             else:
                 fieldnames = [fieldname]
 
-        ## Check that the crossreferenced entry actually exists. If not, then just move on.
+        ## Check that the cross-referenced entry actually exists. If not, then just move on.
         if (self.bibdata[entrykey]['crossref'] in self.bibdata):
             crossref_keys = self.bibdata[self.bibdata[entrykey]['crossref']]
         else:
-            bib_warning('Warning 015: bad cross reference. Entry "' + entrykey + '" refers to ' + \
-                 'entry "' + self.bibdata[entrykey]['crossref'] + '", which doesn\'t exist.',
-                 self.disable)
+            bib_warning('Warning 015: bad cross reference. Entry "' + entrykey + '" refers to ' + 'entry "' + \
+                 self.bibdata[entrykey]['crossref'] + '", which doesn\'t exist.', self.disable)
             return
 
         for k in crossref_keys:
             if (k in bibentry): continue
-            if (k not in self.bibdata[entrykey]):
+            if (k not in fieldnames):
                 self.bibdata[entrykey][k] = self.bibdata[self.bibdata[entrykey]['crossref']][k]
 
         ## What a "booktitle" is in the entry is normally a "title" in the crossref.
@@ -1465,8 +1425,8 @@ class Bibdata(object):
     ## =============================
     def write_citeextract(self, outputfile, write_abbrevs=False):
         '''
-        Extract a sub-database from a large bibliography database, with the former containing only \
-        those entries cited in the .aux file (and any relevant cross-references).
+        Extract a sub-database from a large bibliography database, with the former containing only those entries cited
+        in the .aux file (and any relevant cross-references).
 
         Parameters
         ----------
@@ -1475,13 +1435,13 @@ class Bibdata(object):
         outputfile : str, optional
             The filename to use for writing the extracted BIB file.
         write_abbrevs : bool
-            Whether or not to write the abbreviations to the BIB file. Since the abbreviations are \
-            already inserted into the database entries, they are no longer needed, but may be \
-            useful for future editing and adding of entries to the database file.
+            Whether or not to write the abbreviations to the BIB file. Since the abbreviations are already inserted \
+            into the database entries, they are no longer needed, but may be useful for future editing and adding of \
+            entries to the database file.
         '''
 
-        ## The "citedict" contains only those items directly cited, but we also need any cross-
-        ## referenced items as well, so let's add those.
+        ## The "citedict" contains only those items directly cited, but we also need any cross-referenced items as well,
+        ## so let's add those.
         crossref_list = []
         for key in self.citedict:
             if key not in self.bibdata: continue
@@ -1491,10 +1451,9 @@ class Bibdata(object):
         citekeylist = self.citedict.keys()
         if crossref_list: citekeylist.extend(crossref_list)
 
-        ## A dict comprehension to extract only the relevant items in "bibdata". Note that these
-        ## entries are mapped by reference and not by value --- any changes to "bibextract" will
-        ## also be reflected in "self.bibdata" is the change is to a mutable entry (such as a list
-        ## or a dict).
+        ## A dict comprehension to extract only the relevant items in "bibdata". Note that these entries are mapped by
+        ## reference and not by value --- any changes to "bibextract" will also be reflected in "self.bibdata" is the
+        ## change is to a mutable entry (such as a list or a dict).
         bibextract = {c:self.bibdata[c] for c in citekeylist if c in self.bibdata}
         abbrevs = self.abbrevs if write_abbrevs else None
         export_bibfile(bibextract, outputfile, abbrevs)
@@ -1503,34 +1462,33 @@ class Bibdata(object):
     ## =============================
     def write_authorextract(self, searchname, outputfile=None, write_abbrevs=False):
         '''
-        Extract a sub-database from a large bibliography database, with the former containing only \
-        those entries citing the given author/editor.
+        Extract a sub-database from a large bibliography database, with the former containing only those entries citing
+        the given author/editor.
 
         Parameters
         ----------
         searchname : str or dict
-            The string or dictionary for the author's name. This can be, for example, "Bugs E. Bunny"
-            or {'first':'Bugs', 'last':'Bunny', 'middle':'E'}.
+            The string or dictionary for the author's name. This can be, for example, "Bugs E. Bunny" or \
+            {'first':'Bugs', 'last':'Bunny', 'middle':'E'}.
         outputfile : str, optional
             The filename of the extracted BIB file to write.
         write_abbrevs : bool
-            Whether or not to write the abbreviations to the BIB file. Since the abbreviations are \
-            already inserted into the database entries, they are no longer needed, but may be \
-            useful for future editing and adding of entries to the database file.
+            Whether or not to write the abbreviations to the BIB file. Since the abbreviations are already inserted \
+            into the database entries, they are no longer needed, but may be useful for future editing and adding of \
+            entries to the database file.
         '''
 
         if not isinstance(searchname, basestring):
-            raise TypeError('The input search name ["' + unicode(searchname) + \
-                            '"] is not a valid string.')
+            raise TypeError('The input search name ["' + unicode(searchname) + '"] is not a valid string.')
         if not outputfile:
             outputfile = self.filedict['aux'][:-4] + '_authorextract.bib'
 
         searchname = namestr_to_namedict(searchname, self.disable)
         nkeys = len(searchname.keys())
 
-        ## Find out if any of the tokens in the search name are initials. If so, then we need to
-        ## perform the search over initialized names and not full names. Save the set of booleans
-        ## (one for each name part) in a dictionary to use in the search loop below.
+        ## Find out if any of the tokens in the search name are initials. If so, then we need to perform the search
+        ## over initialized names and not full names. Save the set of booleans (one for each name part) in a dictionary
+        ## to use in the search loop below.
         name_is_initialized = {}
         for key in searchname:
             name_is_initialized[key] = searchname[key].endswith('.')
@@ -1550,15 +1508,14 @@ class Bibdata(object):
                 if not ('author' in self.bibdata[k]):
                     name_list_of_dicts = self.bibdata[k]['editorlist']
                 else:
-                    ## If the entry has both authors and editors, then just merge the two name
-                    ## lists.
+                    ## If the entry has both authors and editors, then just merge the two name lists.
                     name_list_of_dicts += self.bibdata[k]['editorlist']
 
             if not name_list_of_dicts:
                 continue
 
-            ## Compare each name dictionary in the entry with the input author's name dict.
-            ## All of an author's name keys must equal an entry's name key to produce a match.
+            ## Compare each name dictionary in the entry with the input author's name dict. All of an author's name keys
+            ## must equal an entry's name key to produce a match.
             for name in name_list_of_dicts:
                 if (searchname['last'] not in name['last']): continue
 
@@ -1572,7 +1529,8 @@ class Bibdata(object):
 
                         if (thisname == searchname[namekey]):
                             key_matches += 1
-                            if self.debug: print('Found match in entry "' + k + '": name[' + namekey + '] = ' + name[namekey])
+                            if self.debug:
+                                print('Found match in entry "' + k + '": name[' + namekey + '] = ' + name[namekey])
 
                 if (key_matches == nkeys):
                     #print(k, bibdata[k]['author'])
@@ -1588,19 +1546,16 @@ class Bibdata(object):
     ## =============================
     def replace_abbrevs_with_full(self, fieldstr, resultstr):
         '''
-        Given an input str, locate the abbreviation key within it and replace the abbreviation with
-        its full form.
+        Given an input str, locate the abbreviation key within it and replace the abbreviation with its full form.
 
-        Once the abbreviation key is found, remove it from the "fieldstr" and add the full form to
-        the "resultstr".
+        Once the abbreviation key is found, remove it from the "fieldstr" and add the full form to the "resultstr".
 
         Parameters
         ==========
         fieldstr : str
             The string to search for the abbrevation key.
         resultstr : str
-            The thing to hold the abbreviation's full form. (Note that it might not be empty on \
-            input.)
+            The thing to hold the abbreviation's full form. (Note that it might not be empty on input.)
 
         Returns
         =======
@@ -1614,20 +1569,20 @@ class Bibdata(object):
 
         end_of_field = False
 
-        ## The "abbrevkey_pattern" seaerches for the first '#' or ',' that is not preceded by a
-        ## backslash. If this pattern is found, then we've found the *end* of the abbreviation key.
+        ## The "abbrevkey_pattern" seaerches for the first '#' or ',' that is not preceded by a backslash. If this
+        ## pattern is found, then we've found the *end* of the abbreviation key.
         for match in re.finditer(self.abbrevkey_pattern, fieldstr):
             endpos = match.end()
             if (match.group(0)[0] == '#'):
                 abbrevkey = fieldstr[:endpos-1].strip()
-                ## If the "abbreviation" is an integer, then it's not an abbreviation
-                ## but rather a number, and just return it as-is.
+                ## If the "abbreviation" is an integer, then it's not an abbreviation but rather a number, and just
+                ## return it as-is.
                 if abbrevkey.isdigit() or not self.options['use_abbrevs']:
                     resultstr += unicode(abbrevkey)
                 elif (abbrevkey not in self.abbrevs):
-                    bib_warning('Warning 016a: for the entry ending on line #' + unicode(self.i) + \
-                         ' of file "' + self.filename + '", cannot find the '
-                         'abbreviation key "' + abbrevkey + '". Skipping ...', self.disable)
+                    bib_warning('Warning 016a: for the entry ending on line #' + unicode(self.i) + ' of file "' + \
+                         self.filename + '", cannot find the abbreviation key "' + abbrevkey + '". Skipping ...',
+                         self.disable)
                     resultstr += self.options['undefstr']
                 else:
                     resultstr += self.abbrevs[abbrevkey].strip()
@@ -1640,9 +1595,9 @@ class Bibdata(object):
                 if abbrevkey.isdigit() or not self.options['use_abbrevs']:
                     resultstr += unicode(abbrevkey)
                 elif (abbrevkey not in self.abbrevs):
-                    bib_warning('Warning 016b: for the entry ending on line #' + unicode(self.i) + \
-                         ' of file "' + self.filename + '", cannot find the '
-                         'abbreviation key "' + abbrevkey + '". Skipping ...', self.disable)
+                    bib_warning('Warning 016b: for the entry ending on line #' + unicode(self.i) + ' of file "' + \
+                         self.filename + '", cannot find the abbreviation key "' + abbrevkey + '". Skipping ...',
+                         self.disable)
                     resultstr += self.options['undefstr']
                 else:
                     resultstr += self.abbrevs[abbrevkey].strip()
@@ -1672,8 +1627,8 @@ class Bibdata(object):
         '''
 
         if not (citekey in self.bibdata):
-            bib_warning('Warning 010d: cannot find citation key "' + citekey + '" in the database. '
-                 'Ignoring and continuing ...', self.disable)
+            bib_warning('Warning 010d: cannot find citation key "' + citekey + '" in the database. Ignoring and '
+                        'continuing ...', self.disable)
             return(citekey)
 
         entry = self.bibdata[citekey]
@@ -1687,10 +1642,10 @@ class Bibdata(object):
 
         variables = re.findall(r'<.*?>', templatestr)
 
-        ## If one of the "name" elements are in the template, then you will need to obtain those
-        ## from the author/editor name lists.
-        if ('<name.last>' in templatestr) or ('<name.first>' in templatestr) or \
-            ('<name.prefix>' in templatestr) or ('<name.suffix>' in templatestr):
+        ## If one of the "name" elements are in the template, then you will need to obtain those from the author/editor
+        ## name lists.
+        if ('<name.last>' in templatestr) or ('<name.first>' in templatestr) or ('<name.prefix>' in templatestr) or \
+                ('<name.suffix>' in templatestr):
             if ('author' in entry) and ('authorlist' not in entry):
                 self.create_namelist(citekey, 'author')
             if ('editor' in entry) and ('editorlist' not in entry):
@@ -1714,8 +1669,8 @@ class Bibdata(object):
                 name_prefix = ''
                 name_suffix = ''
 
-        ## Before we parse the template string to remove any undefined variables, we need to make
-        ## sure that ehe entry has all the proper variables in it.
+        ## Before we parse the template string to remove any undefined variables, we need to make sure that ehe entry
+        ## has all the proper variables in it.
         if ('<citekey>' in templatestr) and ('citekey' not in entry):
             entry['citekey'] = citekey
         if ('<citenum>' in templatestr) and ('citenum' not in entry):
@@ -1731,11 +1686,14 @@ class Bibdata(object):
         if ('<citealpha>' in templatestr):
             entry['citealpha'] = create_citation_alpha(entry)
 
-        templatestr = remove_template_options_brackets(templatestr, entry, variables, \
-                                                        undefstr=self.options['undefstr'])
+        if (entry['entrytype'] in self.nested_templates):
+            templatestr = remove_nested_template_options_brackets(templatestr, entry, variables,
+                                                                  undefstr=self.options['undefstr'])
+        else:
+            templatestr = remove_template_options_brackets(templatestr, entry, variables,
+                                                           undefstr=self.options['undefstr'])
 
         ## Remove the special cases from the variables list --- we already replaced these above.
-        ## (Right now there is only <title> here, but we can add more.)
         #specials_list = ('<citekey>','<citenum>')
         #variables = [item for item in variables if item not in specials_list]
 
@@ -1749,9 +1707,8 @@ class Bibdata(object):
                 else:
                     templatestr = templatestr.replace(var, '')
 
-        ## Now that we've replaced template variables, go ahead and replace the special commands.
-        ## We need to replace the hash symbol too because that indicates a comment when placed
-        ## inside a template string.
+        ## Now that we've replaced template variables, go ahead and replace the special commands. We need to replace
+        ## the hash symbol too because that indicates a comment when placed inside a template string.
         if (r'{\makeopenbracket}' in templatestr):
             templatestr = templatestr.replace(r'{\makeopenbracket}', '[')
         if (r'{\makeclosebracket}' in templatestr):
@@ -1775,11 +1732,10 @@ class Bibdata(object):
     ## =============================
     def write_auxfile(self, filename=None):
         '''
-        Given the input database file(s) and style file(s), write out an AUX file containing
-        citations to all unique database entries.
+        Given the input database file(s) and style file(s), write out an AUX file containing citations to all unique
+        database entries.
 
-        This function is only provided as a utility, and is not actually used except during
-        troubleshooting.
+        This function is only provided as a utility, and is not actually used except during troubleshooting.
 
         Parameters
         ----------
@@ -1814,14 +1770,12 @@ class Bibdata(object):
     ## =============================
     def get_bibfilenames(self, filename):
         '''
-        If the input is a filename ending in `.aux`, then read through the `.aux` file and locate
-        the lines `\bibdata{...}` and `\bibstyle{...}` to get the filename(s) for the bibliography
-        database and style template.
+        If the input is a filename ending in `.aux`, then read through the `.aux` file and locate the lines
+        `\bibdata{...}` and `\bibstyle{...}` to get the filename(s) for the bibliography database and style template.
 
-        Also determine whether to set the `culldata` flag. If the input is a single AUX filename,
-        then the default is to set culldata=True. If the input is a list of filenames, then assume
-        that this is the complete list of files to use (i.e. ignore the contents of the AUX file
-        except for generating the citedict), and set culldata=False.
+        Also determine whether to set the `culldata` flag. If the input is a single AUX filename, then the default is to
+        set culldata=True. If the input is a list of filenames, then assume that this is the complete list of files to
+        use (i.e. ignore the contents of the AUX file except for generating the citedict), and set culldata=False.
 
         Parameters
         ----------
@@ -1831,8 +1785,8 @@ class Bibdata(object):
         Returns
         -------
         filedict : dict
-            A dictionary with keys `aux`, `bbl`, `bib`, `bst`, `extract`, and `tex`, each entry of \
-            which contains a list of filenames.
+            A dictionary with keys `aux`, `bbl`, `bib`, `bst`, `extract`, and `tex`, each entry of which contains a \
+            list of filenames.
         '''
 
         bibfiles = []
@@ -1867,8 +1821,8 @@ class Bibdata(object):
             if (bstres == None):
                 raise ValueError('Cannot find a bibliography template specified in "' + filename + '"')
 
-            ## Now we have the strings from the ".tex" file that describing the bibliography filenames.
-            ## If these are lists of filenames, then split them out.
+            ## Now we have the strings from the ".tex" file that describing the bibliography filenames. If these are
+            ## lists of filenames, then split them out.
             if (',' in bibres):
                 bibres = bibres.split(',')      ## if a list of files, then split up the list pieces
             else:
@@ -1879,9 +1833,8 @@ class Bibdata(object):
                 if not r.endswith('.bib'):
                     r += '.bib'
 
-                ## If the filename has a relative address, convert it to an absolute one.
-                ## Linux absolute paths begin with a forward slash.
-                ## Windows absolute paths begin with a drive letter and a colon.
+                ## If the filename has a relative address, convert it to an absolute one. Linux absolute paths begin
+                ## with a forward slash. Windows absolute paths begin with a drive letter and a colon.
                 if not r.startswith('/') or (r[0].isalpha() and r[1] == ':'):
                     r = os.path.normpath(os.path.join(path, r))
                 elif r.startswith('./'):
@@ -1900,9 +1853,8 @@ class Bibdata(object):
                 if not r.endswith('.bst'):
                     r += '.bst'
 
-                ## If the filename has a relative address, convert it to an absolute one.
-                ## Linux absolute paths begin with a forward slash
-                ## Windows absolute paths begin with a drive letter and a colon.
+                ## If the filename has a relative address, convert it to an absolute one. Linux absolute paths begin
+                ## with a forward slash Windows absolute paths begin with a drive letter and a colon.
                 if not r.startswith('/') or (r[0].isalpha() and r[1] == ':'):
                     r = os.path.normpath(os.path.join(path, r))
                 elif r.startswith('./'):
@@ -1924,8 +1876,8 @@ class Bibdata(object):
         ## Or of the input is a list, then we can go through all the filenames in the list.
         elif isinstance(filename, (list, tuple)):
             self.culldata = False
-            ## All the work above was to locate the filenames from a single AUX file. However, if the
-            ## input is a list of filenames, then constructing the filename dictionary is simple.
+            ## All the work above was to locate the filenames from a single AUX file. However, if the input is a list of
+            ## filenames, then constructing the filename dictionary is simple.
             for f in filename:
                 f = os.path.abspath(f)
                 if f.endswith('.aux'): auxfile = os.path.normpath(f)
@@ -1962,8 +1914,7 @@ class Bibdata(object):
     ## =============================
     def check_citekeys_in_datakeys(self):
         '''
-        Check to see if all of the citation keys (from the AUX file) exist within the current
-        set of database entrykeys.
+        Check to see if all of the citation keys (from the AUX file) exist within the current set of database entrykeys.
 
         Returns
         -------
@@ -1988,16 +1939,15 @@ class Bibdata(object):
     ## =============================
     def add_crossrefs_to_searchkeys(self):
         '''
-        Add any cross-referenced entrykeys into the `searchkeys`, the list which is used to cull
-        the database so that only necessary entries are parsed.
+        Add any cross-referenced entrykeys into the `searchkeys`, the list which is used to cull the database so that
+        only necessary entries are parsed.
         '''
 
-        ## When self.culldata==True, the problem is that if a crossref refers to an entry that was
-        ## not among the citation keys, then the database parser will not know to place that entry
-        ## into the bibdata dictionary. Thus, if we happen to run across an entry with missing data,
-        ## and it has a crossref that is not in the database, then we have to go back and parse the
-        ## database a second time, this time adding the crossreferenced items. Once that's done,
-        ## *then* we can add cross-referenced data into the original cited entries.
+        ## When self.culldata==True, the problem is that if a crossref refers to an entry that was not among the
+        ## citation keys, then the database parser will not know to place that entry into the bibdata dictionary. Thus,
+        ## if we happen to run across an entry with missing data, and it has a crossref that is not in the database,
+        ## then we have to go back and parse the database a second time, this time adding the crossreferenced items.
+        ## Once that's done, *then* we can add cross-referenced data into the original cited entries.
         crossref_list = []
         for key in self.bibdata:
             if ('crossref' in self.bibdata[key]):
@@ -2022,15 +1972,16 @@ class Bibdata(object):
         entry = self.bibdata[entrykey]
 
         if ('edition' in entry):
-            entry['edition_ordinal'] = create_edition_ordinal(entry, disable=self.disable)
+            entry['edition_ordinal'] = create_edition_ordinal(entry, entrykey, undefstr=self.options['undefstr'],
+                                                              disable=self.disable)
 
         if ('pages' in entry):
             (startpage,endpage) = parse_pagerange(entry['pages'], entrykey, self.disable)
             entry['startpage'] = startpage
             entry['endpage'] = endpage
 
-        ## The "month" is stored in the bibdata dictionary as a string representing an
-        ## integer from 1 to 12. Here we need to translate it to a string name.
+        ## The "month" is stored in the bibdata dictionary as a string representing an integer from 1 to 12. Here we
+        ## need to translate it to a string name.
         if ('month' in entry):
             if entry['month'].isdigit():
                 monthname = self.monthname_dict[entry['month']]
@@ -2042,10 +1993,9 @@ class Bibdata(object):
             if not entry['doi'].startswith('http://dx.doi.org/'):
                 entry['doi'] = 'http://dx.doi.org/' + entry['doi']
 
-        ## Next loop through the keys in the "specials" dictionary. These are variable definitions
-        ## from the SPECIAL-TEMPLATES section of the style file. Note that we do want to deal with
-        ## only *user-defined* specials, so we have to eliminate the fixed list of specials from
-        ## the list of keys.
+        ## Next loop through the keys in the "specials" dictionary. These are variable definitions from the SPECIAL-
+        ## TEMPLATES section of the style file. Note that we do want to deal with only *user-defined* specials, so we
+        ## have to eliminate the fixed list of specials from the list of keys.
         special_keys = self.specials.keys()
         fixed_specials_list = ['citelabel', 'sortkey']
         special_keys = [item for item in special_keys if item not in fixed_specials_list]
@@ -2055,8 +2005,12 @@ class Bibdata(object):
                 continue
 
             variables = re.findall(r'<.*?>', self.specials[key])
-            templatestr = remove_template_options_brackets(self.specials[key], entry, variables, \
-                                                            undefstr=self.options['undefstr'])
+            if (entry['entrytype'] in self.nested_templates):
+                templatestr = remove_nested_template_options_brackets(self.specials[key], entry, variables,
+                                                                      undefstr=self.options['undefstr'])
+            else:
+                templatestr = remove_template_options_brackets(self.specials[key], entry, variables,
+                                                               undefstr=self.options['undefstr'])
 
             ## Go ahead and replace all of the template variables with the corresponding fields.
             for var in variables:
@@ -2068,9 +2022,8 @@ class Bibdata(object):
                     else:
                         templatestr = templatestr.replace(var, '')
 
-            ## Now that we've replaced template variables, go ahead and replace the special commands.
-            ## We need to replace the hash symbol too because that indicates a comment when placed
-            ## inside a template string.
+            ## Now that we've replaced template variables, go ahead and replace the special commands. We need to replace
+            ## the hash symbol too because that indicates a comment when placed inside a template string.
             if (r'{\makeopenbracket}' in templatestr):
                 templatestr = templatestr.replace(r'{\makeopenbracket}', '[')
             if (r'{\makeclosebracket}' in templatestr):
@@ -2086,8 +2039,8 @@ class Bibdata(object):
 
             self.bibdata[entrykey][key] = templatestr
 
-        ## If any of the user-defined variables here map a field into the "author" or "editor"
-        ## field, then we need to create the "authorlist" and "editorlist" fields as well.
+        ## If any of the user-defined variables here map a field into the "author" or "editor" field, then we need to
+        ## create the "authorlist" and "editorlist" fields as well.
         if ('author' in entry) and ('authorlist' not in entry):
             self.create_namelist(entrykey, 'author')
         if ('editor' in entry) and ('editorlist' not in entry):
@@ -2095,7 +2048,7 @@ class Bibdata(object):
         return
 
     ## =============================
-    def validate_templatestr(self, templatestr):
+    def validate_templatestr(self, templatestr, entrytype):
         '''
         Validate the template string so that it contains no formatting errors.
 
@@ -2103,6 +2056,8 @@ class Bibdata(object):
         ----------
         templatestr : str
             The template string to be validated.
+        entrytype : str
+            The type of entry that uses this template. (Useful for warning messages.)
 
         Returns
         -------
@@ -2116,9 +2071,8 @@ class Bibdata(object):
         num_obrackets = templatestr.count('[')
         num_cbrackets = templatestr.count(']')
         if (num_obrackets != num_cbrackets):
-            msg = 'In the template for entrytype "' + entrytype + '" there are ' + \
-                  unicode(num_obrackets) + ' open brackets "[", but ' + unicode(num_cbrackets) + \
-                  ' close brackets "]" in the formatting string'
+            msg = 'In the template for entrytype "' + entrytype + '" there are ' + unicode(num_obrackets) + \
+                  ' open brackets "[", but ' + unicode(num_cbrackets) + ' close brackets "]" in the formatting string'
             bib_warning('Warning 012: ' + msg, self.disable)
             okay = False
 
@@ -2156,8 +2110,8 @@ class Bibdata(object):
 ## ===================================
 def sentence_case(s):
     '''
-    Reduce the case of the string to lower case, except for the first character in the string, and
-    except if any given character is at nonzero brace level.
+    Reduce the case of the string to lower case, except for the first character in the string, and except if any given
+    character is at nonzero brace level.
 
     Parameters
     ----------
@@ -2173,9 +2127,9 @@ def sentence_case(s):
     if ('{' not in s):
         return(s.lower().capitalize())
 
-    ## Next we look for LaTeX commands, given by a backslash followed by a non-word character.
-    ## Do not reduce those characters in the LaTeX command to lower case. To facilitate that, add
-    ## one to the brace level for each of those character positions.
+    ## Next we look for LaTeX commands, given by a backslash followed by a non-word character. Do not reduce those
+    ## characters in the LaTeX command to lower case. To facilitate that, add one to the brace level for each of those
+    ## character positions.
     brlevel = get_delim_levels(s)
     for match in re.finditer(r'\\\w+', s, re.UNICODE):
         (start,stop) = match.span()
@@ -2195,8 +2149,7 @@ def sentence_case(s):
 ## ===================================
 def stringsplit(s, sep=r' |(?<!\\)~'):
     '''
-    Split a string into tokens, taking care not to allow the separator to act unless at brace
-    level zero.
+    Split a string into tokens, taking care not to allow the separator to act unless at brace level zero.
 
     Parameters
     ----------
@@ -2209,9 +2162,8 @@ def stringsplit(s, sep=r' |(?<!\\)~'):
         The list of tokens.
     '''
 
-    ## The item separating the name tokens can be either a space character or a tilde, if the
-    ## tilde is not preceded by a backslash (in which case it instead represents an accent
-    ## character and not a separator).
+    ## The item separating the name tokens can be either a space character or a tilde, if the tilde is not preceded by a
+    ## backslash (in which case it instead represents an accent character and not a separator).
     if ('{' not in s):
         tokens = re.split(sep, s)
     else:
@@ -2272,8 +2224,7 @@ def finditer(a_str, sub):
 ## =============================
 def namefield_to_namelist(namefield, key=None, nameabbrev=None, disable=None):
     '''
-    Parse a name field ("author" or "editor") of a BibTeX entry into a list of dicts, one for
-    each person.
+    Parse a name field ("author" or "editor") of a BibTeX entry into a list of dicts, one for each person.
 
     Parameters
     ----------
@@ -2289,8 +2240,8 @@ def namefield_to_namelist(namefield, key=None, nameabbrev=None, disable=None):
     Returns
     -------
     namelist : list
-        A list of dictionaries, with one dictionary for each name. Each dict has keys "first",
-        "middle", "prefix", "last", and "suffix". The "last" key is the only one that is required.
+        A list of dictionaries, with one dictionary for each name. Each dict has keys "first", "middle", "prefix", \
+        "last", and "suffix". The "last" key is the only one that is required.
     '''
 
     namefield = namefield.strip()
@@ -2298,20 +2249,20 @@ def namefield_to_namelist(namefield, key=None, nameabbrev=None, disable=None):
 
     ## Look for common typos.
     if re.search('\sand,\s', namefield, re.UNICODE):
-        bib_warning('Warning 017a: The name string in entry "' + unicode(key) + '" has " and, ", which is '
-             'likely a typo. Continuing on anyway ...', disable)
+        bib_warning('Warning 017a: The name string in entry "' + unicode(key) + '" has " and, ", which is likely a'
+             ' typo. Continuing on anyway ...', disable)
     if re.search(', and', namefield, re.UNICODE):
-        bib_warning('Warning 017b: The name string in entry "' + unicode(key) + '" has ", and", which is '
-             'likely a typo. Continuing on anyway ...', disable)
+        bib_warning('Warning 017b: The name string in entry "' + unicode(key) + '" has ", and", which is likely a'
+             ' typo. Continuing on anyway ...', disable)
 
     if (nameabbrev != None) and (key != None):
         for key in nameabbrev:
             if key in namefield: namefield = namefield.replace(key, nameabbrev[key])
 
-    ## Split the string of names into individual strings, one for each complete name. Here we
-    ## can split on whitespace surround the word "and" so that "{and}" and "word~and~word" will
-    ## not allow the split. Need to treat the case of a single author separate from that of
-    ## multiple authors in order to return a single-element *list* rather than a scalar.
+    ## Split the string of names into individual strings, one for each complete name. Here we can split on whitespace
+    ## surround the word "and" so that "{and}" and "word~and~word" will not allow the split. Need to treat the case of a
+    ## single author separate from that of multiple authors in order to return a single-element *list* rather than a
+    ## scalar.
     if not re.search('\sand\s', namefield, re.UNICODE):
         namedict = namestr_to_namedict(namefield, disable)
         namelist.append(namedict)
@@ -2319,9 +2270,8 @@ def namefield_to_namelist(namefield, key=None, nameabbrev=None, disable=None):
         if '{' not in namefield:
             names = re.split('\sand\s', namefield)
         else:
-            ## If there are braces in the string, then we need to be careful to only allow
-            ## splitting of the names when ' and ' is at brace level 0. This requires replacing
-            ## re.split() with a bunch of low-level code.
+            ## If there are braces in the string, then we need to be careful to only allow splitting of the names when
+            ## ' and ' is at brace level 0. This requires replacing re.split() with a bunch of low-level code.
             z = get_delim_levels(namefield, ('{','}'))
             separators = []
 
@@ -2359,29 +2309,26 @@ def namefield_to_namelist(namefield, key=None, nameabbrev=None, disable=None):
 
 ## =============================
 def namedict_to_formatted_namestr(namedict, options=None, use_firstname_initials=True,
-                                  namelist_format='first_name_first', nameabbrev=None):
+                                  namelist_format='first_name_first'):
     '''
     Convert a name dictionary into a formatted name string.
 
     Parameters
     ----------
     namedict : dict
-        The name dictionary (contains a required key "last" and optional keys "first", "middle", \
-        "prefix", and "suffix".
+        The name dictionary (contains a required key "last" and optional keys "first", "middle", "prefix", and "suffix".
     options : dict, optional
         Includes formatting options such as
         'use_name_ties': Whether to use '~' instead of spaces to tie together author initials.
-        'terse_inits': Whether to format initialized author names like "RMA Azzam" instead of \
-            the default form "R. M. A. Azzam".
-        'french_intials': Whether to initialize digraphs with two letters instead of the default \
-            of one. For example, if use_french_initials==True, then "Christian" -> "Ch.", not "C.".
+        'terse_inits': Whether to format initialized author names like "RMA Azzam" instead of the default form \
+            "R. M. A. Azzam".
+        'french_intials': Whether to initialize digraphs with two letters instead of the default of one.\
+            For example, if use_french_initials==True, then "Christian" -> "Ch.", not "C.".
         'period_after_initial': Whether to include a '.' after the author initial.
     use_firstname_initials : bool
         Whether or not to initialize first names.
     namelist_format : str
         The type of format to use for name formatting. ("first_name_first", "last_name_first")
-    nameabbrev : list of str
-        A list of names and their abbreviations.
 
     Returns
     -------
@@ -2435,8 +2382,7 @@ def namedict_to_formatted_namestr(namedict, options=None, use_firstname_initials
 ## ===================================
 def initialize_name(name, options=None, debug=False):
     '''
-    From an input name element (first, middle, prefix, last, or suffix) , convert it to its
-    initials.
+    From an input name element (first, middle, prefix, last, or suffix) , convert it to its initials.
 
     Parameters
     ----------
@@ -2445,10 +2391,10 @@ def initialize_name(name, options=None, debug=False):
     options : dict, optional
         Includes formatting options such as
         'use_name_ties': Whether to use '~' instead of spaces to tie together author initials.
-        'terse_inits': Whether to format initialized author names like "RMA Azzam" instead of \
-            the default form "R. M. A. Azzam".
-        'french_intials': Whether to initialize digraphs with two letters instead of the default \
-            of one. For example, if use_french_initials==True, then "Christian" -> "Ch.", not "C.".
+        'terse_inits': Whether to format initialized author names like "RMA Azzam" instead of the default form \
+            "R. M. A. Azzam".
+        'french_intials': Whether to initialize digraphs with two letters instead of the default of one.\
+            For example, if use_french_initials==True, then "Christian" -> "Ch.", not "C.".
         'period_after_initial': Whether to include a '.' after the author initial.
 
     Returns
@@ -2465,15 +2411,15 @@ def initialize_name(name, options=None, debug=False):
         options['french_initials'] = False
         options['terse_inits'] = False
 
-    ## Go through the author's name elements and truncate the first and middle names to their
-    ## initials. If using French initials, then a hyphenated name produces hyphenated initials
-    ## (for example "Jean-Paul" -> "J.-P." and not "J."), and a name beginning with a digraph
-    ## produces a digraph initial, so that Philippe -> Ph. (not P.), and Christian -> Ch. (not C.).
+    ## Go through the author's name elements and truncate the first and middle names to their initials. If using French
+    ## initials, then a hyphenated name produces hyphenated initials (for example "Jean-Paul" -> "J.-P." and not "J."),
+    ## and a name beginning with a digraph produces a digraph initial, so that Philippe -> Ph. (not P.), and
+    ## Christian -> Ch. (not C.).
     digraphs = ('Ch','Gn','Ll','Ph','Ss','Ch','Ph','Th')
     period = '.' if options['period_after_initial'] else ''
 
-    ## Split the name by spaces (primarily used for middle name strings, which may have multiple
-    ## names in them), and remove any empty list elements produced by the split.
+    ## Split the name by spaces (primarily used for middle name strings, which may have multiple names in them), and
+    ## remove any empty list elements produced by the split.
     tokens = list(name.split(' '))
     tokens = [x for x in tokens if x]
 
@@ -2481,15 +2427,14 @@ def initialize_name(name, options=None, debug=False):
         if nametoken.startswith('{') and nametoken.endswith('}'): continue
 
         if ('-' in nametoken):
-            ## If the name is hyphenated, then initialize the hyphenated parts of it, and assemble
-            ## the result by combining initials with the hyphens. That is, "Chein-Ing" -> "C.-I.".
+            ## If the name is hyphenated, then initialize the hyphenated parts of it, and assemble the result by
+            ## combining initials with the hyphens. That is, "Chein-Ing" -> "C.-I.".
             pieces = nametoken.split('-')
             tokens[j] = '-'.join([initialize_name(p, options) for p in pieces])
         else:
-            ## If the token already ends in a period then it's might already be an initial, but
-            ## only if it has length 2. Otherwise you still need to truncate it.
-            ## If the name only has one character in it, then treat it as a full name that doesn't
-            ## need initializing.
+            ## If the token already ends in a period then it's might already be an initial, but only if it has length 2.
+            ## Otherwise you still need to truncate it. If the name only has one character in it, then treat it as a
+            ## full name that doesn't need initializing.
             if nametoken.endswith('.') and (len(nametoken) == 2):
                 tokens[j] = nametoken[0] + period
             elif (len(nametoken) > 1):
@@ -2521,16 +2466,15 @@ def get_delim_levels(s, delims=('{','}'), operator=None):
     delims : tuple of two strings
         The (left-hand-side delimiter, right-hand-side delimiter).
     operator : str
-        The "operator" string that appears to the left of the delimiter. For example, \
-        operator=r'\textbf' allows the code to look for nested structures like `{...}` and \
-        simultaneously for structures like `\textbf{...}`, and be able to keep track of which is \
-        which.
+        The "operator" string that appears to the left of the delimiter. For example, operator=r'\textbf' allows the \
+        code to look for nested structures like `{...}` and simultaneously for structures like `\textbf{...}`, and be \
+        able to keep track of which is which.
 
     Returns
     -------
     levels : list of ints
-        A list giving the operator delimiter level (or "brace level" if no operator is given) of \
-        each character in the string.
+        A list giving the operator delimiter level (or "brace level" if no operator is given) of each character in \
+        the string.
     '''
 
     stack = []
@@ -2619,9 +2563,9 @@ def get_quote_levels(s, disable=None, debug=False):
             if (s[j:j+2] == '``'):
                 stack.append('a')       ## add a double-quote marker to the stack
             elif (s[j-1] != '`') and (s[j-1].isspace() or (s[j-1] in '()[]{}":;,<>') or (j == 0)):
-                ## The trouble with single-quotes is the clash with apostrophes. So, only increment
-                ## the single-quote counter if we think it is the start of a quote (not immediately
-                ## preceded by a non-whitespace character).
+                ## The trouble with single-quotes is the clash with apostrophes. So, only increment the single-quote
+                ## counter if we think it is the start of a quote (not immediately preceded by a non-whitespace
+                ## character).
                 stack.append('b')       ## add a single-quote marker to the stack
         elif (ch == "'") and (alevels[j-1]+blevels[j-1]+clevels[j-1] > 0) and (s[j-1] != '\\'):
             ## Note: the '\\' case here is for detecting an accent markup.
@@ -2639,7 +2583,6 @@ def get_quote_levels(s, disable=None, debug=False):
         alevels[j] = stack.count('a')
         blevels[j] = stack.count('b')
         clevels[j] = stack.count('c')
-
 
     if (alevels[-1] > 0):
         bib_warning('Warning 018a: found mismatched "``"..."''" quote pairs in the input string "' + s + \
@@ -2666,8 +2609,8 @@ def splitat(s, ilist):
     '''
     Split a string at locations given by a list of indices.
 
-    This can be used more flexibly than Python's native string split() function, when the character
-    you are splitting on is not always a valid splitting location.
+    This can be used more flexibly than Python's native string split() function, when the character you are splitting on
+    is not always a valid splitting location.
 
     Parameters
     ----------
@@ -2753,8 +2696,8 @@ def multisplit(s, seps):
 ## ===================================
 def enwrap_nested_string(s, delims=('{','}'), odd_operator=r'\textbf', even_operator=r'\textrm', disable=None):
     '''
-    This function will return the input string if it finds there
-    are no nested operators inside (i.e. when the number of delimiters found is < 2).
+    This function will return the input string if it finds there are no nested operators inside (i.e. when the number of
+    delimiters found is < 2).
 
     Parameters
     ----------
@@ -2779,26 +2722,24 @@ def enwrap_nested_string(s, delims=('{','}'), odd_operator=r'\textbf', even_oper
 
     oplevels = get_delim_levels(s, delims, odd_operator)
     if (oplevels[-1] > 0):
-        bib_warning('Warning 019: found mismatched "{","}" brace pairs in the input string. '
-             'Ignoring the problem and continuing on ...', disable)
+        bib_warning('Warning 019: found mismatched "{","}" brace pairs in the input string. Ignoring the problem and'
+             ' continuing on ...', disable)
         return(s)
 
-    ## In the operator queue, we replace all even-numbered levels while leaving all odd-numbered
-    ## levels alone. Recall that "oplevels" encodes the position of the *delimiter* and not the
-    ## position of where the operator starts.
+    ## In the operator queue, we replace all even-numbered levels while leaving all odd-numbered levels alone. Recall
+    ## that "oplevels" encodes the position of the *delimiter* and not the position of where the operator starts.
     maxlevels = max(oplevels)
     if (maxlevels < 2):
         return(s)
 
-    ## Select only even levels starting at 2. "q" is a counter for the number of substr
-    ## replacements.
+    ## Select only even levels starting at 2. "q" is a counter for the number of substr replacements.
     q = 0
     shift = len(odd_operator) - len(even_operator)
     for i,level in enumerate(oplevels):
         if (level > 0) and (level % 2 == 0):
-            ## Any place we see a transition from one level lower to this level is a substr we want
-            ## to replace. The "shift" used here is to compensate for changes in the length of the
-            ## string due to differences in length between the input operator and output.
+            ## Any place we see a transition from one level lower to this level is a substr we want to replace. The
+            ## "shift" used here is to compensate for changes in the length of the string due to differences in length
+            ## between the input operator and output.
             if (oplevels[i-1] < level):
                 #print(i, level, oplevels[i-1], s, s[:i-len(odd_operator)], s[i:])
                 s = s[:i-len(odd_operator)-(q*shift)] + even_operator + s[i-(q*shift):]
@@ -2809,8 +2750,8 @@ def enwrap_nested_string(s, delims=('{','}'), odd_operator=r'\textbf', even_oper
 ## ===================================
 def enwrap_nested_quotes(s, disable=None, debug=False):
     '''
-    Find nested quotes within strings and, if necessary, replace them with the proper nesting
-    (i.e. outer quotes use ````...''`` while inner quotes use ```...'``).
+    Find nested quotes within strings and, if necessary, replace them with the proper nesting (i.e. outer quotes use
+    ````...''`` while inner quotes use ```...'``).
 
     Parameters
     ----------
@@ -2825,22 +2766,20 @@ def enwrap_nested_quotes(s, disable=None, debug=False):
         The new string in which nested quotes have been properly reformatted.
     '''
 
-    ## NOTE: There is quite a lot going on in this function, so it may help future development
-    ## to write some of this work into subroutines.
+    ## NOTE: There is quite a lot going on in this function, so it may help future development to write some of this
+    ## work into subroutines.
 
-    ## First check for cases where parsing is going to be very complicated. For now, we should just
-    ## flag these cases to inform the user that they need to modify the source to tell the parser
-    ## what they want to do.
+    ## First check for cases where parsing is going to be very complicated. For now, we should just flag these cases to
+    ## inform the user that they need to modify the source to tell the parser what they want to do.
     if ("```" in s) or ("'''" in s):
-        bib_warning('Warning 020: the input string ["' + s + '"] contains multiple unseparated quote '
-             'characters. Bibulous cannot unnest the single and double quotes from this set, so '
-             'the separate quotations must be physically separated like ``{\:}`, for example. '
-             'Ignoring the quotation marks and continuing ...', disable)
+        bib_warning('Warning 020: the input string ["' + s + '"] contains multiple unseparated quote characters.'
+             ' Bibulous cannot unnest the single and double quotes from this set, so the separate quotations must be '
+             ' physically separated like ``{\:}`, for example. Ignoring the quotation marks and continuing ...',
+             disable)
         return(s)
 
-    ## Note that a backtick preceded by a backslash, an explamation point, or a question mark,
-    ## indicates LaTeX markup for a grave accent, an inverted explamation point, and an inverted
-    ## question mark, respectively.
+    ## Note that a backtick preceded by a backslash, an explamation point, or a question mark, indicates LaTeX markup
+    ## for a grave accent, an inverted explamation point, and an inverted question mark, respectively.
     #adelims = ('``',"''")
     anum = len(re.findall(r'(?<!\!\?\\)``', s))
     #bdelims = ('`',"'")
@@ -2853,10 +2792,10 @@ def enwrap_nested_quotes(s, disable=None, debug=False):
     ## Get the lists describing the quote nesting.
     (alevels, blevels, clevels) = get_quote_levels(s, disable=disable, debug=debug)
 
-    ## First, we look at the quote stack and replace *all* quote pairs with \enquote{...}. When
-    ## done, we can use `enwrap_nested_string()` to replace the odd and even instances of
-    ## \enquote{} with different quotation markers, depending on locale. `q` is the amount of
-    ## shift between indices in the current string and those in the source string.
+    ## First, we look at the quote stack and replace *all* quote pairs with \enquote{...}. When done, we can use
+    ## `enwrap_nested_string()` to replace the odd and even instances of \enquote{} with different quotation markers,
+    ## depending on locale. `q` is the amount of shift between indices in the current string and those in the source
+    ## string.
     q = 0
     for i in range(len(s)):
         if (i == 0) and (alevels[0] == 1):
@@ -2902,9 +2841,9 @@ def enwrap_nested_quotes(s, disable=None, debug=False):
     qlevels = get_delim_levels(s, ('{','}'), r'\enquote')
 
     ## Finally, replace odd levels of quotation with "``" and even levels with "`".
-    ## TODO: This approach is the American convention. Need to generalize this behavior for British
-    ## convention, and, even more broadly, to all locale-dependent quotation mark behavior. For
-    ## now let's just try to get the American version working.
+    ## TODO: This approach is the American convention. Need to generalize this behavior for British convention, and,
+    ## even more broadly, to all locale-dependent quotation mark behavior. For now let's just try to get the American
+    ## version working.
     t = 0
     odd_operators = ("``","''")
     even_operators = ("`","'")
@@ -2915,17 +2854,16 @@ def enwrap_nested_quotes(s, disable=None, debug=False):
     for i,level in enumerate(qlevels):
         if (qlevels[i-1] == 0) and (level == 0): continue
 
-        ## Any place we see a transition from one level lower to this level is a substr we want
-        ## to replace. The shift "t" used here is to compensate for changes in the length of the
-        ## string due to differences in length between the input operator and output. Also,
-        ## if we are about to substitute in a quote character (or two, in the case of LaTeX
-        ## double quotes), then we need to be careful to look in front and see if the quotes butt
-        ## up against one another, in which case we need to add a small space. For example, LaTeX
-        ## will interpret ''' as a double ending quote followed by a single ending quote, even if
-        ## we meant it to be the other way around. The space "\:" will remove the ambiguity.
+        ## Any place we see a transition from one level lower to this level is a substr we want to replace. The shift
+        ## "t" used here is to compensate for changes in the length of the string due to differences in length between
+        ## the input operator and output. Also, if we are about to substitute in a quote character (or two, in the case
+        ## of LaTeX double quotes), then we need to be careful to look in front and see if the quotes butt up against
+        ## one another, in which case we need to add a small space. For example, LaTeX will interpret ''' as a double
+        ## ending quote followed by a single ending quote, even ifwe meant it to be the other way around. The space
+        ## "\:" will remove the ambiguity.
 
-        ## There is quite a lot going on in this loop, so it may help future work to replace some
-        ## of the operations here with subroutines.
+        ## There is quite a lot going on in this loop, so it may help future work to replace some of the operations
+        ## here with subroutines.
         if (level % 2 == 0):
             if (i < len(r'\enquote{')-1) or (qlevels[i-1] < level):
                 left = i + t - len(r'\enquote{') + 1
@@ -2994,8 +2932,8 @@ def enwrap_nested_quotes(s, disable=None, debug=False):
 ## =============================
 def purify_string(s):
     '''
-    Remove the LaTeX-based formatting elements from a string so that a sorting function can use \
-    alphanumerical sorting on the string.
+    Remove the LaTeX-based formatting elements from a string so that a sorting function can use alphanumerical sorting
+    on the string.
 
     Parameters
     ----------
@@ -3015,11 +2953,10 @@ def purify_string(s):
         p = p.replace('}', '')
         return(p)
 
-    ## If the string contains mathematical markup (i.e. $...$), then we have to treat that case
-    ## specially, since we don't want to run "purify" on mathematics --- it's not as easy as
-    ## simply replacing math markup with unicode equivalents. So, if we find math markup then
-    ## we split the string into math parts and non-math parts, purify the non-math ones, and
-    ## then piece it back together.
+    ## If the string contains mathematical markup (i.e. $...$), then we have to treat that case specially, since we
+    ## don't want to run "purify" on mathematics --- it's not as easy as simply replacing math markup with unicode
+    ## equivalents. So, if we find math markup then we split the string into math parts and non-math parts, purify the
+    ## non-math ones, and then piece it back together. Messy.
     mathpattern = re.compile(r'(?<!\\)\$.*?(?<!\\)\$', re.UNICODE)
     matchobj = re.search(r'(?<!\\)\$.*?(?<!\\)\$', s, re.UNICODE)
 
@@ -3027,7 +2964,7 @@ def purify_string(s):
         start_idx = []
         end_idx = []
 
-        for matchobj in re.finditer(r'(?<!\\)\$.*?(?<!\\)\$', s, re.UNICODE):
+        for matchobj in re.finditer(mathpattern, s):
             (start,end) = matchobj.span()
             start_idx.append(start)
             end_idx.append(end)
@@ -3048,15 +2985,15 @@ def purify_string(s):
         ## Convert any LaTeX character encodings directly to their unicode equivalents.
         p = latex_to_utf8(p)
 
-        ## Next we look for LaTeX commands. LaTeX variables will have the form "\variable" followed
-        ## by either whitespace, '{', or '}'. A function will have the form "\functionname{...}"
-        ## where the ellipsis can be anything.
+        ## Next we look for LaTeX commands. LaTeX variables will have the form "\variable" followed by either
+        ## whitespace, '{', or '}'. A function will have the form "\functionname{...}" where the ellipsis can be
+        ## anything.
         match = re.compile(r'\\\w+', re.UNICODE)
         p = match.sub('', p)
 
-        ## Finally, remove the braces used for LaTeX commands. We can't just replace '{' and '}'
-        ## wholesale, since the syntax allows '\{' and '\}' to produce text braces. So first we
-        ## remove the command braces, and then we swap '\{' for '{' etc at the end.
+        ## Finally, remove the braces used for LaTeX commands. We can't just replace '{' and '}' wholesale, since the
+        ## syntax allows '\{' and '\}' to produce text braces. So first we remove the command braces, and then we swap
+        ## '\{' for '{' etc at the end.
         match = re.compile(r'(?<!\\){', re.UNICODE)
         p = match.sub('', p, re.UNICODE)
         match = re.compile(r'(?<!\\)}', re.UNICODE)
@@ -3067,8 +3004,6 @@ def purify_string(s):
     return(p)
 
 ## =============================
-## I think that we can get rid of the "u" in front of the strings now that we are using
-## "from __future__ import unicode_literals".
 def latex_to_utf8(s):
     '''
     Translate LaTeX-markup special characters to their Unicode equivalents.
@@ -3084,9 +3019,8 @@ def latex_to_utf8(s):
         The translated version of the input.
     '''
 
-    ## Note that the code below uses replace() loops rather than a translation table, since the
-    ## latter only supports one-to-one translation, whereas something more flexible is needed
-    ## here. There is a substantial
+    ## Note that the code below uses replace() loops rather than a translation table, since the latter only supports
+    ## one-to-one translation, whereas something more flexible is needed here.
     if ('\\' not in s):
         return(s)
 
@@ -3095,85 +3029,73 @@ def latex_to_utf8(s):
     for c in trans:
         if c in s: s = s.replace(c, trans[c])
 
-    ## If there are any double backslashes, place some braces around them to prevent something like
-    ## "\\aa" from getting interpreted as a backslash plus "\aa". This makes the string easier to
-    ## parse and does no harm.
+    ## If there are any double backslashes, place some braces around them to prevent something like "\\aa" from getting
+    ## interpreted as a backslash plus "\aa". This makes the string easier to parse and does no harm.
     if r'\\' in s:
         s = s.replace(r'\\',r'{\\}')
 
-    ## First identify all the LaTeX special characters in the string, then replace them all with
-    ## their Unicode equivalents. (This is to make sure that they alphabetize correctly for
-    ## sorting.)
-    ##     The translation dictionary below uses single-letter accent commands, such as \u{g}.
-    ## These commands are one of (r'\b', r'\c', r'\d', r'\H', r'\k', r'\r', r'\u', r'\v'), followed
-    ## by an open brace, a single character, and a closed brace. These replacements are done first
-    ## because some of the special characters use '\i', which would otherwise get replaced by the
-    ## "dotless i" Unicode character, and so the replacement dictionary here would not detect
-    ## the proper LaTeX code for it.
+    ## First identify all the LaTeX special characters in the string, then replace them all with their Unicode
+    ## equivalents. (This is to make sure that they alphabetize correctly for sorting.) The translation dictionary
+    ## below uses single-letter accent commands, such as \u{g}. These commands are one of (r'\b', r'\c', r'\d', r'\H',
+    ## r'\k', r'\r', r'\u', r'\v'), followed by an open brace, a single character, and a closed brace. These
+    ## replacements are done first because some of the special characters use '\i', which would otherwise get replaced
+    ## by the "dotless i" Unicode character, and so the replacement dictionary here would not detect the proper LaTeX
+    ## code for it.
 
     ## First, characters with a cedilla or comma below.
     if (r'\c' in s):
-        trans = {r'\c{C}':'Ç', r'{\c C}':'Ç', r'\c{c}':'ç', r'{\c c}':'ç',
-                 r'\c{E}':'Ȩ', r'{\c E}':'Ȩ', r'\c{e}':'ȩ', r'{\c e}':'ȩ',
-                 r'\c{G}':'Ģ', r'{\c G}':'Ģ', r'\c{g}':'ģ', r'{\c g}':'ģ',
-                 r'\c{K}':'Ķ', r'{\c K}':'Ķ', r'\c{k}':'ķ', r'{\c k}':'ķ',
-                 r'\c{L}':'Ļ', r'{\c L}':'Ļ', r'\c{l}':'ļ', r'{\c l}':'ļ',
-                 r'\c{N}':'Ņ', r'{\c N}':'Ņ', r'\c{n}':'ņ', r'{\c n}':'ņ',
-                 r'\c{R}':'Ŗ', r'{\c R}':'Ŗ', r'\c{r}':'ŗ', r'{\c r}':'ŗ',
-                 r'\c{S}':'Ş', r'{\c S}':'Ş', r'\c{s}':'ş', r'{\c s}':'ş',
-                 r'\c{T}':'Ţ', r'{\c T}':'Ţ', r'\c{t}':'ţ', r'{\c t}':'ţ'}
+        trans = {r'\c{C}':'Ç', r'{\c C}':'Ç', r'\c{c}':'ç', r'{\c c}':'ç', r'\c{E}':'Ȩ', r'{\c E}':'Ȩ',
+                 r'\c{e}':'ȩ', r'{\c e}':'ȩ', r'\c{G}':'Ģ', r'{\c G}':'Ģ', r'\c{g}':'ģ', r'{\c g}':'ģ',
+                 r'\c{K}':'Ķ', r'{\c K}':'Ķ', r'\c{k}':'ķ', r'{\c k}':'ķ', r'\c{L}':'Ļ', r'{\c L}':'Ļ',
+                 r'\c{l}':'ļ', r'{\c l}':'ļ', r'\c{N}':'Ņ', r'{\c N}':'Ņ', r'\c{n}':'ņ', r'{\c n}':'ņ',
+                 r'\c{R}':'Ŗ', r'{\c R}':'Ŗ', r'\c{r}':'ŗ', r'{\c r}':'ŗ', r'\c{S}':'Ş', r'{\c S}':'Ş',
+                 r'\c{s}':'ş', r'{\c s}':'ş', r'\c{T}':'Ţ', r'{\c T}':'Ţ', r'\c{t}':'ţ', r'{\c t}':'ţ'}
 
         for c in trans:
             if c in s: s = s.replace(c, trans[c])
 
-    ## Characters with breve above. Note that the "\u" is problematic when "unicode_literals" is
-    ## turned on via "from __future__ import unicode_literals". Thus, in the block below, rather
-    ## than raw strings with single backslashes, we have to use double-backslashes.
+    ## Characters with breve above. Note that the "\u" is problematic when "unicode_literals" is turned on via
+    ## "from __future__ import unicode_literals". Thus, in the block below, rather than raw strings with single
+    ## backslashes, we have to use double-backslashes.
     if ('\\u' in s):
-        trans = {'\\u{A}':'Ă', '{\\u A}':'Ă', '\\u{a}':'ă',  '{\\u a}':'ă',
-                 '\\u{E}':'Ĕ', '{\\u E}':'Ĕ', '\\u{e}':'ĕ',  '{\\u e}':'ĕ',
-                 '\\u{G}':'Ğ', '{\\u G}':'Ğ', '\\u{g}':'ğ',  '{\\u g}':'ğ',
-                 '\\u{I}':'Ĭ', '{\\u I}':'Ĭ', '\\u{\i}':'ĭ', '{\\u\i}':'ĭ',
-                 '\\u{O}':'Ŏ', '{\\u O}':'Ŏ', '\\u{o}':'ŏ',  '{\\u o}':'ŏ',
-                 '\\u{U}':'Ŭ', '{\\u U}':'Ŭ', '\\u{u}':'ŭ',  '{\\u u}':'ŭ'}
+        trans = {'\\u{A}':'Ă', '{\\u A}':'Ă', '\\u{a}':'ă',  '{\\u a}':'ă', '\\u{E}':'Ĕ', '{\\u E}':'Ĕ',
+                 '\\u{e}':'ĕ', '{\\u e}':'ĕ', '\\u{G}':'Ğ',  '{\\u G}':'Ğ', '\\u{g}':'ğ', '{\\u g}':'ğ',
+                 '\\u{I}':'Ĭ', '{\\u I}':'Ĭ', '\\u{\i}':'ĭ', '{\\u\i}':'ĭ', '\\u{O}':'Ŏ', '{\\u O}':'Ŏ',
+                 '\\u{o}':'ŏ', '{\\u o}':'ŏ', '\\u{U}':'Ŭ',  '{\\u U}':'Ŭ', '\\u{u}':'ŭ', '{\\u u}':'ŭ'}
 
         for c in trans:
             if c in s: s = s.replace(c, trans[c])
 
     ## Characters with an ogonek.
     if (r'\k' in s):
-        trans = {r'\k{A}':'Ą', r'{\k A}':'Ą', r'\k{a}':'ą', r'{\k a}':'ą',
-                 r'\k(E}':'Ę', r'{\k E}':'Ę', r'\k{e}':'ę', r'{\k e}':'ę',
-                 r'\k{I}':'Į', r'{\k I}':'Į', r'\k{i}':'į', r'{\k i}':'į',
-                 r'\k{O}':'Ǫ', r'{\k O}':'Ǫ', r'\k{o}':'ǫ', r'{\k o}':'ǫ',
-                 r'\k{U}':'Ų', r'{\k U}':'Ų', r'\k{u}':'ų', r'{\k u}':'ų'}
+        trans = {r'\k{A}':'Ą', r'{\k A}':'Ą', r'\k{a}':'ą', r'{\k a}':'ą', r'\k(E}':'Ę', r'{\k E}':'Ę',
+                 r'\k{e}':'ę', r'{\k e}':'ę', r'\k{I}':'Į', r'{\k I}':'Į', r'\k{i}':'į', r'{\k i}':'į',
+                 r'\k{O}':'Ǫ', r'{\k O}':'Ǫ', r'\k{o}':'ǫ', r'{\k o}':'ǫ', r'\k{U}':'Ų', r'{\k U}':'Ų',
+                 r'\k{u}':'ų', r'{\k u}':'ų'}
         for c in trans:
             if c in s: s = s.replace(c, trans[c])
 
     ## Characters with hachek.
     if (r'\v' in s):
-        trans = {r'\v{C}':'Č', r'{\v C}':'Č', r'\v{c}':'č', r'{\v c}':'č',
-                 r'\v{D}':'Ď', r'{\v D}':'Ď', r'\v{d}':'ď', r'{\v d}':'ď',
-                 r'\v{E}':'Ě', r'{\v E}':'Ě', r'\v{e}':'ě', r'{\v e}':'ě',
-                 r'\v{L}':'Ľ', r'{\v L}':'Ľ', r'\v{l}':'ľ', r'{\v l}':'ľ',
-                 r'\v{N}':'Ň', r'{\v N}':'Ň', r'\v{n}':'ň', r'{\v n}':'ň',
-                 r'\v{R}':'Ř', r'{\v R}':'Ř', r'\v{r}':'ř', r'{\v r}':'ř',
-                 r'\v{S}':'Š', r'{\v S}':'Š', r'\v{s}':'š', r'{\v s}':'š',
-                 r'\v{T}':'Ť', r'{\v T}':'Ť', r'\v{t}':'ť', r'{\v t}':'ť',
-                 r'\v{Z}':'Ž', r'{\v Z}':'Ž', r'\v{z}':'ž', r'{\v z}':'ž',
-                 r'\v{H}':'\u021E', r'{\v H}':'\u021E', r'\v{h}':'\u021F', r'{\v h}':'\u021F',
-                 r'\v{A}':'\u01CD', r'{\v A}':'\u01CD', r'\v{a}':'\u01CE', r'{\v a}':'\u01CE',
+        trans = {r'\v{C}':'Č', r'{\v C}':'Č', r'\v{c}':'č', r'{\v c}':'č', r'\v{D}':'Ď', r'{\v D}':'Ď',
+                 r'\v{d}':'ď', r'{\v d}':'ď', r'\v{E}':'Ě', r'{\v E}':'Ě', r'\v{e}':'ě', r'{\v e}':'ě',
+                 r'\v{L}':'Ľ', r'{\v L}':'Ľ', r'\v{l}':'ľ', r'{\v l}':'ľ', r'\v{N}':'Ň', r'{\v N}':'Ň',
+                 r'\v{n}':'ň', r'{\v n}':'ň', r'\v{R}':'Ř', r'{\v R}':'Ř', r'\v{r}':'ř', r'{\v r}':'ř',
+                 r'\v{S}':'Š', r'{\v S}':'Š', r'\v{s}':'š', r'{\v s}':'š', r'\v{T}':'Ť', r'{\v T}':'Ť',
+                 r'\v{t}':'ť', r'{\v t}':'ť', r'\v{Z}':'Ž', r'{\v Z}':'Ž', r'\v{z}':'ž', r'{\v z}':'ž',
+                 r'\v{H}':'\u021E', r'{\v H}':'\u021E', r'\v{h}':'\u021F',  r'{\v h}':'\u021F',
+                 r'\v{A}':'\u01CD', r'{\v A}':'\u01CD', r'\v{a}':'\u01CE',  r'{\v a}':'\u01CE',
                  r'\v{I}':'\u01CF', r'{\v I}':'\u01CF', r'\v{\i}':'\u01D0', r'{\v \i}':'\u01D0',
-                 r'\v{O}':'\u01D1', r'{\v O}':'\u01D1', r'\v{o}':'\u01D2', r'{\v o}':'\u01D2',
-                 r'\v{U}':'\u01D3', r'{\v U}':'\u01D3', r'\v{u}':'\u01D4', r'{\v u}':'\u01D4',
-                 r'\v{G}':'\u01E6', r'{\v G}':'\u01E6', r'\v{g}':'\u01E7', r'{\v g}':'\u01E7',
-                 r'\v{K}':'\u01E8', r'{\v K}':'\u01E8', r'\v{k}':'\u01E9', r'{\v k}':'\u01E9'}
+                 r'\v{O}':'\u01D1', r'{\v O}':'\u01D1', r'\v{o}':'\u01D2',  r'{\v o}':'\u01D2',
+                 r'\v{U}':'\u01D3', r'{\v U}':'\u01D3', r'\v{u}':'\u01D4',  r'{\v u}':'\u01D4',
+                 r'\v{G}':'\u01E6', r'{\v G}':'\u01E6', r'\v{g}':'\u01E7',  r'{\v g}':'\u01E7',
+                 r'\v{K}':'\u01E8', r'{\v K}':'\u01E8', r'\v{k}':'\u01E9',  r'{\v k}':'\u01E9'}
         for c in trans:
             if c in s: s = s.replace(c, trans[c])
 
     if (r'\H' in s):
-        trans = {r'\H{O}':u'Ő',  r'\H{o}':u'ő',  r'\H{U}':u'Ű',  r'\H{u}':u'ű',
-                 r'{\H O}':u'Ő', r'{\H o}':u'ő', r'{\H U}':u'Ű', r'{\H u}':u'ű'}
+        trans = {r'\H{O}':u'Ő',  r'\H{o}':u'ő',  r'\H{U}':u'Ű',  r'\H{u}':u'ű', r'{\H O}':u'Ő', r'{\H o}':u'ő',
+                 r'{\H U}':u'Ű', r'{\H u}':u'ű'}
         for c in trans:
             if c in s: s = s.replace(c, trans[c])
 
@@ -3184,76 +3106,63 @@ def latex_to_utf8(s):
             if c in s: s = s.replace(c, trans[c])
 
     ## Now let's do the straightforward accent characters.
-    trans = {r'\`A':u'\u00C1',  r'\`a':u'\u00E0',  r"\'A":u'\u00C1', r"\'a":u'\u00E1',
-             r'\~A':u'\u00C3',  r'\^a':u'\u00E2',  r'\"A':u'\u00C4', r'\~a':u'\u00E3',
-             r'\"a':u'\u00E4',  r'\`E':u'\u00C8',  r"\'E":u'\u00C9', r'\`e':u'\u00E8',
-             r'\^E':u'\u00CA',  r"\'e":u'\u00E9',  r'\"E':u'\u00CB', r'\^e':u'\u00EA',
-             r'\`I':u'\u00CC',  r'\"e':u'\u00EB',  r"\'I":u'\u00CD', r'\`\i':u'\u00EC',
-             r'\^I':u'\u00CE',  r"\'\i":u'\u00ED', r'\"I':u'\u00CF', r'\^\i':u'\u00EE',
-             r'\~N':u'\u00D1',  r'\"\i':u'\u00EF', r'\`O':u'\u00D2', r'\~n':u'\u00F1',
-             r"\'O":u'\u00D3',  r'\`o':u'\u00F2',  r'\^O':u'\u00D4', r"\'o":u'\u00F3',
-             r'\~O':u'\u00D5',  r'\^o':u'\u00F4',  r'\"O':u'\u00D6', r'\~o':u'\u00F5',
-             r'\"o':u'\u00F6',  r'\`U':u'\u00D9',  r"\'U":u'\u00DA', r'\`u':u'\u00F9',
-             r'\^U':u'\u00DB',  r"\'u":u'\u00FA',  r'\"U':u'\u00DC', r'\^u':u'\u00FB',
-             r"\'Y":u'\u00DD',  r'\"u':u'\u00FC',  r"\'y":u'\u00FD', r'\"y':u'\u00FF',
-             r'\=A':u'\u0100',  r'\=a':u'\u0101',  r"\'C":u'\u0106', r"\'c":u'\u0107',
-             r'\^C':u'\u0108',  r'\^c':u'\u0109',  r'\.C':u'\u010A', r'\.c':u'\u010B',
-             r'\=E':u'\u0112',  r'\=e':u'\u0113',  r'\.E':u'\u0116', r'\.e':u'\u0117',
-             r'\^G':u'\u011C',  r'\^g':u'\u011D',  r'\.G':u'\u0120', r'\.g':u'\u0121',
-             r'\^H':u'\u0124',  r'\^h':u'\u0125',  r'\~I':u'\u0128', r'\~\i':u'\u0129',
-             r'\=I':u'\u012A',  r'\=\i':u'\u012B', r'\.I':u'\u0130', r'\^J':u'\u0134',
-             r'\^\j':u'\u0135', r"\'L":u'\u0139',  r"\'N":u'\u0143', r"\'n":u'\u0144',
-             r'\=O':u'\u014C',  r'\=o':u'\u014D',  r"\'R":u'\u0154', r"\'r":u'\u0155',
-             r"\'S":u'\u015A',  r"\'s":u'\u015B',  r'\~U':u'\u0168', r'\~u':u'\u0169',
-             r'\=U':u'\u016A',  r'\=u':u'\u016B',  r'\^W':u'\u0174', r'\^w':u'\u0175',
-             r'\^Y':u'\u0176',  r'\^y':u'\u0177',  r"\'Z":u'\u0179', r"\'z":u'\u017A',
-             r'\.Z':u'\u017B',  r'\.z':u'\u017C',
-             r'\`Y':u'Ỳ',       r'\`y':u'ỳ',       r"\'K":u'Ḱ',      r"\'k":u'ḱ',
-             r"\'l":u'ĺ',       r'\^A':u'Â',       r'\^S':u'Ŝ',      r'\^s':u'ŝ',
-             r'\"Y':u'Ÿ',       r'\~E':u'Ẽ',       r'\~e':u'ẽ',      r'\~Y':u'Ỹ',
-             r'\~y':u'ỹ'}
+    trans = {r'\`A':u'\u00C1',  r'\`a':u'\u00E0',  r"\'A":u'\u00C1',  r"\'a":u'\u00E1',  r'\~A':u'\u00C3',
+             r'\^a':u'\u00E2',  r'\"A':u'\u00C4',  r'\~a':u'\u00E3',  r'\"a':u'\u00E4',  r'\`E':u'\u00C8',
+             r"\'E":u'\u00C9',  r'\`e':u'\u00E8',  r'\^E':u'\u00CA',  r"\'e":u'\u00E9',  r'\"E':u'\u00CB',
+             r'\^e':u'\u00EA',  r'\`I':u'\u00CC',  r'\"e':u'\u00EB',  r"\'I":u'\u00CD',  r'\`\i':u'\u00EC',
+             r'\^I':u'\u00CE',  r"\'\i":u'\u00ED', r'\"I':u'\u00CF',  r'\^\i':u'\u00EE', r'\~N':u'\u00D1',
+             r'\"\i':u'\u00EF', r'\`O':u'\u00D2',  r'\~n':u'\u00F1',  r"\'O":u'\u00D3',  r'\`o':u'\u00F2',
+             r'\^O':u'\u00D4',  r"\'o":u'\u00F3',  r'\~O':u'\u00D5',  r'\^o':u'\u00F4',  r'\"O':u'\u00D6',
+             r'\~o':u'\u00F5',  r'\"o':u'\u00F6',  r'\`U':u'\u00D9',  r"\'U":u'\u00DA',  r'\`u':u'\u00F9',
+             r'\^U':u'\u00DB',  r"\'u":u'\u00FA',  r'\"U':u'\u00DC',  r'\^u':u'\u00FB',  r"\'Y":u'\u00DD',
+             r'\"u':u'\u00FC',  r"\'y":u'\u00FD',  r'\"y':u'\u00FF',  r'\=A':u'\u0100',  r'\=a':u'\u0101',
+             r"\'C":u'\u0106',  r"\'c":u'\u0107',  r'\^C':u'\u0108',  r'\^c':u'\u0109',  r'\.C':u'\u010A',
+             r'\.c':u'\u010B',  r'\=E':u'\u0112',  r'\=e':u'\u0113',  r'\.E':u'\u0116',  r'\.e':u'\u0117',
+             r'\^G':u'\u011C',  r'\^g':u'\u011D',  r'\.G':u'\u0120',  r'\.g':u'\u0121',  r'\^H':u'\u0124',
+             r'\^h':u'\u0125',  r'\~I':u'\u0128',  r'\~\i':u'\u0129', r'\=I':u'\u012A',  r'\=\i':u'\u012B',
+             r'\.I':u'\u0130',  r'\^J':u'\u0134',  r'\^\j':u'\u0135', r"\'L":u'\u0139',  r"\'N":u'\u0143',
+             r"\'n":u'\u0144',  r'\=O':u'\u014C',  r'\=o':u'\u014D',  r"\'R":u'\u0154',  r"\'r":u'\u0155',
+             r"\'S":u'\u015A',  r"\'s":u'\u015B',  r'\~U':u'\u0168',  r'\~u':u'\u0169',  r'\=U':u'\u016A',
+             r'\=u':u'\u016B',  r'\^W':u'\u0174',  r'\^w':u'\u0175',  r'\^Y':u'\u0176',  r'\^y':u'\u0177',
+             r"\'Z":u'\u0179',  r"\'z":u'\u017A',  r'\.Z':u'\u017B',  r'\.z':u'\u017C',  r'\`Y':u'Ỳ',
+             r'\`y':u'ỳ',       r"\'K":u'Ḱ',       r"\'k":u'ḱ',       r"\'l":u'ĺ',       r'\^A':u'Â',
+             r'\^S':u'Ŝ',       r'\^s':u'ŝ',       r'\"Y':u'Ÿ',       r'\~E':u'Ẽ',       r'\~e':u'ẽ',
+             r'\~Y':u'Ỹ',       r'\~y':u'ỹ'}
 
     for c in trans:
         if c in s: s = s.replace(c, trans[c])
 
     ## Do again for anyone using extra braces.
-    trans = {r'\`{A}':u'\u00C1',  r'\`{a}':u'\u00E0',  r"\'{A}":u'\u00C1', r"\'{a}":u'\u00E1',
-             r'\~{A}':u'\u00C3',  r'\^{a}':u'\u00E2',  r'\"{A}':u'\u00C4', r'\~{a}':u'\u00E3',
-             r'\"{a}':u'\u00E4',  r'\`{E}':u'\u00C8',  r"\'{E}":u'\u00C9', r'\`{e}':u'\u00E8',
-             r'\^{E}':u'\u00CA',  r"\'{e}":u'\u00E9',  r'\"{E}':u'\u00CB', r'\^{e}':u'\u00EA',
-             r'\`{I}':u'\u00CC',  r'\"{e}':u'\u00EB',  r"\'{I}":u'\u00CD', r'\`{\i}':u'\u00EC',
-             r'\^{I}':u'\u00CE',  r"\'{\i}":u'\u00ED', r'\"{I}':u'\u00CF', r'\^{\i}':u'\u00EE',
-             r'\~{N}':u'\u00D1',  r'\"{\i}':u'\u00EF', r'\`{O}':u'\u00D2', r'\~{n}':u'\u00F1',
-             r"\'{O}":u'\u00D3',  r'\`{o}':u'\u00F2',  r'\^{O}':u'\u00D4', r"\'{o}":u'\u00F3',
-             r'\~{O}':u'\u00D5',  r'\^{o}':u'\u00F4',  r'\"{O}':u'\u00D6', r'\~{o}':u'\u00F5',
-             r'\"{o}':u'\u00F6',  r'\`{U}':u'\u00D9',  r"\'{U}":u'\u00DA', r'\`{u}':u'\u00F9',
-             r'\^{U}':u'\u00DB',  r"\'{u}":u'\u00FA',  r'\"{U}':u'\u00DC', r'\^{u}':u'\u00FB',
-             r"\'{Y}":u'\u00DD',  r'\"{u}':u'\u00FC',  r"\'{y}":u'\u00FD', r'\"{y}':u'\u00FF',
-             r'\={A}':u'\u0100',  r'\={a}':u'\u0101',  r"\'{C}":u'\u0106', r"\'{c}":u'\u0107',
-             r'\^{C}':u'\u0108',  r'\^{c}':u'\u0109',  r'\.{C}':u'\u010A', r'\.{c}':u'\u010B',
-             r'\={E}':u'\u0112',  r'\={e}':u'\u0113',  r'\.{E}':u'\u0116', r'\.{e}':u'\u0117',
-             r'\^{G}':u'\u011C',  r'\^{g}':u'\u011D',  r'\.{G}':u'\u0120', r'\.{g}':u'\u0121',
-             r'\^{H}':u'\u0124',  r'\^{h}':u'\u0125',  r'\~{I}':u'\u0128', r'\~{\i}':u'\u0129',
-             r'\={I}':u'\u012A',  r'\={\i}':u'\u012B', r'\.{I}':u'\u0130', r'\^{J}':u'\u0134',
-             r'\^{\j}':u'\u0135', r"\'{L}":u'\u0139',  r"\'{N}":u'\u0143', r"\'{n}":u'\u0144',
-             r'\={O}':u'\u014C',  r'\={o}':u'\u014D',  r"\'{R}":u'\u0154', r"\'{r}":u'\u0155',
-             r"\'{S}":u'\u015A',  r"\'{s}":u'\u015B',  r'\~{U}':u'\u0168', r'\~{u}':u'\u0169',
-             r'\={U}':u'\u016A',  r'\={u}':u'\u016B',  r'\^{W}':u'\u0174', r'\^{w}':u'\u0175',
-             r'\^{Y}':u'\u0176',  r'\^{y}':u'\u0177',  r"\'{Z}":u'\u0179', r"\'{z}":u'\u017A',
-             r'\.{Z}':u'\u017B',  r'\.{z}':u'\u017C',
-             r'\`{Y}':u'Ỳ',       r'\`{y}':u'ỳ',       r"\'{K}":u'Ḱ',      r"\'{k}":u'ḱ',
-             r"\'{l}":u'ĺ',       r'\^{A}':u'Â',       r'\^{S}':u'Ŝ',      r'\^{s}':u'ŝ',
-             r'\"{Y}':u'Ÿ',       r'\~{E}':u'Ẽ',       r'\~{e}':u'ẽ',      r'\~{Y}':u'Ỹ',
-             r'\~{y}':u'ỹ'}
+    trans = {r'\`{A}':u'\u00C1',  r'\`{a}':u'\u00E0',  r"\'{A}":u'\u00C1',  r"\'{a}":u'\u00E1',  r'\~{A}':u'\u00C3',
+             r'\^{a}':u'\u00E2',  r'\"{A}':u'\u00C4',  r'\~{a}':u'\u00E3',  r'\"{a}':u'\u00E4',  r'\`{E}':u'\u00C8',
+             r"\'{E}":u'\u00C9',  r'\`{e}':u'\u00E8',  r'\^{E}':u'\u00CA',  r"\'{e}":u'\u00E9',  r'\"{E}':u'\u00CB',
+             r'\^{e}':u'\u00EA',  r'\`{I}':u'\u00CC',  r'\"{e}':u'\u00EB',  r"\'{I}":u'\u00CD',  r'\`{\i}':u'\u00EC',
+             r'\^{I}':u'\u00CE',  r"\'{\i}":u'\u00ED', r'\"{I}':u'\u00CF',  r'\^{\i}':u'\u00EE', r'\~{N}':u'\u00D1',
+             r'\"{\i}':u'\u00EF', r'\`{O}':u'\u00D2',  r'\~{n}':u'\u00F1',  r"\'{O}":u'\u00D3',  r'\`{o}':u'\u00F2',
+             r'\^{O}':u'\u00D4',  r"\'{o}":u'\u00F3',  r'\~{O}':u'\u00D5',  r'\^{o}':u'\u00F4',  r'\"{O}':u'\u00D6',
+             r'\~{o}':u'\u00F5',  r'\"{o}':u'\u00F6',  r'\`{U}':u'\u00D9',  r"\'{U}":u'\u00DA',  r'\`{u}':u'\u00F9',
+             r'\^{U}':u'\u00DB',  r"\'{u}":u'\u00FA',  r'\"{U}':u'\u00DC',  r'\^{u}':u'\u00FB',  r"\'{Y}":u'\u00DD',
+             r'\"{u}':u'\u00FC',  r"\'{y}":u'\u00FD',  r'\"{y}':u'\u00FF',  r'\={A}':u'\u0100',  r'\={a}':u'\u0101',
+             r"\'{C}":u'\u0106',  r"\'{c}":u'\u0107',  r'\^{C}':u'\u0108',  r'\^{c}':u'\u0109',  r'\.{C}':u'\u010A',
+             r'\.{c}':u'\u010B',  r'\={E}':u'\u0112',  r'\={e}':u'\u0113',  r'\.{E}':u'\u0116',  r'\.{e}':u'\u0117',
+             r'\^{G}':u'\u011C',  r'\^{g}':u'\u011D',  r'\.{G}':u'\u0120',  r'\.{g}':u'\u0121',  r'\^{H}':u'\u0124',
+             r'\^{h}':u'\u0125',  r'\~{I}':u'\u0128',  r'\~{\i}':u'\u0129', r'\={I}':u'\u012A',  r'\={\i}':u'\u012B',
+             r'\.{I}':u'\u0130',  r'\^{J}':u'\u0134',  r'\^{\j}':u'\u0135', r"\'{L}":u'\u0139',  r"\'{N}":u'\u0143',
+             r"\'{n}":u'\u0144',  r'\={O}':u'\u014C',  r'\={o}':u'\u014D',  r"\'{R}":u'\u0154',  r"\'{r}":u'\u0155',
+             r"\'{S}":u'\u015A',  r"\'{s}":u'\u015B',  r'\~{U}':u'\u0168',  r'\~{u}':u'\u0169',  r'\={U}':u'\u016A',
+             r'\={u}':u'\u016B',  r'\^{W}':u'\u0174',  r'\^{w}':u'\u0175',  r'\^{Y}':u'\u0176',  r'\^{y}':u'\u0177',
+             r"\'{Z}":u'\u0179',  r"\'{z}":u'\u017A',  r'\.{Z}':u'\u017B',  r'\.{z}':u'\u017C',  r'\`{Y}':u'Ỳ',
+             r'\`{y}':u'ỳ',       r"\'{K}":u'Ḱ',       r"\'{k}":u'ḱ',       r"\'{l}":u'ĺ',       r'\^{A}':u'Â',
+             r'\^{S}':u'Ŝ',       r'\^{s}':u'ŝ',       r'\"{Y}':u'Ÿ',       r'\~{E}':u'Ẽ',       r'\~{e}':u'ẽ',
+             r'\~{Y}':u'Ỹ',       r'\~{y}':u'ỹ'}
 
     for c in trans:
         if c in s: s = s.replace(c, trans[c])
 
-    ## Those were easy. Next we look for single-char codes that must be followed by a non-alpha
-    ## element, so that for example \orange will produce the "\orange" LaTeX command while
-    ## "{\o}range" or "\o range" will produce "ørange". Since we're using regex and not Python's
-    ## string objects, we need to replace all backslashes with double-backslashes. Thankfully,
-    ## no other regex escape characters occur in this list of LaTeX markup for foreign letters.
+    ## Those were easy. Next we look for single-char codes that must be followed by a non-alpha element, so that for
+    ## example \orange will produce the "\orange" LaTeX command while "{\o}range" or "\o range" will produce "ørange".
+    ## Since we're using regex and not Python's string objects, we need to replace all backslashes with double-
+    ## backslashes. Thankfully, no other regex escape characters occur in this list of LaTeX markup for foreign letters.
     trans = {r'\AA':u'Å', r'\AE':u'Æ', r'\aa':u'å', r'\ae':u'æ', r'\O':u'Ø',  r'\o':u'ø',
              r'\ss':u'ß', r'\i':u'ı',  r'\L':u'Ł',  r'\l':u'ł',  r'\OE':u'Œ', r'\oe':u'œ',
              r'\j':u'ȷ',  r'\P':u'¶',  r'\S':u'§',  r'\DH':u'Ð', r'\dh':u'ð', r'\DJ':u'Đ',
@@ -3267,96 +3176,9 @@ def latex_to_utf8(s):
     return(s)
 
 ## =============================
-def parse_bst_template_str(bst_template_str, bibentry, variables, undefstr='???'):
-    '''
-    From an "options train" `[...|...|...]`, find the first fully defined block in the
-    train.
-
-    A Bibulous type of bibliography style template string contains grammatical featues
-    called options trains, of the form `[...|...|...]`. Each "block" in the train (divided
-    from the others by a `|` symbol), contains fields which, if defined, replace the
-    entire options train in the returned string.
-
-    Parameters
-    ----------
-    bst_template_str : str
-        The string containing a complete entrytype bibliography style template.
-    variables : list of str
-        The list of variables defined within the template string.
-    bibentry : dict
-        An entry from the bibliography database.
-    undefstr : str
-        The string to replace undefined required fields with.
-
-    Returns
-    -------
-    arg : str
-          The string giving the entrytype block to replace an options train.
-
-    Example
-    -------
-    parse_bst_template_str() is given an options train "[<title>|<booktitle>]" and begins to
-    look into the bibliography entry. It does not find a "title" entry but does find a "booktitle"
-    entry. So, the function returns "<booktitle>", without square brackets, thereby replacing
-    the train with the proper defined variable.
-    '''
-
-    block_train = bst_template_str.split('|')
-    nblocks = len(block_train)
-
-    ## Go through the if/elseif/else train of blocks within the string one by one. In each block,
-    ## see if there are any variables defined. If no variables are present, then the
-    ## block is "defined" and we return that block (i.e. replacing the train with that block). If
-    ## an argument is defined, strip its surrounding '<' and '>' and look to see if the variable is
-    ## defined in the bibdata entry. If so, the variable is defined and we return the '<var>'
-    ## version of the variable (later code will do the variable replacement). If the variable is
-    ## undefined (not present in the bibdata entry) then skip to the next block. If there is no
-    ## next block, or if the block is empty (which means undefined by definition) then set the
-    ## result to be the "undefined string".
-    for i in range(nblocks):
-        block = block_train[i]
-        if (block == ''):
-            #print('Required block "' + block + '" in "[' + bst_template_str + ']" is undefined.')
-            arg = undefstr
-            break
-
-        ## If no variable exists inside the options-block, then just copy the text inside the
-        ## block.
-        if ('<' not in block):
-            arg = block
-            break
-
-        ## Count how many variables there are in the block.
-        block_variables = [v for v in variables if v in block]
-        block_is_fully_defined = True
-
-        ## Loop through the list of variables and find which ones are defined within the
-        ## bibliography entry.
-        for var in block_variables:
-            varname = var[1:-1]             ## remove the angle brackets
-            if (varname in bibentry):
-                block_is_fully_defined = (bibentry[varname] != None)
-            else:
-                block_is_fully_defined = False
-
-            if not block_is_fully_defined: break
-
-        ## If after going through all of the variables in a block, we have located definitions for
-        ## all of them, then the entire block is defined, and we can return it without evaluating
-        ## the next block.
-        if block_is_fully_defined:
-            arg = block
-            break
-        else:
-            arg = ''
-
-    return(arg)
-
-## =============================
 def namestr_to_namedict(namestr, disable=None):
     '''
-    Take a BibTeX string representing a single person's name and parse it into its first, middle, \
-    last, etc pieces.
+    Take a BibTeX string representing a single person's name and parse it into its first, middle, last, etc pieces.
 
     BibTeX allows three different styles of author formats.
         (1) A space-separated list, [firstname middlenames suffix lastname]
@@ -3377,9 +3199,9 @@ def namestr_to_namedict(namestr, disable=None):
         A dictionary with keys "first", "middle", "prefix", "last", and "suffix".
     '''
 
-    ## First, if there is a comma within the string, then build the delimiter level list so you
-    ## can check whether the comma is at delimiter level 0 (and therefore a valid comma for
-    ## determining name structure). Using this, determine the locations of "valid" commas.
+    ## First, if there is a comma within the string, then build the delimiter level list so we can check whether the
+    ## comma is at delimiter level 0 (and therefore a valid comma for determining name structure). Using this,
+    ## determine the locations of "valid" commas.
     if (',' in namestr):
         z = get_delim_levels(namestr, ('{','}'))
         commapos = []
@@ -3389,21 +3211,19 @@ def namestr_to_namedict(namestr, disable=None):
     else:
         commapos = []
 
-    ## Note: switch on "len(commapos)" here rather than on "(',' not in namestr)" because the
-    ## latter will produce an error when the comma occurs at brace levels other than zero.
+    ## Note: switch on "len(commapos)" here rather than on "(',' not in namestr)" because the latter will produce an
+    ## error when the comma occurs at brace levels other than zero.
     if (len(commapos) == 0):
-        ## Allow nametokens to be split by spaces *or* word ties ('~' == unbreakable spaces),
-        ## except when the '~' is preceded by a backslash, in which case we have the LaTeX markup
-        ## for the tilde accent. We use "stringsplit()" rather than the standard
-        ## string object's "split()" function because we don't want the split to be applied when
-        ## the separator is not at brace level zero.
+        ## Allow nametokens to be split by spaces *or* word ties ('~' == unbreakable spaces), except when the '~' is
+        ## preceded by a backslash, in which case we have the LaTeX markup for the tilde accent. We use "stringsplit()"
+        ## rather than the standard string object's "split()" function because we don't want the split to be applied
+        ## when the separator is not at brace level zero.
         nametokens = stringsplit(namestr, r' |(?<!\\)~')
 
         for n in nametokens:
             n_temp = n.strip('{').strip('}')[:-1]
-            ## If we find a dot which is not preceded by a backslash and not succeeded by a dash.
-            ## Also, we shouldn't care about dots appearing within curle braces, so we have to
-            ## check for that as well.
+            ## If we find a dot which is not preceded by a backslash and not succeeded by a dash. Also, we shouldn't
+            ## care about dots appearing within curle braces, so we have to check for that as well.
             z = get_delim_levels(namestr, ('{','}'))
             for match in re.finditer(r'(?<!\\)\.(?!-)', n_temp):
                 i = match.start()
@@ -3448,9 +3268,8 @@ def namestr_to_namedict(namestr, disable=None):
         third_nametokens = thirdpart.strip().split(' ')
 
         if (len(second_nametokens) != 1):
-            bib_warning('Warning 022: the BibTeX format for namestr="' + namestr + '" is malformed.' + \
-                 '\nThere should be only one name in the second part of the three comma-' \
-                 'separated name elements.', disable)
+            bib_warning('Warning 022: the BibTeX format for namestr="' + namestr + '" is malformed.\nThere should ' + \
+                 'be only one name in the second part of the three comma-separated name elements.', disable)
             return({'last':'???'})
 
         if (len(first_nametokens) == 1):
@@ -3489,13 +3308,13 @@ def namestr_to_namedict(namestr, disable=None):
         namedict['suffix'] = fifthpart.strip()
 
     else:
-        bib_warning('Warning 023: the BibTeX format for namestr="' + namestr + '" is malformed.' + \
-             '\nThere should never be more than four commas in a given name.', disable)
+        bib_warning('Warning 023: the BibTeX format for namestr="' + namestr + '" is malformed.\nThere should ' + \
+             'never be more than four commas in a given name.', disable)
         return({'last':'???'})
 
-    ## If any tokens in the middle name start with lower case, then move them, and any tokens after
-    ## them, to the prefix. An important difference is that prefixes typically don't get converted
-    ## to initials when generating the formatted bibliography string.
+    ## If any tokens in the middle name start with lower case, then move them, and any tokens after them, to the prefix.
+    ## An important difference is that prefixes typically don't get converted to initials when generating the formatted
+    ## bibliography string.
     if ('middle' in namedict) and (namedict['middle'] != ''):
         nametokens = namedict['middle'].split(' ')
         if not isinstance(nametokens, list): nametokens = [nametokens]
@@ -3524,14 +3343,13 @@ def namestr_to_namedict(namestr, disable=None):
 ## ===================================
 def search_middlename_for_prefixes(namedict):
     '''
-    From the middle name of a single person, check if any of the names should be placed into the
-    "prefix" and move them there.
+    From the middle name of a single person, check if any of the names should be placed into the "prefix" and move them
+    there.
 
     Parameters
     ----------
     namedict : dict
-        The dictionary containing the key "middle", containing the string with the person's \
-        middle names/initials.
+        The dictionary containing the key "middle", containing the string with the person's middle names/initials.
 
     Returns
     -------
@@ -3542,9 +3360,8 @@ def search_middlename_for_prefixes(namedict):
     if ('middle' not in namedict):
         return(namedict)
 
-    ## Search the list of middle names from the back to the front. If the name encountered starts
-    ## with lower case, then it is moved to namedict['prefix']. If not, then stop the search and
-    ## break out of the loop.
+    ## Search the list of middle names from the back to the front. If the name encountered starts with lower case, then
+    ## it is moved to namedict['prefix']. If not, then stop the search and break out of the loop.
     middlenames = namedict['middle'].split(' ')
     prefix = []
     for m in middlenames[::-1]:
@@ -3560,15 +3377,19 @@ def search_middlename_for_prefixes(namedict):
     return(namedict)
 
 ## =============================
-def create_edition_ordinal(bibentry, disable=None):
+def create_edition_ordinal(bibentry, entrykey, undefstr='???', disable=None):
     '''
-    Given a bibliography entry's edition *number*, format it as an ordinal (i.e. "1st", "2nd" \
-    instead of "1", "2") in the way that it will appear on the formatted page.
+    Given a bibliography entry's edition *number*, format it as an ordinal (i.e. "1st", "2nd" instead of "1", "2") in
+    the way that it will appear on the formatted page.
 
     Parameters
     ----------
     bibentry : dict
         The bibliography database entry.
+    entrykey : str
+        The entry key --- useful for error messages.
+    undefstr : str, optional
+        The string to replace any required but undefined variables with.
     disable : list of int, optional
         The list of warning message numbers to ignore.
 
@@ -3586,11 +3407,10 @@ def create_edition_ordinal(bibentry, disable=None):
         return(bibentry['edition'])
 
     edition_number = bibentry['edition']
-    trans = {'first':'1', 'second':'2', 'third':'3', 'fourth':'4', 'fifth':'5', 'sixth':'6',
-             'seventh':'7', 'eighth':'8', 'ninth':'10', 'tenth':'10', 'eleventh':'11',
-             'twelfth':'12', 'thirteenth':'13', 'fourteenth':'14', 'fifteenth':'15',
-             'sixteenth':'16', 'seventeenth':'17', 'eighteenth':'18', 'nineteenth':'19',
-             'twentieth':'20'}
+    trans = {'first':'1', 'second':'2', 'third':'3', 'fourth':'4', 'fifth':'5', 'sixth':'6', 'seventh':'7',
+             'eighth':'8', 'ninth':'10', 'tenth':'10', 'eleventh':'11', 'twelfth':'12', 'thirteenth':'13',
+             'fourteenth':'14', 'fifteenth':'15', 'sixteenth':'16', 'seventeenth':'17', 'eighteenth':'18',
+             'nineteenth':'19', 'twentieth':'20'}
 
     if edition_number.lower() in trans:
         edition_number = trans[edition_number.lower()]
@@ -3606,9 +3426,9 @@ def create_edition_ordinal(bibentry, disable=None):
         editionstr = edition_number + 'th'
     else:
         if ('edition' in bibentry):
-            bib_warning('Warning 024: the edition number "' + unicode(edition_number) + '" given for ' + \
-                 'entry ' + key + ' is invalid. Ignoring', disable)
-            editionstr = options['undefstr']
+            bib_warning('Warning 024: the edition number "' + unicode(edition_number) + '" given for entry ' + \
+                 entrykey + ' is invalid. Ignoring', disable)
+            editionstr = undefstr
 
     return(editionstr)
 
@@ -3643,9 +3463,9 @@ def export_bibfile(bibdata, filename, abbrevs=None):
     for key in bibdata:
         if (key == 'preamble'): continue
 
-        ## Since you're about to delete an item from the "entry" dictionary, and it is a view into
-        ## the main database dictionary, you need to make a deep copy of it first before deleteing
-        ## or else it will delete the entry from the main database as well!
+        ## Since you're about to delete an item from the "entry" dictionary, and it is a view into the main database
+        ## dictionary, you need to make a deep copy of it first before deleteing or else it will delete the entry from
+        ## the main database as well!
         entry = copy.deepcopy(bibdata[key])
         filehandle.write('@' + entry['entrytype'].upper() + '{' + key + ',\n')
         del entry['entrytype']
@@ -3655,8 +3475,7 @@ def export_bibfile(bibdata, filename, abbrevs=None):
         for i,k in enumerate(entry):
             filehandle.write('  ' + k + ' = {' + unicode(entry[k]) + '}')
 
-            ## If this is the last field in the dictionary, then do not end the line with a
-            ## trailing comma.
+            ## If this is the last field in the dictionary, then do not end the line with a trailing comma.
             if (i == (nkeys-1)):
                 filehandle.write('\n')
             else:
@@ -3670,8 +3489,7 @@ def export_bibfile(bibdata, filename, abbrevs=None):
 ## =============================
 def parse_pagerange(pages_str, citekey=None, disable=None):
     '''
-    Given a string containing the "pages" field of a bibliographic entry, figure out the start and
-    end pages.
+    Given a string containing the "pages" field of a bibliographic entry, figure out the start and end pages.
 
     Parameters
     ----------
@@ -3693,8 +3511,8 @@ def parse_pagerange(pages_str, citekey=None, disable=None):
     if not pages_str:
         return('','')
 
-    ## Note that we work with strings instead of integers, because the use of letters in article
-    ## pages is common (e.g. page "D5").
+    ## Note that we work with strings instead of integers, because the use of letters in article pages is common
+    ## (e.g. page "D5").
     if ('-' in pages_str) or (',' in pages_str):
         pagesplit = multisplit(pages_str, ('-',','))
         startpage = pagesplit[0].strip()
@@ -3704,24 +3522,24 @@ def parse_pagerange(pages_str, citekey=None, disable=None):
         startpage = pages_str
         endpage = None
 
-    ## For user convenience, add a check here that if endpage and startpages are both numbers and
-    ## endpage <= startpage, then there is a typo.
+    ## For user convenience, add a check here that if endpage and startpages are both numbers and endpage <= startpage,
+    ## then there is a typo.
     if startpage.isdigit() and endpage and endpage.isdigit():
         if int(endpage) < int(startpage):
             if (citekey != None):
-                bib_warning('Warning 025a: the "pages" field in entry "' + citekey + '" has a malformed '
-                     'page range (endpage < startpage). Ignoring ...', disable)
+                bib_warning('Warning 025a: the "pages" field in entry "' + citekey + '" has a malformed page range '
+                     '(endpage < startpage). Ignoring ...', disable)
             else:
-                bib_warning('Warning 025b: the "pages" field "' + pages_str + '" is malformed, since '
-                     'endpage < startpage. Ignoring ...', disable)
+                bib_warning('Warning 025b: the "pages" field "' + pages_str + '" is malformed, since endpage < '
+                     'startpage. Ignoring ...', disable)
 
     return(startpage, endpage)
 
 ## =============================
 def parse_nameabbrev(abbrevstr):
     '''
-    Given a string containing either a single "name" > "abbreviation" pair or a list of such pairs,
-    parse the string into a dictionary of names and abbreviations.
+    Given a string containing either a single "name" > "abbreviation" pair or a list of such pairs, parse the string
+    into a dictionary of names and abbreviations.
 
     Parameters
     ----------
@@ -3746,8 +3564,8 @@ def parse_nameabbrev(abbrevstr):
 ## =============================
 def make_sortkey_unique(sortkey, sortdict):
     '''
-    Given a key that matches an already-present key in the input dictionary, generate a new key by
-    appending zeros to the key string.
+    Given a key that matches an already-present key in the input dictionary, generate a new key by appending zeros to
+    the key string.
 
     Parameters
     ----------
@@ -3776,8 +3594,8 @@ def make_sortkey_unique(sortkey, sortdict):
 ## =============================
 def filter_script(line):
     '''
-    Remove elements from a Python script which are provide the most egregious security flaws; also
-    replace some identifiers with their correct namespace representation.
+    Remove elements from a Python script which are provide the most egregious security flaws; also replace some
+    identifiers with their correct namespace representation.
 
     Parameters
     ----------
@@ -3812,8 +3630,8 @@ def filter_script(line):
 ## =============================
 def str_is_integer(s):
     '''
-    Check is an input string represents an integer value. Although a trivial function, it will be
-    useful for user scripts.
+    Check is an input string represents an integer value. Although a trivial function, it will be useful for user
+    scripts.
 
     Parameters
     ----------
@@ -3849,8 +3667,8 @@ def bib_warning(msg, disable=None):
         print(msg)
         return
 
-    ## For each number in the "ignore" list, find out if the warning message is one of the ones to
-    ## ignore. If so, then do nothing.
+    ## For each number in the "ignore" list, find out if the warning message is one of the ones to ignore. If so, then
+    ## do nothing.
     show_warning = True
     for i in disable:
         s = ('Warning %03i' % i)
@@ -3866,8 +3684,8 @@ def bib_warning(msg, disable=None):
 ## =============================
 def format_namelist(namelist, options, nametype='author'):
     '''
-    Format a list of dictionaries (one dict for each person) into a long string, with the
-    format according to the directives in the bibliography style template.
+    Format a list of dictionaries (one dict for each person) into a long string, with the format according to the
+    directives in the bibliography style template.
 
     Parameters
     ----------
@@ -3881,18 +3699,16 @@ def format_namelist(namelist, options, nametype='author'):
     Returns
     -------
     namestr : str
-        The formatted form of the "name string". This is generally a list of authors or list \
-        of editors.
+        The formatted form of the "name string". This is generally a list of authors or list of editors.
     '''
 
     use_first_inits = options['use_firstname_initials']
     namelist_format = options['namelist_format']
 
-    ## First get all of the options variables needed below, depending on whether the function is
-    ## operating on a list of authors or a list of editors. Second, insert "authorlist" into the
-    ## bibliography database entry so that other functions can have access to it. (This is the
-    ## "author" or "editor" string parsed into individual names, so that each person's name is
-    ## represented by a dictionary, and the whole set of names is a list of dicts.)
+    ## First get all of the options variables needed below, depending on whether the function is operating on a list of
+    ## authors or a list of editors. Second, insert "authorlist" into the bibliography database entry so that other
+    ## functions can have access to it. (This is the "author" or "editor" string parsed into individual names, so that
+    ## each person's name is represented by a dictionary, and the whole set of names is a list of dicts.)
     if (nametype == 'author'):
         maxnames = options['maxauthors']
         minnames = options['minauthors']
@@ -3900,39 +3716,38 @@ def format_namelist(namelist, options, nametype='author'):
         maxnames = options['maxeditors']
         minnames = options['mineditors']
 
-    ## This next block generates the list "namelist", which is a list of strings, with each
-    ## element of `namelist` being a single author's name. That single author's name is encoded
-    ## as a dictionary with keys "first", "middle", "prefix", "last", and "suffix".
+    ## This next block generates the list "namelist", which is a list of strings, with each element of `namelist` being
+    ## a single author's name. That single author's name is encoded as a dictionary with keys "first", "middle",
+    ## "prefix", "last", and "suffix".
     npersons = len(namelist)
     new_namelist = []
     for person in namelist:
-        ## The BibTeX standard states that a final author in the authors field of "and others"
-        ## should be taken as meaning to use \textit{et al.} at the end of the author list.
+        ## The BibTeX standard states that a final author in the authors field of "and others" should be taken as
+        ## meaning to use \textit{et al.} at the end of the author list.
         if ('others' in person['last']) and ('first' not in person):
             npersons -= 1
             maxnames = npersons - 1
             continue
 
-        ## From the person's name dictionary, create a string of the name in the format
-        ## desired for the final BBL file.
+        ## From the person's name dictionary, create a string of the name in the format desired for the final BBL file.
         formatted_name = namedict_to_formatted_namestr(person, options=options,
                                                        use_firstname_initials=use_first_inits,
                                                        namelist_format=namelist_format)
         new_namelist.append(formatted_name)
 
-    ## Now that we have the complete list of pre-formatted names, we need to join them together
-    ## into a single string that can be inserted into the template.
+    ## Now that we have the complete list of pre-formatted names, we need to join them together into a single string
+    ## that can be inserted into the template.
     if (npersons == 1):
         namestr = new_namelist[0]
     elif (npersons == 2):
         namestr = ' and '.join(new_namelist)
     elif (npersons > 2) and (npersons <= maxnames):
-        ## Make a string in which each person's name is separated by a comma, except the last name,
-        ## which has a comma then "and" before the name.
+        ## Make a string in which each person's name is separated by a comma, except the last name, which has a comma
+        ## then "and" before the name.
         namestr = ', '.join(new_namelist[:-1]) + ', and ' + new_namelist[-1]
     elif (npersons > maxnames):
-        ## If the number of names in the list exceeds the maximum, then truncate the list to the
-        ## first "minnames" only, and add "et al." to the end of the string giving all the names.
+        ## If the number of names in the list exceeds the maximum, then truncate the list to the first "minnames" only,
+        ## and add "et al." to the end of the string giving all the names.
         namestr = ', '.join(new_namelist[:minnames]) + r', \textit{et al.}'
     else:
         raise ValueError('How did you get here?')
@@ -3947,54 +3762,10 @@ def format_namelist(namelist, options, nametype='author'):
     return(namestr)
 
 ## =============================
-def remove_template_options_brackets(templatestr, entry, variables, undefstr='???'):
-    '''
-    Given a template string, go through each options sequence [...] and search for undefined
-    variables. In each sequence, return only the block of each sequence in which all variables
-    are defined.
-
-    Note that the "undefstr" input is only used when the options sequence ends with "|]" (i.e.
-    at least one of the blocks is required to be defined) but we find that none of the blocks
-    have all their variables defined. When this happens, the code replaces the entire block
-    with the "undefstr".
-
-    Parameters
-    ----------
-    templatestr : str
-        The string defining the template to analyze.
-    entry : dict
-        The bibliography database entry inside which to look for variables.
-    variables : list of str
-        The variables to look for.
-    undefstr : str, optional
-        The string to replace any required but undefined variables with.
-    '''
-
-    num_obrackets = templatestr.count('[')
-    num_cbrackets = templatestr.count(']')
-
-    ## Do a nested search. From the beginning of the formatting string look for the first '[', and
-    ## the first ']'. Note that this assumes that the square brackets cannot be nested.
-    for i in range(num_obrackets):
-        start_idx = templatestr.index('[')
-        end_idx = templatestr.index(']')
-
-        ## Remove the outer square brackets, and use the resulting substring as an input to the
-        ## parser.
-        substr = templatestr[start_idx+1:end_idx]
-
-        ## In each options train, go through and replace the whole train with the one block that
-        ## has a defined value.
-        res = parse_bst_template_str(substr, entry, variables, undefstr=undefstr)
-        templatestr = templatestr[:start_idx] + res + templatestr[end_idx+1:]
-
-    return(templatestr)
-
-## =============================
 def create_citation_alpha(entry):
     '''
-    Create an alpha-style citation key (typically the first three letters of the author's last
-    name, followed by the last two numbers of the year).
+    Create an alpha-style citation key (typically the first three letters of the author's last name, followed by the
+    last two numbers of the year).
 
     Parameters
     ----------
@@ -4018,10 +3789,9 @@ def create_citation_alpha(entry):
     else:
         return('UNDEFINED')
 
-    ## Note: you need to run "purify" before extracting the first three letters, because the
-    ## first character might be a curly brace that purify can get rid of, or the first three
-    ## characters might be something like "\AA" which should be extracted as a single
-    ## unicode character.
+    ## Note: you need to run "purify" before extracting the first three letters, because the first character might be a
+    ## curly brace that purify can get rid of, or the first three characters might be something like "\AA" which should
+    ## be extracted as a single unicode character.
     if (len(namelist) == 1):
         concat_name = purify_string(namelist[0]['last'])[0:3]
     elif (len(namelist) > 1):
@@ -4038,18 +3808,231 @@ def create_citation_alpha(entry):
 
     return(alpha)
 
+## =============================
+def remove_nested_template_options_brackets(templatestr, entry, variables, undefstr='???'):
+    '''
+    Given a template string, go through each options sequence [...] and search for undefined variables. In each
+    sequence, return only the block of each sequence in which all variables are defined (i.e. with outer braces
+    removed).
+
+    Note that the "undefstr" input is only used when the options sequence ends with "|]" (i.e. at least one of the
+    blocks is required to be defined) but we find that none of the blocks have all their variables defined. When this
+    happens, the code replaces the entire block with the "undefstr".
+
+    Parameters
+    ----------
+    templatestr : str
+        The string defining the template to analyze.
+    entry : dict
+        The bibliography database entry inside which to look for variables.
+    variables : list of str
+        The variables to look for.
+    undefstr : str, optional
+        The string to replace any required but undefined variables with.
+    '''
+
+    while ('[' in templatestr):
+        levels = get_delim_levels(templatestr, ('[',']'))
+
+        ## If there is no nesting left then go ahead and parse the remaining string.
+        if (2 not in levels):
+            templatestr = remove_template_options_brackets(templatestr, entry, variables, undefstr=undefstr)
+            return(templatestr)
+
+        ## Find the start and end indices of all top-level option sequences.
+        start_idx = []
+        end_idx = []
+        if (levels[0] == 1):
+            start_idx.append(0)
+        for i in range(1,len(levels)):
+            if (levels[i] == 1) and (levels[i-1] == 0):
+                start_idx.append(i)
+            if (levels[i] == 0) and (levels[i-1] == 1):
+                end_idx.append(i)
+
+        ## To keep the code tractable, just work with the first pair of (start_idx,end_idx) values, rather than looping
+        ## through every pair in the string. We can catch the next pair in the next pass through the loop.
+        substr = templatestr[start_idx[0]+1:end_idx[0]]
+        blocks = toplevel_split(substr, '|', levels)
+        newblocks = []
+        for block in blocks:
+            block_variables = re.findall(r'<.*?>', block)
+            newblock = remove_nested_template_options_brackets(block, entry, block_variables,
+                                                               undefstr=undefstr)
+            newblocks.append(newblock)
+
+        new_substr = '|'.join(newblocks)
+        res = simplify_template(new_substr, entry, variables, undefstr=undefstr)
+        templatestr = templatestr[:start_idx[0]] + res + templatestr[end_idx[0]+1:]
+
+    return(templatestr)
+
+## =============================
+def remove_template_options_brackets(templatestr, entry, variables, undefstr='???'):
+    '''
+    Given a template string, go through each options sequence [...] and search for undefined variables. In each
+    sequence, return only the block of each sequence in which all variables are defined.
+
+    Note that the "undefstr" input is only used when the options sequence ends with "|]" (i.e. at least one of the
+    blocks is required to be defined) but we find that none of the blocks have all their variables defined. When this
+    happens, the code replaces the entire block with the "undefstr".
+
+    Parameters
+    ----------
+    templatestr : str
+        The string defining the template to analyze.
+    entry : dict
+        The bibliography database entry inside which to look for variables.
+    variables : list of str
+        The variables to look for.
+    undefstr : str, optional
+        The string to replace any required but undefined variables with.
+    '''
+
+    num_obrackets = templatestr.count('[')
+    #num_cbrackets = templatestr.count(']')
+
+    ## Do a nested search. From the beginning of the formatting string look for the first '[', and the first ']'. If
+    ## they are out of order, raise an exception. Note that this assumes that the square brackets cannot be nested.
+    for i in range(num_obrackets):
+        start_idx = templatestr.index('[')
+        end_idx = templatestr.index(']')
+        if not (start_idx < end_idx):
+            msg = 'A closed bracket "]" occurs before an open bracket "[" in the format ' + \
+                  'string "' + templatestr + '"'
+            raise SyntaxError(msg)
+
+        ## Remove the outer square brackets, and use the resulting substring as an input to the parser.
+        substr = templatestr[start_idx+1:end_idx]
+
+        ## In each options train, go through and replace the whole train with the one block that has a defined value.
+        res = simplify_template(substr, entry, variables, undefstr=undefstr)
+        templatestr = templatestr[:start_idx] + res + templatestr[end_idx+1:]
+
+    return(templatestr)
+
+## =============================
+def simplify_template(templatestr, bibentry, variables, undefstr='???'):
+    '''
+    From an "options train" `[...|...|...]`, find the first fully defined block in the sequence.
+
+    A style template string contains grammatical features of the form `[...|...|...]`, which we can call options
+    sequences. Each "block" in the sequence (divided from the others by a `|` symbol), contains fields which, if
+    defined, replace the entire options sequence in the returned string.
+
+    Parameters
+    ----------
+    templatestr : str
+        The string containing a complete entrytype bibliography style template.
+    variables : list of str
+        The list of variables defined within the template string.
+    bibentry : dict
+        An entry from the bibliography database.
+    undefstr : str
+        The string to replace undefined required fields with.
+
+    Returns
+    -------
+    arg : str
+          The string giving the entrytype block to replace an options sequence.
+
+    Example
+    -------
+    simplify_template() is given an options sequence "[<title>|<booktitle>]" that contains two blocks. The code looks
+    into the bibliography entry and does not find a "title" entry but does find a "booktitle" entry. So, the function
+    returns "<booktitle>", without square brackets, thereby replacing the sequence with the proper defined variable.
+    '''
+
+    block_sequence = templatestr.split('|')
+    #nblocks = len(block_sequence)
+
+    ## Go through the if/elseif/else train of blocks within the string one by one. In each block, see if there are any
+    ## variables defined. If no variables are present, then the block is "defined" and we return that block (i.e.
+    ## replacing the train with that block). If an argument is defined, strip its surrounding '<' and '>' and look to
+    ## see if the variable is defined in the bibdata entry. If so, the variable is defined and we return the '<var>'
+    ## version of the variable (later code will do the variable replacement). If the variable is undefined (not present
+    ## in the bibdata entry) then skip to the next block. If there is no next block, or if the block is empty (which
+    ## means undefined by definition) then set the result to be the "undefined string".
+    for block in block_sequence:
+        if (block == ''):
+            arg = undefstr
+            break
+
+        ## If no variable exists inside the options-block, then just copy the text inside the block.
+        if ('<' not in block):
+            arg = block
+            break
+
+        ## Count how many variables there are in the block.
+        block_variables = [v for v in variables if v in block]
+        block_is_fully_defined = True
+
+        ## Loop through the list of variables and find which ones are defined within the bibliography entry.
+        for var in block_variables:
+            varname = var[1:-1]             ## remove the angle brackets
+            if (varname in bibentry):
+                block_is_fully_defined = (bibentry[varname] != None)
+            else:
+                block_is_fully_defined = False
+
+            if not block_is_fully_defined: break
+
+        ## If after going through all of the variables in a block, we have located definitions for all of them, then the
+        ## entire block is defined, and we can return it without evaluating the next block.
+        if block_is_fully_defined:
+            arg = block
+            break
+        else:
+            arg = ''
+
+    return(arg)
+
+## =============================
+def toplevel_split(s, splitchar, levels):
+    '''
+    Split a string, but only if the csplitting character is at level 0 or 1 and not higher.
+
+    Parameters
+    ----------
+    s : str
+        The string to split.
+    splitchar : str
+        The character to split with.
+    levels : list of ints
+        The operator levels of the characters in the string.
+
+    Returns
+    -------
+    split_list : list of str
+        The list of split sections of the string.
+    '''
+
+    ## Make a complete list of indices where we can find the splitting character. Ignore those locations at operator
+    ## levels of 2 or higher.
+    pos = []
+    for i,c in enumerate(s):
+        if (c == splitchar) and (levels[i] < 2):
+            pos.append(i)
+
+    if (len(pos) > 0):
+        split_list = splitat(s, pos)
+    else:
+        split_list = [s]
+
+    return(split_list)
+
 ## ==================================================================================================
 
 if (__name__ == '__main__'):
     print('sys.argv=', sys.argv)
-    uselocale = None
+    user_locale = None
     if (len(sys.argv) > 1):
         try:
             (opts, args) = getopt.getopt(sys.argv[1:], '', ['locale='])
         except getopt.GetoptError as err:
-            # print help information and exit:
-            print(err) # will print something like "option -a not recognized"
-            ## Add some print statements here telling the user the basic interface to the function.
+            ## Print help information and exit.
+            print(err)              ## this will print something like "option -a not recognized"
+            ## TODO: Add some print statements here telling the user the basic interface to the function.
             sys.exit(2)
 
         for o,a in opts:
@@ -4058,13 +4041,7 @@ if (__name__ == '__main__'):
             else:
                 assert False, "unhandled option"
 
-        ## Use this command on the command line:
-        #/home/nh/Lab\ Notes/Bibulous/biblatex.py /home/nh/Publications/2013\ OE\ -\ Review\ of\ Snapshot/snapshot_review.tex /home/nh/Lab\ Notes/Bibulous/osa.bst
-        #arg_texfile = sys.argv[0]
         arg_auxfile = args[0]
-        #if (arg_texfile[0] != '/'):
-        #    arg_texfile = os.getcwd() + '/' + arg_texfile
-        #files = [arg_texfile, arg_auxfile]
         files = arg_auxfile
     else:
         ## Use the test example input.
@@ -4073,10 +4050,10 @@ if (__name__ == '__main__'):
         arg_bstfile = './test/test1.bst'
         files = [arg_bibfile, arg_auxfile, arg_bstfile]
 
-    bibdata = Bibdata(files, uselocale=uselocale, debug=False)
-    bibdata.write_bblfile()
-    print('Writing to BBL file = ' + bibdata.filedict['bbl'])
-    #os.system('kwrite ' + bibdata.filedict['bbl'])
+    main_bibdata = Bibdata(files, uselocale=user_locale, debug=False)
+    main_bibdata.write_bblfile()
+    print('Writing to BBL file = ' + main_bibdata.filedict['bbl'])
+    #os.system('kwrite ' + main_bibdata.filedict['bbl'])
 
 
     print('DONE')

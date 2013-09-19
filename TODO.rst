@@ -3,8 +3,6 @@ Python code to-do list: (including goals for version 2.0)
 
 The primary goal for version 2.0 is to incorporate a closer integration with a front-end.
 
-- Extend the flexibility of the option brackets ``[|]`` notation to allow nested brackets!
-
 - Check that the ``templates/spie_opteng.bst`` style file is correct, given the recent changes
   to Opt. Eng.'s format.
 
@@ -61,8 +59,4 @@ Python testing to-do
 
 - Need to add a test for the ``<...>`` are properly formed in the template strings. For example,
   if by mistake a user types ``<year|<number>`` then the template will be malformed, but Bibulous
-  doesn't return an error. It thinks that ``year|<number`` is a variable name, I think.
-
-- Make some tests for ``remove_template_options_brackets()`` to consider the case of malformed
-  template strings, like (1) ``]`` before ``[``, (2) two ``<``'s appearing before seeing a ``>``,
-  (3) the appearance of ``||`` inside a sequence. What else?
+  doesn't return an error. It will think that ``year|<number`` is a single variable name.

@@ -5,27 +5,24 @@
     Bibulous_test.py is a script which runs through the entire Bibulous regression testing suite.
 
     The basic approach of the tests is as follows:
-    (1) Once a change is made to the code (to fix a bug or add functionality), the writer should
-        add an entry to the /test/test1.bib file, where the "entrytype" gives an indication of
-        what the test is for. For example, the entry in the BIB file may start with
+    (1) Once a change is made to the code (to fix a bug or add functionality), the writer should add an entry to the
+        /test/test1.bib file, where the "entrytype" gives an indication of what the test is for. For example, the entry
+        in the BIB file may start with
                 @test_initialize1{...
-        and provide an "author" field where one or more authors have names which the code for
-        generating initials can potentially break is not written carefully. Include a 1-line
-        comment about the purpose of the entry as well.
-    (2) If this is something which can be checked with normal options settings, then add a
-        corresponding line in the BST file defining how that new entrytype ("test_initialize1")
-        should be formatted. If different options settings are needed, then a new BST file is
-        needed. To make this, copy the "test1.bst" file, remove the entrytype definitions (you can
-        keep them, but they would be redundant), and change the options to the needed settings.
-        Then add a line in this file to define the entrytype template.
-    (3) Add a line "\citation{key}" to the AUX file where "key" is the key given in the new entry
-        of the BIB file you just put in (e.g. "test_initialize1")
-    (4) Add two lines to the test1_target.bbl file (one for the "bibentry" function call, and one
-        for the entry contents) to say what the formatted result should look like.
-    (5) Finally, run this script to check the result. This script will load the modified BIB and
-        BST files and will write out a formatted BBL file "test1.bbl". It will then try to run a
-        "diff" program on these two files to see if there are any differences between the target
-        and actual output BBL files.
+        and provide an "author" field where one or more authors have names which the code for generating initials can
+        potentially break is not written carefully. Include a 1-line comment about the purpose of the entry as well.
+    (2) If this is something which can be checked with normal options settings, then add a corresponding line in the BST
+        file defining how that new entrytype ("test_initialize1") should be formatted. If different options settings are
+        needed, then a new BST file is needed. To make this, copy the "test1.bst" file, remove the entrytype definitions
+        (you can keep them, but they would be redundant), and change the options to the needed settings. Then add a line
+        in this file to define the entrytype template.
+    (3) Add a line "\citation{key}" to the AUX file where "key" is the key given in the new entry of the BIB file you
+        just put in (e.g. "test_initialize1")
+    (4) Add two lines to the test1_target.bbl file (one for the "bibentry" function call, and one for the entry
+        contents) to say what the formatted result should look like.
+    (5) Finally, run this script to check the result. This script will load the modified BIB and BST files and will
+        write out a formatted BBL file "test1.bbl". It will then try to run a "diff" program on these two files to see
+        if there are any differences between the target and actual output BBL files.
 '''
 
 from __future__ import unicode_literals, print_function, division     ## for Python3 compatibility
@@ -44,8 +41,7 @@ from bibulous import Bibdata
 ## =================================================================================================
 def run_test1():
     '''
-    Test #1 consists of a suite of single tests of options and features that are valid with the
-    default template file.
+    Test #1 consists of a suite of single tests of options and features that are valid with the default template file.
     '''
 
     bstfiles = ('./test/test1.bst',                 ## the "default" style template must go first!
@@ -74,9 +70,8 @@ def run_test1():
         bibobj.citedict = {}
         bibobj.parse_auxfile(auxfile)
 
-        ## For the style templates, always use the default templates first and the
-        ## specific test template second --- this allows each test template to be
-        ## very simple (only the differences from the default need to be used).
+        ## For the style templates, always use the default templates first and the specific test template second ---
+        ## this allows each test template to be very simple (only the differences from the default need to be used).
         if (bstfile != bstfiles[0]):
             bibobj.options = {}
             bibobj.parse_bstfile('./test/test1.bst')
@@ -90,35 +85,27 @@ def run_test1():
 ## =================================================================================================
 def run_test2():
     '''
-    Test #2 loads a number of large .bib database files to put the BibTeX parser and the BBL file
-    writer through a comprehensive set of conditions. Every entry in the BIB files is written to
-    the output BBL file to test as much of the processing chain as possible.
+    Test #2 loads a number of large .bib database files to put the BibTeX parser and the BBL file writer through a
+    comprehensive set of conditions. Every entry in the BIB files is written to the output BBL file to test as much
+    of the processing chain as possible.
 
-    Rather than checking the output against a target file, this test really just makes sure that
-    no exceptions are emitted when processing the entire database through the full chain of
-    functions.
+    Rather than checking the output against a target file, this test really just makes sure that no exceptions are
+    emitted when processing the entire database through the full chain of functions.
     '''
 
     bstfile = './test/test2.bst'
-    bibfiles = ['./test/master.bib',   './test/journal.bib',   './test/amstat.bib',
-               './test/cccuj2000.bib', './test/gutenberg.bib', './test/onlinealgs.bib',
-               './test/python.bib',    './test/random.bib',    './test/sciam2000.bib',
-               './test/template.bib',  './test/thiruv.bib',    './test/benfords-law.bib',
-               './test/texstuff.bib',  './test/karger.bib']
+    bibfiles = ['./test/master.bib',    './test/journal.bib',    './test/amstat.bib',   './test/cccuj2000.bib',
+                './test/gutenberg.bib', './test/onlinealgs.bib', './test/python.bib',   './test/random.bib',
+                './test/sciam2000.bib', './test/template.bib',   './test/thiruv.bib',   './test/benfords-law.bib',
+                './test/texstuff.bib',  './test/karger.bib']
     bblfile = './test/test2.bbl'
     auxfile = './test/test2.aux'
 
     print('\n' + '='*75)
     print('Running Bibulous Test #2')
 
-    ## If no excepts are raised when reading the BIB file or writing the BBL file, then the test
-    ## passes.
+    ## If no excepts are raised when reading the BIB file or writing the BBL file, then the test passes.
     try:
-        ## Don't import the AUX file --- regenerate it anew every time you run the test.
-        #filenames = bibfiles + [bblfile,bstfile]
-        #bibobj = Bibdata(filenames, disable=[4,6,9,11,18,20,21,25])
-        #bibobj.write_auxfile(auxfile)
-        #bibobj.parse_auxfile(auxfile)
         bibobj = Bibdata(auxfile, disable=[4,6,9,11,18,20,21,25])
         bibobj.write_bblfile()
         result = True
@@ -153,22 +140,21 @@ def run_test4():
     Test #4 checks the operation of generating citation keys.
     '''
 
-    ## Although three of these files were copied from "test1", it is a bad idea to use the "test1.*"
-    ## files here because any changes to test1 would then require changes to the test4_target.bbl
-    ## as well.
+    ## Although three of these files were copied from "test1", it is a bad idea to use the "test1.*" files here because
+    ## any changes to test1 would then require changes to the test4_target.bbl as well.
     bstfile = './test/test4.bst'
     bibfile = './test/test4.bib'
     bblfile = './test/test4.bbl'
     auxfile = './test/test4.aux'
     target_bblfile = './test/test4_target.bbl'
 
-    ## The default locale will be US english. Ironically, the locale argument needs to use an ASCII
-    ## string, and since the default string encoding here is Unicode, we have to re-encode it
-    ## manually. Later below, we will try some other locale settings.
+    ## The default locale will be US english. Ironically, the locale argument needs to use an ASCII string, and since
+    ## the default string encoding here is Unicode, we have to re-encode it manually. Later below, we will try some
+    ## other locale settings.
     thislocale = locale.setlocale(locale.LC_ALL,'en_US.UTF8'.encode('ascii','replace'))
 
-    ## Need to make a list of all the citation sort options we want to try. Skip "citenum" since
-    ## that is the default, and so has been tested already.
+    ## Need to make a list of all the citation sort options we want to try. Skip "citenum" since that is the default,
+    ## and so has been tested already.
     sortkeys = ['<citekey>',
                 '[<sortname>|<name.last>]<name.first>[<sortyear>|<year>][<sorttitle>|<title>]',
                 '[<sortname>|<name.last>]<name.first>[<sorttitle>|<title>][<sortyear>|<year>]',
@@ -257,22 +243,21 @@ def run_test7():
     Test #7 checks the operation of generating reference list labels.
     '''
 
-    ## Although three of these files were copied from "test1", it is a bad idea to use the "test1.*"
-    ## files here because any changes to test1 would then require changes to the test7_target.bbl
-    ## as well.
+    ## Although three of these files were copied from "test1", it is a bad idea to use the "test1.*" files here because
+    ## any changes to test1 would then require changes to the test7_target.bbl as well.
     bstfile = './test/test7.bst'
     bibfile = './test/test7.bib'
     bblfile = './test/test7.bbl'
     auxfile = './test/test7.aux'
     target_bblfile = './test/test7_target.bbl'
 
-    ## The default locale will be US english. Ironically, the locale argument needs to use an ASCII
-    ## string, and since the default string encoding here is Unicode, we have to re-encode it
-    ## manually. Later below, we will try some other locale settings.
+    ## The default locale will be US english. Ironically, the locale argument needs to use an ASCII string, and since
+    ## the default string encoding here is Unicode, we have to re-encode it manually. Later below, we will try some
+    ## other locale settings.
     thislocale = locale.setlocale(locale.LC_ALL,'en_US.UTF8'.encode('ascii','replace'))
 
-    ## Need to make a list of all the citation label options we want to try. Skip "citenum" since
-    ## that is the default, and so has been tested already.
+    ## Need to make a list of all the citation label options we want to try. Skip "citenum" since that is the default,
+    ## and so has been tested already.
     citelabels = ['<citekey>',
                   '<name.last>-<year>',
                   '<citealpha>',
@@ -327,8 +312,7 @@ def run_test8():
 ## =================================================================================================
 def run_test9():
     '''
-    Test #9 is a pltform for running conditions in which the entire database needs to be re-read
-    with each test.
+    Test #9 is a pltform for running conditions in which the entire database needs to be re-read with each test.
     '''
 
     bstfile =  ['./test/test9_case_sensitive_fieldnames.bst']
@@ -346,8 +330,7 @@ def run_test9():
         print('Reading ' + bibfile + ', ' + bstfile + ', and ' + auxfile)
         bibobj = Bibdata([bibfile,auxfile,bblfile,bstfile], disable=[9])
 
-        ## Note: you have to parse the bibfile *after* reading the style options in order for this
-        ## to work right!
+        ## Note: you have to parse the bibfile *after* reading the style options in order for this to work right!
         #bibobj.parse_bibfile(bibfile)
         write_preamble = (bibfile == bibfiles[0])
         write_postamble = (bibfile == bibfiles[-1])
@@ -369,8 +352,8 @@ def check_file_match(testnum, outputfile, targetfile):
         file2 = targetfile[i]
         print('COMPARING FILES "' + file1 + '" and "' + file2 + '" ...')
 
-        ## Load the actual output BBL file and the target BBL file (the former says what we got; the
-        ## latter says what we *should* get). Load each into strings and calculate their difference.
+        ## Load the actual output BBL file and the target BBL file (the former says what we got; the latter says what
+        ## we *should* get). Load each into strings and calculate their difference.
         foutput = open(file1, 'rU')
         ftarget = open(file2, 'rU')
 
@@ -401,56 +384,56 @@ def check_file_match(testnum, outputfile, targetfile):
 if (__name__ == '__main__'):
     suite_pass = True
 
-#    ## Run test #1.
-#    (outputfile, targetfile) = run_test1()
-#    result = check_file_match(1, outputfile, targetfile)
-#    suite_pass *= result
-#
-#    ## Run test #2.
-#    result = run_test2()
-#    suite_pass *= result
-#    if result:
-#        print('TEST #2 PASSED')
-#    else:
-#        print('TEST #2 FAILED.')
-#
-#    ## Run test #3.
-#    (outputfile, targetfile) = run_test3()
-#    result = check_file_match(3, outputfile, targetfile)
-#    suite_pass *= result
-#
-#    ## Run test #4.
-#    (outputfile, targetfile) = run_test4()
-#    result = check_file_match(4, outputfile, targetfile)
-#    suite_pass *= result
+    ## Run test #1.
+    (outputfile, targetfile) = run_test1()
+    result = check_file_match(1, outputfile, targetfile)
+    suite_pass *= result
+
+    ## Run test #2.
+    result = run_test2()
+    suite_pass *= result
+    if result:
+        print('TEST #2 PASSED')
+    else:
+        print('TEST #2 FAILED.')
+
+    ## Run test #3.
+    (outputfile, targetfile) = run_test3()
+    result = check_file_match(3, outputfile, targetfile)
+    suite_pass *= result
+
+    ## Run test #4.
+    (outputfile, targetfile) = run_test4()
+    result = check_file_match(4, outputfile, targetfile)
+    suite_pass *= result
 
     ## Run test #5.
     (outputfile, targetfile) = run_test5()
     result = check_file_match(5, outputfile, targetfile)
     suite_pass *= result
 
-#    ## Run test #6.
-#    result = run_test6()
-#    suite_pass *= result
-#    if result:
-#        print('TEST #6 PASSED')
-#    else:
-#        print('TEST #6 FAILED.')
-#
-#    ## Run test #7.
-#    (outputfile, targetfile) = run_test7()
-#    result = check_file_match(7, outputfile, targetfile)
-#    suite_pass *= result
-#
-#    ## Run test #8.
-#    (outputfile, targetfile) = run_test8()
-#    result = check_file_match(8, outputfile, targetfile)
-#    suite_pass *= result
-#
-#    ## Run test #9.
-#    (outputfile, targetfile) = run_test9()
-#    result = check_file_match(9, outputfile, targetfile)
-#    suite_pass *= result
+    ## Run test #6.
+    result = run_test6()
+    suite_pass *= result
+    if result:
+        print('TEST #6 PASSED')
+    else:
+        print('TEST #6 FAILED.')
+
+    ## Run test #7.
+    (outputfile, targetfile) = run_test7()
+    result = check_file_match(7, outputfile, targetfile)
+    suite_pass *= result
+
+    ## Run test #8.
+    (outputfile, targetfile) = run_test8()
+    result = check_file_match(8, outputfile, targetfile)
+    suite_pass *= result
+
+    ## Run test #9.
+    (outputfile, targetfile) = run_test9()
+    result = check_file_match(9, outputfile, targetfile)
+    suite_pass *= result
 
     if suite_pass:
         print('***** THE CODE PASSES ALL TESTS IN THE TESTING SUITE. *****')
