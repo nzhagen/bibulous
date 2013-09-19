@@ -1,7 +1,7 @@
 Getting started
 ===============
 
-For general users, all that is needed is place the main ``bibulous.py`` file into the Python path. For users interested in using the auxiliary commands, ``bibulous_authorextract.py`` and ``bibulous_citeextract.py`` must also be in the Python path, and must be in the same directory as the main file.
+For general users, all that is needed is place the main ``bibulous.py`` file into the Python path and to tell LaTeX to use Bibulous rather than BibTeX as their bibliography engine. For users interested in using the auxiliary command ``bibulous_authorextract.py``, this file must also be in the Python path, and must be in the same directory as the main file.
 
 Kile: replacing BibTeX with Bibulous
 ------------------------------------
@@ -24,13 +24,6 @@ That should be it. In case your default setup is different, you can also check t
     %S = filename without suffix (and without path)
     %dir_base = source file directory (source file's path without the filename)
     %dir_target = target file directory (source file's path without the filename)
-
-
-
-
-
-
-
 
 Modifying WinEdt5 to replace BibTeX with Bibulous
 -------------------------------------------------

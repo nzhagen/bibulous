@@ -1,14 +1,15 @@
 TEMPLATES:
-book = <auth>, \textit{<title>} [\textit{<englishtitle>}] (<year_bce>). {\makeopenbracket}In <language>.{\makeclosebracket}
-dialogue = <auth>, \textit{<title>} [\textit{<englishtitle>}] (<year_bce>). {\makeopenbracket}In <language>.{\makeclosebracket}
-article = <auth>, \enquote{<title>,} \textit{<journal>} \textbf{<volume>} (<number>), pp.~<pagerange> (<year>).
-collection = [<for_japanese_audience><editor_ja>, <title_ja>, <volume>巻 (<publisher_ja> <address_ja> <year>).|...
-              <for_english_audience><editorliststr>, <title_ja> (<title_romaji>) {\makeopenbracket}<title>{\makeclosebracket}, vol.~<volume> (<publisher>, <address>, <year>).|]
-
+book = <author>, \textit{<title>} [\textit{<englishtitle>}] (<year_bce>). {\makeopenbracket}In <language>.{\makeclosebracket}
+dialogue = <author>, \textit{<title>} [\textit{<englishtitle>}] (<year_bce>). {\makeopenbracket}In <language>.{\makeclosebracket}
+article = <author>, \enquote{<title>,} \textit{<journal>} \textbf{<volume>} (<number>), pp.~<pagerange> (<year>).
+collection = [<for_japanese_audience>[<author_ja>|<editor_ja>|], <title_ja>, <volume>巻 (<publisher_ja> <address_ja> <year>).|...
+              <for_english_audience>[<author_en>|<editor_en>|], <title_ja> (<title_romaji>) {\makeopenbracket}<title_en>{\makeclosebracket}, vol.~<volume> (<publisher_en>, <address_en>, <year>).|]
+本 = <著者名>, <題名> (<年>).
 
 SPECIAL-TEMPLATES:
 citelabel = None
 sortkey = <year><name.last><title>
+author = [<author_en>|<writer>|<著者名>]
 
 OPTIONS:
 use_firstname_initials = False            ## initialize all but the authors' last names
@@ -19,28 +20,30 @@ document_language = Japanese              ## whether the document is for a Japan
 use_citeextract = False                   ## turn off cite extraction, since this interferes with using multiple BIB file inputs
 
 VARIABLES:
-year_bce = format_yearstyle(entry['year'], options)
-auth = get_author(entry, options)
+year_bce = format_yearstyle(entry, options)     ## format the year at append 'BC', 'AD', etc endings, depending on options settings
+#auth = get_author(entry, options)              ## creates a user-defined variable from 'author' or 'writer' fields, as defined below.
 pagerange = format_pagerange(entry, options)
 for_japanese_audience = '{}' if (options['document_language'] == 'Japanese') else None
 for_english_audience = '{}' if (options['document_language'] == 'English') else None
 
-
 DEFINITIONS:
 ## NOTE! Only Unix-style line endings are allowed here.
-def format_yearstyle(yearstr, options):
+def format_yearstyle(entry, options):
     '''
     Append "BC or "AD" to "year", depending on whether the year is positive or negative.
     If the option "yearstyle" is set to "BCE/CE", then use "BCE" and "CE" instead of "BC"
     and "AD".
     '''
 
-    ## First check that the input string is an integer. If not an integer, then just return
-    ## the field itself.
-    if not str_is_integer(yearstr):
-        return(yearstr)
+    if ('year' not in entry):
+        return(options['undefstr'])
 
-    yearnum = int(yearstr)
+    ## First check that the year string is an integer. If not an integer, then just return
+    ## the field itself.
+    if not str_is_integer(entry['year']):
+        return(entry['year'])
+
+    yearnum = int(entry['year'])
 
     if (yearnum < 0):
         if (options['yearstyle'] == 'BCE/CE'):
@@ -61,19 +64,19 @@ def format_yearstyle(yearstr, options):
     return(result)
 
 ## ==================================
-def get_author(entry, options):
-    '''
-    In the test5 database, a given entry may have a "writer" field or an "author" field.
-    Allow either one to be used in the same way. Note that this skips Bibulous' default
-    reformatting of the list of authors. Here it is easy to do this since each author/writer
-    is only one person, and so we can use the raw input.
-    '''
-    if ('author' in entry):
-        return(entry['author'])
-    elif ('writer' in entry):
-        return(entry['writer'])
-    else:
-        return(options['undefstr'])
+#def get_author(entry, options):
+#    '''
+#    In the test5 database, a given entry may have a "writer" field or an "author" field.
+#    Allow either one to be used in the same way. Note that this skips Bibulous' default
+#    reformatting of the list of authors. Here it is easy to do this since each author/writer
+#    is only one person, and so we can use the raw input.
+#    '''
+#    if ('author' in entry):
+#        return(entry['author'])
+#    elif ('writer' in entry):
+#        return(entry['writer'])
+#    else:
+#        return(options['undefstr'])
 
 ## ==================================
 def format_pagerange(entry, options):

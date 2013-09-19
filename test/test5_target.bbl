@@ -1,4 +1,4 @@
-\begin{thebibliography}{6}
+\begin{thebibliography}{8}
 \providecommand{\enquote}[1]{``#1''}
 \providecommand{\url}[1]{\verb|#1|}
 \providecommand{\href}[2]{#2}
@@ -12,9 +12,13 @@ Gaius Julius Caesar, \textit{Commentarii de Bello Gallico} \textit{Commentaries 
 Publius Cornelius Tacitus, \textit{Ab excessu divi Augusti} \textit{Annals of Imperial Rome} (117 CE). [In Latin.]
 \bibitem{aurelius}
 Marcus Aurelius, \textit{Τὰ εἰς ἑαυτόν} \textit{Meditations} (180 CE). [In Greek.]
+\bibitem{漱石1906}
+夏目 漱石, 草枕 (1906).
 \bibitem{柳田1974}
 {}柳田聖山, 禪學叢書, 10巻 (中文出版社 京都 1974-1977).
 \bibitem{stewart}
 Doug Stewart, ``Interview with Walter Stewart,'' \textit{Omni} \textbf{11} (5), pp.~64--66, 87--92, 94 (1989).
+\bibitem{Tsuruta2006}
+{}鶴田　匡夫, 光の鉛筆, 7巻 (新技術コミュニケーションズ 東京 2006).
 
 \end{thebibliography}
