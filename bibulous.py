@@ -1159,8 +1159,8 @@ class Bibdata(object):
             itemstr = itemstr.replace(r'{\makegreaterthan}', '>')
         if (r'{\makelessthan}' in itemstr):
             itemstr = itemstr.replace(r'{\makelessthan}', '<')
-        if (r'{\makehashsign}' in templatestr):
-            templatestr = templatestr.replace(r'{\makehashsign}', '\\#')
+        if (r'{\makehashsign}' in itemstr):
+            itemstr = itemstr.replace(r'{\makehashsign}', '\\#')
 
         ## If there are nested operators on the string, replace all even-level operators with \{}. Is there any need to
         ## do this with \textbf{} and \texttt{} as well?
