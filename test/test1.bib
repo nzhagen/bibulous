@@ -349,15 +349,44 @@
   year = 2222
 }
 
-@ARABIC{arabic,
-  author = {Someone Who Speaks Arabic},
+%% Test that using Hindu works withou problems.
+@HINDU{hindu,
+  author = {Someone Who Speaks Hindu},
   title = {सच्चिदानन्द हीरानन्द वात्स्यायन},
   year = 2013
 }
 
+%% Test the user-defined variable 著者名 gets correctly mapped to the "author" field by the special template.
 @USER_DEFINED_FIELD{user_defined_field,
   著者名 = {Natsume Soseki},
   title = {Michikusa},
   institution = {Tuttle},
   year = 1915
+}
+
+%% Test an unorthodox template style for movie databases.
+@MOVIE{movie1,
+  title = {The Inheritance},
+  director = {Per Fly},
+  year = {2003},
+  rating = 5
+}
+
+%% Second entry for testing an unorthodox template style for movie databases.
+@MOVIE{movie2,
+  title = {The Celebration},
+  director = {Thomas Vinterberg},
+  year = {1998},
+  rating = 4
+}
+
+%% Test that using a negative year works without problems. (Note that the true year for this entry is 1979, of course.) And while we're at it, we
+%% can also test that using {\makehashsign} works correctly.
+@NEGATIVEYEAR{negativeyear,
+  title = {Updating formulae and a pairwise algorithm for computing sample variances},
+  author = {Tony F. Chan and Gene H. Golub and Randall J. LeVeque},
+  institution = {Stanford University},
+  year = {-1979},
+  number = {STAN-CS-79-773},
+  month = {November}
 }

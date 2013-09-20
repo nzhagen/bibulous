@@ -30,8 +30,11 @@ hyperlinked_title = <authorliststr>, \enquote{[\href{<url>}{<title>}|\href{<doi>
 edition_ordinal = <authorliststr>, \textit{<title>}[, <edition_ordinal>~ed.][, vol.~<volume>] (<publisher>, <year>)[ Chap.~<chapter>][, pp.~<startpage>--<endpage>].[ <note>]
 capitalized_field_names1 = <authorliststr>, \enquote{<title>,} \textit{<journal>} \textbf{<volume>}: <startpage>--<endpage> (<year>).
 multilingual = <authorliststr>, \enquote{<title>} (<year>).
-arabic = <authorliststr>, \enquote{<title>} (<year>).
+hindu = <authorliststr>, \enquote{<title>} (<year>).
 user_defined_field = <authorliststr>, \enquote{<title>,} <group> (<year>).
+movie = [<rating>]. \color{blue}{...
+         <title>}\color{black}, <director> (\year>).
+negativeyear = <authorliststr>, \enquote{<title>,} <institution> Tech.\ Rep.\ {\makehashsign}<number> (<year>).
 
 SPECIAL-TEMPLATES:
 citelabel = None

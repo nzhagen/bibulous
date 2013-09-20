@@ -66,10 +66,16 @@ M. Born and E. Wolf, \textit{Principles of Optics}, 7th~ed. (Cambridge Univ. Pre
 H. Schmidt, ``Quantum-mechanical random-number generator,'' \textit{J. Appl. Phys.} \textbf{41}: 462--468 (1970).
 \bibitem{multilingual}
 Someone, ``ユーザー別サイト 体中文 크로스 플랫폼으로 מדורים מבוקשים أفضل البحوث Σὲ γνωρίζω ἀπὸ Десятую Международную แผ่นดินฮั่นเสื่อมโทรมแสนสังเวช ∮ E⋅da = Q, n → ∞, ∑ f(i) = ∏ g(i) français langue étrangère mañana olé'' (2222).
-\bibitem{arabic}
-S. W. S. Arabic, ``सच्चिदानन्द हीरानन्द वात्स्यायन'' (2013).
+\bibitem{hindu}
+S. W. S. Hindu, ``सच्चिदानन्द हीरानन्द वात्स्यायन'' (2013).
 \bibitem{user_defined_field}
 N. Soseki, ``Michikusa,'' Tuttle (1915).
+\bibitem{movie1}
+5. \color{blue}{The Inheritance}\color{black}, Per Fly (\year>).
+\bibitem{movie2}
+4. \color{blue}{The Celebration}\color{black}, Thomas Vinterberg (\year>).
+\bibitem{negativeyear}
+T. F. Chan, G. H. Golub, and R. J. LeVeque, ``Updating formulae and a pairwise algorithm for computing sample variances,'' Stanford University Tech.\ Rep.\ \#STAN-CS-79-773 (-1979).
 \bibitem{force_sentence_case}
 P. Stoica and B. C. Ng, ``On the {C}ram{\'e}r-{R}ao bound under parametric constraints'' (1998).
 \bibitem{french_initials}
