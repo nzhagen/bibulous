@@ -1,7 +1,7 @@
 TEMPLATES:
-article = <authorliststr>, \enquote{<title>,} [\href{<url>}{\textit{<journal>}}|\href{<doi>}{\textit{<journal>}}|\textit{<journal>}] \textbf{<volume>}[(<number>)], [<startpage>--<endpage>|<startpage>|<eid>|] (<year>).[ <note>]
+article = <authorliststr>, \enquote{<title>,} [\href{<url>}{\textit{<journal>}}|\href{<doi>}{\textit{<journal>}}|\textit{<journal>}] \textbf{<volume>}(<number>), [<startpage>--<endpage>|<startpage>|<eid>|] (<year>).[ <note>]
 book = [<authorliststr>|<editorliststr>|<organization>|<institution>|], \textit{<title>}[, <edition_ordinal>~ed.][, vol.~<volume>] <publisher>, <address> (<year>)[ Chap.~<chapter>][, pp.~<startpage>--<endpage>|, p.~<startpage>].[ <note>]
-endnote = <note>
+endnote = Warning (entry <citekey>): Opt.\ Eng.\ does not allow endnotes.
 inbook = incollection
 incollection = <authorliststr>, \enquote{<title>,} in \textit{<booktitle>}, [vol.~<volume>, ][<edition_ordinal>~ed., ][<editorliststr>, ][<series>, ][Chap.~<chapter>, ][pp.~<startpage>--<endpage>|p.~<startpage>|<eid>|] (<publisher>, <year>).[ <note>]
 inproceedings = <authorliststr>, \enquote{<title>,} in \textit{<booktitle>}[, <editorliststr>][, in <series>][ \textbf{<volume>}][, pp.~<startpage>--<endpage>|, p.~<startpage>|, <eid>] (<year>).[ <note>]
@@ -19,10 +19,10 @@ sortkey = <citenum>                       ## order the reference list in the sam
 citelabel = <citenum>                     ## use numeric reference labels
 
 OPTIONS:
-maxauthors = 25                           ## if more than 10 authors, then use "et al." format
-minauthors = 9                            ## if "maxauthors" is exceeded, then display only the first "minauthors" and et al.
-maxeditors = 5                            ## if more than 5 editors, then use "et al." format
-mineditors = 5                            ## if "maxeditors" is exceeded, then display only the first "mineditors" and et al.
+maxauthors = 3                            ## if more than 3 authors, then use "et al." format
+minauthors = 1                            ## if "maxauthors" is exceeded, then display only the first "minauthors" and et al.
+maxeditors = 3                            ## if more than 3 editors, then use "et al." format
+mineditors = 1                            ## if "maxeditors" is exceeded, then display only the first "mineditors" and et al.
 procspie_as_journal = True                ## treat SPIE conference proceedings like a journal, with journal name 'Proc. SPIE'
 sort_case = False                         ## whether to use case-sensitive citation sorting (default is False)
 use_abbrevs = True                        ## whether to use the abbreviation strings (mainly useful for debugging)

@@ -4,16 +4,16 @@ Developer guide
 Guidelines for Python coding style
 ==================================
 
-1. Note that you can mix 8-bit Python strings (ASCII text) with UTF-8 encoded text as long as the 8-bit string contains only ASCII characters.
+1. Note that one can mix 8-bit Python strings (ASCII text) with UTF-8 encoded text as long as the 8-bit string contains only ASCII characters.
 
 2. Keep in mind when running into Unicode errors: reading a line of text from a file produces a line of bytes and not characters. To decode the bytes into a string of characters, you need to know the encoding.
 
 3. There are a couple of minor points where the Bibulous coding standards deviates from Python's PEP8:
 
-    (a) A line width of 100 is the standard (not 80).
+    (a) A line width of 120 is the standard (not 80).
     (b) In general, statements that evaluate to a boolean are placed within parentheses (i.e. ``if (a < b):`` rather than ``if a < b:``).
 
-4. Many developers prefer to spread out code among a large number of small files. Bibulous is currently organized in the opposite fashion -- all of the code needed to run ``bibulous`` to create a ``.bbl`` file is located within a single large file. Several auxiliary scripts exist, but these use ``bibulous.py`` as a core library file, and perform different tasks (such as extracting sub-bibliography databases) than the main file was designed to do.
+4. Many developers prefer to spread out code among a large number of small files, but Bibulous is currently organized in a single large file. This is partly because there is no large block of code that fits by itself so that a separate file makes sense. (Parsing of ``.bib`` files, for example, only requires a couple hundred lines.
 
 Overall project strategy and code structure
 ===========================================
@@ -22,10 +22,11 @@ The basic function of BibTeX is to accept an ``.aux`` file as input and to produ
 
 The basic program flow is as follows:
 
-    1. Read the .aux file and get the names of the bibliography databases (.bib files), the style templates (.bst files) to use, and the entire set of citations.
-    2. Read in all of the bibliography database files into one long dictionary (`bibdata`), replacing any abbreviations with their full form. Cross-referenced data is *not* yet inserted at this point. That is delayed until the time of writing the BBL file in order to speed up parsing.
-    3. Read in the Bibulous style template file as a dictionary (`bstdict`).
-    4. Now that all the information is collected, go through each citation key, find the corresponding entry key in `bibdata`. If there is crossref data, then fill in missing values here. Also create the "special fields" here. Finally, from the entry type, select a template from `bstdict` and begin inserting the variables one-by-one into the template.
+    1. Read the ``.aux`` file and get the names of the bibliography databases (``.bib`` files), the style templates (``.bst`` files) to use, and the entire set of citations.
+    2. If an "extracted" database file exist, then compare the citations in the extracted database against those in the ``.aux`` file. If there are any differences, then re-extract the database. Otherwise, use the extracted database rather than the full one specified in the ``.aux`` file.
+    3. Read in all of the bibliography database files into one long dictionary (`bibdata`), replacing any abbreviations with their full form. Cross-referenced data is *not* yet inserted at this point. That is delayed until the time of writing the BBL file in order to speed up parsing.
+    4. Read in the Bibulous style template file as a dictionary (`bstdict`).
+    5. Now that all the information is collected, go through each citation key, find the corresponding entry key in `bibdata`. If there is crossref data, then fill in missing values here. Also create the "special fields" here. Finally, from the entry type, select a template from `bstdict` and begin inserting the variables one-by-one into the template.
 
 Because the ``.bib`` file is highly structured, it is straightforward to write a parser by hand in Python: the ``parse_bibfile()`` method converts the ``.bib`` file contents into a Python dictionary (the ``Bibdata`` class' ``bibdata``). The ``.aux`` file is even easier to parse, and the ``parse_auxfile()`` method converts the citation information into the ``Bibdata`` class' ``citedict`` dictionary. The ``.bst`` style template file, having its own domain specific language, is much more complicated, so that its parser is generated from a grammar written for the ``Antlr`` parser generator. (This creates Bibulous' only external dependency -- Java -- which we may be able to eliminate if we use a Python-based parser generator, such as ``pyparsing``.)
 
