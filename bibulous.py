@@ -39,7 +39,7 @@ import getopt       ## for getting command-line options
 import copy         ## for the "deepcopy" command
 import platform     ## for determining the OS of the system
 from math import log10
-#import pdb          ## put "pdb.set_trace()" at any place you want to interact with pdb
+import pdb          ## put "pdb.set_trace()" at any place you want to interact with pdb
 #import traceback    ## for getting full traceback info in exceptions
 
 #def info(type, value, tb):
@@ -63,7 +63,7 @@ __all__ = ['sentence_case', 'stringsplit', 'finditer', 'namefield_to_namelist', 
            'search_middlename_for_prefixes', 'create_edition_ordinal', 'export_bibfile', 'parse_pagerange',
            'parse_nameabbrev', 'make_sortkey_unique', 'filter_script', 'str_is_integer', 'bib_warning',
            'format_namelist', 'create_citation_alpha', 'remove_nested_template_options_brackets',
-           'remove_template_options_brackets', 'simplify_template', 'toplevel_split']
+           'remove_template_options_brackets', 'simplify_template', 'toplevel_split', 'template_substitution']
 
 
 class Bibdata(object):
@@ -827,6 +827,13 @@ class Bibdata(object):
                         bib_warning('Warning 009c: overwriting the existing special template variable "' + var + \
                              '" from [' + self.specials[var] + '] to [' + value + '] ...', self.disable)
                     self.specials[var] = value
+
+                    ## Find out if the template has nested option blocks. If so, then add it to
+                    ## the list of nested templates.
+                    levels = get_delim_levels(value, ('[',']'))
+                    if (2 in levels):
+                        self.nested_templates.append(var)
+
                     if self.debug:
                         print('Setting BST special template "' + var + '" to value "' + value + '"')
 
@@ -1070,13 +1077,9 @@ class Bibdata(object):
         if (entrytype in self.bstdict):
             templatestr = self.bstdict[entrytype]
         else:
-            msg = 'entrytype "' + entrytype + '" does not have a template defined ' + \
-                  'in the .bst file'
+            msg = 'entrytype "' + entrytype + '" does not have a template defined in the .bst file'
             bib_warning('Warning 011: ' + msg, self.disable)
             return(itemstr + '\\textit{Warning: ' + msg + '}.')
-
-        ## Get the list of all the variables used by the template string.
-        variables = re.findall(r'<.*?>', templatestr)
 
         ## Before checking which variables are defined and which not, we first need to evaluate the user-defined
         ## variables or else they will always be "undefined". To make this work, we also need to provide the user
@@ -1088,79 +1091,27 @@ class Bibdata(object):
             bibdata = self.bibdata
             for user_var_name in self.user_variables:
                 user_var_value = eval(self.user_variables[user_var_name])
-                self.bibdata[c][user_var_name] = user_var_value
+                entry[user_var_name] = user_var_value
 
-                ## Add the user variables to the list of "variables" to track.
-                variables.append('<' + user_var_name + '>')
-
-        ## Next go through the template and replace each variable with the appropriate string from the database. Start
-        ## with the three special cases. This block of code has to go before the "simplify_template()" call below to
+        ## This block of code has to go before the "simplify_template()" call below to
         ## ensure that these variables are defined when they are evaluated there.
         if ('<authorliststr>' in templatestr) and ('authorlist' in entry):
             entry['authorliststr'] = format_namelist(entry['authorlist'], self.options, 'author')
         if ('<editorliststr>' in templatestr) and ('editorlist' in entry):
             entry['editorliststr'] = format_namelist(entry['editorlist'], self.options, 'editor')
 
+        ## TODO: if the user added any options blocks to their defined variables, then they may have turned an
+        ## unnested sequence into a nested one. Need to look for that. We can probably move this work to the point
+        ## where the NST file is parsed, rather than here where we do it for every entry.
+
+        ## Add the template string onto the "\bibitem{...}\n" line in front of it.
         try:
-            if (entry['entrytype'] in self.nested_templates):
-                templatestr = remove_nested_template_options_brackets(templatestr, entry, variables,
-                                                                      undefstr=self.options['undefstr'])
-            else:
-                templatestr = remove_template_options_brackets(templatestr, entry, variables,
-                                                               undefstr=self.options['undefstr'])
+            templatestr = template_substitution(templatestr, entry, nested_templates=self.nested_templates,
+                                                options=self.options)
+            itemstr = itemstr + templatestr
         except SyntaxError, err:
             itemstr = itemstr + '\\textit{' + err + '}.'
             bib_warning('Warning 013: ' + err, self.disable)
-            return(itemstr)
-
-        if ('<title>' in templatestr) and ('title' in entry):
-            if self.options['force_sentence_case']:
-                title = sentence_case(entry['title'])
-            else:
-                title = entry['title']
-
-            ## If the template string has punctuation right after the title, and the title itself also has punctuation,
-            ## then you may get something like "Title?," where the two punctuation marks conflict. In that case, keep
-            ## the title's punctuation and drop the template's.
-            if title.endswith(('?','!')):
-                idx = templatestr.index('<title>')
-                if (templatestr[idx + len('<title>')] in (',','.','!','?',';',':')):
-                    templatestr = templatestr[:idx+len('<title>')] + templatestr[idx+1+len('<title>'):]
-                    templatestr = templatestr.replace('<title>', title)
-            else:
-                templatestr = templatestr.replace('<title>', title)
-
-        ## Remove the special cases from the variables list --- we already replaced these above. (Right now there is
-        ## only <title> here, but we can add more.)
-        specials_list = ('<title>')
-        variables = [item for item in variables if item not in specials_list]
-
-        for var in variables:
-            if (var in templatestr):
-                varname = var[1:-1]     ## remove angle brackets to extract just the name
-                ## Check if the variable is defined and that it is not None (or empty string).
-                if (varname in entry) and entry[varname]:
-                    templatestr = templatestr.replace(var, unicode(entry[varname]))
-                else:
-                    templatestr = templatestr.replace(var, self.options['undefstr'])
-
-        ## Add the template string onto the "\bibitem{...}\n" line in front of it.
-        itemstr = itemstr + templatestr
-
-        ## Now that we've replaced template variables, go ahead and replace the special commands. We need to replace the
-        ## hash symbol too because that indicates a comment when placed inside a template string.
-        if (r'{\makeopenbracket}' in itemstr):
-            itemstr = itemstr.replace(r'{\makeopenbracket}', '[')
-        if (r'{\makeclosebracket}' in itemstr):
-            itemstr = itemstr.replace(r'{\makeclosebracket}', ']')
-        if (r'{\makeverticalbar}' in itemstr):
-            itemstr = itemstr.replace(r'{\makeverticalbar}', '|')
-        if (r'{\makegreaterthan}' in itemstr):
-            itemstr = itemstr.replace(r'{\makegreaterthan}', '>')
-        if (r'{\makelessthan}' in itemstr):
-            itemstr = itemstr.replace(r'{\makelessthan}', '<')
-        if (r'{\makehashsign}' in itemstr):
-            itemstr = itemstr.replace(r'{\makehashsign}', '\\#')
 
         ## If there are nested operators on the string, replace all even-level operators with \{}. Is there any need to
         ## do this with \textbf{} and \texttt{} as well?
@@ -1209,31 +1160,41 @@ class Bibdata(object):
 
         entry = self.bibdata[citekey]
 
+        templatestr = self.specials['sortkey']
+
+        ## If the template begins with a '-', then remove it. It just tells us to use reverse sorting order, and we
+        ## only generate the sortkey here, rather than perform the actual sorting.
+        if templatestr.startswith('-'):
+            templatestr = templatestr[1:]
+
+        ## Insert the special variables into the entry.
+        self.insert_specials(citekey)
+
         ## Define the variable "citeyear", to use in place of the entry field "year". This is necessary to make sure
         ## that alphabetical sorting treats numbers correctly, we need to append zeros so that, say, "10" does not get
         ## sorted before "2". Note that this formatting should work for years between -999 and +9999.
         if ('year' in entry):
             if str_is_integer(entry['year']):
-                citeyear = unicode('%04i' % int(entry['year']))
+                if (int(entry['year']) < 0):
+                    citeyear = unicode('-%04i' % abs(int(entry['year'])))
+                else:
+                    citeyear = unicode('%04i' % int(entry['year']))
             else:
                 citeyear = entry['year']
         else:
             citeyear = '9999'
 
-        templatestr = self.specials['sortkey']
-        variables = re.findall(r'<.*?>', templatestr)
-
-        ## If the template begins with a '-', then remove it.
-        if templatestr.startswith('-'):
-            templatestr = templatestr[1:]
+        ## Replace the special "year" variable (which needs to be zero-padded in order to be properly sorted).
+        if ('<year>' in templatestr):
+            templatestr = templatestr.replace('<year>', citeyear)
 
         ## If one of the "name" elements are in the template, then you will need to obtain those from the author/editor
         ## name lists.
         if ('<name.last>' in templatestr) or ('<name.first>' in templatestr) or ('<name.prefix>' in templatestr) or \
                 ('<name.suffix>' in templatestr):
-            if ('author' in entry) and ('authorlist' not in entry):
+            if ('author' in entry) and ('authorlist' not in entry) and (entry['author'] != ''):
                 self.create_namelist(citekey, 'author')
-            if ('editor' in entry) and ('editorlist' not in entry):
+            if ('editor' in entry) and ('editorlist' not in entry) and (entry['editor'] != ''):
                 self.create_namelist(citekey, 'editor')
 
             if ('authorlist' in entry):
@@ -1271,47 +1232,8 @@ class Bibdata(object):
         if ('<citealpha>' in templatestr):
             entry['citealpha'] = create_citation_alpha(entry)
 
-        if (entry['entrytype'] in self.nested_templates):
-            templatestr = remove_nested_template_options_brackets(templatestr, entry, variables,
-                                                                  undefstr=self.options['undefstr'])
-        else:
-            templatestr = remove_template_options_brackets(templatestr, entry, variables,
-                                                           undefstr=self.options['undefstr'])
-
-        ## Replace any "special" variables first before going on to the "regular" variables.
-        if ('<year>' in templatestr):
-            templatestr = templatestr.replace('<year>', citeyear)
-
-        ## Remove the special cases from the variables list --- we already replaced these above. (Right now there is
-        ## only <year> here, but we can add more.)
-        specials_list = ('<year>')
-        variables = [item for item in variables if item not in specials_list]
-
-        ## Go ahead and replace all of the template variables with the corresponding fields.
-        for var in variables:
-            if (var in templatestr):
-                varname = var[1:-1]     ## remove angle brackets to extract just the name
-                ## Check if the variable is defined and that it is not None (or empty string).
-                if (varname in entry) and entry[varname]:
-                    templatestr = templatestr.replace(var, unicode(entry[varname]))
-                else:
-                    templatestr = templatestr.replace(var, '')
-
-        ## Now that we've replaced template variables, go ahead and replace the special commands. We need to replace
-        ## the hash symbol too because that indicates a comment when placed inside a template string.
-        if (r'{\makeopenbracket}' in templatestr):
-            templatestr = templatestr.replace(r'{\makeopenbracket}', '[')
-        if (r'{\makeclosebracket}' in templatestr):
-            templatestr = templatestr.replace(r'{\makeclosebracket}', ']')
-        if (r'{\makeverticalbar}' in templatestr):
-            templatestr = templatestr.replace(r'{\makeverticalbar}', '|')
-        if (r'{\makegreaterthan}' in templatestr):
-            templatestr = templatestr.replace(r'{\makegreaterthan}', '>')
-        if (r'{\makelessthan}' in templatestr):
-            templatestr = templatestr.replace(r'{\makelessthan}', '<')
-        if (r'{\makehashsign}' in templatestr):
-            templatestr = templatestr.replace(r'{\makehashsign}', '\\#')
-
+        templatestr = template_substitution(templatestr, entry, nested_templates=self.nested_templates,
+                                            options=self.options)
         sortkey = purify_string(templatestr)
         sortkey = sortkey.replace(' ','')
 
@@ -1319,7 +1241,7 @@ class Bibdata(object):
             sortkey = sortkey.lower()
 
         if self.debug:
-            print('citekey "%s: sortkey = %s' % (citekey, sortkey))
+            print('citekey "%s": sortkey = "%s"' % (citekey, sortkey))
 
         return(sortkey)
 
@@ -1640,8 +1562,6 @@ class Bibdata(object):
         if (templatestr == 'None'):
             return(None)
 
-        variables = re.findall(r'<.*?>', templatestr)
-
         ## If one of the "name" elements are in the template, then you will need to obtain those from the author/editor
         ## name lists.
         if ('<name.last>' in templatestr) or ('<name.first>' in templatestr) or ('<name.prefix>' in templatestr) or \
@@ -1686,42 +1606,8 @@ class Bibdata(object):
         if ('<citealpha>' in templatestr):
             entry['citealpha'] = create_citation_alpha(entry)
 
-        if (entry['entrytype'] in self.nested_templates):
-            templatestr = remove_nested_template_options_brackets(templatestr, entry, variables,
-                                                                  undefstr=self.options['undefstr'])
-        else:
-            templatestr = remove_template_options_brackets(templatestr, entry, variables,
-                                                           undefstr=self.options['undefstr'])
-
-        ## Remove the special cases from the variables list --- we already replaced these above.
-        #specials_list = ('<citekey>','<citenum>')
-        #variables = [item for item in variables if item not in specials_list]
-
-        ## Go ahead and replace all of the template variables with the corresponding fields.
-        for var in variables:
-            if (var in templatestr):
-                varname = var[1:-1]     ## remove angle brackets to extract just the name
-                ## Check if the variable is defined and that it is not None (or empty string).
-                if (varname in entry) and entry[varname]:
-                    templatestr = templatestr.replace(var, unicode(entry[varname]))
-                else:
-                    templatestr = templatestr.replace(var, '')
-
-        ## Now that we've replaced template variables, go ahead and replace the special commands. We need to replace
-        ## the hash symbol too because that indicates a comment when placed inside a template string.
-        if (r'{\makeopenbracket}' in templatestr):
-            templatestr = templatestr.replace(r'{\makeopenbracket}', '[')
-        if (r'{\makeclosebracket}' in templatestr):
-            templatestr = templatestr.replace(r'{\makeclosebracket}', ']')
-        if (r'{\makeverticalbar}' in templatestr):
-            templatestr = templatestr.replace(r'{\makeverticalbar}', '|')
-        if (r'{\makegreaterthan}' in templatestr):
-            templatestr = templatestr.replace(r'{\makegreaterthan}', '>')
-        if (r'{\makelessthan}' in templatestr):
-            templatestr = templatestr.replace(r'{\makelessthan}', '<')
-        if (r'{\makehashsign}' in templatestr):
-            templatestr = templatestr.replace(r'{\makehashsign}', '\\#')
-
+        templatestr = template_substitution(templatestr, entry, nested_templates=self.nested_templates,
+                                            options=self.options)
         citelabel = purify_string(templatestr)
 
         if self.debug:
@@ -2004,46 +1890,15 @@ class Bibdata(object):
             if (key in entry):
                 continue
 
-            variables = re.findall(r'<.*?>', self.specials[key])
-            if (entry['entrytype'] in self.nested_templates):
-                templatestr = remove_nested_template_options_brackets(self.specials[key], entry, variables,
-                                                                      undefstr=self.options['undefstr'])
-            else:
-                templatestr = remove_template_options_brackets(self.specials[key], entry, variables,
-                                                               undefstr=self.options['undefstr'])
-
-            ## Go ahead and replace all of the template variables with the corresponding fields.
-            for var in variables:
-                if (var in templatestr):
-                    varname = var[1:-1]     ## remove angle brackets to extract just the name
-                    ## Check if the variable is defined and that it is not None (or empty string).
-                    if (varname in entry) and entry[varname]:
-                        templatestr = templatestr.replace(var, unicode(entry[varname]))
-                    else:
-                        templatestr = templatestr.replace(var, '')
-
-            ## Now that we've replaced template variables, go ahead and replace the special commands. We need to replace
-            ## the hash symbol too because that indicates a comment when placed inside a template string.
-            if (r'{\makeopenbracket}' in templatestr):
-                templatestr = templatestr.replace(r'{\makeopenbracket}', '[')
-            if (r'{\makeclosebracket}' in templatestr):
-                templatestr = templatestr.replace(r'{\makeclosebracket}', ']')
-            if (r'{\makeverticalbar}' in templatestr):
-                templatestr = templatestr.replace(r'{\makeverticalbar}', '|')
-            if (r'{\makegreaterthan}' in templatestr):
-                templatestr = templatestr.replace(r'{\makegreaterthan}', '>')
-            if (r'{\makelessthan}' in templatestr):
-                templatestr = templatestr.replace(r'{\makelessthan}', '<')
-            if (r'{\makehashsign}' in templatestr):
-                templatestr = templatestr.replace(r'{\makehashsign}', '\\#')
-
+            templatestr = template_substitution(self.specials[key], entry, nested_templates=self.nested_templates,
+                                                options=self.options)
             self.bibdata[entrykey][key] = templatestr
 
         ## If any of the user-defined variables here map a field into the "author" or "editor" field, then we need to
         ## create the "authorlist" and "editorlist" fields as well.
-        if ('author' in entry) and ('authorlist' not in entry):
+        if ('author' in entry) and ('authorlist' not in entry) and (entry['author'] != ''):
             self.create_namelist(entrykey, 'author')
-        if ('editor' in entry) and ('editorlist' not in entry):
+        if ('editor' in entry) and ('editorlist' not in entry) and (entry['editor'] != ''):
             self.create_namelist(entrykey, 'editor')
         return
 
@@ -4020,6 +3875,91 @@ def toplevel_split(s, splitchar, levels):
         split_list = [s]
 
     return(split_list)
+
+## =============================
+def template_substitution(templatestr, bibentry, nested_templates=None, options=None):
+    '''
+    Substitute database entry variables into template string.
+
+    Parameters
+    ----------
+    templatestr : str
+        The template string itself.
+    bibentry : dict
+        The database entry.
+    nested_templates : list of str
+        A list giving the templates which have nested options.
+    options : dict
+        The dictionary of options keywords settings.
+
+    Returns
+    -------
+    templatestr : str
+        The template string with all variables replaced.
+    '''
+
+    if (nested_templates != None) and (bibentry['entrytype'] in nested_templates):
+        is_nested = True
+    else:
+        is_nested = False
+
+    if (options == None):
+        options = {'force_sentence_case':False, 'undefstr':'???'}
+
+    variables = re.findall(r'<.*?>', templatestr)
+
+    if is_nested:
+        templatestr = remove_nested_template_options_brackets(templatestr, bibentry, variables, undefstr=options['undefstr'])
+    else:
+        templatestr = remove_template_options_brackets(templatestr, bibentry, variables, undefstr=options['undefstr'])
+
+    ## The 'title' variable must be treated specially.
+    if ('<title>' in templatestr) and ('title' in bibentry):
+        if options['force_sentence_case']:
+            title = sentence_case(bibentry['title'])
+        else:
+            title = bibentry['title']
+
+        ## If the template string has punctuation right after the title, and the title itself also has punctuation,
+        ## then you may get something like "Title?," where the two punctuation marks conflict. In that case, keep
+        ## the title's punctuation and drop the template's.
+        if title.endswith(('?','!')):
+            idx = templatestr.index('<title>')
+            if (templatestr[idx + len('<title>')] in (',','.','!','?',';',':')):
+                templatestr = templatestr[:idx+len('<title>')] + templatestr[idx+1+len('<title>'):]
+                templatestr = templatestr.replace('<title>', title)
+        else:
+            templatestr = templatestr.replace('<title>', title)
+
+        variables = [v for v in variables if v != 'title']
+
+    ## Go ahead and replace all of the template variables with the corresponding fields.
+    for var in variables:
+        if (var in templatestr):
+            varname = var[1:-1]     ## remove angle brackets to extract just the name
+
+            ## Check if the variable is defined and that it is not None (or empty string).
+            if (varname in bibentry) and bibentry[varname]:
+                templatestr = templatestr.replace(var, unicode(bibentry[varname]))
+            else:
+                templatestr = templatestr.replace(var, options['undefstr'])
+
+    ## Now that we've replaced template variables, go ahead and replace the special commands. We need to replace
+    ## the hash symbol too because that indicates a comment when placed inside a template string.
+    if (r'{\makeopenbracket}' in templatestr):
+        templatestr = templatestr.replace(r'{\makeopenbracket}', '[')
+    if (r'{\makeclosebracket}' in templatestr):
+        templatestr = templatestr.replace(r'{\makeclosebracket}', ']')
+    if (r'{\makeverticalbar}' in templatestr):
+        templatestr = templatestr.replace(r'{\makeverticalbar}', '|')
+    if (r'{\makegreaterthan}' in templatestr):
+        templatestr = templatestr.replace(r'{\makegreaterthan}', '>')
+    if (r'{\makelessthan}' in templatestr):
+        templatestr = templatestr.replace(r'{\makelessthan}', '<')
+    if (r'{\makehashsign}' in templatestr):
+        templatestr = templatestr.replace(r'{\makehashsign}', '\\#')
+
+    return(templatestr)
 
 ## ==================================================================================================
 

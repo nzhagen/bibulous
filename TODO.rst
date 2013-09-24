@@ -1,25 +1,18 @@
 Python code to-do list: (including goals for version 2.0)
 ---------------------------------------------------------
 
-The primary goal for version 2.0 is to incorporate a closer integration with a front-end.
-
-- Check that the ``templates/spie_opteng.bst`` style file is correct, given the recent changes
-  to Opt. Eng.'s format.
+The primary goal for version 2.0 is to incorporate integration with a front-end LaTeX package.
 
 - Rewrite the ``Overall project strategy and code structure`` section of
   ``developer_guide.rst`` to take into account the new program flow.
 
 - Get ``backrefs`` option back up and working.
 
-- Add templates for name formatting (to generate ``authorliststr`` and ``editorliststr`` from
+- Add _templates_ for name formatting (to generate ``authorliststr`` and ``editorliststr`` from
   the ``author`` and ``editor`` fields, for example).
 
 - Allow direct integration with front-end for: generating glossaries, customizing the
   appearance of citation labels, etc.
-
-- ``format_bibitem()``, ``generate_sortkey()``, ``generate_bibitem_label()``, and
-  ``insert_specials()``  all use very similar code for implementing template strings.
-  How can we consolidate the underlying functionality into a single subroutine?
 
 - Look into whether the code can be simplified and user scripts still benefit if you move some
   bibulous module functions from module scope functions to Bibdata class methods.
