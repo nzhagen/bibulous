@@ -10,6 +10,7 @@ SPECIAL-TEMPLATES:
 citelabel = None
 sortkey = <year><name.last><title>
 author = [<author_en>|<writer>|<著者名>]
+editor = [<editor_en>]
 
 OPTIONS:
 use_firstname_initials = False            ## initialize all but the authors' last names

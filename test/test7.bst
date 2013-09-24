@@ -1,6 +1,6 @@
 TEMPLATES:
 article = [<authorliststr>|<editorliststr>|], \enquote{<title>} (<year>).
-incollection = <authorliststr>, \enquote{<title>,} <publisher> (<year>). {\makeopenbracket}In <language>.{\makeclosebracket}
+incollection = <authorliststr>, \enquote{<title>,} <publisher> (<year>).[ {\makeopenbracket}In <language>.{\makeclosebracket}]
 
 SPECIAL-TEMPLATES:
 citelabel = None
