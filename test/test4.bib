@@ -39,6 +39,7 @@
   year = {1848}
 }
 
+%% Testing sorting with a huge author list.
 @ARTICLE{Yanny2009,
   title = {SEGUE: a spectroscopic survey of 240,000 stars with $g = 14$--20},
   author = {Brian Yanny and Constance Rockosi and Heidi Jo Newberg and Gillian R. Knapp and Jennifer K. Adelman-McCarthy and Bonnie Alcorn and Sahar Allam and Carlos Allende Prieto and Deokkeun An and Kurt S.~J. Anderson and Scott Anderson and Coryn A.~L. Bailer-Jones and Steve Bastian and Timothy C. Beers and Eric Bell and Vasily Belokurov and Dmitry Bizyaev and Norm Blythe and John J. Bochanski and William N. Boroski and Jarle Brinchmann and J. Brinkmann and Howard Brewington and Larry Carey and Kyle M. Cudworth and Michael Evans and N.~W. Evans and Evalyn Gates and B.~T. G{\"a}nsicke and Bruce Gillespie and Gerald Gilmore and Ada Nebot Gomez-Moran and Eva K. Grebel and Jim Greenwell and James E. Gunn and Cathy Jordan and Wendell Jordan and Paul Harding and Hugh Harris and John S. Hendry and Diana Holder and Inese I. Ivans and {\v{Z}}eljko Ivezi{\v{c}} and Sebastian Jester and Jennifer A. Johnson and Stephen M. Kent and Scot Kleinman and Alexei Kniazev and Jurek Krzesinski and Richard Kron and Nikolay Kuropatkin and Svetlana Lebedeva and Young Sun Lee and R. French Leger and S{\'e}bastien L{\'e}pine and Steve Levine and Huan Lin and Daniel C. Long and Craig Loomis and Robert Lupton and Olena Malanushenko and Viktor Malanushenko and Bruce Margon and David Martinez-Delgado and Peregrine McGehee and Dave Monet and Heather L. Morrison and Jeffrey A. Munn and Eric H. Neilsen Jr and Atsuko Nitta and John E. Norris and Dan Oravetz and Russell Owen and Nikhil Padmanabhan and Kaike Pan and R.~S. Peterson and Jeffrey R. Pier and Jared Platson and Paola Re Fiorentin and Gordon T. Richards and Hans-Walter Rix and David J. Schlegel and Donald P. Schneider and Matthias R. Schreiber and Axel Schwope and Valena Sibley and Audrey Simmons and Stephanie A. Snedden and J. Allyn Smith and Larry Stark and Fritz Stauffer and M. Steinmetz and C. Stoughton and Mark SubbaRao and Alex Szalay and Paula Szkody and Aniruddha R. Thakar and Sivarani Thirupathi and Douglas Tucker and Alan Uomoto and Dan Vanden Berk and Simon Vidrih and Yogesh Wadadekar and Shannon Watters and Ron Wilhelm and Rosemary F.~G. Wyse and Jean Yarger and Dan Zucker},
@@ -47,6 +48,7 @@
   year = {2009},
 }
 
+%% Test on an entry that has editors but no authors.
 @ARTICLE{Blouke2000,
   title = {Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications},
   year = {2000},
@@ -54,6 +56,7 @@
   editor = {Morley M. Blouke and Nitin Sampat and Williams, Jr., George M. and Thomas Yeh}
 }
 
+%% Test sorting with an entry using a "nameabbrev" field.
 @ARTICLE{Fontaine1234,
   author = {Jean de la Fontaine du Bois Joli},
   title = {Something},
@@ -98,18 +101,21 @@
   language = {Japanese}
 }
 
+%% Test that sorting on a LaTeX-markup character correctly operates on a Unicode equivalent.
 @ARTICLE{AAberg2010,
   title = {A low dark current and high quantum efficiency monolithic Germanium-on-Silicon CMOS imager technology for day and night imaging applications},
   author = {I. {\AA}berg and B. Ackland and J. V. Beach and C. Godek and R. Johnson and C. A. King and A. Lattes and J. O'Neill and S. Pappas and T. S. Sriram and C. S. Rafferty},
   year = {2010}
 }
 
+%% Here the author last name and the key are very different. Test that this causes no sorting problems.
 @ARTICLE{Strangekey,
   title = {Nothing of consequence},
   author = {Mister Aaa},
   year = {1901}
 }
 
+%% Test with an entry that uses a unicode character.
 @ARTICLE{Mustafa2013,
   title = {Quantitative Förster resonance energy transfer efficiency measurements using simultaneous spectral unmixing of excitation and emission spectra},
   author = {Sanam Mustafa and John Hannagan and Paul Rigby and Kevin Pfleger and Ben Corry},
@@ -133,6 +139,7 @@
   year = {2012}
 }
 
+%% Test that "sortyear", "sorttitle" and "sortname" are working.
 @ARTICLE{Bunny1,
   title = {Looney tunes},
   author = "Bugs Bunny",

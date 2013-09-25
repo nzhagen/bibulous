@@ -8,7 +8,7 @@ collection = [<for_japanese_audience>[<author_ja>|<editor_ja>|], <title_ja>, <vo
 
 SPECIAL-TEMPLATES:
 citelabel = None
-sortkey = <year><name.last><title>
+sortkey = <year><name.0.last><title>
 author = [<author_en>|<writer>|<著者名>]
 editor = [<editor_en>]
 

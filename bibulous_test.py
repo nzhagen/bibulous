@@ -156,13 +156,13 @@ def run_test4():
     ## Need to make a list of all the citation sort options we want to try. Skip "citenum" since that is the default,
     ## and so has been tested already.
     sortkeys = ['<citekey>',
-                '[<sortname>|<name.last>]<name.first>[<sortyear>|<year>][<sorttitle>|<title>]',
-                '[<sortname>|<name.last>]<name.first>[<sorttitle>|<title>][<sortyear>|<year>]',
-                '[<sortname>|<name.last>]<name.first>[<sortyear>|<year>]<volume>[<sorttitle>|<title>]',
-                '[<alphalabel>][<sortname>|<name.last>]<name.first>[<sortyear>|<year>][<sorttitle>|<title>]',
-                '[<alphalabel>][<sortname>|<name.last>]<name.first>[<sortyear>|<year>]<volume>[<sorttitle>|<title>]',
-                '[<sortyear>|<year>][<sortname>|<name.last>]<name.first>[<sorttitle>|<title>]',
-                '-[<sortyear>|<year>][<sortname>|<name.last>]<name.first>[<sorttitle>|<title>]']    ## in descending order
+                '[<sortname>|<name.0.last>]<name.0.first>[<sortyear>|<year>][<sorttitle>|<title>]',
+                '[<sortname>|<name.0.last>]<name.0.first>[<sorttitle>|<title>][<sortyear>|<year>]',
+                '[<sortname>|<name.0.last>]<name.0.first>[<sortyear>|<year>]<volume>[<sorttitle>|<title>]',
+                '[<alphalabel>][<sortname>|<name.0.last>]<name.0.first>[<sortyear>|<year>][<sorttitle>|<title>]',
+                '[<alphalabel>][<sortname>|<name.0.last>]<name.0.first>[<sortyear>|<year>]<volume>[<sorttitle>|<title>]',
+                '[<sortyear>|<year>][<sortname>|<name.0.last>]<name.0.first>[<sorttitle>|<title>]',
+                '-[<sortyear>|<year>][<sortname>|<name.0.last>]<name.0.first>[<sorttitle>|<title>]']    ## in descending order
 
     print('\n' + '='*75)
     print('Running Bibulous Test #4')
@@ -189,7 +189,7 @@ def run_test4():
     ## Delete the old citekeys so that the new test contains only the new keys.
     print('Setting option sort_case = True')
     bibobj.citedict = {}
-    bibobj.specials['sortkey'] = '[<sortname>|<name.last>][<name.first>][<sortyear>|<year>][<sorttitle>|<title>]'
+    bibobj.specials['sortkey'] = '[<sortname>|<name.0.last>][<name.0.first>][<sortyear>|<year>][<sorttitle>|<title>]'
     bibobj.options['sort_case'] = True
     bibobj.parse_auxfile(auxfile)      ## this generates the citations
     bibobj.write_bblfile(write_preamble=False, write_postamble=True)

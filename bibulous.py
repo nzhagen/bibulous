@@ -1190,8 +1190,8 @@ class Bibdata(object):
 
         ## If one of the "name" elements are in the template, then you will need to obtain those from the author/editor
         ## name lists.
-        if ('<name.last>' in templatestr) or ('<name.first>' in templatestr) or ('<name.prefix>' in templatestr) or \
-                ('<name.suffix>' in templatestr):
+        if ('<name.0.last>' in templatestr) or ('<name.0.first>' in templatestr) or ('<name.0.prefix>' in templatestr) or \
+                ('<name.0.suffix>' in templatestr):
             if ('author' in entry) and ('authorlist' not in entry) and (entry['author'] != ''):
                 self.create_namelist(citekey, 'author')
             if ('editor' in entry) and ('editorlist' not in entry) and (entry['editor'] != ''):
@@ -1221,14 +1221,14 @@ class Bibdata(object):
             entry['citekey'] = citekey
         if ('<citenum>' in templatestr) and ('citenum' not in entry):
             entry['citenum'] = citenum
-        if ('<name.last>' in templatestr):
-            entry['name.last'] = name_last
-        if ('<name.first>' in templatestr):
-            entry['name.first'] = name_first
-        if ('<name.prefix>' in templatestr):
-            entry['name.prefix'] = name_prefix
-        if ('<name.suffix>' in templatestr):
-            entry['name.suffix'] = name_suffix
+        if ('<name.0.last>' in templatestr):
+            entry['name.0.last'] = name_last
+        if ('<name.0.first>' in templatestr):
+            entry['name.0.first'] = name_first
+        if ('<name.0.prefix>' in templatestr):
+            entry['name.0.prefix'] = name_prefix
+        if ('<name.0.suffix>' in templatestr):
+            entry['name.0.suffix'] = name_suffix
         if ('<citealpha>' in templatestr):
             entry['citealpha'] = create_citation_alpha(entry)
 
@@ -1564,8 +1564,8 @@ class Bibdata(object):
 
         ## If one of the "name" elements are in the template, then you will need to obtain those from the author/editor
         ## name lists.
-        if ('<name.last>' in templatestr) or ('<name.first>' in templatestr) or ('<name.prefix>' in templatestr) or \
-                ('<name.suffix>' in templatestr):
+        if ('<name.0.last>' in templatestr) or ('<name.0.first>' in templatestr) or ('<name.0.prefix>' in templatestr) or \
+                ('<name.0.suffix>' in templatestr):
             if ('author' in entry) and ('authorlist' not in entry):
                 self.create_namelist(citekey, 'author')
             if ('editor' in entry) and ('editorlist' not in entry):
@@ -1595,14 +1595,14 @@ class Bibdata(object):
             entry['citekey'] = citekey
         if ('<citenum>' in templatestr) and ('citenum' not in entry):
             entry['citenum'] = citenum
-        if ('<name.last>' in templatestr):
-            entry['name.last'] = name_last
-        if ('<name.first>' in templatestr):
-            entry['name.first'] = name_first
-        if ('<name.prefix>' in templatestr):
-            entry['name.prefix'] = name_prefix
-        if ('<name.suffix>' in templatestr):
-            entry['name.suffix'] = name_suffix
+        if ('<name.0.last>' in templatestr):
+            entry['name.0.last'] = name_last
+        if ('<name.0.first>' in templatestr):
+            entry['name.0.first'] = name_first
+        if ('<name.0.prefix>' in templatestr):
+            entry['name.0.prefix'] = name_prefix
+        if ('<name.0.suffix>' in templatestr):
+            entry['name.0.suffix'] = name_suffix
         if ('<citealpha>' in templatestr):
             entry['citealpha'] = create_citation_alpha(entry)
 
