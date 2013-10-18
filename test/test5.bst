@@ -7,18 +7,17 @@ collection = [<for_japanese_audience>[<author_ja>|<editor_ja>|], <title_ja>, <vo
 本 = <著者名>, <題名> (<年>).
 
 SPECIAL-TEMPLATES:
-citelabel = None
-sortkey = <year><name.0.last><title>
 author = [<author_en>|<writer>|<著者名>]
 editor = [<editor_en>]
+citelabel = None
+sortkey = <year>[<authorlist.0.last>|<editorlist.0.last>|]<title>
 
 OPTIONS:
-use_firstname_initials = False            ## initialize all but the authors' last names
-namelist_format = first_name_first        ## defines values for both "authorlist_format" and "editorlist_format" at once
 allow_scripts = True                      ## whether to allow user scripts in BST files
 yearstyle = BCE/CE                        ## whether to use 'BCE/CE' after the year number or the older 'BC/AD' form
 document_language = Japanese              ## whether the document is for a Japanese audience
 use_citeextract = False                   ## turn off cite extraction, since this interferes with using multiple BIB file inputs
+etal_message = , \textit{et al.}          ## what text to place at the end of an authorlist when there are too many
 
 VARIABLES:
 year_bce = format_yearstyle(entry, options)     ## format the year at append 'BC', 'AD', etc endings, depending on options settings

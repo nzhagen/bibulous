@@ -45,7 +45,6 @@ def run_test1():
     '''
 
     bstfiles = ('./test/test1.bst',                 ## the "default" style template must go first!
-                './test/test1_force_sentence_case.bst',
                 './test/test1_french_initials.bst',
                 './test/test1_use_name_ties.bst',
                 './test/test1_period_after_initial.bst',
@@ -73,6 +72,7 @@ def run_test1():
         ## For the style templates, always use the default templates first and the specific test template second ---
         ## this allows each test template to be very simple (only the differences from the default need to be used).
         if (bstfile != bstfiles[0]):
+            bibobj.specials = {}
             bibobj.options = {}
             bibobj.parse_bstfile('./test/test1.bst')
 
@@ -109,9 +109,11 @@ def run_test2():
         bibobj = Bibdata(auxfile, disable=[4,6,9,11,18,20,21,25])
         bibobj.write_bblfile()
         result = True
+        print('TEST #2 PASSED')
     except getopt.GetoptError as err:
         print('Error encountered: ' + err)
         result = False
+        print('TEST #2 FAILED.')
 
     return(result)
 
@@ -130,6 +132,7 @@ def run_test3():
     print('Running Bibulous Test #3 for author "' + authorstr + '"')
 
     bibobj = Bibdata(auxfile, disable=[4,9,21])
+    #bibobj.debug = True
     bibobj.write_authorextract(authorstr, outputfile)
 
     return(outputfile, targetfile)
@@ -156,13 +159,13 @@ def run_test4():
     ## Need to make a list of all the citation sort options we want to try. Skip "citenum" since that is the default,
     ## and so has been tested already.
     sortkeys = ['<citekey>',
-                '[<sortname>|<name.0.last>]<name.0.first>[<sortyear>|<year>][<sorttitle>|<title>]',
-                '[<sortname>|<name.0.last>]<name.0.first>[<sorttitle>|<title>][<sortyear>|<year>]',
-                '[<sortname>|<name.0.last>]<name.0.first>[<sortyear>|<year>]<volume>[<sorttitle>|<title>]',
-                '[<alphalabel>][<sortname>|<name.0.last>]<name.0.first>[<sortyear>|<year>][<sorttitle>|<title>]',
-                '[<alphalabel>][<sortname>|<name.0.last>]<name.0.first>[<sortyear>|<year>]<volume>[<sorttitle>|<title>]',
-                '[<sortyear>|<year>][<sortname>|<name.0.last>]<name.0.first>[<sorttitle>|<title>]',
-                '-[<sortyear>|<year>][<sortname>|<name.0.last>]<name.0.first>[<sorttitle>|<title>]']    ## in descending order
+                '[<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear>|<year>][<sorttitle>|<title>]',
+                '[<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sorttitle>|<title>][<sortyear>|<year>]',
+                '[<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear>|<year>]<volume>[<sorttitle>|<title>]',
+                '[<alphalabel>][<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear>|<year>][<sorttitle>|<title>]',
+                '[<alphalabel>][<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear>|<year>]<volume>[<sorttitle>|<title>]',
+                '[<sortyear>|<year>][<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sorttitle>|<title>]',
+                '-[<sortyear>|<year>][<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sorttitle>|<title>]']    ## in descending order
 
     print('\n' + '='*75)
     print('Running Bibulous Test #4')
@@ -180,7 +183,7 @@ def run_test4():
         bibobj.parse_auxfile(auxfile)      ## this generates the citations
         write_preamble = (sortkey == sortkeys[0])
         #write_postamble = (sortkey == sortkeys[-1])
-        bibobj.write_bblfile(write_preamble=write_preamble, write_postamble=False)
+        bibobj.write_bblfile(write_preamble=write_preamble, write_postamble=False, bibsize='ZZZ')
 
         filehandle = open(bblfile, 'a')
         filehandle.write('\n\n')
@@ -189,7 +192,7 @@ def run_test4():
     ## Delete the old citekeys so that the new test contains only the new keys.
     print('Setting option sort_case = True')
     bibobj.citedict = {}
-    bibobj.specials['sortkey'] = '[<sortname>|<name.0.last>][<name.0.first>][<sortyear>|<year>][<sorttitle>|<title>]'
+    bibobj.specials['sortkey'] = '[<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear>|<year>][<sorttitle>|<title>]'
     bibobj.options['sort_case'] = True
     bibobj.parse_auxfile(auxfile)      ## this generates the citations
     bibobj.write_bblfile(write_preamble=False, write_postamble=True)
@@ -232,8 +235,10 @@ def run_test6():
     try:
         bibobj = Bibdata([auxfile, bstfile], debug=False, disable=[8,9])
         result = False
+        print('TEST #6 FAILED')
     except ImportError, arg:
         result = True
+        print('TEST #6 PASSED.')
 
     return(result)
 
@@ -259,10 +264,10 @@ def run_test7():
     ## Need to make a list of all the citation label options we want to try. Skip "citenum" since that is the default,
     ## and so has been tested already.
     citelabels = ['<citekey>',
-                  '<name.last>-<year>',
+                  '[<authorlist.0.last>|<editorlist.0.last>|]-<year>',
                   '<citealpha>',
-                  '<name.last>, <year>',
-                  '<name.last> (<year>)']
+                  '[<authorlist.0.last>|<editorlist.0.last>|], <year>',
+                  '[<authorlist.0.last>|<editorlist.0.last>|] (<year>)']
 
     print('\n' + '='*75)
     print('Running Bibulous Test #7')
@@ -392,10 +397,6 @@ if (__name__ == '__main__'):
     ## Run test #2.
     result = run_test2()
     suite_pass *= result
-    if result:
-        print('TEST #2 PASSED')
-    else:
-        print('TEST #2 FAILED.')
 
     ## Run test #3.
     (outputfile, targetfile) = run_test3()
@@ -415,10 +416,6 @@ if (__name__ == '__main__'):
     ## Run test #6.
     result = run_test6()
     suite_pass *= result
-    if result:
-        print('TEST #6 PASSED')
-    else:
-        print('TEST #6 FAILED.')
 
     ## Run test #7.
     (outputfile, targetfile) = run_test7()

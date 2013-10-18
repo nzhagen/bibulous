@@ -7,7 +7,7 @@
 \providecommand{\um}{$\mu$m}
 
 \bibitem{initialize1}
-{Lord} Kelvin, ``On vortex motion'' (1869).
+L. Kelvin, ``On vortex motion'' (1869).
 \bibitem{initialize2}
 C.-I. Chang, ``Implementation scheme for recursion in spectral dimension'' (1992).
 \bibitem{title_punctuation}
@@ -31,21 +31,17 @@ F. M. Prefix Last and F. M. Prefix Last, Suffix, ``None'' (0000).
 \bibitem{name_parsing3}
 W. {Thomson [Lord Kelvin]}, ``On an absolute thermometric scale, founded on Carnot's theory of the motive power of heat'' (1848).
 \bibitem{many_authors}
-B. Yanny, C. Rockosi, H. J. Newberg, G. R. Knapp, J. K. Adelman-McCarthy, B. Alcorn, S. Allam, \textit{et al.}, ``SEGUE: a spectroscopic survey of 240,000 stars with $g = 14$--20'' (2009).
+B. Yanny, C. Rockosi, H. J. Newberg, G. R. Knapp, J. K. Adelman-McCarthy, B. Alcorn, S. Allam, C. A. Prieto, D. An, K. S. J. Anderson, \textit{et al.}, ``SEGUE: a spectroscopic survey of 240,000 stars with $g = 14$--20'' (2009).
 \bibitem{many_editors}
 M. M. Blouke, N. Sampat, G. M. Williams, Jr., \textit{et al.}, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications'' (2000).
-\bibitem{name_abbrev1}
-{JdlF.} du Bois Joli, ``Something'' (1234).
-\bibitem{name_abbrev2}
-J. {dlF.} du Joli, ``Something'' (1234).
 \bibitem{brace_delimited_quotes}
 S. New, ``Comments on `Filenames and Fonts'\:'' (4321).
 \bibitem{procspie_as_journal}
 A. S. Alenin and J. S. Tyo, ``Task-specific snapshot Mueller matrix channeled spectropolarimeter optimization,'' \textit{Proc.\ SPIE} \textbf{8364}: 836402 (2012).
-\bibitem{crossref}
+\bibitem{crossref1}
 A. S. Alenin and J. S. Tyo, ``Task-specific snapshot Mueller matrix channeled spectropolarimeter optimization,'' in \textit{Polarization: Measurement, Analysis, and Remote Sensing X}, D. B. Chenault and D. H. Goldstein, eds, Proc. SPIE \textbf{8364}: 836402 (2012).
 \bibitem{japanese}
-{乙部} 厳己 and P. Horton, ``jBibTEXの使用法,'' ソフトバンクパブリッシング (2006). [In Japanese.]
+Y. Otobe and P. Horton, ``jBibTEXの使用法,'' ソフトバンクパブリッシング (2006). [In Japanese.]
 \bibitem{trailing_comma}
 B. Bunny, ``Looney tunes'' (2001).
 \bibitem{monthformat1}
@@ -76,12 +72,10 @@ N. Soseki, ``Michikusa,'' Tuttle (1915).
 4. \color{blue}{The Celebration}\color{black}, Thomas Vinterberg (\year>).
 \bibitem{negativeyear}
 T. F. Chan, G. H. Golub, and R. J. LeVeque, ``Updating formulae and a pairwise algorithm for computing sample variances,'' Stanford University Tech.\ Rep.\ \#STAN-CS-79-773 (-1979).
-\bibitem{force_sentence_case}
-P. Stoica and B. C. Ng, ``On the {C}ram{\'e}r-{R}ao bound under parametric constraints'' (1998).
 \bibitem{french_initials}
 A. Perot and Ch. Fabry, ``Sur l'application de ph{\'e}nom{\`e}nes d'interf{\'e}rence {\`a} la solution de divers probl{\`e}mes de spectroscopie et de m{\'e}trologie'' (1899).
 \bibitem{use_name_ties}
-F.~M.~M. Prefix Last and F. Prefix Last, Suffix, ``None'' (0000).
+F.~M.~M. Prefix~Last and F.~Prefix~Last, Suffix, ``None'' (0000).
 \bibitem{period_after_initial}
 B R Bunny, ``Looney tunes'' (2001).
 \bibitem{terse_inits}

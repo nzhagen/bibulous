@@ -4,7 +4,7 @@ symbol = <description>
 acronym = <description>
 
 SPECIAL-TEMPLATES:
-citelabel = <name>                      ## use "<name>" here, not "<name.last>", since we want the acronym "name" field and not a name element
+citelabel = <name>                      ## use "<name>" here since we want the acronym "name" field and not a name element
 sortkey = <citekey>
 
 OPTIONS:

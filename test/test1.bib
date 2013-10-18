@@ -42,7 +42,7 @@
 }
 
 %% Test the option 'force_sentence_case' to see if upper case letters are forced to lower case except when at brace level > 0.
-@FORCE_SENTENCE_CASE{force_sentence_case,
+@USE_SENTENCE_CASE{use_sentence_case,
   title = {On the {C}ram{\'e}r-{R}ao Bound under Parametric Constraints},
   author = {Petre Stoica and Boon Chong Ng},
   year = {1998}
@@ -164,7 +164,7 @@
 }
 
 %% Part one of testing that crossrefs are correctly applied.
-@CROSSREF{crossref,
+@CROSSREF1{crossref1,
   title = {Task-specific snapshot Mueller matrix channeled spectropolarimeter optimization},
   author = {Andrey S. Alenin and J. Scott Tyo},
   year = {2012},
@@ -185,13 +185,13 @@
 
 %% Test that non-English characters are formatted correctly.
 @JAPANESE{japanese,
-  author = {{乙部} 厳己 and Paul Horton},
-  yomi = {よしき おとべ and ポール ホートン},
-  author-english = {Yoshiki Otobe and Paul Horton},
-  title = {jBibTEXの使用法},
-  title-english = {How to use JBibTeX},
-  publisher = {ソフトバンクパブリッシング},
-  publisher-english = {Soft Bank Publishing},
+  author-ja = {{乙部} 厳己 and Paul Horton},
+  author-yomi = {よしき おとべ and ポール ホートン},
+  author-en = {Yoshiki Otobe and Paul Horton},
+  title-ja = {jBibTEXの使用法},
+  title-en = {How to use JBibTeX},
+  publisher-ja = {ソフトバンクパブリッシング},
+  publisher-en = {Soft Bank Publishing},
   year = {2006},
   pages = {17--24},
   language = {Japanese}
@@ -296,7 +296,7 @@
   doi = {10.1007/BF03025367}
 }
 
-%% Part two of testing that crossrefs are correctly applied.
+%% Test that we can turn off generating initials from the editor name list. The template for this is in "test1_author_firstname_initials.bst".
 @EDITOR_FIRSTNAME_INITIALS{editor_firstname_initials,
   title = {Polarization: Measurement, Analysis, and Remote Sensing X},
   year = {2012},
@@ -305,7 +305,7 @@
   series = {procspie}
 }
 
-%% Test the ability to parse nested italics, so that even-order italics are written with \textup{} rather than \textit{}.
+%% Test that we can turn off generating initials from the author name list. The template for this is in "test1_author_firstname_initials.bst".
 @AUTHOR_FIRSTNAME_INITIALS{author_firstname_initials,
   title = {Experimental realization of Einstein-Podolsky-Rosen-Bohm \textit{Gedenkenexperiment}: a new violation of Bell's inequalities},
   author = {Alain Aspect and Philippe Grangier and G{\'e}rard Roger},
@@ -365,7 +365,7 @@
 }
 
 %% Test an unorthodox template style for movie databases.
-@MOVIE{movie1,
+@MOVIE1{movie1,
   title = {The Inheritance},
   director = {Per Fly},
   year = {2003},
@@ -373,7 +373,7 @@
 }
 
 %% Second entry for testing an unorthodox template style for movie databases.
-@MOVIE{movie2,
+@MOVIE2{movie2,
   title = {The Celebration},
   director = {Thomas Vinterberg},
   year = {1998},
