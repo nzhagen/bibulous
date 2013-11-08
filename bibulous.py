@@ -60,11 +60,10 @@ __version__ = '1.0'
 __all__ = ['sentence_case', 'stringsplit', 'finditer', 'namefield_to_namelist', 'namestr_to_namedict',
            'initialize_name', 'get_delim_levels', 'show_levels_debug', 'get_quote_levels', 'splitat', 'multisplit',
            'enwrap_nested_string', 'enwrap_nested_quotes', 'purify_string', 'latex_to_utf8',
-           'search_middlename_for_prefixes', 'create_edition_ordinal', 'export_bibfile', 'parse_pagerange',
+           'search_middlename_for_prefixes', 'get_edition_ordinal', 'export_bibfile', 'parse_pagerange',
            'parse_nameabbrev', 'make_sortkey_unique', 'filter_script', 'str_is_integer', 'bib_warning',
-           'create_citation_alpha', 'remove_nested_template_options_brackets', 'remove_template_options_brackets',
-           'simplify_template_bracket', 'get_variable', 'get_indexed_variable', 'toplevel_split',
-           'get_variable_name_elements', 'get_indexed_vars_in_template', 'get_num_names']
+           'create_citation_alpha', 'toplevel_split', 'get_variable_name_elements', 'get_indexed_vars_in_template',
+           'get_names', 'format_namelist', 'namedict_to_formatted_namestr']
 
 
 class Bibdata(object):
@@ -134,7 +133,6 @@ class Bibdata(object):
     create_citation_list
     format_bibitem
     generate_sortkey
-    create_namelist
     insert_crossref_data
     write_citeextract
     write_authorextract
@@ -147,6 +145,12 @@ class Bibdata(object):
     validate_templatestr
     fillout_implicit_loop
     template_substitution
+    insert_title_into_template
+    remove_nested_template_options_brackets
+    remove_template_options_brackets
+    simplify_template_bracket
+    get_variable
+    get_indexed_variable
 
     Example
     -------
@@ -169,24 +173,27 @@ class Bibdata(object):
         self.searchkeys = []        ## when culling data, this is the list of keys to limit parsing to
         self.parse_only_entrykeys = False  ## don't parse the data in the database; get only entrykeys
         self.nested_templates = []  ## which templates have nested option blocks
-        self.looped_templates = ['authorliststr','editorliststr']  ## which templates have implicit loops
+        self.looped_templates = ['au','ed']  ## which templates have implicit loops
         self.implicitly_indexed_vars = ['authorname','editorname'] ## which templates have implicit indexing
+        self.namelists = []         ## the namelists defined within the templates
 
         if (uselocale == None):
             self.locale = locale.setlocale(locale.LC_ALL,'')    ## set the locale to the user's default
         else:
             self.locale = locale.setlocale(locale.LC_ALL,uselocale)    ## set the locale to the user's default
 
+        ## Not only do we need a dictionary for "special templates" but we also need to be able to iterate through it
+        ## in the order given in the file. Thus, we have a "specials list" too.
+        self.specials_list = []
+
         ## Put in the default special templates.
         self.specials = {}
+        self.specials['authorlist'] = '<author.to_namelist()>'
+        self.specials['editorlist'] = '<editor.to_namelist()>'
         self.specials['citelabel'] = '<citenum>'
         self.specials['sortkey'] = '<citenum>'
-        self.specials['authorname.n'] = '[<authorlist.n.first.initial()>. ][<authorlist.n.middle.initial()>. ]' + \
-                                        '[<authorlist.n.prefix> ]<authorlist.n.last>[, <authorlist.n.suffix>]'
-        self.specials['authorliststr'] = '<authorname.0>, ...,{ and }<authorname.N>'
-        self.specials['editorname.n'] = '[<editorlist.n.first.initial()>. ][<editorlist.n.middle.initial()>. ]' + \
-                                        '[<editorlist.n.prefix> ]<editorlist.n.last>[, <editorlist.n.suffix>]'
-        self.specials['editorliststr'] = '<editorname.0>, ...,{ and }<editorname.N>, eds'
+        self.specials['au'] = '<authorlist.format_authorlist()>'
+        self.specials['ed'] = '<editorlist.format_editorlist()>'
 
         ## Temporary variables for use in error messages while parsing files.
         self.filename = ''                      ## the current filename (for error messages)
@@ -203,22 +210,11 @@ class Bibdata(object):
         self.options = {}
         self.options['use_abbrevs'] = True
         self.options['undefstr'] = '???'
-        #self.options['namelist_format'] = 'first_name_first'    #zzz: comment these out when you're ready...
-        self.options['force_sentence_case'] = False
-        #self.options['maxauthors'] = 100
-        #self.options['maxeditors'] = 100
-        #self.options['minauthors'] = 5
-        #self.options['mineditors'] = 5
         self.options['procspie_as_journal'] = False
-        #self.options['use_firstname_initials'] = True
-        #self.options['use_name_ties'] = False
         self.options['show_urls'] = False
         self.options['backrefstyle'] = 'none'
         self.options['backrefs'] = False
         self.options['sort_case'] = True
-        #self.options['french_initials'] = False
-        #self.options['period_after_initial'] = True
-        #self.options['terse_inits'] = False
         self.options['bibitemsep'] = None
         self.options['month_abbrev'] = True
         self.options['allow_scripts'] = False
@@ -236,30 +232,37 @@ class Bibdata(object):
         self.integer_pattern = re.compile(r'^-?[0-9]+', re.UNICODE)
         self.index_pattern = re.compile(r'(<\w+?\.\d+\.\w+?>)|(<\w+?\.\d+>)|(<\w+?\.(nN)\.\w+?>)|(\w+?\.(nN)>)', re.UNICODE)
         self.implicit_index_pattern = re.compile(r'(<\w+?\.n\.\w+?>)|(<\w+?\.n>)', re.UNICODE)
+        self.template_variable_pattern = re.compile(r'(?<=<)\.+?(?=>)', re.UNICODE)
+        self.namelist_variable_pattern = re.compile(r'(?<=<)\.+?(?=.to_namelist\(\)>)', re.UNICODE)
 
-        ## Create an inverse dictionary for the month names. The month names are determined by the user's default
-        ## locale.
-        self.monthname_dict = {}
+        ## Create an inverse dictionary for the month names --- one version will full names, and one with abbreviated
+        ## names. For a Unix-based system, the month names are determined by the user's default locale. How to do this
+        ## for a MS Windows system?
+        self.monthnames = {}
+        self.monthabbrevs = {}
         for i in range(1,13):
-            if self.options['month_abbrev'] and not (platform.system() == 'Windows'):
-                ## The abbreviated form (i.e. 'jan').
-                self.monthname_dict[unicode(i)] = locale.nl_langinfo(locale.__dict__['ABMON_'+unicode(i)]).title()
-            elif self.options['month_abbrev'] and(platform.system() == 'Windows'):
-                self.monthname_dict = {'1':'Jan', '2':'Feb', '3':'Mar', '4':'Apr', '5':'May', '6':'Jun',
-                                       '7':'Jul', '8':'Aug', '9':'Sep', '10':'Oct', '11':'Nov', '12':'Dec'}
+            if not (platform.system() == 'Windows'):
+                ## The abbreviated form (i.e. 'Jan').
+                self.monthabbrevs[unicode(i)] = locale.nl_langinfo(locale.__dict__['ABMON_'+unicode(i)]).title()
             elif (platform.system() == 'Windows'):
-                self.monthname_dict = {'1':'January', '2':'February', '3':'March', '4':'April',
-                                       '5':'May', '6':'June', '7':'July', '8':'August', '9':'September',
-                                       '10':'October', '11':'November', '12':'December'}
+                self.monthabbrevs = {'1':'Jan', '2':'Feb', '3':'Mar', '4':'Apr', '5':'May', '6':'Jun',
+                                     '7':'Jul', '8':'Aug', '9':'Sep', '10':'Oct', '11':'Nov', '12':'Dec'}
+
+            if (platform.system() == 'Windows'):
+                self.monthnames = {'1':'January', '2':'February', '3':'March', '4':'April',
+                                   '5':'May', '6':'June', '7':'July', '8':'August', '9':'September',
+                                   '10':'October', '11':'November', '12':'December'}
             else:
-                ## The full form (i.e. 'january').
-                self.monthname_dict[unicode(i)] = locale.nl_langinfo(locale.__dict__['MON_'+unicode(i)]).title()
+                ## The full form (i.e. 'January').
+                self.monthnames[unicode(i)] = locale.nl_langinfo(locale.__dict__['MON_'+unicode(i)]).title()
 
         ## Get the list of filenames associated with the bibliography (AUX, BBL, BIB, TEX). Additionally, if the input
         ## "filename" contains only the AUX file, then we assume that the user wants only to parse that part if the
         ## database corresponding to the citation keys in the AUX file. This default behavior can be overriden (so that
         ## the entire database is parsed) is the optional keyword "cull_database" is set to False.
         self.get_bibfilenames(filename)
+        if not self.filedict:
+            return
 
         ## Print out some info on Bibulous and the files it is working on.
         print('This is Bibulous, version ' + unicode(__version__))
@@ -280,6 +283,21 @@ class Bibdata(object):
         if self.filedict['bst']:
             for f in self.filedict['bst']:
                 self.parse_bstfile(f)
+
+        ## Now that we've parsed the BST file, we need to check the list of special templates. For the "authorlist" and
+        ## "editorlist", the ordering matters!
+        if ('authorlist' not in self.specials_list):
+            self.specials_list = ['authorlist'] + self.specials_list
+        if ('editorlist' not in self.specials_list):
+            self.specials_list = ['editorlist'] + self.specials_list
+        if ('citelabel' not in self.specials_list):
+            self.specials_list.append('citelabel')
+        if ('sortkey' not in self.specials_list):
+            self.specials_list.append('sortkey')
+        if ('au' not in self.specials_list):
+            self.specials_list.append('au')
+        if ('ed' not in self.specials_list):
+            self.specials_list.append('ed')
 
         ## Next, get the list of entrykeys in the database file(s), and compare them against the list of citation keys.
         if self.filedict['bib']:
@@ -344,6 +362,8 @@ class Bibdata(object):
         entrystr = ''
         entrytype = None
         self.i = 0           ## line number counter --- for error messages only
+        entry_counter = 0
+        abbrev_counter = 0
 
         for line in filehandle:
             self.i += 1
@@ -355,6 +375,10 @@ class Bibdata(object):
                 ## If a line *starts* with a closing brace, then assume the intent is to close the current entry.
                 entry_brace_level = 0
                 self.parse_bibentry(entrystr, entrytype)       ## close out the entry
+                if (entrytype.lower() == 'string'):
+                    abbrev_counter += 1
+                elif (entrytype.lower() not in ('preamble','acronym')):
+                    entry_counter += 1
                 entrystr = ''
                 if (line[1:].strip() != ''):
                     bib_warning('Warning 001a: line#' + unicode(self.i) + ' of "' + self.filename + '" has data outside'
@@ -406,11 +430,19 @@ class Bibdata(object):
             if (entry_brace_level == 0):
                 entrystr += line[:endpos-1]      ## the "-1" here to remove the final closing brace
                 self.parse_bibentry(entrystr, entrytype)
+                if (entrytype.lower() == 'string'):
+                    abbrev_counter += 1
+                elif (entrytype.lower() not in ('preamble','acronym')):
+                    entry_counter += 1
                 entrystr = ''
             else:
                 entrystr += line[:endpos] + '\n'
 
         filehandle.close()
+
+        print('Found %i entries and %i abbrevs in %s' % (entry_counter, abbrev_counter, filename))
+        #print('    Bibdata now has %i keys' % (len(self.bibdata) - 1))
+
         return
 
     ## =============================
@@ -440,6 +472,11 @@ class Bibdata(object):
             if fd: self.bibdata['preamble'] += '\n' + fd['fakekey']
         elif (entrytype == 'string'):
             fd = self.parse_bibfield(entrystr)
+            for fdkey in fd:
+                if (fdkey in self.abbrevs):
+                    bib_warning('Warning 032a: line#' + unicode(self.i) + ' of "' + self.filename +
+                                ': the abbreviation "' + fdkey + '" = "' + self.abbrevs[fdkey] + '" is being '
+                                'overwritten as "' + fdkey + '" = "' + fd[fdkey] + '"', self.disable)
             if fd: self.abbrevs.update(fd)
         elif (entrytype == 'acronym'):
             ## Acronym entrytypes have an identical form to "string" types, but we map them into a dictionary like a
@@ -447,6 +484,10 @@ class Bibdata(object):
             fd = self.parse_bibfield(entrystr)
             entrykey = fd.keys()[0]
             newentry = {'name':entrykey, 'description':fd[entrykey], 'entrytype':'acronym'}
+            if (entrykey in self.bibdata):
+                bib_warning('Warning 032b: line#' + unicode(self.i) + ' of "' + self.filename +
+                            ': the acronym "' + entrykey + '" = "' + self.bibdata[entrykey] + '" is being '
+                            'overwritten as "' + entrykey + '" = "' + fd[entrykey] + '"', self.disable)
             if fd: self.bibdata[entrykey] = newentry
         else:
             ## First get the entry key. Then send the remainder of the entry string to the parser.
@@ -460,7 +501,10 @@ class Bibdata(object):
             ## Get the entry key. If we are culling the database (self.culldata == True) and the entry key is not among
             ## the citation keys, then exit --- we don't need to add this to the database.
             entrykey = entrystr[:idx].strip()
-            if self.searchkeys and (entrykey not in self.searchkeys): return
+
+            if self.culldata and self.searchkeys and (entrykey not in self.searchkeys):
+                return
+
             entrystr = entrystr[idx+1:]
 
             if not entrykey:
@@ -474,18 +518,22 @@ class Bibdata(object):
 
             ## Create the dictionary for the database entry. Add the entrytype and entrykey. The latter is primarily
             ## useful for debugging, so we don't have to send the key separately from the entry itself.
+            preexists = (entrykey in self.bibdata)
             self.bibdata[entrykey] = {}
             self.bibdata[entrykey]['entrytype'] = entrytype
             self.bibdata[entrykey]['entrykey'] = entrykey
 
             if not self.parse_only_entrykeys:
-                fd = self.parse_bibfield(entrystr)
+                fd = self.parse_bibfield(entrystr, entrykey)
+                if preexists:
+                    bib_warning('Warning 032c: line#' + unicode(self.i) + ' of "' + self.filename + ': the entry "' +
+                                entrykey + '" is being overwritten with a new definition', self.disable)
                 if fd: self.bibdata[entrykey].update(fd)
 
         return
 
     ## =============================
-    def parse_bibfield(self, entrystr):
+    def parse_bibfield(self, entrystr, entrykey=''):
         '''
         For a given string representing the raw contents of a BibTeX-format bibliography entry, parse the contents into
         a dictionary of key:value pairs corresponding to the field names and field values.
@@ -494,6 +542,8 @@ class Bibdata(object):
         ----------
         entrystr : str
             The string containing the entire contents of the bibliography entry.
+        entrykey : str
+            The key of the bibliography entry being parsed (useful for error messages).
 
         Returns
         -------
@@ -514,6 +564,10 @@ class Bibdata(object):
                 return(fd)
 
             fieldkey = entrystr[:idx].strip()
+            if (fieldkey in fd):
+                bib_warning('Warning 033: line#' + unicode(self.i) + ' of "' + self.filename + ': the "' + fieldkey +
+                            '" field of entry "' + entrykey + '" is duplicated', self.disable)
+
             fieldstr = entrystr[idx+1:].strip()
 
             if not self.options['case_sensitive_field_names']:
@@ -618,6 +672,11 @@ class Bibdata(object):
 
             fd[fieldkey] = resultstr
 
+            ## If the field defines a cross-reference, then add it to the "searchkeys", so that when we are culling the
+            ## database for faster parsing, we do not ignore the cross-referenced entries.
+            if (fieldkey == 'crossref'):
+                self.searchkeys.append(resultstr)
+
         return(fd)
 
     ## =============================
@@ -644,7 +703,7 @@ class Bibdata(object):
             line = line.strip()
             if not line.startswith(r'\citation{'): continue
 
-            ## Remove the "\citeation{" from the front and the "}" from the back. If multiple citations are given,
+            ## Remove the "\citation{" from the front and the "}" from the back. If multiple citations are given,
             ## then split them using the comma.
             items = line[10:-1].split(',')
             for item in items:
@@ -849,6 +908,13 @@ class Bibdata(object):
                         bib_warning('Warning 009c: overwriting the existing special template variable "' + var + \
                              '" from [' + self.specials[var] + '] to [' + value + '] ...', self.disable)
                     self.specials[var] = value
+                    if (var not in self.specials_list):
+                        self.specials_list.append(var)
+
+                    var_is_namelist = re.search(self.namelist_variable_pattern, value)
+                    if var_is_namelist:
+                        print('foundit:', var_is_namelist.group(0))
+                        raise
 
                     ## Find out if the template has nested option blocks. If so, then add it to
                     ## the list of nested templates.
@@ -897,8 +963,14 @@ class Bibdata(object):
             exec(self.user_script, globals())
 
         ## Next validate all of the template strings to check for formatting errors.
+        bad_templates = []
         for key in self.bstdict:
-            self.validate_templatestr(self.bstdict[key], key)
+            okay = self.validate_templatestr(self.bstdict[key], key)
+            if not okay:
+                bad_templates.append(key)
+
+        for bad in bad_templates:
+            self.bstdict[bad] = 'Error: malformed template.'
 
         if self.debug:
             ## When displaying the BST dictionary, show it in sorted form.
@@ -1229,40 +1301,6 @@ class Bibdata(object):
         return(sortkey)
 
     ## =============================
-    def create_namelist(self, key, nametype):
-        '''
-        Deconstruct the bibfile string following "author = ..." (or "editor = ..."), and create a new field `authorlist`
-        or `editorlist` that is a list of dictionaries (one dict for each person).
-
-        Parameters
-        ----------
-        key : str
-            The key in `bibdata` defining the current entry being formatted.
-        nametype : str, {'author','editor'}
-            Which bibliography field to use for parsing names.
-        '''
-
-        ## First check that the entrykey exists.
-        if (key not in self.bibdata):
-            return
-
-        ## If the name field does not exist, we can't define name dictionaries, so exit. Note that we need not check for
-        ## cross-reference data, since we will assume that has already been done.
-        if (nametype not in self.bibdata[key]):
-            return
-
-        ## If the namelist is already defined, then there is nothing to do!
-        if (nametype+'list' in self.bibdata[key]):
-            return
-
-        ## Convert the raw string containing author/editor names in the BibTeX field into a list of dictionaries --- one
-        ## dict for each person.
-        namelist = namefield_to_namelist(self.bibdata[key][nametype], key=key, disable=self.disable)
-        self.bibdata[key][nametype+'list'] = namelist
-
-        return
-
-    ## =============================
     def insert_crossref_data(self, entrykey, fieldname=None):
         '''
         Insert crossref info into a bibliography database dictionary.
@@ -1398,15 +1436,14 @@ class Bibdata(object):
             ## Get the list of name dictionaries from the entry.
             name_list_of_dicts = []
             if ('author' in self.bibdata[k]):
-                self.create_namelist(k, 'author')
-                name_list_of_dicts = self.bibdata[k]['authorlist']
+                name_list_of_dicts = namefield_to_namelist(self.bibdata[k]['author'], key=k, disable=self.disable)
             if ('editor' in self.bibdata[k]):
-                self.create_namelist(k, 'editor')
+                namelist = namefield_to_namelist(self.bibdata[k]['editor'], key=k, disable=self.disable)
                 if not ('author' in self.bibdata[k]):
-                    name_list_of_dicts = self.bibdata[k]['editorlist']
+                    name_list_of_dicts = namelist
                 else:
                     ## If the entry has both authors and editors, then just merge the two name lists.
-                    name_list_of_dicts += self.bibdata[k]['editorlist']
+                    name_list_of_dicts += namelist
 
             if not name_list_of_dicts:
                 continue
@@ -1645,9 +1682,14 @@ class Bibdata(object):
                     bstres = line[:indx]
 
             if (bibres == None):
-                raise ValueError('Cannot find a bibliography database specified in "' + filename + '"')
+                print('Bibulous cannot find a bibliography database specified in "' + filename + '". '
+                                 'Aborting generation of BBL file')
+                return
+
             if (bstres == None):
-                raise ValueError('Cannot find a bibliography template specified in "' + filename + '"')
+                print('Bibulous cannot find a bibliography template specified in "' + filename + '". '
+                                 'Aborting generation of BBL file')
+                return
 
             ## Now we have the strings from the ".tex" file that describing the bibliography filenames. If these are
             ## lists of filenames, then split them out.
@@ -1737,7 +1779,7 @@ class Bibdata(object):
             print('bbl file: "' + unicode(bblfile) + '"')
             print('ext file: "' + unicode(extractfile) + '"')
 
-        return()
+        return
 
     ## =============================
     def check_citekeys_in_datakeys(self):
@@ -1780,8 +1822,9 @@ class Bibdata(object):
         for key in self.bibdata:
             if ('crossref' in self.bibdata[key]):
                 crossref_list.append(self.bibdata[key]['crossref'])
+
         if crossref_list:
-            self.searchkeys = crossref_list
+            self.searchkeys += crossref_list
         return
 
     ## =============================
@@ -1795,44 +1838,25 @@ class Bibdata(object):
             The key of the entry to which we want to add special fields.
         '''
 
-        entry = self.bibdata[entrykey]
+        if (entrykey not in self.bibdata):
+            return
 
-        if ('edition' in entry):
-            entry['edition_ordinal'] = create_edition_ordinal(entry, undefstr=self.options['undefstr'],
-                                                              disable=self.disable)
+        entry = self.bibdata[entrykey]
 
         if ('pages' in entry):
             (startpage,endpage) = parse_pagerange(entry['pages'], entrykey, self.disable)
             entry['startpage'] = startpage
             entry['endpage'] = endpage
 
-        ## The "month" is stored in the bibdata dictionary as a string representing an integer from 1 to 12. Here we
-        ## need to translate it to a string name.
-        if ('month' in entry):
-            if entry['month'].isdigit():
-                monthname = self.monthname_dict[entry['month']]
-            else:
-                monthname = entry['month']
-            entry['monthname'] = monthname
-
         if ('doi' in entry):
             if not entry['doi'].startswith('http://dx.doi.org/'):
                 entry['doi'] = 'http://dx.doi.org/' + entry['doi']
 
-        ## If any of the user-defined variables here map a field into the "author" or "editor" field, then we need to
-        ## create the "authorlist" and "editorlist" fields as well.
-        if ('author' in entry) and ('authorlist' not in entry) and (entry['author'] != ''):
-            self.create_namelist(entrykey, 'author')
-        if ('editor' in entry) and ('editorlist' not in entry) and (entry['editor'] != ''):
-            self.create_namelist(entrykey, 'editor')
-
-        ## Next loop through the keys in the "specials" dictionary. These are variable definitions from the SPECIAL-
+        ## Next loop through the "special" variables. These are variable definitions from the SPECIAL-
         ## TEMPLATES section of the style file. Note that we do want to deal with only *user-defined* specials, so we
-        ## have to eliminate the fixed list of specials from the list of keys.
-        special_keys = self.specials.keys()
-        fixed_specials_list = ['citelabel', 'sortkey']
-        special_keys = [item for item in special_keys if item not in fixed_specials_list]
-        for key in special_keys:
+        ## have to eliminate the fixed list of specials from the list of keys. Note that rather than looping through
+        ## self.specials.keys(), we loop through "self.specials_list" because we want it to be ordered.
+        for key in self.specials_list:
             ## Only insert the user-defined special field if the field is missing.
             if (key in entry):
                 continue
@@ -1851,16 +1875,13 @@ class Bibdata(object):
             ## special template contains an implicit loop, then we DO NOT fill it out here. Filling out an implicit loop
             ## has to be done while performing template substitution because it requires querying entry fields, and is
             ## not a matter of creating entry fields.
-            templatestr = self.template_substitution(templatestr, entrykey)
+            res = self.template_substitution(templatestr, entrykey)
 
-            ## Insert the result as a new field in the database entry.
-            if (templatestr != '') and (templatestr != self.options['undefstr']):
-                self.bibdata[entrykey][key] = templatestr
-
-            if (key == 'author'):
-                self.create_namelist(entrykey, 'author')
-            elif (key == 'editor'):
-                self.create_namelist(entrykey, 'editor')
+            ## Insert the result as a new field in the database entry. Note that the "('???' not in res)" piece of code
+            ## is not quite ideal, but it is an easy solution that has a low probability of breaking (low prob. that
+            ## a user will need to use "???" in a template).
+            if (res not in (None, '', self.options['undefstr'])) and ('???' not in res):
+                self.bibdata[entrykey][key] = res
 
         return
 
@@ -1916,6 +1937,10 @@ class Bibdata(object):
                 msg = 'An invalid "|" character appears inside the template variable "' + var + '"'
                 bib_warning('Warning 028c: ' + msg, self.disable)
                 okay = False
+            if ('<' in var[1:-1]):
+                msg = 'An invalid "<" character appears inside the template variable "' + var + '"'
+                bib_warning('Warning 028d: ' + msg, self.disable)
+                okay = False
 
         return(okay)
 
@@ -1957,8 +1982,10 @@ class Bibdata(object):
                     templatestr = re.sub(r'(?<=\.)n(?=\.)|(?<=\.)n(?=>)', elem['index'], templatestr)
             return(templatestr)
         else:
-            nnames = get_num_names(self.bibdata[entrykey], templatestr)
-            if (nnames == 0): nnames = 1
+            names = get_names(self.bibdata[entrykey], templatestr)
+            num_names = len(names)
+            #if (num_names == 0): num_names = 1
+            if (num_names == 0): return(templatestr)
 
         ## Split the string in two at the ellipsis (for now assume that there is only one).
         idx = templatestr.find('...')
@@ -1986,7 +2013,7 @@ class Bibdata(object):
         if lhs_var['index'].isdigit():
             start_index = int(lhs_var['index'])
         elif (lhs_var['index'] == 'N'):
-            start_index = nnames - 1
+            start_index = num_names - 1
         else:
             msg = 'Warning 031a: the template string "' + templatestr + '" is malformed. The index element "' + \
                   lhs_var['index'] + '" is not recognized.'
@@ -2015,14 +2042,18 @@ class Bibdata(object):
                   rhs_var['index'] + '" is not recognized.'
 
         ## What is the maximum number of allowed names? If the number of names in the namelist is more than the maximum
-        ## allowed, then we need to replace the end of the formatted namelist with the "etal_message".
-        if (rhs_var['index'] == 'N'):
-            maxnames = nnames
+        ## allowed, then we need to replace the end of the formatted namelist with the "etal_message". Note that, in
+        ## BibTeX-formatted name fields, if the last name is simply "others", then it signals that the list is
+        ## incomplete, and we should add an "et al." message.
+        if (names[-1]['last'].lower() == 'others'):
+            maxnames = num_names - 1
+        elif (rhs_var['index'] == 'N'):
+            maxnames = num_names
         else:
             maxnames = int(rhs_var['index']) + 1
 
-        too_many_names = (nnames > maxnames)
-        end_index = min((nnames,maxnames+1)) - 1
+        too_many_names = (num_names > maxnames)
+        end_index = min((num_names,maxnames+1)) - 1
         if (end_index == 0): end_index = 1
 
         ## Get the RHS "glue" element. If it has curly braces in it, then we differentiate the conditions between when
@@ -2032,13 +2063,13 @@ class Bibdata(object):
         if re.search(r'\{.*?\}', rhs_glue):
             glue_start = rhs_glue.find('{')
             glue_end = rhs_glue.rfind('}')
-            if (nnames == 2):
+            if (num_names == 2):
                 rhs_glue = rhs_glue[glue_start+1:glue_end]
             else:
                 rhs_glue = rhs_glue[:glue_start] + rhs_glue[glue_start+1:glue_end] + rhs_glue[glue_end+1:]
 
         #zzz
-        #print('[%s]: start_index=%i, end_index=%i, nnames=%i' % (entrykey, start_index, end_index, nnames))
+        #print('[%s]: start_index=%i, end_index=%i, num_names=%i' % (entrykey, start_index, end_index, num_names))
         #print('[%s]: old_template=%s' % (entrykey, templatestr))
         #print('[%s]: too_many_names=%i, rhs_glue=%s' % (entrykey, int(too_many_names), rhs_glue))
 
@@ -2065,7 +2096,7 @@ class Bibdata(object):
         ## loop itself because the "glue" element is often different between the penultimate and the ultimate names.
         if too_many_names:
             new_templatestr += self.options['etal_message'] + rhs[rhs_span[1]:]
-        elif (nnames > 1):
+        elif (num_names > 1):
             n += 1
             name_part = rhs_var['name'] + '.' + str(n)
             if (name_part in self.specials):
@@ -2078,9 +2109,6 @@ class Bibdata(object):
                 new_templatestr += rhs_glue + name_part + lhs_var['suffix'] + rhs[rhs_span[1]:]
             else:
                 new_templatestr += rhs
-
-        #zzz
-        #print('[%s]: new_template=%s\n' % (entrykey, new_templatestr))
 
         return(new_templatestr)
 
@@ -2113,33 +2141,19 @@ class Bibdata(object):
         ## Don't call the nested version of removing template option brackets if you don't have to, because it has to
         ## do significant extra work.
         if is_nested:
-            templatestr = remove_nested_template_options_brackets(templatestr, bibentry, variables,
-                                                                  undefstr=self.options['undefstr'])
+            templatestr = self.remove_nested_template_options_brackets(templatestr, bibentry, variables)
         else:
-            templatestr = remove_template_options_brackets(templatestr, bibentry, variables,
-                                                           undefstr=self.options['undefstr'])
-
-        ## The 'title' variable must be treated specially in order to take care of local punctuation matching.
-        if ('<title>' in templatestr) and ('title' in bibentry):
-            title = get_variable(bibentry, 'title')
-
-            ## If the template string has punctuation right after the title, and the title itself also has punctuation,
-            ## then you may get something like "Title?," where the two punctuation marks conflict. In that case, keep
-            ## the title's punctuation and drop the template's.
-            if title.endswith(('?','!')):
-                idx = templatestr.index('<title>')
-                if (templatestr[idx + len('<title>')] in (',','.','!','?',';',':')):
-                    templatestr = templatestr[:idx+len('<title>')] + templatestr[idx+1+len('<title>'):]
-                    templatestr = templatestr.replace('<title>', title)
-            else:
-                templatestr = templatestr.replace('<title>', title)
-
-            variables = [v for v in variables if v != 'title']
+            templatestr = self.remove_template_options_brackets(templatestr, bibentry, variables)
 
         ## Go ahead and replace all of the template variables with the corresponding fields.
         for var in variables:
             if (var in templatestr):
                 varname = var[1:-1]     ## remove angle brackets to extract just the name
+
+                ## The "title" variable has to be treated specially to deal with punctuation conflicts.
+                if varname.startswith('title') and ('title' in bibentry):
+                    templatestr = self.insert_title_into_template(var, templatestr, bibentry)
+                    continue
 
                 ## If the variable contains a function asking for initials, then one tricky part is that the "middle"
                 ## name part of a name dictionary can have multiple elements, so that each one needs to be initialed
@@ -2154,10 +2168,14 @@ class Bibdata(object):
                     var_options = {'period_after_initial':False}
 
                 ## Get the result of querying the variable in the entry. This will replace the template variable.
-                res = get_variable(bibentry, varname, options=var_options)
+                res = self.get_variable(bibentry, varname, options=var_options)
 
                 if (res == None):
                     templatestr = templatestr.replace(var, self.options['undefstr'])
+                elif isinstance(res, (list,dict)):
+                    ## If the object is a list and not a string, then we need to return it immediately, since the
+                    ## steps below assume a string.
+                    return(res)
                 else:
                     templatestr = templatestr.replace(var, res)
 
@@ -2177,6 +2195,409 @@ class Bibdata(object):
             templatestr = templatestr.replace(r'{\makehashsign}', '\\#')
 
         return(templatestr)
+
+    ## ===================================
+    def insert_title_into_template(self, title_var, templatestr, bibentry):
+        '''
+        Insert the title field into a template string.
+
+        This requires more work than simply performing a string replacement, because there can be punctuation conflicts
+        when the title itself ends with punctuation, while the template itself has punctuation immediately following the
+        title.
+
+        Parameters
+        ----------
+        title_var : str
+            The title variable (which may simply be "<title>", or may have operators attached to the variable name.
+        templatestr : str
+            The template to insert the title into.
+        bibentry : dict
+            The bibliography entry to get the title from.
+
+        Returns
+        -------
+        templatestr : str
+            The template with the variable replaced with the "title" field, with possible operators applied.
+        '''
+
+        title = self.get_variable(bibentry, title_var[1:-1])
+        if (title == None):
+            return(templatestr)
+
+        ## If the template string has punctuation right after the title, and the title itself also has punctuation,
+        ## then you may get something like "Title?," where the two punctuation marks conflict. In that case, keep
+        ## the title's punctuation and drop the template's.
+        if title.endswith(('?','!')):
+            idx = templatestr.index(title_var)
+            if (templatestr[idx + len(title_var)] in (',','.','!','?',';',':')):
+                templatestr = templatestr[:idx+len(title_var)] + templatestr[idx+1+len(title_var):]
+                templatestr = templatestr.replace(title_var, title)
+        else:
+            templatestr = templatestr.replace(title_var, title)
+
+        return(templatestr)
+
+    ## =============================
+    def remove_nested_template_options_brackets(self, templatestr, entry, variables):
+        '''
+        Given a template string, go through each options sequence [...] and search for undefined variables. In each
+        sequence, return only the block of each sequence in which all variables are defined (i.e. with outer braces
+        removed).
+
+        Parameters
+        ----------
+        templatestr : str
+            The string defining the template to analyze.
+        entry : dict
+            The bibliography database entry inside which to look for variables.
+        variables : list of str
+            The variables to look for.
+        '''
+
+        while ('[' in templatestr):
+            levels = get_delim_levels(templatestr, ('[',']'))
+
+            ## If there is no nesting left then go ahead and parse the remaining string.
+            if (2 not in levels):
+                templatestr = self.remove_template_options_brackets(templatestr, entry, variables)
+                return(templatestr)
+
+            ## Find the start and end indices of all top-level option sequences.
+            start_idx = []
+            end_idx = []
+            if (levels[0] == 1):
+                start_idx.append(0)
+            for i in range(1,len(levels)):
+                if (levels[i] == 1) and (levels[i-1] == 0):
+                    start_idx.append(i)
+                if (levels[i] == 0) and (levels[i-1] == 1):
+                    end_idx.append(i)
+
+            ## To keep the code tractable, just work with the first pair of (start_idx,end_idx) values, rather than looping
+            ## through every pair in the string. We can catch the next pair in the next pass through the loop.
+            substr = templatestr[start_idx[0]+1:end_idx[0]]
+            blocks = toplevel_split(substr, '|', levels)
+            newblocks = []
+            for block in blocks:
+                block_variables = re.findall(r'<.*?>', block)
+                newblock = self.remove_nested_template_options_brackets(block, entry, block_variables)
+                newblocks.append(newblock)
+
+            new_substr = '|'.join(newblocks)
+            res = self.simplify_template_bracket(new_substr, entry, variables)
+            templatestr = templatestr[:start_idx[0]] + res + templatestr[end_idx[0]+1:]
+
+        return(templatestr)
+
+    ## =============================
+    def remove_template_options_brackets(self, templatestr, entry, variables):
+        '''
+        Given a template string, go through each options sequence [...] and search for undefined variables. In each
+        sequence, return only the block of each sequence in which all variables are defined.
+
+        Parameters
+        ----------
+        templatestr : str
+            The string defining the template to analyze.
+        entry : dict
+            The bibliography database entry inside which to look for variables.
+        variables : list of str
+            The variables to look for.
+        '''
+
+        num_obrackets = templatestr.count('[')
+
+        ## Do a nested search. From the beginning of the formatting string look for the first '[', and the first ']'. If
+        ## they are out of order, raise an exception. Note that this assumes that the square brackets cannot be nested.
+        for i in range(num_obrackets):
+            start_idx = templatestr.index('[')
+            end_idx = templatestr.index(']')
+            if not (start_idx < end_idx):
+                msg = 'A closed bracket "]" occurs before an open bracket "[" in the format ' + \
+                      'string "' + templatestr + '"'
+                raise SyntaxError(msg)
+
+            ## Remove the outer square brackets, and use the resulting substring as an input to the parser.
+            substr = templatestr[start_idx+1:end_idx]
+
+            ## In each options train, go through and replace the whole train with the one block that has a defined value.
+            res = self.simplify_template_bracket(substr, entry, variables)
+            templatestr = templatestr[:start_idx] + res + templatestr[end_idx+1:]
+
+        return(templatestr)
+
+    ## =============================
+    def simplify_template_bracket(self, templatestr, bibentry, variables):
+        '''
+        From an "options train" `[...|...|...]`, find the first fully defined block in the sequence.
+
+        A style template string contains grammatical features of the form `[...|...|...]`, which we can call options
+        sequences. Each "block" in the sequence (divided from the others by a `|` symbol), contains fields which, if
+        defined, replace the entire options sequence in the returned string.
+
+        When the options sequence ends with "|]" (i.e. at least one of the blocks is required to be defined) but we
+        find that none of the blocks have all their variables defined, then we replace the entire block with the
+        "undefstr".
+
+        Parameters
+        ----------
+        templatestr : str
+            The string containing a complete entrytype bibliography style template.
+        variables : list of str
+            The list of variables defined within the template string.
+        bibentry : dict
+            An entry from the bibliography database.
+
+        Returns
+        -------
+        arg : str
+              The string giving the entrytype block to replace an options sequence.
+
+        Example
+        -------
+        simplify_template_bracket() is given an options sequence "[<title>|<booktitle>]" that contains two blocks. The code looks
+        into the bibliography entry and does not find a "title" entry but does find a "booktitle" entry. So, the function
+        returns "<booktitle>", without square brackets, thereby replacing the sequence with the proper defined variable.
+        '''
+
+        block_sequence = templatestr.split('|')
+
+        ## Go through the if/elseif/else train of blocks within the string one by one. In each block, see if there are any
+        ## variables defined. If no variables are present, then the block is "defined" and we return that block (i.e.
+        ## replacing the train with that block). If an argument is defined, strip its surrounding '<' and '>' and look to
+        ## see if the variable is defined in the bibdata entry. If so, the variable is defined and we return the '<var>'
+        ## version of the variable (later code will do the variable replacement). If the variable is undefined (not present
+        ## in the bibdata entry) then skip to the next block. If there is no next block, or if the block is empty (which
+        ## means undefined by definition) then set the result to be the "undefined string".
+        for block in block_sequence:
+            if (block == ''):
+                arg = self.options['undefstr']
+                break
+
+            ## If no variable exists inside the options-block, then just copy the text inside the block.
+            if ('<' not in block):
+                arg = block
+                break
+
+            ## Count how many variables there are in the block.
+            block_variables = [v for v in variables if v in block]
+
+            ## Loop through the list of variables and find which ones are defined within the bibliography entry. If any
+            ## variables within the block are undefined, then return an empty string.
+            foundit = False
+            for var in block_variables:
+                varname = var[1:-1]             ## remove the angle brackets
+                res = self.get_variable(bibentry, varname)
+                foundit = ((res != None) and (res != self.options['undefstr']))
+                if not foundit:
+                    break
+
+            ## If after going through all of the variables in a block, we have located definitions for all of them, then the
+            ## entire block is defined, and we can return it without evaluating the next block.
+            if foundit:
+                arg = block
+                break
+            else:
+                arg = ''
+
+        return(arg)
+
+    ## =============================
+    def get_variable(self, bibentry, variable, options={}):
+        '''
+        Get the variable (i.e. entry field) from within the current bibliography entry.
+
+        Parameters
+        ----------
+        bibentry : dict
+            The bibliography entry to search.
+        variable : str
+            The dot-indexed template variable to evaluate.
+        options : dict
+            An optional dictionary giving extra info (such as whether to insert dots after initials).
+
+        Returns
+        -------
+        result : str
+            The field value (if it exists). If no corresponding field is found, return `None`.
+        '''
+
+        ## If there is no dot-indexer in the variable name, then return None, else return the entry field correspponding
+        ## to the variable.
+        if ('.' not in variable):
+            if (variable not in bibentry):
+                return(None)
+            elif (bibentry[variable] == None):
+                return(None)
+            else:
+               return(unicode(bibentry[variable]))
+
+        ## If there *is* a dot-indexer in the variable name, then we have to do some parsing. First we check the leftmost
+        ## part (the field being indexed). If that doesn't exist then we're done --- the variable is undefined.
+        var_parts = variable.split('.')
+        if (var_parts[0] in bibentry):
+            fieldname = var_parts[0]
+        else:
+            return(None)
+
+        indexer = '.'.join(var_parts[1:])
+        result = self.get_indexed_variable(bibentry[fieldname], indexer, bibentry['entrykey'], options=options)
+
+        return(result)
+
+    ## =============================
+    def get_indexed_variable(self, field, indexer, entrykey='', options={}):
+        '''
+        Get the result of dot-indexing into a field. This can be accessing an element of a list or dictionary, or the result
+        of operating on a string with a function.
+
+        Parameters
+        ----------
+        field : str
+            The field to operate on.
+        indexer : str
+            The dot-delimited indexing operator.
+        entrykey : str
+            The entrykey of the bibliography entry being evaluated (useful for error messages).
+        options : dict
+            An optional dictionary giving extra info (such as whether to insert dots after initials).
+
+        Returns
+        -------
+        result : str
+            The string resulting from the dot-indexing operation on the field. If a valid operation cannot be performed,\
+            then return "None".
+
+        Example
+        -------
+        dict1 = {'first':'John', 'middle':'A', 'last':'Smith'}
+        dict2 = {'first':'Ramsey', 'middle':'M Z', 'last':'Taylor'}
+        field = [dict1, dict2]
+        get_indexed_variable(field, '0.last.initial()')
+        >>> S
+        get_indexed_variable(field, '1.first')
+        >>> Ramsey
+        '''
+
+        index_elements = indexer.split('.')
+        nelements = len(index_elements)
+
+        ## Note that the "strip()" function is here to make sure we can use quotes around the entrykey, but that we
+        ## won't get nested quotes when we recursively call the function.
+        if (entrykey != ''):
+            entrykey = '"' + entrykey.strip('"') + '"'
+
+        ## If the indexing element is an integer, then we assume that it wants a list or tuple. If it finds one, then get the indexed item.
+        if index_elements[0].isdigit():
+            if not isinstance(field, (tuple, list)):
+                fieldname = '' if not isinstance(field, str) else '"' + field + '" '
+                indexname = index_elements[0]
+                msg = 'Warning 029a: the ' + fieldname + 'field of entry ' + entrykey + ' is not a list and thus is ' + \
+                      'not indexable by "' + indexname + '". Aborting template substitution'
+                bib_warning(msg, disable=self.disable)
+                return(None)
+            else:
+                newfield = field[int(index_elements[0])]
+                if (nelements == 1):
+                    return(newfield)
+                else:
+                    newindexer = '.'.join(index_elements[1:])
+                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
+
+        ## If the thing to the right of the dot-indexer is a *function*, then map the field to the function.
+        if index_elements[0].endswith('()'):
+            #if not isinstance(field, basestring):
+            #    fieldname = '' if not isinstance(field, basestring) else '"' + field + '" '
+            #    msg = 'Warning 029b: the ' + fieldname + 'field of entry ' + entrykey + ' is not a string type and ' + \
+            #          'thus cannot be mapped to a function. Aborting template substitution'
+            #    bib_warning(msg, disable=self.disable)
+            #    return(None)
+            if (index_elements[0] == 'initial()'):
+                options['french_initials'] = False
+                newfield = initialize_name(field, options=options)
+                if (nelements == 1):
+                    return(newfield)
+                else:
+                    newindexer = '.'.join(index_elements[1:])
+                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
+            elif (index_elements[0] == 'frenchinitial()'):
+                options['french_initials'] = True
+                newfield = initialize_name(field, options=options)
+                if (nelements == 1):
+                    return(newfield)
+                else:
+                    newindexer = '.'.join(index_elements[1:])
+                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
+            elif (index_elements[0] == 'compress()'):
+                newfield = field.replace(' ','')
+                if (nelements == 1):
+                    return(newfield)
+                else:
+                    newindexer = '.'.join(index_elements[1:])
+                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
+            elif (index_elements[0] == 'tie()'):
+                newfield = field.replace(' ','~')
+                if (nelements == 1):
+                    return(newfield)
+                else:
+                    newindexer = '.'.join(index_elements[1:])
+                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
+            elif (index_elements[0] == 'sentence_case()'):
+                return(sentence_case(field))
+            elif (index_elements[0] == 'ordinal()'):
+                edition_ordinal = get_edition_ordinal(field, disable=None)
+                return(edition_ordinal)
+            elif (index_elements[0] == 'monthname()'):
+                if field in self.monthnames:
+                    return(self.monthnames[field])
+                else:
+                    return(field)
+            elif (index_elements[0] == 'monthabbrev()'):
+                if field in self.monthabbrevs:
+                    return(self.monthabbrevs[field])
+                else:
+                    return(field)
+            elif (index_elements[0] == 'to_namelist()'):
+                namelist = namefield_to_namelist(field, key=entrykey, disable=self.disable)
+                return(namelist)
+            elif (index_elements[0] == 'format_authorlist()'):
+                result = format_namelist(field, nametype='author')
+                return(result)
+            elif (index_elements[0] == 'format_editorlist()'):
+                result = format_namelist(field, nametype='editor')
+                return(result)
+            else:
+                msg = 'Warning 029c: the template for entry ' + entrykey + ' has an unknown function ' + \
+                      '"' + index_elements[0] + '". Aborting template substitution'
+                bib_warning(msg, disable=self.disable)
+                return(None)
+
+        if isinstance(field, str):
+            return(field)
+
+        ## If the thing to the right of the dot-indexer is a string, then we have to assume that it is an index into a
+        ## dictionary. Check if the field is a dict type.
+        if not isinstance(field, dict):
+            fieldname = '' if not isinstance(field, str) else '"' + field + '" '
+            indexname = index_elements[0]
+            msg = 'Warning 029d: the ' + fieldname + 'field of entry ' + entrykey + ' is not a dictionary and thus is ' + \
+                  'not indexable by "' + indexname + '". Aborting template substitution'
+            bib_warning(msg, disable=self.disable)
+            return(None)
+        elif (index_elements[0] not in field):
+            return(None)
+        else:
+            newfield = field[index_elements[0]]
+            if (nelements == 1):
+                return(newfield)
+            else:
+                newindexer = '.'.join(index_elements[1:])
+                return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
+
+        ## The code should never reach here!
+        msg = 'Warning 029e: Invalid field type error. Aborting template substitution'
+        bib_warning(msg, disable=self.disable)
+        return(None)
 
 
 ## ================================================================================================
@@ -3356,58 +3777,57 @@ def search_middlename_for_prefixes(namedict):
     return(namedict)
 
 ## =============================
-def create_edition_ordinal(bibentry, undefstr='???', disable=None):
+def get_edition_ordinal(edition_field, disable=None):
     '''
     Given a bibliography entry's edition *number*, format it as an ordinal (i.e. "1st", "2nd" instead of "1", "2") in
     the way that it will appear on the formatted page.
 
     Parameters
     ----------
-    bibentry : dict
-        The bibliography database entry.
-    undefstr : str, optional
-        The string to replace any required but undefined variables with.
+    edition_field : str
+        The string representing the "edition" field in the database entry.
     disable : list of int, optional
         The list of warning message numbers to ignore.
 
     Returns
     -------
-    editionstr : str
+    edition_ordinal_str : str
         The formatted form of the edition, with ordinal attached.
     '''
 
-    ## First check that the key exists.
-    if ('edition' not in bibentry):
+    ## First check that the field exists.
+    if (edition_field == None):
         return(None)
 
-    if not bibentry['edition'].isdigit():
-        return(bibentry['edition'])
+    if not edition_field.isdigit():
+        return(edition_field)
 
-    edition_number = bibentry['edition']
     trans = {'first':'1', 'second':'2', 'third':'3', 'fourth':'4', 'fifth':'5', 'sixth':'6', 'seventh':'7',
              'eighth':'8', 'ninth':'10', 'tenth':'10', 'eleventh':'11', 'twelfth':'12', 'thirteenth':'13',
              'fourteenth':'14', 'fifteenth':'15', 'sixteenth':'16', 'seventeenth':'17', 'eighteenth':'18',
              'nineteenth':'19', 'twentieth':'20'}
 
-    if edition_number.lower() in trans:
-        edition_number = trans[edition_number.lower()]
+    if edition_field.lower() in trans:
+        edition_field = trans[edition_field.lower()]
 
     ## Add the ordinal string to the number.
-    if (edition_number == '1'):
-        editionstr = '1st'
-    elif (edition_number == '2'):
-        editionstr = '2nd'
-    elif (edition_number == '3'):
-        editionstr = '3rd'
-    elif (int(edition_number) > 3):
-        editionstr = edition_number + 'th'
-    else:
-        if ('edition' in bibentry):
-            bib_warning('Warning 024: the edition number "' + unicode(edition_number) + '" given for entry ' + \
-                 bibentry['entrykey'] + ' is invalid. Ignoring', disable)
-            editionstr = undefstr
+    if (edition_field == '0'):
+        bib_warning('Warning 024: an edition number of "0" is invalid. Cannot create ordinal.', disable)
+        return(edition_field)
 
-    return(editionstr)
+    if (edition_field == '1'):
+        edition_ordinal_str = '1st'
+    elif (edition_field == '2'):
+        edition_ordinal_str = '2nd'
+    elif (edition_field == '3'):
+        edition_ordinal_str = '3rd'
+    elif (int(edition_field) > 3):
+        edition_ordinal_str = edition_field + 'th'
+    else:
+        ## I'm not sure whether the code can reach this point, but just in case.
+        edition_ordinal_str = edition_field
+
+    return(edition_ordinal_str)
 
 ## =============================
 def export_bibfile(bibdata, filename, abbrevs=None):
@@ -3706,357 +4126,6 @@ def create_citation_alpha(entry):
     return(alpha)
 
 ## =============================
-def remove_nested_template_options_brackets(templatestr, entry, variables, undefstr='???'):
-    '''
-    Given a template string, go through each options sequence [...] and search for undefined variables. In each
-    sequence, return only the block of each sequence in which all variables are defined (i.e. with outer braces
-    removed).
-
-    Note that the "undefstr" input is only used when the options sequence ends with "|]" (i.e. at least one of the
-    blocks is required to be defined) but we find that none of the blocks have all their variables defined. When this
-    happens, the code replaces the entire block with the "undefstr".
-
-    Parameters
-    ----------
-    templatestr : str
-        The string defining the template to analyze.
-    entry : dict
-        The bibliography database entry inside which to look for variables.
-    variables : list of str
-        The variables to look for.
-    undefstr : str, optional
-        The string to replace any required but undefined variables with.
-    '''
-
-    while ('[' in templatestr):
-        levels = get_delim_levels(templatestr, ('[',']'))
-
-        ## If there is no nesting left then go ahead and parse the remaining string.
-        if (2 not in levels):
-            templatestr = remove_template_options_brackets(templatestr, entry, variables, undefstr=undefstr)
-            return(templatestr)
-
-        ## Find the start and end indices of all top-level option sequences.
-        start_idx = []
-        end_idx = []
-        if (levels[0] == 1):
-            start_idx.append(0)
-        for i in range(1,len(levels)):
-            if (levels[i] == 1) and (levels[i-1] == 0):
-                start_idx.append(i)
-            if (levels[i] == 0) and (levels[i-1] == 1):
-                end_idx.append(i)
-
-        ## To keep the code tractable, just work with the first pair of (start_idx,end_idx) values, rather than looping
-        ## through every pair in the string. We can catch the next pair in the next pass through the loop.
-        substr = templatestr[start_idx[0]+1:end_idx[0]]
-        blocks = toplevel_split(substr, '|', levels)
-        newblocks = []
-        for block in blocks:
-            block_variables = re.findall(r'<.*?>', block)
-            newblock = remove_nested_template_options_brackets(block, entry, block_variables, undefstr=undefstr)
-            newblocks.append(newblock)
-
-        new_substr = '|'.join(newblocks)
-        res = simplify_template_bracket(new_substr, entry, variables, undefstr=undefstr)
-        templatestr = templatestr[:start_idx[0]] + res + templatestr[end_idx[0]+1:]
-
-    return(templatestr)
-
-## =============================
-def remove_template_options_brackets(templatestr, entry, variables, undefstr='???'):
-    '''
-    Given a template string, go through each options sequence [...] and search for undefined variables. In each
-    sequence, return only the block of each sequence in which all variables are defined.
-
-    Note that the "undefstr" input is only used when the options sequence ends with "|]" (i.e. at least one of the
-    blocks is required to be defined) but we find that none of the blocks have all their variables defined. When this
-    happens, the code replaces the entire block with the "undefstr".
-
-    Parameters
-    ----------
-    templatestr : str
-        The string defining the template to analyze.
-    entry : dict
-        The bibliography database entry inside which to look for variables.
-    variables : list of str
-        The variables to look for.
-    undefstr : str, optional
-        The string to replace any required but undefined variables with.
-    '''
-
-    num_obrackets = templatestr.count('[')
-    #num_cbrackets = templatestr.count(']')
-
-    ## Do a nested search. From the beginning of the formatting string look for the first '[', and the first ']'. If
-    ## they are out of order, raise an exception. Note that this assumes that the square brackets cannot be nested.
-    for i in range(num_obrackets):
-        start_idx = templatestr.index('[')
-        end_idx = templatestr.index(']')
-        if not (start_idx < end_idx):
-            msg = 'A closed bracket "]" occurs before an open bracket "[" in the format ' + \
-                  'string "' + templatestr + '"'
-            raise SyntaxError(msg)
-
-        ## Remove the outer square brackets, and use the resulting substring as an input to the parser.
-        substr = templatestr[start_idx+1:end_idx]
-
-        ## In each options train, go through and replace the whole train with the one block that has a defined value.
-        res = simplify_template_bracket(substr, entry, variables, undefstr=undefstr)
-        templatestr = templatestr[:start_idx] + res + templatestr[end_idx+1:]
-
-    return(templatestr)
-
-## =============================
-def simplify_template_bracket(templatestr, bibentry, variables, undefstr='???'):
-    '''
-    From an "options train" `[...|...|...]`, find the first fully defined block in the sequence.
-
-    A style template string contains grammatical features of the form `[...|...|...]`, which we can call options
-    sequences. Each "block" in the sequence (divided from the others by a `|` symbol), contains fields which, if
-    defined, replace the entire options sequence in the returned string.
-
-    Parameters
-    ----------
-    templatestr : str
-        The string containing a complete entrytype bibliography style template.
-    variables : list of str
-        The list of variables defined within the template string.
-    bibentry : dict
-        An entry from the bibliography database.
-    undefstr : str, optional
-        The string to replace undefined required fields with.
-
-    Returns
-    -------
-    arg : str
-          The string giving the entrytype block to replace an options sequence.
-
-    Example
-    -------
-    simplify_template_bracket() is given an options sequence "[<title>|<booktitle>]" that contains two blocks. The code looks
-    into the bibliography entry and does not find a "title" entry but does find a "booktitle" entry. So, the function
-    returns "<booktitle>", without square brackets, thereby replacing the sequence with the proper defined variable.
-    '''
-
-    block_sequence = templatestr.split('|')
-
-    ## Go through the if/elseif/else train of blocks within the string one by one. In each block, see if there are any
-    ## variables defined. If no variables are present, then the block is "defined" and we return that block (i.e.
-    ## replacing the train with that block). If an argument is defined, strip its surrounding '<' and '>' and look to
-    ## see if the variable is defined in the bibdata entry. If so, the variable is defined and we return the '<var>'
-    ## version of the variable (later code will do the variable replacement). If the variable is undefined (not present
-    ## in the bibdata entry) then skip to the next block. If there is no next block, or if the block is empty (which
-    ## means undefined by definition) then set the result to be the "undefined string".
-    for block in block_sequence:
-        if (block == ''):
-            arg = undefstr
-            break
-
-        ## If no variable exists inside the options-block, then just copy the text inside the block.
-        if ('<' not in block):
-            arg = block
-            break
-
-        ## Count how many variables there are in the block.
-        block_variables = [v for v in variables if v in block]
-
-        ## Loop through the list of variables and find which ones are defined within the bibliography entry. If any
-        ## variables within the block are undefined, then return an empty string.
-        foundit = False
-        for var in block_variables:
-            varname = var[1:-1]             ## remove the angle brackets
-            res = get_variable(bibentry, varname)
-            foundit = (res != None)
-            if not foundit:
-                break
-
-        ## If after going through all of the variables in a block, we have located definitions for all of them, then the
-        ## entire block is defined, and we can return it without evaluating the next block.
-        if foundit:
-            arg = block
-            break
-        else:
-            arg = ''
-
-    return(arg)
-
-## =============================
-def get_variable(bibentry, variable, options={}):
-    '''
-    Get the variable (i.e. entry field) from within the current bibliography entry.
-
-    Parameters
-    ----------
-    bibentry : dict
-        The bibliography entry to search.
-    variable : str
-        The dot-indexed template variable to evaluate.
-    options : dict
-        An optional dictionary giving extra info (such as whether to insert dots after initials).
-
-    Returns
-    -------
-    result : str
-        The field value (if it exists). If no corresponding field is found, return `None`.
-    '''
-
-    ## If there is no dot-indexer in the variable name, then return None, else return the entry field correspponding
-    ## to the variable.
-    if ('.' not in variable):
-        if (variable not in bibentry):
-            return(None)
-        else:
-           return(unicode(bibentry[variable]))
-
-    ## If there *is* a dot-indexer in the variable name, then we have to do some parsing. First we check the leftmost
-    ## part (the field being indexed). If that doesn't exist then we're done --- the variable is undefined.
-    var_parts = variable.split('.')
-    if (var_parts[0] in bibentry):
-        fieldname = var_parts[0]
-    elif (var_parts[0]+'list' in bibentry):
-        fieldname = var_parts[0] + 'list'
-    else:
-        return(None)
-
-    indexer = '.'.join(var_parts[1:])
-    result = get_indexed_variable(bibentry[fieldname], indexer, bibentry['entrykey'], options=options)
-    #print('variable: ', variable, ', indexer=', indexer, 'result=', result)   #zzz
-    return(result)
-
-## =============================
-def get_indexed_variable(field, indexer, entrykey='', options={}):
-    '''
-    Get the result of dot-indexing into a field. This can be accessing an element of a list or dictionary, or the result
-    of operating on a string with a function.
-
-    Parameters
-    ----------
-    field : str
-        The field to operate on.
-    indexer : str
-        The dot-delimited indexing operator.
-    entrykey : str
-        The entrykey of the bibliography entry being evaluated (useful for error messages).
-    options : dict
-        An optional dictionary giving extra info (such as whether to insert dots after initials).
-
-    Returns
-    -------
-    result : str
-        The string resulting from the dot-indexing operation on the field. If a valid operation cannot be performed,\
-        then return "None".
-
-    Example
-    -------
-    dict1 = {'first':'John', 'middle':'A', 'last':'Smith'}
-    dict2 = {'first':'Ramsey', 'middle':'M Z', 'last':'Taylor'}
-    field = [dict1, dict2]
-    get_indexed_variable(field, '0.last.initial()')
-    >>> S
-    get_indexed_variable(field, '1.first')
-    >>> Ramsey
-    '''
-
-    index_elements = indexer.split('.')
-    nelements = len(index_elements)
-
-    ## Note that the "strip()" function is here to make sure we can use quotes around the entrykey, but that we
-    ## won't get nested quotes when we recursively call the function.
-    if (entrykey != ''):
-        entrykey = '"' + entrykey.strip('"') + '"'
-
-    ## If the indexing element is an integer, then we assume that it wants a list or tuple. If it finds one, then get the indexed item.
-    if index_elements[0].isdigit():
-        if not isinstance(field, (tuple, list)):
-            fieldname = '' if not isinstance(field, str) else '"' + field + '" '
-            indexname = index_elements[0]
-            msg = 'Warning 029a: the ' + fieldname + 'field of entry ' + entrykey + ' is not a list and thus is ' + \
-                  'not indexable by "' + indexname + '". Aborting template substitution'
-            bib_warning(msg, disable=None)
-            return(None)
-        else:
-            newfield = field[int(index_elements[0])]
-            if (nelements == 1):
-                return(newfield)
-            else:
-                newindexer = '.'.join(index_elements[1:])
-                return(get_indexed_variable(newfield, newindexer, entrykey, options=options))
-
-    ## If the thing to the right of the dot-indexer is a *function*, then map the field to the function.
-    if index_elements[0].endswith('()'):
-        if not isinstance(field, basestring):
-            fieldname = '' if not isinstance(field, basestring) else '"' + field + '" '
-            msg = 'Warning 029b: the ' + fieldname + 'field of entry ' + entrykey + ' is not a string type and ' + \
-                  'thus cannot be mapped to a function. Aborting template substitution'
-            bib_warning(msg, disable=None)
-            return(None)
-        elif (index_elements[0] == 'initial()'):
-            options['french_initials'] = False
-            newfield = initialize_name(field, options=options)
-            if (nelements == 1):
-                return(newfield)
-            else:
-                newindexer = '.'.join(index_elements[1:])
-                return(get_indexed_variable(newfield, newindexer, entrykey, options=options))
-        elif (index_elements[0] == 'frenchinitial()'):
-            options['french_initials'] = True
-            newfield = initialize_name(field, options=options)
-            if (nelements == 1):
-                return(newfield)
-            else:
-                newindexer = '.'.join(index_elements[1:])
-                return(get_indexed_variable(newfield, newindexer, entrykey, options=options))
-        elif (index_elements[0] == 'compress()'):
-            newfield = field.replace(' ','')
-            if (nelements == 1):
-                return(newfield)
-            else:
-                newindexer = '.'.join(index_elements[1:])
-                return(get_indexed_variable(newfield, newindexer, entrykey, options=options))
-        elif (index_elements[0] == 'tie()'):
-            newfield = field.replace(' ','~')
-            if (nelements == 1):
-                return(newfield)
-            else:
-                newindexer = '.'.join(index_elements[1:])
-                return(get_indexed_variable(newfield, newindexer, entrykey, options=options))
-        elif (index_elements[0] == 'sentence_case()'):
-            return(sentence_case(field))
-        else:
-            msg = 'Warning 029c: the template for entry ' + entrykey + ' has an unknown function' + \
-                  '"' + index_elements[0] + '". Aborting template substitution'
-            bib_warning(msg, disable=None)
-            return(None)
-
-    if isinstance(field, str):
-        return(field)
-
-    ## If the thing to the right of the dot-indexer is a string, then we have to assume that it is an index into a
-    ## dictionary. Check if the field is a dict type.
-    if not isinstance(field, dict):
-        fieldname = '' if not isinstance(field, str) else '"' + field + '" '
-        indexname = index_elements[0]
-        msg = 'Warning 029d: the ' + fieldname + 'field of entry ' + entrykey + ' is not a dictionary and thus is ' + \
-              'not indexable by "' + indexname + '". Aborting template substitution'
-        bib_warning(msg, disable=None)
-        return(None)
-    elif (index_elements[0] not in field):
-        return(None)
-    else:
-        newfield = field[index_elements[0]]
-        if (nelements == 1):
-            return(newfield)
-        else:
-            newindexer = '.'.join(index_elements[1:])
-            return(get_indexed_variable(newfield, newindexer, entrykey, options=options))
-
-    ## The code should never reach here!
-    msg = 'Warning 029e: Invalid field type error. Aborting template substitution'
-    bib_warning(msg, disable=None)
-    return(None)
-
-## =============================
 def toplevel_split(s, splitchar, levels):
     '''
     Split a string, but only if the splitting character is at level 0 or 1 and not higher.
@@ -4155,7 +4224,7 @@ def get_indexed_vars_in_template(templatestr):
     return(indexed_vars)
 
 ## ===================================
-def get_num_names(entry, templatestr):
+def get_names(entry, templatestr):
     '''
     Get the number of names associated with a given entry, assuming priority to authornames and then to editornames.
 
@@ -4163,33 +4232,180 @@ def get_num_names(entry, templatestr):
     ----------
     entry : dict
         The bibliography data entry.
-
     templatestr : str
         The template string -- to tell whether to use authors or editors.
 
     Returns
     -------
-    nnames : int
-        The number of names found.
+    namelist : list of dicts
+        The list of names found.
     '''
 
     ## TODO: right now I've hard-coded "authorname" and "editorname" here. Need this to be more flexible.
-    if ('authorname' in templatestr):
-        if ('authorlist' not in entry):
-            return(0)
+    if ('authorname' in templatestr) and ('authorlist' in entry):
+        return(entry['authorlist'])
+    elif ('editorname' in templatestr) and ('editorlist' in entry):
+        return(entry['editorlist'])
+    else:
+        return([])
+
+## =============================
+def format_namelist(namelist, nametype='author', options=None):
+    '''
+    Format a list of dictionaries (one dict for each person) into a long string, with the format according to the
+    directives in the bibliography style template.
+
+    Parameters
+    ----------
+    namelist : str
+        The list of dictionaries containing all of the names to be formatted.
+    nametype : str, {'author', 'editor'}, optional
+        Whether the names are for authors or editors.
+    options : dict, optional
+        The dictionary of keyword-based options.
+
+    Returns
+    -------
+    namestr : str
+        The formatted form of the "name string". This is generally a list of authors or list of editors.
+    '''
+
+    if (options == None):
+        options = {}
+        options['use_firstname_initials'] = True
+        options['namelist_format'] = 'first_name_first'
+        options['maxauthors'] = 9
+        options['minauthors'] = 9
+        options['maxeditors'] = 5
+        options['mineditors'] = 5
+        options['etal_message'] = '\\textit{et al.}'
+        options['use_name_ties'] = False
+        options['terse_inits'] = False
+        options['french_intials'] = False
+        options['period_after_initial'] = True
+
+    ## First get all of the options variables needed below, depending on whether the function is operating on a list of
+    ## authors or a list of editors. Second, insert "authorlist" into the bibliography database entry so that other
+    ## functions can have access to it. (This is the "author" or "editor" string parsed into individual names, so that
+    ## each person's name is represented by a dictionary, and the whole set of names is a list of dicts.)
+    if (nametype == 'author'):
+        maxnames = options['maxauthors']
+        minnames = options['minauthors']
+    elif (nametype == 'editor'):
+        maxnames = options['maxeditors']
+        minnames = options['mineditors']
+
+    ## This next block generates the list "namelist", which is a list of strings, with each element of `namelist` being
+    ## a single author's name. That single author's name is encoded as a dictionary with keys "first", "middle",
+    ## "prefix", "last", and "suffix".
+    npersons = len(namelist)
+    new_namelist = []
+    for person in namelist:
+        ## The BibTeX standard states that a final author in the authors field of "and others" should be taken as
+        ## meaning to use \textit{et al.} at the end of the author list.
+        if (person['last'].lower() == 'others') and ('first' not in person):
+            npersons -= 1
+            maxnames = npersons - 1
+            continue
+
+        ## From the person's name dictionary, create a string of the name in the format desired for the final BBL file.
+        formatted_name = namedict_to_formatted_namestr(person, options=options)
+        new_namelist.append(formatted_name)
+
+    ## Now that we have the complete list of pre-formatted names, we need to join them together into a single string
+    ## that can be inserted into the template.
+    if (npersons == 1):
+        namestr = new_namelist[0]
+    elif (npersons == 2):
+        namestr = ' and '.join(new_namelist)
+    elif (npersons > 2) and (npersons <= maxnames):
+        ## Make a string in which each person's name is separated by a comma, except the last name, which has a comma
+        ## then "and" before the name.
+        namestr = ', '.join(new_namelist[:-1]) + ', and ' + new_namelist[-1]
+    elif (npersons > maxnames):
+        ## If the number of names in the list exceeds the maximum, then truncate the list to the first "minnames" only,
+        ## and add "et al." to the end of the string giving all the names.
+        namestr = ', '.join(new_namelist[:minnames]) + r', ' + options['etal_message']
+    else:
+        raise ValueError('How did you get here?')
+
+    ## Add a tag onto the end if describing an editorlist.
+    if (nametype == 'editor'):
+        if (npersons == 1):
+            namestr += ', ed.'
         else:
-            nnames = len(entry['authorlist'])
-            return(nnames)
-    elif ('editorname' in templatestr): # and ('editorlist' in self.bibdata[entrykey]):
-        if ('editorlist' not in entry):
-            return(0)
+            namestr += ', eds'
+
+    return(namestr)
+
+## =============================
+def namedict_to_formatted_namestr(namedict, options=None):
+    '''
+    Convert a name dictionary into a formatted name string.
+
+    Parameters
+    ----------
+    namedict : dict
+        The name dictionary (contains a required key "last" and optional keys "first", "middle", "prefix", and "suffix".
+    options : dict, optional
+        Dictionary of formatting options.
+
+    Returns
+    -------
+    namestr : str
+        The formatted string of the name.
+    '''
+
+    if (options == None):
+        options = {}
+        options['use_firstname_initials'] = True
+        options['namelist_format'] = 'first_name_first'
+        options['maxauthors'] = 9
+        options['minauthors'] = 9
+        options['maxeditors'] = 5
+        options['mineditors'] = 5
+        options['etal_message'] = '\\textit{et al.}'
+        options['use_name_ties'] = False
+        options['terse_inits'] = False
+        options['french_intials'] = False
+        options['period_after_initial'] = True
+
+    lastname = namedict['last']
+    firstname = '' if ('first' not in namedict) else namedict['first']
+    middlename = '' if ('middle' not in namedict) else namedict['middle']
+    prefix = '' if ('prefix' not in namedict) else namedict['prefix']
+    suffix = '' if ('suffix' not in namedict) else namedict['suffix']
+
+    if options['use_firstname_initials']:
+        firstname = initialize_name(firstname, options) + '.'
+        middlename = initialize_name(middlename, options)
+
+    if (middlename != ''):
+        if options['terse_inits']:
+            frontname = firstname + middlename
+            frontname.replace(' ','')
+        elif options['use_name_ties']:
+            middlename = middlename.replace(' ','~')    ## replace spaces with tildes
+            frontname = firstname + '~' + middlename
         else:
-            nnames = len(entry['editorlist'])
-            return(nnames)
+            frontname = firstname + ' ' + middlename + '.'
+    else:
+        frontname = firstname
 
-    return(0)
+    ## Reconstruct the name string in the desired order for the formatted bibliography.
+    if (options['namelist_format'] == 'first_name_first'):
+        if (prefix != ''): prefix = ' ' + prefix
+        if (suffix != ''): suffix = ', ' + suffix
+        if (frontname + prefix != ''): prefix = prefix + ' '    ## provide a space before last name
+        namestr = frontname + prefix + lastname + suffix
+    elif (options['namelist_format'] == 'last_name_first'):
+        if (prefix != ''): prefix = prefix + ' '
+        if (suffix != ''): suffix = ', ' + suffix
+        ## Provide a comma before the first name.
+        if (frontname + suffix != ''): frontname = ', ' + frontname
+        namestr = prefix + lastname + frontname + suffix
 
-
+    return(namestr)
 
 ## ==================================================================================================
 
@@ -4223,10 +4439,13 @@ if (__name__ == '__main__'):
         files = [arg_bibfile, arg_auxfile, arg_bstfile]
 
     main_bibdata = Bibdata(files, uselocale=user_locale, debug=False)
-    main_bibdata.write_bblfile()
-    print('Writing to BBL file = ' + main_bibdata.filedict['bbl'])
-    #os.system('kwrite ' + main_bibdata.filedict['bbl'])
 
-
-    print('DONE')
+    ## Check if the bibliography database and style template files exist. If they don't, then the user didn't specify
+    ## them, and it's probably true that there is no bibliography requested. That is, Bibulous was called without any
+    ## need.
+    if main_bibdata.filedict:
+        main_bibdata.write_bblfile()
+        print('Writing to BBL file = ' + main_bibdata.filedict['bbl'])
+        #os.system('kwrite ' + main_bibdata.filedict['bbl'])
+        print('DONE')
 
