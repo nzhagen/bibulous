@@ -9,6 +9,8 @@ collection = [<for_japanese_audience>[<author_ja>|<editor_ja>|], <title_ja>, <vo
 SPECIAL-TEMPLATES:
 author = [<author_en>|<writer>|<著者名>]
 editor = [<editor_en>]
+authorlist = <author.to_namelist()>
+editorlist = <editor.to_namelist()>
 citelabel = None
 sortkey = <year>[<authorlist.0.last>|<editorlist.0.last>|]<title>
 

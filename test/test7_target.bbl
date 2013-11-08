@@ -20,7 +20,7 @@ A. bb and AA, ``Nothing much'' (0000).
 W. {Thomson [Lord Kelvin]}, ``On an absolute thermometric scale, founded on Carnot's theory of the motive power of heat'' (1848).
 \bibitem[Yanny2009]{Yanny2009}
 B. Yanny, C. Rockosi, H. J. Newberg, G. R. Knapp, J. K. Adelman-McCarthy, B. Alcorn, S. Allam, \textit{et al.}, ``SEGUE: a spectroscopic survey of 240,000 stars with $g = 14$--20'' (2009).
-\bibitem[Blouke20000]{Blouke20000}
+\bibitem[Blouke2000]{Blouke2000}
 M. M. Blouke, N. Sampat, G. M. Williams, Jr., \textit{et al.}, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications'' (2000).
 \bibitem[Otobe2006]{Otobe2006}
 乙. {厳己} and P. Horton, ``jBibTEXの使用法,'' ソフトバンクパブリッシング (2006). [In Japanese.]
@@ -56,7 +56,7 @@ A. bb and AA, ``Nothing much'' (0000).
 W. {Thomson [Lord Kelvin]}, ``On an absolute thermometric scale, founded on Carnot's theory of the motive power of heat'' (1848).
 \bibitem[Yanny-2009]{Yanny2009}
 B. Yanny, C. Rockosi, H. J. Newberg, G. R. Knapp, J. K. Adelman-McCarthy, B. Alcorn, S. Allam, \textit{et al.}, ``SEGUE: a spectroscopic survey of 240,000 stars with $g = 14$--20'' (2009).
-\bibitem[Blouke-2000]{Blouke20000}
+\bibitem[Blouke-2000]{Blouke2000}
 M. M. Blouke, N. Sampat, G. M. Williams, Jr., \textit{et al.}, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications'' (2000).
 \bibitem[厳己-2006]{Otobe2006}
 乙. {厳己} and P. Horton, ``jBibTEXの使用法,'' ソフトバンクパブリッシング (2006). [In Japanese.]
@@ -92,7 +92,7 @@ A. bb and AA, ``Nothing much'' (0000).
 W. {Thomson [Lord Kelvin]}, ``On an absolute thermometric scale, founded on Carnot's theory of the motive power of heat'' (1848).
 \bibitem[YRN09]{Yanny2009}
 B. Yanny, C. Rockosi, H. J. Newberg, G. R. Knapp, J. K. Adelman-McCarthy, B. Alcorn, S. Allam, \textit{et al.}, ``SEGUE: a spectroscopic survey of 240,000 stars with $g = 14$--20'' (2009).
-\bibitem[BSW00]{Blouke20000}
+\bibitem[BSW00]{Blouke2000}
 M. M. Blouke, N. Sampat, G. M. Williams, Jr., \textit{et al.}, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications'' (2000).
 \bibitem[厳H06]{Otobe2006}
 乙. {厳己} and P. Horton, ``jBibTEXの使用法,'' ソフトバンクパブリッシング (2006). [In Japanese.]
@@ -128,7 +128,7 @@ A. bb and AA, ``Nothing much'' (0000).
 W. {Thomson [Lord Kelvin]}, ``On an absolute thermometric scale, founded on Carnot's theory of the motive power of heat'' (1848).
 \bibitem[Yanny, 2009]{Yanny2009}
 B. Yanny, C. Rockosi, H. J. Newberg, G. R. Knapp, J. K. Adelman-McCarthy, B. Alcorn, S. Allam, \textit{et al.}, ``SEGUE: a spectroscopic survey of 240,000 stars with $g = 14$--20'' (2009).
-\bibitem[Blouke, 2000]{Blouke20000}
+\bibitem[Blouke, 2000]{Blouke2000}
 M. M. Blouke, N. Sampat, G. M. Williams, Jr., \textit{et al.}, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications'' (2000).
 \bibitem[厳己, 2006]{Otobe2006}
 乙. {厳己} and P. Horton, ``jBibTEXの使用法,'' ソフトバンクパブリッシング (2006). [In Japanese.]
@@ -164,7 +164,7 @@ A. bb and AA, ``Nothing much'' (0000).
 W. {Thomson [Lord Kelvin]}, ``On an absolute thermometric scale, founded on Carnot's theory of the motive power of heat'' (1848).
 \bibitem[Yanny (2009)]{Yanny2009}
 B. Yanny, C. Rockosi, H. J. Newberg, G. R. Knapp, J. K. Adelman-McCarthy, B. Alcorn, S. Allam, \textit{et al.}, ``SEGUE: a spectroscopic survey of 240,000 stars with $g = 14$--20'' (2009).
-\bibitem[Blouke (2000)]{Blouke20000}
+\bibitem[Blouke (2000)]{Blouke2000}
 M. M. Blouke, N. Sampat, G. M. Williams, Jr., \textit{et al.}, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications'' (2000).
 \bibitem[厳己 (2006)]{Otobe2006}
 乙. {厳己} and P. Horton, ``jBibTEXの使用法,'' ソフトバンクパブリッシング (2006). [In Japanese.]
