@@ -1,4 +1,5 @@
-@STRING{procspie="Proc. SPIE"}
+@STRING{procspie = "Proc. SPIE"}
+@STRING{pub-adobe = "Adobe Systems Incorporated"}
 
 %% Test that brace-delimited names are not initialized when using a style that would otherwise initial them.
 @INITIALIZE1{initialize1,
@@ -41,7 +42,7 @@
   pages = {64--66, 87--92, 94}
 }
 
-%% Test the option 'force_sentence_case' to see if upper case letters are forced to lower case except when at brace level > 0.
+%% Test the option 'use_sentence_case' to see if upper case letters are forced to lower case except when at brace level > 0.
 @USE_SENTENCE_CASE{use_sentence_case,
   title = {On the {C}ram{\'e}r-{R}ao Bound under Parametric Constraints},
   author = {Petre Stoica and Boon Chong Ng},
@@ -90,6 +91,22 @@
   title = {On an absolute thermometric scale, founded on Carnot's theory of the motive power of heat},
   author = {W. {Thomson [Lord Kelvin]}},
   year = {1848}
+}
+
+%% Test that a LaTeX-markup first letter of a first name is properly parsed and abbreviated.
+@NAME_PARSING4{name_parsing4,
+  author = "Germund Dalhquist and {\AA}ke Bj{\"o}rck and Ned Anderson",
+  title = "Numerical Methods",
+  publisher = "Prentice-Hall,
+  year = "1974"
+}
+
+%% Test that a parenthesis in the author name string is parsed correctly.
+@NAME_PARSING5{name_parsing5,
+  author =  "Thomas H. Cormen and Charles E. (Eric) Leiserson and Ronald L. Rivest",
+  title =   "Introduction to Algorithms",
+  publisher = "McGraw-Hill",
+  year =    "1990"
 }
 
 %% Test that for nested bold formatting, the even-order operators are converted to \textmd{}.
@@ -208,26 +225,26 @@
 @PREAMBLE{"\providecommand{\um}{$\mu$m}"}
 
 %% Test the month formatting with an abbreviation key.
-@MONTHFORMAT1{monthformat1,
+@MONTHNAME1{monthname1,
   title = {Looney tunes},
   author = "Bugs Bunny",
   month = apr,
   year = {2001},
 }
 
-%% Test the month formatting with a numeral.
-@MONTHFORMAT2{monthformat2,
-  title = {Looney tunes},
-  author = "Bugs Bunny",
-  month = 4,
-  year = {2001},
-}
-
 %% Test the month formatting with a numeric string.
-@MONTHFORMAT3{monthformat3,
+@MONTHNAME2{monthname2,
   title = {Looney tunes},
   author = "Bugs Bunny",
   month = "4",
+  year = {2001},
+}
+
+%% Test the month formatting with a numeral.
+@MONTHABBREV{monthabbrev,
+  title = {Looney tunes},
+  author = "Bugs Bunny",
+  month = 4,
   year = {2001},
 }
 
@@ -390,3 +407,66 @@
   number = {STAN-CS-79-773},
   month = {November}
 }
+
+%% Test that the code responds properly to a malformed template.
+@MALFORMED_TEMPLATE1{malformed_template1,
+  title = {On the impossible pilot wave},
+  author = {J. S. Bell},
+  journal = {Found. Phys.},
+  year = {1982},
+  volume = {12},
+  number = {10},
+  pages = {989--999}
+}
+
+%% Test that the code responds properly to a malformed template.
+@MALFORMED_TEMPLATE2{malformed_template2,
+  title = {On the impossible pilot wave},
+  author = {J. S. Bell},
+  journal = {Found. Phys.},
+  year = {1982},
+  volume = {12},
+  number = {10},
+  pages = {989--999}
+}
+
+%% Test that the code responds properly to a malformed template.
+@MALFORMED_TEMPLATE3{malformed_template3,
+  title = {On the impossible pilot wave},
+  author = {J. S. Bell},
+  journal = {Found. Phys.},
+  year = {1982},
+  volume = {12},
+  number = {10},
+  pages = {989--999}
+}
+
+%% Test that the code responds properly to a malformed template.
+@MALFORMED_TEMPLATE4{malformed_template4,
+  title = {On the impossible pilot wave},
+  author = {J. S. Bell},
+  journal = {Found. Phys.},
+  year = {1982},
+  volume = {12},
+  number = {10},
+  pages = {989--999}
+}
+
+@OTHERS_BECOMES_ETAL{others_becomes_etal,
+  title = {Some title},
+  author = {Mr. A and Mr. B and Mr. C and others},
+  year = {2000}
+}
+
+%% Test that the code responds properly to a malformed template.
+@IMPLICIT_INDEX{implicit_index,
+  title = {Computational geometry I: new algebraic tools for classical geometry},
+  author = {David Hestenes and Hongbo Li and Alyn Rockwood},
+  editor = {Gerald Sommer},
+  chapter = {1},
+  pages = {3--26},
+  year = {2001},
+  publisher = {Springer},
+  booktitle = {Geometric Computing with Clifford Algebras}
+}
+

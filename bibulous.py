@@ -2811,12 +2811,14 @@ def initialize_name(name, options=None, debug=False):
     period = '.' if options['period_after_initial'] else ''
 
     ## Split the name by spaces (primarily used for middle name strings, which may have multiple names in them), and
-    ## remove any empty list elements produced by the split.
+    ## remove any empty list elements produced by the split. Also remove any parenthetical names (such as used for
+    ## nicknames).
     nametokens = list(name.split(' '))
     nametokens = [x for x in nametokens if x]
+    nametokens = [x for x in nametokens if not (x.startswith('(') and x.endswith(')'))]
 
     for j,token in enumerate(nametokens):
-        if token.startswith('{') and token.endswith('}'):
+        if ('{' in token) and ('}' in token):
             token = purify_string(token)
 
         if ('-' in token):
