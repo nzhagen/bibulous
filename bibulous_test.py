@@ -366,43 +366,43 @@ if (__name__ == '__main__'):
     result = check_file_match(1, outputfile, targetfile)
     suite_pass *= result
 
-#    ## Run test #2.
-#    result = run_test2()
-#    suite_pass *= result
-#
-#    ## Run test #3.
-#    (outputfile, targetfile) = run_test3()
-#    result = check_file_match(3, outputfile, targetfile)
-#    suite_pass *= result
-#
-#    ## Run test #4.
-#    (outputfile, targetfile) = run_test4()
-#    result = check_file_match(4, outputfile, targetfile)
-#    suite_pass *= result
-#
-#    ## Run test #5.
-#    (outputfile, targetfile) = run_test5()
-#    result = check_file_match(5, outputfile, targetfile)
-#    suite_pass *= result
-#
-#    ## Run test #6.
-#    result = run_test6()
-#    suite_pass *= result
-#
-#    ## Run test #7.
-#    (outputfile, targetfile) = run_test7()
-#    result = check_file_match(7, outputfile, targetfile)
-#    suite_pass *= result
-#
-#    ## Run test #8.
-#    (outputfile, targetfile) = run_test8()
-#    result = check_file_match(8, outputfile, targetfile)
-#    suite_pass *= result
-#
-#    ## Run test #9.
-#    (outputfile, targetfile) = run_test9()
-#    result = check_file_match(9, outputfile, targetfile)
-#    suite_pass *= result
+    ## Run test #2.
+    result = run_test2()
+    suite_pass *= result
+
+    ## Run test #3.
+    (outputfile, targetfile) = run_test3()
+    result = check_file_match(3, outputfile, targetfile)
+    suite_pass *= result
+
+    ## Run test #4.
+    (outputfile, targetfile) = run_test4()
+    result = check_file_match(4, outputfile, targetfile)
+    suite_pass *= result
+
+    ## Run test #5.
+    (outputfile, targetfile) = run_test5()
+    result = check_file_match(5, outputfile, targetfile)
+    suite_pass *= result
+
+    ## Run test #6.
+    result = run_test6()
+    suite_pass *= result
+
+    ## Run test #7.
+    (outputfile, targetfile) = run_test7()
+    result = check_file_match(7, outputfile, targetfile)
+    suite_pass *= result
+
+    ## Run test #8.
+    (outputfile, targetfile) = run_test8()
+    result = check_file_match(8, outputfile, targetfile)
+    suite_pass *= result
+
+    ## Run test #9.
+    (outputfile, targetfile) = run_test9()
+    result = check_file_match(9, outputfile, targetfile)
+    suite_pass *= result
 
     if suite_pass:
         print('\n***** THE CODE PASSES ALL TESTS IN THE TESTING SUITE. *****')

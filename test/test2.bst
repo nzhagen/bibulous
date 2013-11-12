@@ -1,17 +1,17 @@
 TEMPLATES:
 article = <au>, ``[\href{<url>}{<title>}|\href{<doi>}{<title>}|<title>|],'' \textit{<journal>} \textbf{<volume>}: [<startpage>--<endpage>|<startpage>|<eid>|] (<year>).[ <note>]
-book = [<au>|<ed>|<organization>|<institution>|], \textit{<title>}[, <edition_ordinal>~ed.][, vol.~<volume>] (<publisher>, <year>)[ Chap.~<chapter>][, pp.~<startpage>--<endpage>].[ <note>]
+book = [<au>|<ed.eds_message()>|<organization>|<institution>|], \textit{<title>}[, <edition_ordinal>~ed.][, vol.~<volume>] (<publisher>, <year>)[ Chap.~<chapter>][, pp.~<startpage>--<endpage>].[ <note>]
 endnote = <note>
 inbook = incollection
-incollection = <au>, ``<title>,'' in \textit{<booktitle>}, [vol.~<volume>, ][<edition_ordinal>~ed., ][<ed>, ][<series>, ][Chap.~<chapter>, ][pp.~<startpage>--<endpage>|<eid>|] (<publisher>, <year>).[ <note>]
-inproceedings = <au>, ``<title>,'' in \textit{<booktitle>}[, <ed>][, in <series>][ \textbf{<volume>}][, pp.~<startpage>--<endpage>|, <eid>] (<year>). [<note>]
-manual = [<au>|<ed>|<organization>|<institution>|], \textit{<title>}, [vol.~<volume>, ][<edition_ordinal>~ed., |ver.~<version>, ][<ed>, ] (<organization>, <year>)[, Chap.~<chapter>][, pp.~<startpage>--<endpage>].[ <note>]
+incollection = <au>, ``<title>,'' in \textit{<booktitle>}, [vol.~<volume>, ][<edition_ordinal>~ed., ][<ed.eds_message()>, ][<series>, ][Chap.~<chapter>, ][pp.~<startpage>--<endpage>|<eid>|] (<publisher>, <year>).[ <note>]
+inproceedings = <au>, ``<title>,'' in \textit{<booktitle>}[, <ed.eds_message()>][, in <series>][ \textbf{<volume>}][, pp.~<startpage>--<endpage>|, <eid>] (<year>). [<note>]
+manual = [<au>|<ed.eds_message()>|<organization>|<institution>|], \textit{<title>}, [vol.~<volume>, ][<edition_ordinal>~ed., |ver.~<version>, ][<ed.eds_message()>, ] (<organization>, <year>)[, Chap.~<chapter>][, pp.~<startpage>--<endpage>].[ <note>]
 mastersthesis = <au>, ``<title>,'' M.S. dissertation (<school>, <year>).[ <note>]
 misc = [<au>, ][``<title>''][ (<organization>, <year>)| (<year>)].[ <note>]
 patent = <au>, ``<title>,'' <nationality> patent <number> (<year>).[ <note>]
 phdthesis = <au>, ``<title>,'' Ph.D. dissertation (<school>, <year>).[ <note>]
-proceedings = <ed>, \textit{<title>}, [vol.~<volume>][, <edition_ordinal>~ed.] (<year>).[ <note>]
-techreport = [<au>, |<ed>, ]``<title>,'' <institution>, Tech.\ Report <number> (<year>).[ <note>]
+proceedings = <ed.eds_message()>, \textit{<title>}, [vol.~<volume>][, <edition_ordinal>~ed.] (<year>).[ <note>]
+techreport = [<au>, |<ed.eds_message()>, ]``<title>,'' <institution>, Tech.\ Report <number> (<year>).[ <note>]
 unpublished = misc
 
 
@@ -32,6 +32,7 @@ replace_newlines = True                   ## whether to replace newline characte
 case_sensitive_field_names = True         ## whether to allow field names to be case sensitive (i.e. "BOOK" will not be the same entrytype as "book")
 use_citeextract = False                   ## turn off cite extraction, since this interferes with using multiple BIB file inputs
 etal_message = , \textit{et al.}          ## what text to place at the end of an authorlist when there are too many
+eds_message = {, ed.}{, eds}              ## the label to use after the editor namelist
 
 
 VARIABLES:

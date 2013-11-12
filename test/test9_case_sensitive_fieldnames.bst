@@ -1,12 +1,14 @@
 TEMPLATES:
 capitalized_field_names = <au>, \enquote{<TITLE>,} \textit{<JOURNAL>} \textbf{<VOLUME>}: <PAGES> (<YEAR>).
 
+
 SPECIAL-TEMPLATES:
 authorlist = <AUTHOR.to_namelist()>
 editorlist = <EDITOR.to_namelist()>
 au = <authorlist.format_authorlist()>
 citelabel = None
 sortkey = <citenum>
+
 
 OPTIONS:
 procspie_as_journal = True                ## treat SPIE conference proceedings like a journal, with journal name 'Proc. SPIE'
@@ -20,7 +22,10 @@ undefstr = ???                            ## what string to replace undefined re
 case_sensitive_field_names = True         ## whether to allow field names to be case sensitive (i.e. "BOOK" will not be the same entrytype as "book")
 use_citeextract = False                   ## turn off cite extraction, since this interferes with using multiple BIB file inputs
 etal_message = , \textit{et al.}          ## what text to place at the end of an authorlist when there are too many
+eds_message = {, ed.}{, eds}              ## the label to use after the editor namelist
+
 
 VARIABLES:
+
 
 DEFINITIONS:

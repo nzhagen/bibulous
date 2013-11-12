@@ -14,13 +14,13 @@ name_parsing3 = <au>, \enquote{<title>} (<year>).
 name_parsing4 = <au>, \textit{<title>} (<year>).
 name_parsing5 = <au>, \textit{<title>} (<year>).
 many_authors = <au>, \enquote{<title>} (<year>).
-many_editors = <editorliststr>, \enquote{<title>} (<year>).
+many_editors = <ed.eds_message()>, \enquote{<title>} (<year>).
 #name_abbrev1 = <au>, \enquote{<title>} (<year>).
 #name_abbrev2 = <au>, \enquote{<title>} (<year>).
 brace_delimited_quotes = <au>, \enquote{<title>} (<year>).
 inproceedings = <au>, \enquote{<title>,} \textit{<journal>} \textbf{<volume>}: <eid> (<year>).
 article = <au>, \enquote{<title>,} \textit{<journal>} \textbf{<volume>}: <eid> (<year>).
-crossref1 = <au>, \enquote{<title>,} in \textit{<booktitle>}, <editorliststr>, Proc. SPIE \textbf{<volume>}: <eid> (<year>).
+crossref1 = <au>, \enquote{<title>,} in \textit{<booktitle>}, <ed.eds_message()>, Proc. SPIE \textbf{<volume>}: <eid> (<year>).
 japanese = <au>, \enquote{<title-ja>,} <publisher-ja> (<year>). {\makeopenbracket}In <language>.{\makeclosebracket}
 trailing_comma = <au>, \enquote{<title>} (<year>).
 monthname1 = <au>, \enquote{<title>} (<month.monthname()>, <year>).
@@ -50,7 +50,7 @@ use_name_ties = <au-B>, \enquote{<title>} (<year>).
 period_after_initial = <au-C>, \enquote{<title>} (<year>).
 terse_inits = <au-D>, \enquote{<title>} (<year>).
 author_firstname_initials = <au-E>, \enquote{<title>} (<year>).
-editor_firstname_initials = <editorliststr-A>, \enquote{<title>} (<year>).
+editor_firstname_initials = <ed-A.eds_message()>, \enquote{<title>} (<year>).
 
 
 SPECIAL-TEMPLATES:
@@ -60,7 +60,7 @@ editorlist = <editor.to_namelist()>
 authorname.n = [<authorlist.n.first.initial()>. ][<authorlist.n.middle.initial()>. ][<authorlist.n.prefix> ]<authorlist.n.last>[, <authorlist.n.suffix>]
 au = <authorname.0>, ...,{ and }<authorname.9>
 editorname.n = [<editorlist.n.first.initial()>. ][<editorlist.n.middle.initial()>. ][<editorlist.n.prefix> ]<editorlist.n.last>[, <editorlist.n.suffix>]
-editorliststr = <editorname.0>, ...,{ and }<editorname.2>, eds
+ed = <editorname.0>, ...,{ and }<editorname.2>
 authorname-A.n = [<authorlist.n.first.frenchinitial()>. ][<authorlist.n.middle.frenchinitial()>. ][<authorlist.n.prefix> ]<authorlist.n.last>[, <authorlist.n.suffix>]
 au-A = <authorname-A.0>, ...,{ and }<authorname-A.N>
 authorname-B.n = [<authorlist.n.first.initial()>.~][<authorlist.n.middle.initial().tie()>. ][<authorlist.n.prefix>~]<authorlist.n.last>[, <authorlist.n.suffix>]
@@ -72,7 +72,7 @@ au-D = <authorname-D.0>, ...,{ and }<authorname-D.N>
 authorname-E.n = [<authorlist.n.first> ][<authorlist.n.middle> ][<authorlist.n.prefix> ]<authorlist.n.last>[, <authorlist.n.suffix>]
 au-E = <authorname-E.0>, ...,{ and }<authorname-E.N>
 editorname-A.n = [<editorlist.n.first> ][<editorlist.n.middle> ][<editorlist.n.prefix> ]<editorlist.n.last>[, <editorlist.n.suffix>]
-editorliststr-A = <editorname-A.0>, ...,{ and }<editorname-A.N>, eds
+ed-A = <editorname-A.0>, ...,{ and }<editorname-A.N>
 group = [<institution>|<organization>|<corporation>|]
 citelabel = None
 sortkey = <citenum>
@@ -90,6 +90,7 @@ undefstr = ???                            ## what string to replace undefined re
 case_sensitive_field_names = False        ## whether to allow field names to be case sensitive (i.e. "BOOK" will not be the same entrytype as "book")
 use_citeextract = False                   ## turn off cite extraction, since this interferes with using multiple BIB file inputs
 etal_message = , \textit{et al.}          ## what text to place at the end of an authorlist when there are too many
+eds_message = {, ed.}{, eds}              ## the label to use after the editor namelist
 
 
 VARIABLES:

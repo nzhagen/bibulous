@@ -6,6 +6,7 @@ collection = [<for_japanese_audience>[<author_ja>|<editor_ja>|], <title_ja>, <vo
               <for_english_audience>[<author_en>|<editor_en>|], <title_ja> (<title_romaji>) {\makeopenbracket}<title_en>{\makeclosebracket}, vol.~<volume> (<publisher_en>, <address_en>, <year>).|]
 本 = <著者名>, <題名> (<年>).
 
+
 SPECIAL-TEMPLATES:
 author = [<author_en>|<writer>|<著者名>]
 editor = [<editor_en>]
@@ -14,12 +15,15 @@ editorlist = <editor.to_namelist()>
 citelabel = None
 sortkey = <year>[<authorlist.0.last>|<editorlist.0.last>|]<title>
 
+
 OPTIONS:
 allow_scripts = True                      ## whether to allow user scripts in BST files
 yearstyle = BCE/CE                        ## whether to use 'BCE/CE' after the year number or the older 'BC/AD' form
 document_language = Japanese              ## whether the document is for a Japanese audience
 use_citeextract = False                   ## turn off cite extraction, since this interferes with using multiple BIB file inputs
 etal_message = , \textit{et al.}          ## what text to place at the end of an authorlist when there are too many
+eds_message = {, ed.}{, eds}              ## the label to use after the editor namelist
+
 
 VARIABLES:
 year_bce = format_yearstyle(entry, options)     ## format the year at append 'BC', 'AD', etc endings, depending on options settings
@@ -27,6 +31,7 @@ year_bce = format_yearstyle(entry, options)     ## format the year at append 'BC
 pagerange = format_pagerange(entry, options)
 for_japanese_audience = '{}' if (options['document_language'] == 'Japanese') else None
 for_english_audience = '{}' if (options['document_language'] == 'English') else None
+
 
 DEFINITIONS:
 ## NOTE! Only Unix-style line endings are allowed here.

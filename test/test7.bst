@@ -1,5 +1,5 @@
 TEMPLATES:
-article = [<au>|<ed>|], \enquote{<title>} (<year>).
+article = [<au>|<ed.eds_message()>|], \enquote{<title>} (<year>).
 incollection = <au>, \enquote{<title>,} <publisher> (<year>).[ {\makeopenbracket}In <language>.{\makeclosebracket}]
 
 
@@ -9,7 +9,7 @@ editorlist = <editor.to_namelist()>
 authorname.n = [<authorlist.n.first.initial()>. ][<authorlist.n.middle.initial()>. ][<authorlist.n.prefix> ]<authorlist.n.last>[, <authorlist.n.suffix>]
 au = <authorname.0>, ...,{ and }<authorname.6>
 editorname.n = [<editorlist.n.first.initial()>. ][<editorlist.n.middle.initial()>. ][<editorlist.n.prefix> ]<editorlist.n.last>[, <editorlist.n.suffix>]
-ed = <editorname.0>, ...,{ and }<editorname.2>, eds
+ed = <editorname.0>, ...,{ and }<editorname.2>
 citelabel = None
 sortkey = <citenum>
 
@@ -26,6 +26,7 @@ undefstr = ???                            ## what string to replace undefined re
 case_sensitive_field_names = False        ## whether to allow field names to be case sensitive (i.e. "BOOK" will not be the same entrytype as "book")
 use_citeextract = False                   ## turn off cite extraction, since this interferes with using multiple BIB file inputs
 etal_message = , \textit{et al.}          ## what text to place at the end of an authorlist when there are too many
+eds_message = {, ed.}{, eds}              ## the label to use after the editor namelist
 
 
 VARIABLES:

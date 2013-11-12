@@ -1,6 +1,7 @@
 include bibulous.py
 include bibulous_test.py
 include bibulous_authorextract.py
+include bibulous_profiler.py
 
 include README.rst
 include LICENSE.txt
