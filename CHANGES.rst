@@ -25,8 +25,8 @@ version 1.2 (24-Sep-2013)
 version 1.3 (08-Nov-2013)
 -------------------------
 
-- Added implicit looping inside template strings using an ellipsis.
-- Added implicit indexing with ".n" notation for template variables.
 - Added template variable operators.
+- Added implicit looping inside template strings using ellipsis notation with indexed variables.
+- Added implicit indexing with ".n" notation for template variables.
 - Changed the code from using internal structures to formatting name lists to using namelist
   templates instead. This allows users to easily customize how lists of names are formatted.

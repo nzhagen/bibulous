@@ -2484,8 +2484,9 @@ class Bibdata(object):
 
         ## Note that the "strip()" function is here to make sure we can use quotes around the entrykey, but that we
         ## won't get nested quotes when we recursively call the function.
-        if (entrykey != ''):
-            entrykey = '"' + entrykey.strip('"') + '"'
+        #zzz: why is this here? Left over from some previous need?!?
+        #if (entrykey != ''):
+        #    entrykey = '"' + entrykey.strip('"') + '"'
 
         ## If the indexing element is an integer, then we assume that it wants a list or tuple. If it finds one, then get the indexed item.
         if index_elements[0].isdigit():
@@ -2566,6 +2567,15 @@ class Bibdata(object):
             elif (index_elements[0] == 'format_editorlist()'):
                 result = format_namelist(field, nametype='editor')
                 return(result)
+            elif (index_elements[0] == 'eds_message()'):
+                #zzz: need to put in some checking here to prevent exceptions
+                (singular_eds_message,plural_eds_message) = re.findall(r'\{.*?\}', self.options['eds_message'])
+                if ('editorlist' not in self.bibdata[entrykey]):
+                    return('')
+                elif (len(self.bibdata[entrykey]['editorlist']) == 1):
+                    return(field + singular_eds_message[1:-1])
+                else:
+                    return(field + plural_eds_message[1:-1])
             else:
                 msg = 'Warning 029c: the template for entry ' + entrykey + ' has an unknown function ' + \
                       '"' + index_elements[0] + '". Aborting template substitution'
@@ -3623,7 +3633,8 @@ def namestr_to_namedict(namestr, disable=None):
             z = get_delim_levels(namestr, ('{','}'))
             for match in re.finditer(r'(?<!\\)\.(?!-)', n_temp):
                 i = match.start()
-                if (z[i] == 0):
+                j = match.end()
+                if (z[i] == 0) and (namestr[j+1] != ')'):
                     bib_warning('Warning 021: The name token "' + n + '" in namestring "' + namestr + \
                          '" has a "." inside it, which may be a typo. Ignoring ...', disable)
 
@@ -4272,19 +4283,18 @@ def format_namelist(namelist, nametype='author', options=None):
         The formatted form of the "name string". This is generally a list of authors or list of editors.
     '''
 
-    if (options == None):
-        options = {}
-        options['use_firstname_initials'] = True
-        options['namelist_format'] = 'first_name_first'
-        options['maxauthors'] = 9
-        options['minauthors'] = 9
-        options['maxeditors'] = 5
-        options['mineditors'] = 5
-        options['etal_message'] = '\\textit{et al.}'
-        options['use_name_ties'] = False
-        options['terse_inits'] = False
-        options['french_intials'] = False
-        options['period_after_initial'] = True
+    if (options == None): options = {}
+    if ('use_firstname_initials' not in options): options['use_firstname_initials'] = True
+    if ('namelist_format' not in options):  options['namelist_format'] = 'first_name_first'
+    if ('maxauthors' not in options):  options['maxauthors'] = 9
+    if ('minauthors' not in options):  options['minauthors'] = 9
+    if ('maxeditors' not in options):  options['maxeditors'] = 5
+    if ('mineditors' not in options):  options['mineditors'] = 5
+    if ('etal_message' not in options):  options['etal_message'] = '\\textit{et al.}'
+    if ('use_name_ties' not in options):  options['use_name_ties'] = False
+    if ('terse_inits' not in options):  options['terse_inits'] = False
+    if ('french_intials' not in options):  options['french_intials'] = False
+    if ('period_after_initial' not in options):  options['period_after_initial'] = True
 
     ## First get all of the options variables needed below, depending on whether the function is operating on a list of
     ## authors or a list of editors. Second, insert "authorlist" into the bibliography database entry so that other
@@ -4358,19 +4368,18 @@ def namedict_to_formatted_namestr(namedict, options=None):
         The formatted string of the name.
     '''
 
-    if (options == None):
-        options = {}
-        options['use_firstname_initials'] = True
-        options['namelist_format'] = 'first_name_first'
-        options['maxauthors'] = 9
-        options['minauthors'] = 9
-        options['maxeditors'] = 5
-        options['mineditors'] = 5
-        options['etal_message'] = '\\textit{et al.}'
-        options['use_name_ties'] = False
-        options['terse_inits'] = False
-        options['french_intials'] = False
-        options['period_after_initial'] = True
+    if (options == None): options = {}
+    if ('use_firstname_initials' not in options): options['use_firstname_initials'] = True
+    if ('namelist_format' not in options):  options['namelist_format'] = 'first_name_first'
+    if ('maxauthors' not in options):  options['maxauthors'] = 9
+    if ('minauthors' not in options):  options['minauthors'] = 9
+    if ('maxeditors' not in options):  options['maxeditors'] = 5
+    if ('mineditors' not in options):  options['mineditors'] = 5
+    if ('etal_message' not in options):  options['etal_message'] = '\\textit{et al.}'
+    if ('use_name_ties' not in options):  options['use_name_ties'] = False
+    if ('terse_inits' not in options):  options['terse_inits'] = False
+    if ('french_intials' not in options):  options['french_intials'] = False
+    if ('period_after_initial' not in options):  options['period_after_initial'] = True
 
     lastname = namedict['last']
     firstname = '' if ('first' not in namedict) else namedict['first']

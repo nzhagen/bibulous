@@ -13,10 +13,11 @@ Bibulous' “style template” files allow a user to visualize the entire biblio
 Installation
 ============
 
-Installing using pip. ::
+Installing using pip:::
 
    pip install bibulous
 
+Instructions for installing Bibulous, and for seamlessly integrating it into your normal LaTeX workflow, are given in the ``INSTALL.rst`` file. Users can also consult the user guide (``user_guide.rst``) for further information and tutorials. A ``FAQ`` page is also available.
 
 Example
 =======
@@ -33,11 +34,6 @@ The ``<variable>`` notation indicates that the corresponding bibliography entry'
 We can read the above article template as indicating the following structure for LaTeX-formatting the cited entry in the bibliography (``.bib`` file). For articles, we first insert the list of author names (formatted according to the default form), followed by a comma. If no ``author`` field was found in the bibliography entry, then insert ``???`` to indicate a missing required field. Next insert a quoted title, followed by an italicized journal name, and a boldface volume number (all of these are required fields). Next, if the ``pages`` field was found in the entry's database, then parse the start and end page numbers and insert them here. If the ``pages`` field indicates that there was only one page, then use that instead. Or if the ``pages`` field is not present, then check to see if the ``eid`` is defined, and use it instead. However, if none of these three possibilities are available, then insert the “missing field” indicator, ``???``. Finally, put the year inside parentheses, and if the ``note`` field is defined in the entry, then add that to the end (following the period). If ``note`` is not defined, then just ignore it.
 
 One can read the book template similarly, and find that it has different required and optional fields. The simplicity of the format allows one to customize databases to suit any use. For example, to use a bibliography entrytype ``本`` instead of ``book``, then all that is necessary is to go into the template file and change ``book`` to ``本``. Of, if you wish to add a new field, such as translator, then if it has been added to the ``.bib`` database file, one need only add some text to the template, say ``(: <translator>)`` to insert that into every bibliography entry which has translator defined for that entrytype.
-
-Installing and instructions
-===========================
-
-Instructions for installing Bibulous, and for seamlessly integrating it into your normal LaTeX workflow, are given in the ``INSTALL.rst`` file. Users can also consult the user guide (``user_guide.rst``) for further information and tutorials. A ``FAQ`` page is also available.
 
 Developers
 ==========

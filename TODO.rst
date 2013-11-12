@@ -4,9 +4,6 @@ Python code to-do list: (including goals for version 2.0)
 The primary goal for version 2.0 is to incorporate integration with a front-end LaTeX package.
 For version 1.3, the goal is to have namelist templates working.
 
-- BUG: at the end of the "ed" special, you have "eds", which will also get used when the number of
-  editors is only one. Need to change that!
-
 - If a user added any options blocks to their defined variables, then they may have turned an
   unnested sequence into a nested one. Need to look for that. We can probably do this check
   when the BST file is parsed, rather than when we do string substitution in the template
@@ -82,7 +79,7 @@ Python testing to-do
 
 - The following should create a malformed implicit loop error but doesn't::
 
-    au = <name.0>, ..., and <name.N.last.initial()>
+    au = <name.0>, ..., and <name.N.last>
 
   That is, the first and last elements of the loop must have the same variable structure. Currently 
   the code simply truncates the RHS of the last element and ignores it, but it really should return
@@ -108,3 +105,4 @@ Python testing to-do
   So the question is: why does it go into this initializer 10 (!) times for the same name? I can see it doing
   this once for the sortkey, and then once more for the actual entry, but why 10 times? That might be wasting 
   a huge amount of computational time.
+
