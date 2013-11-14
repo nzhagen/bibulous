@@ -40,21 +40,5 @@ Guidelines for writing bibliography style templates
 
    then the ``incollection`` template must already be defined. Also note that two entrytype names are special and so cannot be used on the left hand side of the equals sign here: ``comment`` and ``preamble``.
 
-#. Options for ``citation_order`` include
-
-      * ``citenumber`` or ``none`` (the default)
-      * ``citekey``
-      * ``alpha`` (uses three letters of author's last name plus last two numbers in the year)
-      * ``nyt`` or ``plain`` (uses the first author's last name, the year, and then the title)
-      * ``nty``, ``nyvt``, ``anyt``, ``anyvt``, ``ynt``, and ``ydnt``
-
-   where the different letters indicate (as in Biblatex) ``n`` = name (i.e. author's last name), ``y`` = year, ``t`` = title, ``v`` = volume, and ``a`` = alphabetic label (where the user is implementing some bibliography front-end that prints out alphabetic labels inside the ``.aux`` file). The ``d`` here means that the order should be *descending* rather than the default of ascending.
-
 #. A user wanting a localized form of quotation should use ``\enquote{<title>}`` rather than ````<title>''``, and add ``\usepackage{csquotes}`` to the preamble of the LaTeX document.
 
-Not yet documented
-==================
-
-#. Need to give instructions to users about how to overwrite the ``generate_sortkey()`` function for arbitrary citation sorting.
-
-#. Also need instructions on how to overwrite the ``generate_bibitem_label()`` function for generating the reference item labels.

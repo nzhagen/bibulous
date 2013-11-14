@@ -61,12 +61,6 @@
             <p class="logo"><a href="index.html">
               <img class="logo" src="_static/logo_small.svg" alt="Logo"/>
             </a></p>
-  <h3><a href="index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Guidelines for writing bibliography style templates</a></li>
-<li><a class="reference internal" href="#not-yet-documented">Not yet documented</a></li>
-</ul>
-
   <h4>Previous topic</h4>
   <p class="topless"><a href="getting_started.html"
                         title="previous chapter">Getting started</a></p>
@@ -141,27 +135,8 @@
 </div>
 <p>then the <tt class="docutils literal"><span class="pre">incollection</span></tt> template must already be defined. Also note that two entrytype names are special and so cannot be used on the left hand side of the equals sign here: <tt class="docutils literal"><span class="pre">comment</span></tt> and <tt class="docutils literal"><span class="pre">preamble</span></tt>.</p>
 </li>
-<li><p class="first">Options for <tt class="docutils literal"><span class="pre">citation_order</span></tt> include</p>
-<blockquote>
-<div><ul class="simple">
-<li><tt class="docutils literal"><span class="pre">citenumber</span></tt> or <tt class="docutils literal"><span class="pre">none</span></tt> (the default)</li>
-<li><tt class="docutils literal"><span class="pre">citekey</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">alpha</span></tt> (uses three letters of author&#8217;s last name plus last two numbers in the year)</li>
-<li><tt class="docutils literal"><span class="pre">nyt</span></tt> or <tt class="docutils literal"><span class="pre">plain</span></tt> (uses the first author&#8217;s last name, the year, and then the title)</li>
-<li><tt class="docutils literal"><span class="pre">nty</span></tt>, <tt class="docutils literal"><span class="pre">nyvt</span></tt>, <tt class="docutils literal"><span class="pre">anyt</span></tt>, <tt class="docutils literal"><span class="pre">anyvt</span></tt>, <tt class="docutils literal"><span class="pre">ynt</span></tt>, and <tt class="docutils literal"><span class="pre">ydnt</span></tt></li>
-</ul>
-</div></blockquote>
-<p>where the different letters indicate (as in Biblatex) <tt class="docutils literal"><span class="pre">n</span></tt> = name (i.e. author&#8217;s last name), <tt class="docutils literal"><span class="pre">y</span></tt> = year, <tt class="docutils literal"><span class="pre">t</span></tt> = title, <tt class="docutils literal"><span class="pre">v</span></tt> = volume, and <tt class="docutils literal"><span class="pre">a</span></tt> = alphabetic label (where the user is implementing some bibliography front-end that prints out alphabetic labels inside the <tt class="docutils literal"><span class="pre">.aux</span></tt> file). The <tt class="docutils literal"><span class="pre">d</span></tt> here means that the order should be <em>descending</em> rather than the default of ascending.</p>
-</li>
 <li><p class="first">A user wanting a localized form of quotation should use <tt class="docutils literal"><span class="pre">\enquote{&lt;title&gt;}</span></tt> rather than <tt class="docutils literal"><span class="pre">``&lt;title&gt;''</span></tt>, and add <tt class="docutils literal"><span class="pre">\usepackage{csquotes}</span></tt> to the preamble of the LaTeX document.</p>
 </li>
-</ol>
-</div>
-<div class="section" id="not-yet-documented">
-<h1>Not yet documented<a class="headerlink" href="#not-yet-documented" title="Permalink to this headline">¶</a></h1>
-<ol class="arabic simple">
-<li>Need to give instructions to users about how to overwrite the <tt class="docutils literal"><span class="pre">generate_sortkey()</span></tt> function for arbitrary citation sorting.</li>
-<li>Also need instructions on how to overwrite the <tt class="docutils literal"><span class="pre">generate_bibitem_label()</span></tt> function for generating the reference item labels.</li>
 </ol>
 </div>
 

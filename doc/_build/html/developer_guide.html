@@ -117,19 +117,19 @@
 <div class="section" id="guidelines-for-python-coding-style">
 <h2>Guidelines for Python coding style<a class="headerlink" href="#guidelines-for-python-coding-style" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic">
-<li><p class="first">Note that you can mix 8-bit Python strings (ASCII text) with UTF-8 encoded text as long as the 8-bit string contains only ASCII characters.</p>
+<li><p class="first">Note that one can mix 8-bit Python strings (ASCII text) with UTF-8 encoded text as long as the 8-bit string contains only ASCII characters.</p>
 </li>
 <li><p class="first">Keep in mind when running into Unicode errors: reading a line of text from a file produces a line of bytes and not characters. To decode the bytes into a string of characters, you need to know the encoding.</p>
 </li>
 <li><p class="first">There are a couple of minor points where the Bibulous coding standards deviates from Python&#8217;s PEP8:</p>
 <blockquote>
 <div><ol class="loweralpha simple">
-<li>A line width of 100 is the standard (not 80).</li>
+<li>A line width of 120 is the standard (not 80).</li>
 <li>In general, statements that evaluate to a boolean are placed within parentheses (i.e. <tt class="docutils literal"><span class="pre">if</span> <span class="pre">(a</span> <span class="pre">&lt;</span> <span class="pre">b):</span></tt> rather than <tt class="docutils literal"><span class="pre">if</span> <span class="pre">a</span> <span class="pre">&lt;</span> <span class="pre">b:</span></tt>).</li>
 </ol>
 </div></blockquote>
 </li>
-<li><p class="first">Many developers prefer to spread out code among a large number of small files. Bibulous is currently organized in the opposite fashion &#8211; all of the code needed to run <tt class="docutils literal"><span class="pre">bibulous</span></tt> to create a <tt class="docutils literal"><span class="pre">.bbl</span></tt> file is located within a single large file. Several auxiliary scripts exist, but these use <tt class="docutils literal"><span class="pre">bibulous.py</span></tt> as a core library file, and perform different tasks (such as extracting sub-bibliography databases) than the main file was designed to do.</p>
+<li><p class="first">Many developers prefer to spread out code among a large number of small files, but Bibulous is currently organized in a single large file. This is partly because there is no large block of code that fits by itself so that a separate file makes sense. (Parsing of <tt class="docutils literal"><span class="pre">.bib</span></tt> files, for example, only requires a couple hundred lines.</p>
 </li>
 </ol>
 </div>
@@ -139,7 +139,8 @@
 <p>The basic program flow is as follows:</p>
 <blockquote>
 <div><ol class="arabic simple">
-<li>Read the .aux file and get the names of the bibliography databases (.bib files), the style templates (.bst files) to use, and the entire set of citations.</li>
+<li>Read the <tt class="docutils literal"><span class="pre">.aux</span></tt> file and get the names of the bibliography databases (<tt class="docutils literal"><span class="pre">.bib</span></tt> files), the style templates (<tt class="docutils literal"><span class="pre">.bst</span></tt> files) to use, and the entire set of citations.</li>
+<li>If an &#8220;extracted&#8221; database file exist, then compare the citations in the extracted database against those in the <tt class="docutils literal"><span class="pre">.aux</span></tt> file. If there are any differences, then re-extract the database. Otherwise, use the extracted database rather than the full one specified in the <tt class="docutils literal"><span class="pre">.aux</span></tt> file.</li>
 <li>Read in all of the bibliography database files into one long dictionary (<cite>bibdata</cite>), replacing any abbreviations with their full form. Cross-referenced data is <em>not</em> yet inserted at this point. That is delayed until the time of writing the BBL file in order to speed up parsing.</li>
 <li>Read in the Bibulous style template file as a dictionary (<cite>bstdict</cite>).</li>
 <li>Now that all the information is collected, go through each citation key, find the corresponding entry key in <cite>bibdata</cite>. If there is crossref data, then fill in missing values here. Also create the &#8220;special fields&#8221; here. Finally, from the entry type, select a template from <cite>bstdict</cite> and begin inserting the variables one-by-one into the template.</li>

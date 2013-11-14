@@ -14,7 +14,7 @@
 
 
 \title{Bibulous Documentation}
-\date{September 16, 2013}
+\date{November 14, 2013}
 \release{1.2}
 \author{Bibulous developers}
 \newcommand{\sphinxlogo}{\includegraphics{banner.pdf}\par}
@@ -123,7 +123,7 @@ Contents:
 
 \chapter{Getting started}
 \label{getting_started:bibulous-documentation}\label{getting_started:getting-started}\label{getting_started::doc}
-For general users, all that is needed is place the main \code{bibulous.py} file into the Python path. For users interested in using the auxiliary commands, \code{bibulous\_authorextract.py} and \code{bibulous\_citeextract.py} must also be in the Python path, and must be in the same directory as the main file.
+For general users, all that is needed is place the main \code{bibulous.py} file into the Python path and to tell LaTeX to use Bibulous rather than BibTeX as their bibliography engine. For users interested in using the auxiliary command \code{bibulous\_authorextract.py}, this file must also be in the Python path, and must be in the same directory as the main file.
 
 
 \section{Kile: replacing BibTeX with Bibulous}
@@ -246,40 +246,7 @@ Although the entrytype template definitions listed below are in alphabetical ord
 then the \code{incollection} template must already be defined. Also note that two entrytype names are special and so cannot be used on the left hand side of the equals sign here: \code{comment} and \code{preamble}.
 
 \item {} 
-Options for \code{citation\_order} include
-\begin{itemize}
-\item {} 
-\code{citenumber} or \code{none} (the default)
-
-\item {} 
-\code{citekey}
-
-\item {} 
-\code{alpha} (uses three letters of author's last name plus last two numbers in the year)
-
-\item {} 
-\code{nyt} or \code{plain} (uses the first author's last name, the year, and then the title)
-
-\item {} 
-\code{nty}, \code{nyvt}, \code{anyt}, \code{anyvt}, \code{ynt}, and \code{ydnt}
-
-\end{itemize}
-
-where the different letters indicate (as in Biblatex) \code{n} = name (i.e. author's last name), \code{y} = year, \code{t} = title, \code{v} = volume, and \code{a} = alphabetic label (where the user is implementing some bibliography front-end that prints out alphabetic labels inside the \code{.aux} file). The \code{d} here means that the order should be \emph{descending} rather than the default of ascending.
-
-\item {} 
 A user wanting a localized form of quotation should use \code{\textbackslash{}enquote\{\textless{}title\textgreater{}\}} rather than \code{{}`{}`\textless{}title\textgreater{}''}, and add \code{\textbackslash{}usepackage\{csquotes\}} to the preamble of the LaTeX document.
-
-\end{enumerate}
-
-
-\chapter{Not yet documented}
-\label{guidelines_for_writing_style_templates:not-yet-documented}\begin{enumerate}
-\item {} 
-Need to give instructions to users about how to overwrite the \code{generate\_sortkey()} function for arbitrary citation sorting.
-
-\item {} 
-Also need instructions on how to overwrite the \code{generate\_bibitem\_label()} function for generating the reference item labels.
 
 \end{enumerate}
 
@@ -329,7 +296,7 @@ Thanks! It's a lot of work to file an effective bug report, but a good report ca
 \section{Guidelines for Python coding style}
 \label{developer_guide:guidelines-for-python-coding-style}\begin{enumerate}
 \item {} 
-Note that you can mix 8-bit Python strings (ASCII text) with UTF-8 encoded text as long as the 8-bit string contains only ASCII characters.
+Note that one can mix 8-bit Python strings (ASCII text) with UTF-8 encoded text as long as the 8-bit string contains only ASCII characters.
 
 \item {} 
 Keep in mind when running into Unicode errors: reading a line of text from a file produces a line of bytes and not characters. To decode the bytes into a string of characters, you need to know the encoding.
@@ -338,7 +305,7 @@ Keep in mind when running into Unicode errors: reading a line of text from a fil
 There are a couple of minor points where the Bibulous coding standards deviates from Python's PEP8:
 \begin{enumerate}
 \item {} 
-A line width of 100 is the standard (not 80).
+A line width of 120 is the standard (not 80).
 
 \item {} 
 In general, statements that evaluate to a boolean are placed within parentheses (i.e. \code{if (a \textless{} b):} rather than \code{if a \textless{} b:}).
@@ -346,7 +313,7 @@ In general, statements that evaluate to a boolean are placed within parentheses 
 \end{enumerate}
 
 \item {} 
-Many developers prefer to spread out code among a large number of small files. Bibulous is currently organized in the opposite fashion -- all of the code needed to run \code{bibulous} to create a \code{.bbl} file is located within a single large file. Several auxiliary scripts exist, but these use \code{bibulous.py} as a core library file, and perform different tasks (such as extracting sub-bibliography databases) than the main file was designed to do.
+Many developers prefer to spread out code among a large number of small files, but Bibulous is currently organized in a single large file. This is partly because there is no large block of code that fits by itself so that a separate file makes sense. (Parsing of \code{.bib} files, for example, only requires a couple hundred lines.
 
 \end{enumerate}
 
@@ -358,7 +325,10 @@ The basic function of BibTeX is to accept an \code{.aux} file as input and to pr
 The basic program flow is as follows:
 \begin{enumerate}
 \item {} 
-Read the .aux file and get the names of the bibliography databases (.bib files), the style templates (.bst files) to use, and the entire set of citations.
+Read the \code{.aux} file and get the names of the bibliography databases (\code{.bib} files), the style templates (\code{.bst} files) to use, and the entire set of citations.
+
+\item {} 
+If an ``extracted'' database file exist, then compare the citations in the extracted database against those in the \code{.aux} file. If there are any differences, then re-extract the database. Otherwise, use the extracted database rather than the full one specified in the \code{.aux} file.
 
 \item {} 
 Read in all of the bibliography database files into one long dictionary (\emph{bibdata}), replacing any abbreviations with their full form. Cross-referenced data is \emph{not} yet inserted at this point. That is delayed until the time of writing the BBL file in order to speed up parsing.
@@ -547,11 +517,13 @@ Bibulous' “style template” files allow a user to visualize the entire biblio
 
 \section{Installation}
 \label{index:installation}
-Installing using pip.
+Installing using pip::
 
 \begin{Verbatim}[commandchars=\\\{\}]
 pip install bibulous
 \end{Verbatim}
+
+Instructions for installing Bibulous, and for seamlessly integrating it into your normal LaTeX workflow, are given in the \code{INSTALL.rst} file. Users can also consult the user guide (\code{user\_guide.rst}) for further information and tutorials. A \code{FAQ} page is also available.
 
 
 \section{Example}
@@ -570,11 +542,6 @@ The \code{\textless{}variable\textgreater{}} notation indicates that the corresp
 We can read the above article template as indicating the following structure for LaTeX-formatting the cited entry in the bibliography (\code{.bib} file). For articles, we first insert the list of author names (formatted according to the default form), followed by a comma. If no \code{author} field was found in the bibliography entry, then insert \code{???} to indicate a missing required field. Next insert a quoted title, followed by an italicized journal name, and a boldface volume number (all of these are required fields). Next, if the \code{pages} field was found in the entry's database, then parse the start and end page numbers and insert them here. If the \code{pages} field indicates that there was only one page, then use that instead. Or if the \code{pages} field is not present, then check to see if the \code{eid} is defined, and use it instead. However, if none of these three possibilities are available, then insert the “missing field” indicator, \code{???}. Finally, put the year inside parentheses, and if the \code{note} field is defined in the entry, then add that to the end (following the period). If \code{note} is not defined, then just ignore it.
 
 One can read the book template similarly, and find that it has different required and optional fields. The simplicity of the format allows one to customize databases to suit any use. For example, to use a bibliography entrytype \code{本} instead of \code{book}, then all that is necessary is to go into the template file and change \code{book} to \code{本}. Of, if you wish to add a new field, such as translator, then if it has been added to the \code{.bib} database file, one need only add some text to the template, say \code{(: \textless{}translator\textgreater{})} to insert that into every bibliography entry which has translator defined for that entrytype.
-
-
-\section{Installing and instructions}
-\label{index:installing-and-instructions}
-Instructions for installing Bibulous, and for seamlessly integrating it into your normal LaTeX workflow, are given in the \code{INSTALL.rst} file. Users can also consult the user guide (\code{user\_guide.rst}) for further information and tutorials. A \code{FAQ} page is also available.
 
 
 \section{Developers}

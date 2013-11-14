@@ -2,25 +2,23 @@
 \BOOKMARK [1][-]{section.1.1}{Kile: replacing BibTeX with Bibulous}{chapter.1}% 2
 \BOOKMARK [1][-]{section.1.2}{Modifying WinEdt5 to replace BibTeX with Bibulous}{chapter.1}% 3
 \BOOKMARK [0][-]{chapter.2}{Guidelines for writing bibliography style templates}{}% 4
-\BOOKMARK [0][-]{chapter.3}{Not yet documented}{}% 5
-\BOOKMARK [0][-]{chapter.4}{Instructions on how to report a bug to the Bibulous development team}{}% 6
-\BOOKMARK [1][-]{section.4.1}{Where to report a bug}{chapter.4}% 7
-\BOOKMARK [1][-]{section.4.2}{How to report a bug}{chapter.4}% 8
-\BOOKMARK [0][-]{chapter.5}{Developer guide}{}% 9
-\BOOKMARK [1][-]{section.5.1}{Guidelines for Python coding style}{chapter.5}% 10
-\BOOKMARK [1][-]{section.5.2}{Overall project strategy and code structure}{chapter.5}% 11
-\BOOKMARK [1][-]{section.5.3}{Parsing BIB files}{chapter.5}% 12
-\BOOKMARK [1][-]{section.5.4}{Parsing AUX files}{chapter.5}% 13
-\BOOKMARK [1][-]{section.5.5}{Parsing BST files}{chapter.5}% 14
-\BOOKMARK [1][-]{section.5.6}{Writing the BBL file}{chapter.5}% 15
-\BOOKMARK [1][-]{section.5.7}{Name formatting}{chapter.5}% 16
-\BOOKMARK [1][-]{section.5.8}{Generating sortkeys}{chapter.5}% 17
-\BOOKMARK [1][-]{section.5.9}{Testing}{chapter.5}% 18
-\BOOKMARK [1][-]{section.5.10}{Generating the documentation}{chapter.5}% 19
-\BOOKMARK [0][-]{chapter.6}{Bibulous Overview}{}% 20
-\BOOKMARK [1][-]{section.6.1}{Installation}{chapter.6}% 21
-\BOOKMARK [1][-]{section.6.2}{Example}{chapter.6}% 22
-\BOOKMARK [1][-]{section.6.3}{Installing and instructions}{chapter.6}% 23
-\BOOKMARK [1][-]{section.6.4}{Developers}{chapter.6}% 24
-\BOOKMARK [1][-]{section.6.5}{License}{chapter.6}% 25
-\BOOKMARK [1][-]{section.6.6}{Indices and tables}{chapter.6}% 26
+\BOOKMARK [0][-]{chapter.3}{Instructions on how to report a bug to the Bibulous development team}{}% 5
+\BOOKMARK [1][-]{section.3.1}{Where to report a bug}{chapter.3}% 6
+\BOOKMARK [1][-]{section.3.2}{How to report a bug}{chapter.3}% 7
+\BOOKMARK [0][-]{chapter.4}{Developer guide}{}% 8
+\BOOKMARK [1][-]{section.4.1}{Guidelines for Python coding style}{chapter.4}% 9
+\BOOKMARK [1][-]{section.4.2}{Overall project strategy and code structure}{chapter.4}% 10
+\BOOKMARK [1][-]{section.4.3}{Parsing BIB files}{chapter.4}% 11
+\BOOKMARK [1][-]{section.4.4}{Parsing AUX files}{chapter.4}% 12
+\BOOKMARK [1][-]{section.4.5}{Parsing BST files}{chapter.4}% 13
+\BOOKMARK [1][-]{section.4.6}{Writing the BBL file}{chapter.4}% 14
+\BOOKMARK [1][-]{section.4.7}{Name formatting}{chapter.4}% 15
+\BOOKMARK [1][-]{section.4.8}{Generating sortkeys}{chapter.4}% 16
+\BOOKMARK [1][-]{section.4.9}{Testing}{chapter.4}% 17
+\BOOKMARK [1][-]{section.4.10}{Generating the documentation}{chapter.4}% 18
+\BOOKMARK [0][-]{chapter.5}{Bibulous Overview}{}% 19
+\BOOKMARK [1][-]{section.5.1}{Installation}{chapter.5}% 20
+\BOOKMARK [1][-]{section.5.2}{Example}{chapter.5}% 21
+\BOOKMARK [1][-]{section.5.3}{Developers}{chapter.5}% 22
+\BOOKMARK [1][-]{section.5.4}{License}{chapter.5}% 23
+\BOOKMARK [1][-]{section.5.5}{Indices and tables}{chapter.5}% 24
