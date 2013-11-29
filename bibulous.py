@@ -190,7 +190,7 @@ class Bibdata(object):
         self.specials = {}
         self.specials['authorlist'] = '<author.to_namelist()>'
         self.specials['editorlist'] = '<editor.to_namelist()>'
-        self.specials['citelabel'] = '<citenum>'
+        self.specials['citelabel'] = '<citenum.remove_leading_zeros()>'
         self.specials['sortkey'] = '<citenum>'
         self.specials['au'] = '<authorlist.format_authorlist()>'
         self.specials['ed'] = '<editorlist.format_editorlist()>'
@@ -2562,6 +2562,8 @@ class Bibdata(object):
                     return(field + singular_eds_message[1:-1])
                 else:
                     return(field + plural_eds_message[1:-1])
+            elif (index_elements[0] == 'remove_leading_zeros()'):
+                return(field.lstrip('0'))
             else:
                 msg = 'Warning 029c: the template for entry ' + entrykey + ' has an unknown function ' + \
                       '"' + index_elements[0] + '". Aborting template substitution'
