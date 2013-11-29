@@ -184,7 +184,7 @@ class Bibdata(object):
 
         ## Not only do we need a dictionary for "special templates" but we also need to be able to iterate through it
         ## in the order given in the file. Thus, we have a "specials list" too.
-        self.specials_list = []
+        self.specials_list = ['authorlist','editorlist','citelabel','sortkey','au','ed']
 
         ## Put in the default special templates.
         self.specials = {}
@@ -283,21 +283,6 @@ class Bibdata(object):
         if self.filedict['bst']:
             for f in self.filedict['bst']:
                 self.parse_bstfile(f)
-
-        ## Now that we've parsed the BST file, we need to check the list of special templates. For the "authorlist" and
-        ## "editorlist", the ordering matters!
-        if ('authorlist' not in self.specials_list):
-            self.specials_list = ['authorlist'] + self.specials_list
-        if ('editorlist' not in self.specials_list):
-            self.specials_list = ['editorlist'] + self.specials_list
-        if ('citelabel' not in self.specials_list):
-            self.specials_list.append('citelabel')
-        if ('sortkey' not in self.specials_list):
-            self.specials_list.append('sortkey')
-        if ('au' not in self.specials_list):
-            self.specials_list.append('au')
-        if ('ed' not in self.specials_list):
-            self.specials_list.append('ed')
 
         ## Next, get the list of entrykeys in the database file(s), and compare them against the list of citation keys.
         if self.filedict['bib']:
@@ -1009,10 +994,11 @@ class Bibdata(object):
 
         if (filename == None):
             filename = self.filedict['bbl']
+        if not self.citedict:
+            print('Warning 034: No citations were found.')
+            return
         if not self.bstdict:
             raise ImportError('No template file was found. Aborting writing the BBL file ...')
-        if not self.citedict:
-            raise ImportError('No AUX file was found. Aborting writing the BBL file ...')
 
         if not write_preamble:
             filehandle = open(filename, 'a')
@@ -4454,7 +4440,7 @@ if (__name__ == '__main__'):
     ## Check if the bibliography database and style template files exist. If they don't, then the user didn't specify
     ## them, and it's probably true that there is no bibliography requested. That is, Bibulous was called without any
     ## need.
-    if main_bibdata.filedict:
+    if main_bibdata.filedict and main_bibdata.citedict:
         main_bibdata.write_bblfile()
         print('Writing to BBL file = ' + main_bibdata.filedict['bbl'])
         #os.system('kwrite ' + main_bibdata.filedict['bbl'])
