@@ -15,7 +15,7 @@ unpublished = <au>, \enquote{<title>.}[ <note>,] [<month.monthabbrev()> ]<year>.
 
 SPECIAL-TEMPLATES:
 sortkey = <citenum>                       ## order the reference list in the same order as the citations were given in
-citelabel = <citenum>                     ## use numeric reference labels
+citelabel = <citenum.remove_leading_zeros()>  ## use numeric reference labels
 
 OPTIONS:
 maxauthors = 9                            ## if more than 10 authors, then use "et al." format

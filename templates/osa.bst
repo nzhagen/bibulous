@@ -15,8 +15,8 @@ techreport = [<au>|<ed.eds_message()>|<organization>|<institution>|], \enquote{<
 website = \href{[<url>|<doi>]}{[<url>|<doi>]}
 
 SPECIAL-TEMPLATES:
-sortkey = <citenum>                       ## order the reference list in the same order as the citations were given in
-citelabel = <citenum>                     ## use numeric reference labels
+sortkey = <citenum>                          ## order the reference list in the same order as the citations were given in
+citelabel = <citenum.remove_leading_zeros()> ## use numeric reference labels
 
 OPTIONS:
 maxauthors = 25                           ## if more than 25 authors, then use "et al." format
@@ -34,7 +34,8 @@ eds_message = {, ed.}{, eds}              ## the label to use after the editor n
 undefstr = ???                            ## what string to replace undefined required fields with
 replace_newlines = True                   ## whether to replace newline characters inside fields with spaces
 allow_scripts = False                     ## whether to allow user scripts in BST files
-case_sensitive_field_names = False        ## whether to allow field names to be case sensitive (i.e. "BOOK" will not be the same entrytype as "book")
+case_sensitive_field_names = False        ## whether to allow field names to be case sensitive (i.e. so that "BOOK" will not be the same entrytype as "book")
+use_citeextract = True                    ## whether to automatically perform citation extraction each time Bibulous is run
 
 VARIABLES:
 
