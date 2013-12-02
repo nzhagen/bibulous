@@ -120,7 +120,8 @@ class Bibdata(object):
         keys in the citedict. Setting this to True provides significant speedups for large databases.
     parse_only_entrykeys : bool
         When comparing a database file against a citation list, all we are initially interested in are the entrykeys \
-        and not the data. So, in our first pass through the database, we can use this flag to skip the data.
+        and not the data. So, in our first pass through the database, we can use this flag to skip the data and get \
+        only the keys themselves.
 
     Methods
     -------
@@ -184,7 +185,8 @@ class Bibdata(object):
 
         ## Not only do we need a dictionary for "special templates" but we also need to be able to iterate through it
         ## in the order given in the file. Thus, we have a "specials list" too.
-        self.specials_list = ['authorlist','editorlist','citelabel','sortkey','au','ed']
+        self.specials_list = []
+        #self.specials_list = ['authorlist','editorlist','citelabel','sortkey','au','ed']
 
         ## Put in the default special templates.
         self.specials = {}
@@ -284,13 +286,34 @@ class Bibdata(object):
             for f in self.filedict['bst']:
                 self.parse_bstfile(f)
 
+        ## Now that we've parsed the BST file, we need to check the list of special templates. For the "authorlist" and
+        ## "editorlist", the ordering matters!
+        if ('authorlist' not in self.specials_list):
+            self.specials_list = ['authorlist'] + self.specials_list
+        if ('editorlist' not in self.specials_list):
+            self.specials_list = ['editorlist'] + self.specials_list
+        if ('citelabel' not in self.specials_list):
+            self.specials_list.append('citelabel')
+        if ('sortkey' not in self.specials_list):
+            self.specials_list.append('sortkey')
+        if ('au' not in self.specials_list):
+            self.specials_list.append('au')
+        if ('ed' not in self.specials_list):
+            self.specials_list.append('ed')
+
         ## Next, get the list of entrykeys in the database file(s), and compare them against the list of citation keys.
         if self.filedict['bib']:
             if self.citedict and self.options['use_citeextract'] and os.path.exists(self.filedict['extract']):
+                ## Check if the extract file is complete by reading in the database keys and checking against the
+                ## citation list.
                 self.parse_only_entrykeys = True
                 self.parse_bibfile(self.filedict['extract'])
                 self.parse_only_entrykeys = False
                 is_complete = self.check_citekeys_in_datakeys()
+                if is_complete:
+                    self.searchkeys = self.citedict.keys()
+                else:
+                    self.searchkeys = []
                 ## Clear the bibliography database, or we will get "overwrite" errors when we parse it again below
                 ## (since right now all we have are entrykeys).
                 self.bibdata = {'preamble':''}
@@ -331,8 +354,9 @@ class Bibdata(object):
             The filename of the .bib file to parse.
         '''
 
+        ## Need to use the "codecs" module to handle UTF8 encoding/decoding properly. Using mode='rU' with the common
+        ## "open()" file function doesn't do this probperly, though I don't know why.
         self.filename = filename
-        #filehandle = open(os.path.normpath(self.filename), 'rU')
         filehandle = codecs.open(os.path.normpath(self.filename), 'r', 'utf-8')
 
         ## This next block parses the lines in the file into a dictionary. The tricky part here is that the BibTeX
@@ -487,6 +511,8 @@ class Bibdata(object):
             ## the citation keys, then exit --- we don't need to add this to the database.
             entrykey = entrystr[:idx].strip()
 
+            ## If the entry is not among the list of keys to parse, then don't bother. Skip to the next entry to save
+            ## time.
             if self.culldata and self.searchkeys and (entrykey not in self.searchkeys):
                 return
 
@@ -677,8 +703,10 @@ class Bibdata(object):
         '''
 
         if debug: print('Reading AUX file "' + filename + '" ...')
+
+        ## Need to use the "codecs" module to handle UTF8 encoding/decoding properly. Using mode='rU' with the common
+        ## "open()" file function doesn't do this probperly, though I don't know why.
         self.filename = filename
-        #filehandle = open(os.path.normpath(self.filename), 'rU')
         filehandle = codecs.open(os.path.normpath(filename), 'r', 'utf-8')
 
         ## First go through the file and grab the list of citation keys. Once we get them all, then we can go through
@@ -731,7 +759,6 @@ class Bibdata(object):
         '''
 
         self.filename = filename
-        filehandle = open(os.path.normpath(filename), 'rU')
         filehandle = codecs.open(os.path.normpath(filename), 'r', 'utf-8')
 
         ## For the "definition_pattern", rather than matching the initial string up to the first whitespace character,
@@ -2468,12 +2495,6 @@ class Bibdata(object):
         index_elements = indexer.split('.')
         nelements = len(index_elements)
 
-        ## Note that the "strip()" function is here to make sure we can use quotes around the entrykey, but that we
-        ## won't get nested quotes when we recursively call the function.
-        #zzz: why is this here? Left over from some previous need?!?
-        #if (entrykey != ''):
-        #    entrykey = '"' + entrykey.strip('"') + '"'
-
         ## If the indexing element is an integer, then we assume that it wants a list or tuple. If it finds one, then get the indexed item.
         if index_elements[0].isdigit():
             if not isinstance(field, (tuple, list)):
@@ -3846,7 +3867,6 @@ def export_bibfile(bibdata, filename, abbrevs=None):
     '''
 
     assert isinstance(filename, basestring), 'Input "filename" must be a string.'
-    filehandle = open(filename, 'w')
     filehandle = codecs.open(filename, 'w', 'utf-8')
 
     if ('preamble' in bibdata):
