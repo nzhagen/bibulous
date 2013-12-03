@@ -225,6 +225,20 @@ class Bibdata(object):
         self.options['etal_message'] = ', \\textit{et al.}'
         self.options['edmsg1'] = ', ed.'
         self.options['edmsg2'] = ', eds'
+        self.options['replace_newlines'] = True
+
+        ## These options all relate to the default name formatting (the more rigid namelist formatting that does not use
+        ## the implicit indexing and implicit loop structures).
+        self.options['use_firstname_initials'] = True
+        self.options['namelist_format'] = 'first_name_first'
+        self.options['maxauthors'] = 9
+        self.options['minauthors'] = 9
+        self.options['maxeditors'] = 5
+        self.options['mineditors'] = 5
+        self.options['use_name_ties'] = False
+        self.options['terse_inits'] = False
+        self.options['french_intials'] = False
+        self.options['period_after_initial'] = True
 
         ## Compile some patterns for use in regex searches.
         self.anybrace_pattern = re.compile(r'(?<!\\)[{}]', re.UNICODE)
