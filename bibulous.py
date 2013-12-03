@@ -223,6 +223,8 @@ class Bibdata(object):
         self.options['case_sensitive_field_names'] = False
         self.options['use_citeextract'] = True
         self.options['etal_message'] = ', \\textit{et al.}'
+        self.options['edmsg1'] = ', ed.'
+        self.options['edmsg2'] = ', eds'
 
         ## Compile some patterns for use in regex searches.
         self.anybrace_pattern = re.compile(r'(?<!\\)[{}]', re.UNICODE)
@@ -287,7 +289,8 @@ class Bibdata(object):
                 self.parse_bstfile(f)
 
         ## Now that we've parsed the BST file, we need to check the list of special templates. For the "authorlist" and
-        ## "editorlist", the ordering matters!
+        ## "editorlist", the ordering matters! It may seem that this section is easily replaced with a simple list, but
+        ## the structure here is needed in order to keep the order of items correct.
         if ('authorlist' not in self.specials_list):
             self.specials_list = ['authorlist'] + self.specials_list
         if ('editorlist' not in self.specials_list):
@@ -2514,12 +2517,6 @@ class Bibdata(object):
 
         ## If the thing to the right of the dot-indexer is a *function*, then map the field to the function.
         if index_elements[0].endswith(')'):
-            #if not isinstance(field, basestring):
-            #    fieldname = '' if not isinstance(field, basestring) else '"' + field + '" '
-            #    msg = 'Warning 029b: the ' + fieldname + 'field of entry ' + entrykey + ' is not a string type and ' + \
-            #          'thus cannot be mapped to a function. Aborting template substitution'
-            #    bib_warning(msg, disable=self.disable)
-            #    return(None)
             if (index_elements[0] == 'initial()'):
                 options['french_initials'] = False
                 newfield = initialize_name(field, options=options)
@@ -2574,16 +2571,6 @@ class Bibdata(object):
             elif (index_elements[0] == 'format_editorlist()'):
                 result = format_namelist(field, nametype='editor')
                 return(result)
-#            elif (index_elements[0] == 'eds_message()'):
-#                #zzz: need to put in some checking here to prevent exceptions
-#                (singular_eds_message,plural_eds_message) = re.findall(r'\{.*?\}', self.options['eds_message'])
-#                if ('editorlist' not in self.bibdata[entrykey]):
-#                    return('')
-#                elif (len(self.bibdata[entrykey]['editorlist']) == 1):
-#                    return(field + singular_eds_message[1:-1])
-#                else:
-#                    return(field + plural_eds_message[1:-1])
-#            elif re.search(r'ifsingular\(.*\)', index_elements[0], re.UNICODE):
             elif re.search(r'if_singular\(.*\)', index_elements[0], re.UNICODE):
                 match = re.search(r'if_singular\(.*\)', index_elements[0], re.UNICODE)
                 result = match.group(0)[12:-1]
