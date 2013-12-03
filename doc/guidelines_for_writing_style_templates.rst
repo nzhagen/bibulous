@@ -1,18 +1,22 @@
 Guidelines for writing bibliography style templates
 ===================================================
 
-#. Comments begin with ``#``. (A single ``#`` indicates a symbol and not a comment!)
+#. Comments begin with ``#``, following the Python convention.
 
-#. A line which begins with an entrytype name followed by an ``=`` sign defines the bibliographic format for that entrytype. For example::
+#. Each template file can have as many as five sections. None of the sections are required to be in the file, but any definitions in the file must be placed inside a section header so that the code knows how to deal with the definition. The four possible section headers are: TEMPLATES, SPECIAL-TEMPLATES, OPTIONS, VARIABLES, DEFINITIONS. And note that a section header is always placed by itself on a line and has a colon appended to it, as in ``TEMPLATES:``.
 
-      article = <authorlist>, ``<title>,'' <journal>, <volume>, ...
+#. All variable definitions use the variable name followed by whitespace, an equals sign, more whitespace, and then the definition itself. Thus the whitespace+=+whitespace is the delimiter between variable and definition, and is required syntax.
+
+#. Inside the ``TEMPLATES`` section, all of the variable definitions are intended to map to a database entrytype name. For example::
+
+      article = <au>, ``<title>,'' <journal>, <volume>, ...
                  [<startpage>--<endpage>|<eid>|]  (<year>). [<note>.]
 
-   Here the ``article`` entrytype will be typeset so that the list of authors is followed by the article title in double quotes, the journal name in standard font (i.e. not italics), the volume number, the page range, and the year.
+   Here the ``article`` entrytype will be typeset so that the list of authors (``<au>``) is followed by the article title in double quotes, the journal name in standard font (i.e. not italics), the volume number, the page range, and the year.
 
-#. Square brackets ``[]`` indicate an optional entry; any required entries which are not defined in the BibTeX database file (.bib file) are replaced with '???' by default. Optional arguments is undefined are simply skipped. If a ``|`` is present within the square brackets, it indicates an "elseif" argument (if not the final ``|`` within the brackets), or an "else" argument (if the final ``|``). The "else" indicates a *required* argument, so if you want an optional entry to be replaced with something, you can use ``[option|]`` --- the use of an empty cell inside the square brackets indicates that we simply use the default replacement for an undefined required argument (i.e. ``???``). If you want all of the cells to be optional, then use ``|'']`` in the last cell -- that is, the last cell should be an empty string. For  now, the format currently does not allow nesting of brackets.
+#. Square brackets ``[]`` indicate an optional entry; any required entries which are not defined in the BibTeX database file (.bib file) are replaced with '???' by default. Optional arguments that are undefined are simply skipped. If a ``|`` is present within the square brackets, it indicates an "elseif" argument. If the ``|`` symbol is used to create an empty last cell, as in ``[<var>|]``, this indicates that it is required to have at least _one_ among the cells to be defined. Nesting of ``[]`` brackets is allowed, but the syntax becomes computationally expensive to parse, so that these structures should be used sparingly.
 
-#. If you need the square brackets or ``|`` symbol as formatting elements, then simply use ``{\makeopenbracket}``, ``{\makeclosebracket}``, or ``{\makeverticalbar}``. If you need the angle brackets as formatting elements, then use ``{\makegreaterthan}`` and ``{\makelessthan}``. Note that the curly brackets are needed here so that when Bibulous replaces the command with the appropriate symbol, that symbol can be used correctly in LaTeX commands.
+#. For users that need square brackets, ``#``, ``<``, ``>``, or ``|`` symbols as formatting elements, then simply use ``{\makeopenbracket}``, ``{\makeclosebracket}``, or ``{\makeverticalbar}``. If you need the angle brackets as formatting elements, then use ``{\makegreaterthan}`` and ``{\makelessthan}``. Note that the curly brackets are needed here so that when Bibulous replaces the command with the appropriate symbol, that symbol can be used correctly in LaTeX commands.
 
 #. Unlike BibTeX, Bibulous does *not* change the capitalization state of any entry variables. It assumes that the authors have defined it the way they want it.
 
