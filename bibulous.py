@@ -2513,7 +2513,7 @@ class Bibdata(object):
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
 
         ## If the thing to the right of the dot-indexer is a *function*, then map the field to the function.
-        if index_elements[0].endswith('()'):
+        if index_elements[0].endswith(')'):
             #if not isinstance(field, basestring):
             #    fieldname = '' if not isinstance(field, basestring) else '"' + field + '" '
             #    msg = 'Warning 029b: the ' + fieldname + 'field of entry ' + entrykey + ' is not a string type and ' + \
@@ -2574,15 +2574,29 @@ class Bibdata(object):
             elif (index_elements[0] == 'format_editorlist()'):
                 result = format_namelist(field, nametype='editor')
                 return(result)
-            elif (index_elements[0] == 'eds_message()'):
-                #zzz: need to put in some checking here to prevent exceptions
-                (singular_eds_message,plural_eds_message) = re.findall(r'\{.*?\}', self.options['eds_message'])
-                if ('editorlist' not in self.bibdata[entrykey]):
+#            elif (index_elements[0] == 'eds_message()'):
+#                #zzz: need to put in some checking here to prevent exceptions
+#                (singular_eds_message,plural_eds_message) = re.findall(r'\{.*?\}', self.options['eds_message'])
+#                if ('editorlist' not in self.bibdata[entrykey]):
+#                    return('')
+#                elif (len(self.bibdata[entrykey]['editorlist']) == 1):
+#                    return(field + singular_eds_message[1:-1])
+#                else:
+#                    return(field + plural_eds_message[1:-1])
+#            elif re.search(r'ifsingular\(.*\)', index_elements[0], re.UNICODE):
+            elif re.search(r'if_singular\(.*\)', index_elements[0], re.UNICODE):
+                match = re.search(r'if_singular\(.*\)', index_elements[0], re.UNICODE)
+                result = match.group(0)[12:-1]
+                (variable_to_eval, singular_form, plural_form) = result.split(',')
+
+                if (variable_to_eval not in self.bibdata[entrykey]):
                     return('')
-                elif (len(self.bibdata[entrykey]['editorlist']) == 1):
-                    return(field + singular_eds_message[1:-1])
+                elif (len(self.bibdata[entrykey][variable_to_eval]) == 1):
+                    suffix = self.options[singular_form.strip()]
+                    return(field + singular_form.strip())
                 else:
-                    return(field + plural_eds_message[1:-1])
+                    suffix = self.options[plural_form.strip()]
+                    return(field + suffix)
             elif (index_elements[0] == 'remove_leading_zeros()'):
                 return(field.lstrip('0'))
             else:
