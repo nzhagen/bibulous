@@ -35,9 +35,9 @@ G. Dalhquist, Å. Bj{\"o}rck, and N. Anderson, \textit{Numerical Methods} (???).
 \bibitem{name_parsing5}
 T. H. Cormen, C. E. Leiserson, and R. L. Rivest, \textit{Introduction to Algorithms} (1990).
 \bibitem{many_authors}
-B. Yanny, C. Rockosi, H. J. Newberg, G. R. Knapp, J. K. Adelman-McCarthy, B. Alcorn, S. Allam, C. A. Prieto, D. An, K. S. J. Anderson, \textit{et al.}, ``SEGUE: a spectroscopic survey of 240,000 stars with $g = 14$--20'' (2009).
+B. Yanny, C. Rockosi, H. J. Newberg, G. R. Knapp, J. K. Adelman-McCarthy, B. Alcorn, S. Allam, C. A. Prieto, D. An, K. S. J. Anderson, \textit{et~al.}, ``SEGUE: a spectroscopic survey of 240,000 stars with $g = 14$--20'' (2009).
 \bibitem{many_editors}
-M. M. Blouke, N. Sampat, G. M. Williams, Jr., \textit{et al.}, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications'' (2000).
+M. M. Blouke, N. Sampat, G. M. Williams, Jr., \textit{et~al.}, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications'' (2000).
 \bibitem{brace_delimited_quotes}
 S. New, ``Comments on `Filenames and Fonts'\:'' (4321).
 \bibitem{procspie_as_journal}
@@ -87,7 +87,7 @@ Error: malformed template.
 \bibitem{malformed_template4}
 Error: malformed template.
 \bibitem{others_becomes_etal}
-M. A, M. B, M. C, \textit{et al.} ``Some title'' (2000).
+M. A, M. B, M. C, \textit{et~al.} ``Some title'' (2000).
 \bibitem{implicit_index}
 David Hestenes
 \bibitem{french_initials}
