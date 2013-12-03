@@ -1,15 +1,15 @@
 TEMPLATES:
 article = <au>, \enquote{<title>,} \textit{<journal>} vol.~<volume>: [pp.~<startpage>--<endpage>|p.~<startpage>|<eid>|], [<month.monthabbrev()> ]<year>.[ <note>]
-book = [<au>|<ed.eds_message()>|<organization>|<institution>|], \textit{<title>}[, vol.~<volume>]. [<address>: ]<publisher>, [<edition.ordinal()>~ed., ][<month.monthabbrev()> ]<year>.[ <note>]
+book = [<au>|<ed.if_singular(editorlist, edmsg1, edmsg2)>|<organization>|<institution>|], \textit{<title>}[, vol.~<volume>]. [<address>: ]<publisher>, [<edition.ordinal()>~ed., ][<month.monthabbrev()> ]<year>.[ <note>]
 booklet = <au>, \enquote{<title>.} [<howpublished>, ][<address>, ][<month.monthabbrev()> ]<year>.[ <note>]
-conference = [<au>|<organization>|<institution>|], \enquote{<title>,} [in \textit{<booktitle>}][ (<ed.eds_message()>), ][vol.~<volume>, ] (<address>)[, p.~<startpage>][, <organization>], <publisher>, [<month.monthabbrev()> ]<year>.[ <note>]
+conference = [<au>|<organization>|<institution>|], \enquote{<title>,} [in \textit{<booktitle>}][ (<ed.if_singular(editorlist, edmsg1, edmsg2)>), ][vol.~<volume>, ] (<address>)[, p.~<startpage>][, <organization>], <publisher>, [<month.monthabbrev()> ]<year>.[ <note>]
 inbook = <au>, \textit{<title>}, [vol.~<volume>, ][ch.~<chapter>, ][pp.~<startpage>--<endpage>|<eid>|]. <address>: <publisher>, [<edition.ordinal()>~ed., ][<month.monthabbrev()> ]<year>).[ <note>]
-incollection = [<au>|<organization>|<institution>|], \enquote{<title>,} [in \textit{<booktitle>}][ (<ed.eds_message()>), ][vol.~<volume>, ][ch.~<chapter>, ][pp.~<startpage>--<endpage>|<eid>|] <address>: <publisher>, [<edition.ordinal()>~ed., ][<month.monthabbrev()> ]<year>.[ <note>]
-manual = [<au>|<ed.eds_message()>|], \textit{<title>}. [<organization>, ][<address>, ][<edition.ordinal()>~ed., |ver.~<version>, ][<month.monthabbrev()> ]<year>).[ <note>]
+incollection = [<au>|<organization>|<institution>|], \enquote{<title>,} [in \textit{<booktitle>}][ (<ed.if_singular(editorlist, edmsg1, edmsg2)>), ][vol.~<volume>, ][ch.~<chapter>, ][pp.~<startpage>--<endpage>|<eid>|] <address>: <publisher>, [<edition.ordinal()>~ed., ][<month.monthabbrev()> ]<year>.[ <note>]
+manual = [<au>|<ed.if_singular(editorlist, edmsg1, edmsg2)>|], \textit{<title>}. [<organization>, ][<address>, ][<edition.ordinal()>~ed., |ver.~<version>, ][<month.monthabbrev()> ]<year>).[ <note>]
 mastersthesis = <au>, ``<title>,'' Master's thesis, <school>, <address>, [<month.monthabbrev()> ]<year>).[ <note>]
 misc = <au>, \enquote{<title>.}[ <howpublished>, ]<month.monthabbrev()> ]<year>.[ <note>]
 phdthesis = <au>, \textit{<title>}, Ph.D. thesis, <school>, <address>, [<monthrname> ]<year>.[ <note>]
-proceedings = <ed.eds_message()>, ed., \textit{<title>}, [vol.~<volume>, ][<organization>, ]<publisher> [<month.monthabbrev()> ]<year>.[ <note>]
+proceedings = <ed.if_singular(editorlist, edmsg1, edmsg2)>, ed., \textit{<title>}, [vol.~<volume>, ][<organization>, ]<publisher> [<month.monthabbrev()> ]<year>.[ <note>]
 techreport = <au>, \enquote{<title>,} Tech.\ Rep.\ <number>, [<institution>, |<organization>, |]<publisher>, [<month.monthabbrev()> ]<year>.[ <note>]
 unpublished = <au>, \enquote{<title>.}[ <note>,] [<month.monthabbrev()> ]<year>.
 
@@ -26,7 +26,9 @@ procspie_as_journal = True                ## treat SPIE conference proceedings l
 sort_case = False                         ## whether to use case-sensitive citation sorting (default is False)
 use_abbrevs = True                        ## whether to use the abbreviation strings (mainly useful for debugging)
 bibitemsep = 0pt                          ## the extra vertical separation between each bibliography entry. Defining this option *overrides* LaTeX's existing definition for \bibitemsep.
-eds_message = {, ed.}{, eds}              ## the label to use after the editor namelist (first braces for one editor, second braces for multiple editors)
+etal_message = , \textit{et~al.}          ## what text to place at the end of an authorlist when there are too many
+edmsg1 = , ed.                            ## the label to use after the editor namelist when only one editor is present
+edmsg2 = , eds                            ## the label to use after the editor namelist when multiple editors are present
 
 ## The remaining exceptions below are really for users rather than for the journal. Maybe put these someplace else?
 undefstr = ???                            ## what string to replace undefined required fields with
