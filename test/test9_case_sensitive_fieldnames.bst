@@ -21,8 +21,9 @@ replace_newlines = True                   ## whether to remove newlines from the
 undefstr = ???                            ## what string to replace undefined required fields with
 case_sensitive_field_names = True         ## whether to allow field names to be case sensitive (i.e. "BOOK" will not be the same entrytype as "book")
 use_citeextract = False                   ## turn off cite extraction, since this interferes with using multiple BIB file inputs
-etal_message = , \textit{et al.}          ## what text to place at the end of an authorlist when there are too many
-eds_message = {, ed.}{, eds}              ## the label to use after the editor namelist
+etal_message = , \textit{et~al.}          ## what text to place at the end of an authorlist when there are too many
+edmsg1 = , ed.                            ## the label to use after the editor namelist when only one editor is present
+edmsg2 = , eds                            ## the label to use after the editor namelist when multiple editors are present
 
 
 VARIABLES:

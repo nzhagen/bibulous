@@ -14,13 +14,14 @@ name_parsing3 = <au>, \enquote{<title>} (<year>).
 name_parsing4 = <au>, \textit{<title>} (<year>).
 name_parsing5 = <au>, \textit{<title>} (<year>).
 many_authors = <au>, \enquote{<title>} (<year>).
-many_editors = <ed.eds_message()>, \enquote{<title>} (<year>).
+#many_editors = <ed.eds_message()>, \enquote{<title>} (<year>).
+many_editors = <ed.if_singular(editorlist, edmsg1, edmsg2)>, \enquote{<title>} (<year>).
 #name_abbrev1 = <au>, \enquote{<title>} (<year>).
 #name_abbrev2 = <au>, \enquote{<title>} (<year>).
 brace_delimited_quotes = <au>, \enquote{<title>} (<year>).
 inproceedings = <au>, \enquote{<title>,} \textit{<journal>} \textbf{<volume>}: <eid> (<year>).
 article = <au>, \enquote{<title>,} \textit{<journal>} \textbf{<volume>}: <eid> (<year>).
-crossref1 = <au>, \enquote{<title>,} in \textit{<booktitle>}, <ed.eds_message()>, Proc. SPIE \textbf{<volume>}: <eid> (<year>).
+crossref1 = <au>, \enquote{<title>,} in \textit{<booktitle>}, <ed.if_singular(editorlist, edmsg1, edmsg2)>, Proc. SPIE \textbf{<volume>}: <eid> (<year>).
 japanese = <au>, \enquote{<title-ja>,} <publisher-ja> (<year>). {\makeopenbracket}In <language>.{\makeclosebracket}
 trailing_comma = <au>, \enquote{<title>} (<year>).
 monthname1 = <au>, \enquote{<title>} (<month.monthname()>, <year>).
@@ -50,7 +51,7 @@ use_name_ties = <au-B>, \enquote{<title>} (<year>).
 period_after_initial = <au-C>, \enquote{<title>} (<year>).
 terse_inits = <au-D>, \enquote{<title>} (<year>).
 author_firstname_initials = <au-E>, \enquote{<title>} (<year>).
-editor_firstname_initials = <ed-A.eds_message()>, \enquote{<title>} (<year>).
+editor_firstname_initials = <ed-A.if_singular(editorlist, edmsg1, edmsg2)>, \enquote{<title>} (<year>).
 
 
 SPECIAL-TEMPLATES:
@@ -89,8 +90,9 @@ replace_newlines = True                   ## whether to remove newlines from the
 undefstr = ???                            ## what string to replace undefined required fields with
 case_sensitive_field_names = False        ## whether to allow field names to be case sensitive (i.e. "BOOK" will not be the same entrytype as "book")
 use_citeextract = False                   ## turn off cite extraction, since this interferes with using multiple BIB file inputs
-etal_message = , \textit{et al.}          ## what text to place at the end of an authorlist when there are too many
-eds_message = {, ed.}{, eds}              ## the label to use after the editor namelist
+etal_message = , \textit{et~al.}          ## what text to place at the end of an authorlist when there are too many
+edmsg1 = , ed.                            ## the label to use after the editor namelist when only one editor is present
+edmsg2 = , eds                            ## the label to use after the editor namelist when multiple editors are present
 
 
 VARIABLES:

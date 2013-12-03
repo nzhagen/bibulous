@@ -21,8 +21,9 @@ allow_scripts = True                      ## whether to allow user scripts in BS
 yearstyle = BCE/CE                        ## whether to use 'BCE/CE' after the year number or the older 'BC/AD' form
 document_language = Japanese              ## whether the document is for a Japanese audience
 use_citeextract = False                   ## turn off cite extraction, since this interferes with using multiple BIB file inputs
-etal_message = , \textit{et al.}          ## what text to place at the end of an authorlist when there are too many
-eds_message = {, ed.}{, eds}              ## the label to use after the editor namelist
+etal_message = , \textit{et~al.}          ## what text to place at the end of an authorlist when there are too many
+edmsg1 = , ed.                            ## the label to use after the editor namelist when only one editor is present
+edmsg2 = , eds                            ## the label to use after the editor namelist when multiple editors are present
 
 
 VARIABLES:
