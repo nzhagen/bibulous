@@ -16,27 +16,21 @@ Guidelines for writing bibliography style templates
 
 #. Square brackets ``[]`` indicate an optional entry; any required entries which are not defined in the BibTeX database file (.bib file) are replaced with '???' by default. Optional arguments that are undefined are simply skipped. If a ``|`` is present within the square brackets, it indicates an "elseif" argument. If the ``|`` symbol is used to create an empty last cell, as in ``[<var>|]``, this indicates that it is required to have at least _one_ among the cells to be defined. Nesting of ``[]`` brackets is allowed, but the syntax becomes computationally expensive to parse, so that these structures should be used sparingly.
 
-#. For users that need square brackets, ``#``, ``<``, ``>``, or ``|`` symbols as formatting elements, then simply use ``{\makeopenbracket}``, ``{\makeclosebracket}``, or ``{\makeverticalbar}``. If you need the angle brackets as formatting elements, then use ``{\makegreaterthan}`` and ``{\makelessthan}``. Note that the curly brackets are needed here so that when Bibulous replaces the command with the appropriate symbol, that symbol can be used correctly in LaTeX commands.
+#. Users that need square brackets, ``#``, ``<``, ``>``, or ``|`` symbols as formatting elements within the reference list can implement them using some custom LaTeX-markup commands: ``{\makeopenbracket}``, ``{\makehashsign}``, ``{\makeclosebracket}``, ``{\makegreaterthan}``, ``{\makelessthan}``, or ``{\makeverticalbar}``. Note that the curly brackets used in each case are required.
 
-#. Unlike BibTeX, Bibulous does *not* change the capitalization state of any entry variables. It assumes that the authors have defined it the way they want it.
-
-#. If an entrytype format definition contains only another entrytype on the right hand side of the ``=``, for example::
+#. In the ``TEMPLATES`` section of the file, if an entrytype format definition contains only another entrytype name on the right hand side of the ``=``, i.e.::
 
        inbook = incollection
 
-   then this simply defines the format for the entrytype on the left hand side as identical to that of the entrytype given on the right hand side.
+   then this means that the existing ``incollection`` template should be copied for use with ``inbook`` entrytypes. (Note that ``incollection`` should be defined above this line in order for this to work.)
 
-#. The second type of data present in the file are the formatting options. These are defined by writing ``options`` followed by a period and then the option name, for example::
+#. Bibulous only allows string variables to be inserted into a given position within an entrytype template, and all Bibulous variables are surrounded with angle brackets. Thus, when typesetting the bibliography, Bibulous will replace the variable ``<authorlist>`` with the string stored in the ``authorlist`` field of the current entry being formatted. An example list of typical variables one may use is:
 
-      options.authorlist_format = 'first_name_first'
+      ``<au>``, ``<booktitle>``, ``<chapter>``, ``<edition>``, ``<ed>``, ``<eid>``, ``<endpage>``, ``<institution>``, ``<journal>``, ``<nationality>``, ``<note>``, ``<number>``, ``<organization>``, ``<publisher>``, ``<school>``, ``<series>``, ``<startpage>``, ``<title>``, ``<version>``, ``<volume>``, ``<year>``.
 
-#. Bibulous only allows string variables to be inserted into a given position within an entrytype template, and all Bibulous variables are surrounded with angle brackets. Thus, when typesetting the bibliography, Bibulous will replace the variable ``<authorlist>`` with the string stored in the ``authorlist`` field of the current entry being formatted. An example list of variables one may choose to use is:
+   As one can see, these primarily consist of the various fields one can expect to see within a given BibTeX-formatted database file. This list is actually freely extensible. A user can add any additional variables needed, so that if a ``video`` field is used in a ``.bib`` database file, then this can be used within a formatted reference simply by placing ``<video>`` into the template wherever the information needs to be inserted.
 
-      ``<authorlist>``, ``<booktitle>``, ``<chapter>``, ``<edition_ordinal>``, ``<editorlist>``, ``<eid>``, ``<endpage>``, ``<institution>``, ``<journal>``, ``<nationality>``, ``<note>``, ``<number>``, ``<organization>``, ``<publisher>``, ``<school>``, ``<series>``, ``<startpage>``, ``<title>``, ``<version>``, ``<volume>``, ``<year>``.
-
-   As one can see, these primarily consist of the various fields one can expect to see within a given BibTeX-formatted database file. This list is actually freely extensible. You can add whatever additional variables you like, so that if you use a special ``video`` field in your database, you can insert that field's value into the template wherever ``<movie>`` is located.
-
-#. Note that several fields are defined by default which are *not* directly from the bibliography database. These are ``authorlist``, ``editorlist``, ``startpage``, ``endpage``, and ``edition_ordinal``. These fields are derived from the original database file, but have been reformatted.
+#. Note that several fields are defined by default which are *not* directly from the bibliography database. These are ``au``, ``ed``, ``startpage``, and ``endpage``. These fields are derived from the original database file, but have been reformatted. See the *Default Fields* section below.
 
 #. Although the entrytype template definitions listed below are in alphabetical order, that can be put in any desired order within the file. (The exception to this rule is that if a definition consists of, for example::
 
@@ -46,3 +40,82 @@ Guidelines for writing bibliography style templates
 
 #. A user wanting a localized form of quotation should use ``\enquote{<title>}`` rather than ````<title>''``, and add ``\usepackage{csquotes}`` to the preamble of the LaTeX document.
 
+#. In the ``OPTIONS`` section of the file are the formatting options. None of these definitions are required. The complete list of available formatting options is::
+
+      options.authorlist_format = 'first_name_first'
+
+#. [ADD MORE DETAILS HERE ON NEWER CODE STRUCTURES]
+
+Default Fields
+--------------
+
+A complete of the existing default fields is:::
+
+    au
+    authorlist
+    citekey
+    citenum
+    ed
+    editorlist
+
+[ADD DETAILS]
+
+Operators
+---------
+
+One can use the "dot" operator inside a variable name, as in ``<authorname.0.last.initial()>'' to perform any one of three functions: a numerical index (the ``0`` shown here), a dictionary lookup (the ``last`` used here), or the application of an operator (in this case, the ``.initial()`` operator which is used to reduce a name to its initial).
+
+The complete list of operators available is:::
+
+    .compress()
+    .format_authorlist()
+    .format_editorlist()
+    .frenchinitial()
+    .if_singular(var1,var2,var3)
+    .initial()
+    .monthabbrev()
+    .monthname()
+    .ordinal()
+    .remove_leading_zeros()
+    .sentence_case()
+    .tie()
+    .to_namelist()
+
+
+[ADD DETAILS]
+
+
+
+To implement BibTeX' method of reducing the capitalization state of a string (commonly used for titles), Bibulous uses a ``.sentence_case()`` operator. For example, instead of using ``<title>`` within a template, which inserts the ``title`` field from the database as-is, a user can instead insert ``<title.sentence_case()>``, which will reduce capitalization of letters in the ``title`` field (except for those letter protected within a pair of curly braces) prior to inserting them into the formatted reference.
+
+Options keywords
+----------------
+
+A complete list of existing options keywords, together with their default definitions, is:::
+
+    allow_scripts = False
+    backrefs = False
+    backrefstyle = none
+    bibitemsep = None
+    case_sensitive_field_names = False
+    edmsg1 = , ed.
+    edmsg2 = , eds
+    etal_message = , \\textit{et al.}
+    maxauthors = 9
+    maxeditors = 5
+    minauthors = 9
+    mineditors = 5
+    month_abbrev = True
+    namelist_format = first_name_first
+    period_after_initial = True
+    procspie_as_journal = False
+    show_urls = False
+    sort_case = True
+    terse_inits = False
+    undefstr = ???
+    use_abbrevs = True
+    use_citeextract = True
+    use_firstname_initials = True
+    use_name_ties = False
+
+[GIVE AN EXPLANATION OF EACH IN TURN]
