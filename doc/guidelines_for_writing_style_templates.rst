@@ -54,6 +54,8 @@ Syntax
 
     in the ``SPECIAL-TEMPLATES`` section will create a ``group`` field that can be used as the variable ``<group>`` within the regular ``TEMPLATES`` section of the file. This effectively allows users to create a shortcut. Where they could write out ``[<organization>|<institution>|<corporation>|]`` inside each template that needs this structure, the special template definition allows them to replace each instance with a simple ``<group>``.
 
+#. The order in which any definitions are placed within the special templates is important. For example, if a user has ``au = <authorlist.format_authorlist()>`` and then below that defines ``authorlist = <author.to_namelist()>``, then the code will issue an error stating that ``authorlist`` is not defined when attempting to create the ``au`` variable. Since the definition for ``au`` assumes the presence of the ``authorlist`` variable, the latter definition must be placed above it.
+
 #. [ADD MORE DETAILS HERE ON NEWER CODE STRUCTURES, such as implicit indexing and implicit loops. What else to go here?]
 
 Default Fields
@@ -68,7 +70,28 @@ A complete of the existing default fields is:::
     ed
     editorlist
 
-[ADD DETAILS]
+Each of these default fields are defined as "special templates". If a user defines a special template with the same name as one of the above, then the default is overwritten with the user's version. The definitions of these six default special templates are:::
+
+    authorlist = <author.to_namelist()>
+    editorlist = <editor.to_namelist()>
+    citelabel = <citenum.remove_leading_zeros()>
+    sortkey = <citenum>
+    au = <authorlist.format_authorlist()>
+    ed = <editorlist.format_editorlist()>
+
+Note that the ordering of definitions is important. The following summarizes what these definitions are used for.
+
+**authorlist** creates a list of dictionaries (one dictionary for each author name found within the database entry's ``author`` field). Each name dictionary has keys "first", "middle", "prefix", "last", and "suffix", where each of these keys is optional except for "last". Thus, a user can access the first and last name of the first author in the database entry using ``<authorlist.0.first> <authorlist.0.last>``. To access the middle name(s) of the second author, use ``<authorlist.1.middle>``.
+
+**editorlist** behaves exactly as ``authorlist`` but derives its list of names from the database entry's ``editor`` field rather than ``author`` field.
+
+**citelabel** is the thing that appears at the front of the formatted reference, and is identical to the citation label used in the manuscript to point to the item in the reference list. In technical journal articles, this is typically just a number, as in the default definition ``<citenum.remove_leading_zeros()>``. The number used here for the label indicates the order in which the entry was cited. Since the variable ``citenum`` is a string that contains leading zeros, so that the entries are properly sorted in order of 001, 002, ..., 009, 010, 011, ... and not in the strict alphabetical order of 1, 10, 11, ..., 19, 2, 20, 21, .... But for a citation label, the leading zeros are unsightly, and so we use the ``.remove_leading_zeros()`` operator to remove them from the string before creating the label.
+
+**sortkey** is the string used to sort the entry within the reference list. For technical journal articles, what is generally wanted is just the citation order, as indicated by the ``<citenum>`` variable.
+
+**au** is the string representing the formatted list of author names. In the default definition shown above, the name list is a standard form, and so simply uses the ``.format_authorlist()`` operator. Generally, this operator creates name lists that have the form "firstauthor" for only one author, "firstauthor and secondauthor" if only two authors, "firstauthor, secondauthor, ..., and lastauthor" if more than two authors but less than the maximum, and "firstauthor, secondauthor, ..., minauthor, et al." if more than the maximum allowed number of authors. Which author in the list is "minauthor" is defined using the ``minauthors`` option keyword. The maximum number of allowed authors is set by the ``maxauthors`` option keyword.
+
+**ed** follows the same basic structure as ``au``, but uses the ``maxeditors`` and ``mineditors`` keywords.
 
 Operators
 ---------
