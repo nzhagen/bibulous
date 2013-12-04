@@ -2841,7 +2841,7 @@ def initialize_name(name, options=None, debug=False):
     ## initials, then a hyphenated name produces hyphenated initials (for example "Jean-Paul" -> "J.-P." and not "J."),
     ## and a name beginning with a digraph produces a digraph initial, so that Philippe -> Ph. (not P.), and
     ## Christian -> Ch. (not C.).
-    digraphs = ('Ch','Gn','Ll','Ph','Ss','Ch','Ph','Th')
+    digraphs = ('Ch','Gn','Ll','Ph','Ss','Th')
     period = '.' if options['period_after_initial'] else ''
 
     ## Split the name by spaces (primarily used for middle name strings, which may have multiple names in them), and
