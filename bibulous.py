@@ -218,7 +218,6 @@ class Bibdata(object):
         self.options['backrefs'] = False
         self.options['sort_case'] = True
         self.options['bibitemsep'] = None
-        self.options['month_abbrev'] = True
         self.options['allow_scripts'] = False
         self.options['case_sensitive_field_names'] = False
         self.options['use_citeextract'] = True
