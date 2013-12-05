@@ -1,8 +1,8 @@
 Guidelines for writing bibliography style templates
-===================================================
+***************************************************
 
 Syntax
-------
+======
 
 #. Comments begin with ``#``, following the Python convention.
 
@@ -68,10 +68,8 @@ Syntax
 
 #. The order in which any definitions are placed within the special templates is important. For example, if a user has ``au = <authorlist.format_authorlist()>`` and then below that defines ``authorlist = <author.to_namelist()>``, then the code will issue an error stating that ``authorlist`` is not defined when attempting to create the ``au`` variable. Since the definition for ``au`` assumes the presence of the ``authorlist`` variable, the latter definition must be placed above it.
 
-#. [ADD MORE DETAILS HERE ON NEWER CODE STRUCTURES, such as implicit indexing and implicit loops. What else to go here?]
-
 Default Fields
---------------
+==============
 
 A complete of the existing default fields is:::
 
@@ -163,7 +161,7 @@ Without the ``.compress()`` operator, the name would come out as "RM A Azzam", w
 **.to_namelist()** parses the field (assumed to be a BibTeX-format "and"-delimited list of names) into a Bibulous-format namelist (i.e. a list of dictionaries).
 
 Options keywords
-----------------
+================
 
 A complete list of existing options keywords, together with their default definitions, is:::
 
@@ -241,7 +239,7 @@ Each of the keywords is summarized below.
 
 
 Examples for namelist formatting
---------------------------------
+================================
 
 The following code provides an example usage of implicit indexing within an implicit loop structure:::
 
@@ -292,7 +290,7 @@ That is, the implicit index ``.n`` is everywhere replaced with the explicit inde
 With this template now complete, the code begins to evaluate the entry and replace the individual variables with their corresponding database fields.
 
 Python API
-----------
+==========
 
 Bibulous also provides to users an extensible Python interface allowing users to directly manipulate Bibulous' internal data structures. These use the ``VARIABLES`` and ``DEFINITIONS`` sections of the file, as shown below. For the ```VARIABLES`` section, a variable name is defined (the first example below defines the variable ``year_bce``, while the second example below defines ``pagerange``). On the right hand side of the definition, however, is a Python function call. This is different from the other sections of the BST file, which use template syntax. Any variable defined in this way within the ``VARIABLES`` section can then be accessed as a template variable (i.e. ``<year_bce>``) within the ``TEMPLATES`` section of the file. Two example uses are shown below.
 
