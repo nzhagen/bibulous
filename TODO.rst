@@ -4,6 +4,15 @@ Python code to-do list: (including goals for version 2.0)
 The primary goal for version 2.0 is to incorporate integration with a front-end LaTeX package.
 For version 1.3, the goal is to have namelist templates working.
 
+- Does the special template definition::
+
+    author = [<著者名>|<author-en>|]
+
+  cause the ``author`` field to be *replaced*, or does the code only copy these other fields
+  into the ``author`` field if is does not yet exist? Need to clarify this in the documentation.
+
+- You no longer have functionality using the ``.N`` index (for maximum index). Put that back in?
+
 - If a user added any options blocks to their defined variables, then they may have turned an
   unnested sequence into a nested one. Need to look for that. We can probably do this check
   when the BST file is parsed, rather than when we do string substitution in the template

@@ -43,7 +43,8 @@ def format_yearstyle(entry, options):
     '''
 
     if ('year' not in entry):
-        return(options['undefstr'])
+        #return(options['undefstr'])
+        return(None)
 
     ## First check that the year string is an integer. If not an integer, then just return
     ## the field itself.

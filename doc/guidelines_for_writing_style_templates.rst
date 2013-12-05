@@ -254,12 +254,136 @@ The following code provides an example usage of implicit indexing within an impl
                    [<editorlist.n.prefix> ]<editorlist.n.last>[, <editorlist.n.suffix>]
     ed = <editorname.0>, ...,{ and }<editorname.2>
 
-[EXPLAIN]
+Here the ``authorlist`` and ``editorlist`` definitions create namelist variables from the ``author`` and ``editor`` fields in the entry (if they exist). Next, the implicitly-indexed ``authorname.n`` cannot operate except within an implicit loop, and so we should describe that first. It is easier to describe the functionality of the ``ed`` template than the ``au`` one, as it has a smaller number of allowed names. The ``ed`` template has the definition::
 
+    <editorname.0>, ...,{ and }<editorname.2>
 
-[NEED STUFF FROM TEST1 HERE, ESPECIALLY FOR SHOWING IMPLICIT INDEXING AND IMPLICIT LOOPS]
+which simplifies to ``<editorname.0>`` when there is only one editor in the database entry, and::
 
-[ALSO PROVIDE AN EXAMPLE OF ``.N`` rather than just ``.n``]
+    <editorname.0> and <editorname.1>
+
+when there are only two. Here the separator `` and `` comes from the ``{ and }`` placed at the right hand side of the implicit loop. For three editors, the implicit loop expands the template to::
+
+    <editorname.0>, <editorname.1>, and <editorname.2>
+
+where this time the comma alone is used as the first delimiter, as it is outside the enclosed braces. For the final element, both the comma and the ``{ and }`` at the right hand side of the implicit loop are used as the final delimiter. Since the template does not specify the format for more than three editor names, the code builds an *et al.* construction when there more than this number of names, so that the result becomes::
+
+    <editorname.0>, <editorname.1>, <editorname.2>, \textit{et al.}
+
+where the form of the string ``\textit{, et. al}`` is specified by the ``etal_message`` keyword option.
+
+Thus, the implicit loop has filled out a unique template based on the number of editors it finds within the database entry. The next step is to use the implicitly-indexed ``editorname`` to complete building out the template. The latter template is defined as::
+
+    editorname.n = [<editorlist.n.first.initial()>. ][<editorlist.n.middle.initial()>. ]...
+                   [<editorlist.n.prefix> ]<editorlist.n.last>[, <editorlist.n.suffix>]
+
+so that a template variable of the form ``<editorname.0>'' is replaced with::
+
+    [<editorlist.0.first.initial()>. ][<editorlist.0.middle.initial()>. ]...
+    [<editorlist.0.prefix> ]<editorlist.0.last>[, <editorlist.0.suffix>]
+
+That is, the implicit index ``.n`` is everywhere replaced with the explicit index ``0``. For the case of a database entry containing two editor names, the final template will thus have the form::
+
+    [<editorlist.0.first.initial()>. ][<editorlist.0.middle.initial()>. ]...
+    [<editorlist.0.prefix> ]<editorlist.0.last>[, <editorlist.0.suffix>] and ...
+    [<editorlist.1.first.initial()>. ][<editorlist.1.middle.initial()>. ]...
+    [<editorlist.1.prefix> ]<editorlist.1.last>[, <editorlist.1.suffix>]
+
+With this template now complete, the code begins to evaluate the entry and replace the individual variables with their corresponding database fields.
 
 Python API
 ----------
+
+Bibulous also provides to users an extensible Python interface allowing users to directly manipulate Bibulous' internal data structures. These use the ``VARIABLES`` and ``DEFINITIONS`` sections of the file, as shown below. For the ```VARIABLES`` section, a variable name is defined (the first example below defines the variable ``year_bce``, while the second example below defines ``pagerange``). On the right hand side of the definition, however, is a Python function call. This is different from the other sections of the BST file, which use template syntax. Any variable defined in this way within the ``VARIABLES`` section can then be accessed as a template variable (i.e. ``<year_bce>``) within the ``TEMPLATES`` section of the file. Two example uses are shown below.
+
+To allow Bibulous to read the ``VARIABLES`` and ``DEFINITIONS`` sections of the file, users must set the option keyword ``allow_scripts`` to True.
+
+**First example: a custom yearstyle**. For a bibliography containing works from authors dating from before year 0, a common approach is to append "BC" to the year number, and for positive-numbered years, appending "AD". More recently, the convention has been to append "BCE" and "CE" rather than "BC" and "AD". The example defines an option keyword ``yearstyle`` that allows users to switch between one style (BC/AD) and the other (BCE/CE). This keyword is accessed by placing ``options`` as an argument to the ``format_yearstyle()`` function defining the variable ``year_bce``. Inside the function, it can then check the options dictionary for the ``yearstyle`` keyword and determine which convention to use.
+
+The ``format_yearstyle()`` function itself is straightforward. It first checks whether the entry has a ``year`` field. If not, then it returns ``None``, indicating that the function's result is undefined. If it finds a ``year`` field, then it checks to see whether it corresponds to an integer. If not, then it returns the field as-is. (Perhaps a user defines his ``year`` fields as ``45 BCE`` with the BCE already written out inside the field?) If it finds an integer value, then it determines which style to use (BC/AD or BCE/CE). If the year number is negative then it appends "BC" or "BCE to the end. If the year number is positive then it appends "AD" or "CE to the end, depending on the convention chosen.
+
+Example::
+
+    OPTIONS:
+    allow_scripts = True
+    yearstyle = BCE/CE
+
+    VARIABLES:
+    year_bce = format_yearstyle(entry, options)
+
+    DEFINITIONS:
+    ## NOTE! Only Unix-style line endings are allowed here.
+    def format_yearstyle(entry, options):
+        '''
+        Append "BC or "AD" to "year", depending on whether the year is positive or negative.
+        If the option "yearstyle" is set to "BCE/CE", then use "BCE" and "CE" instead of "BC"
+        and "AD".
+        '''
+
+        if ('year' not in entry):
+            return(options['undefstr'])
+
+        ## First check that the year string is an integer. If not an integer, then just return
+        ## the field itself.
+        if not str_is_integer(entry['year']):
+            return(entry['year'])
+
+        yearnum = int(entry['year'])
+
+        if (yearnum < 0):
+            if (options['yearstyle'] == 'BCE/CE'):
+                suffix = 'BCE'
+            else:
+                suffix = 'BC'
+            ## The "[1:]" here removes the minus sign.
+            result = str(yearnum)[1:] + ' ' + suffix
+        elif (yearnum == 0):
+            result = str(yearnum)
+        else:
+            if (options['yearstyle'] == 'BCE/CE'):
+                suffix = 'CE'
+            else:
+                suffix = 'AD'
+            result = str(yearnum) + ' ' + suffix
+
+        return(result)
+
+**Second example: a custom pagestyle**. For a bibliography containing works from magazines, it is not uncommon to find articles with large gaps in page numbers. Here is an example bibliography database entry::
+
+    @article{stewart,
+    title = {Interview with Walter Stewart},
+    author = {Doug Stewart},
+    journal = {Omni},
+    year = {1989},
+    volume = {11},
+    number = {5},
+    pages = {64--66, 87--92, 94}
+    }
+
+where we can see that the article was broken into three sections in order to fit the editors' formatting requirements. Many bibliography styles require a starting and ending page, but these are misleading when the article is broken across pages in this way. Thus, a user may want to have the option that if a comma is found within the ``pages`` field of an entry then it should be displayed as-is. If no comma is found, then it simply returns the standard startpage--endpage pair.
+
+To make this work, first the option ``allow_scripts`` must be set to true. Next, a new ``pagerange`` variable is defined, so that it can be accessed in the ``TEMPLATES`` section of the file as ``<pagerange>``. The variable is defined as the return value of the function ``format_pagerange()`` given in the ``DEFINITIONS`` section. The defined function first checks to see if there is a ``pages`` field defined in the entry. If not, then it returns None, so that the ``pagerange`` variable will also be undefined. If it finds the ``pages`` field, it looks to see if there is a comma present. If so, it returns the field as-is. If not, it looks for the ``endpage`` variable (generated by default by Bibulous from the ``pages`` field). If present, then the function returns a startpage--endpage pair. If ``endpage`` is not present, then it returns only the ``startpage`` variable.
+
+Example::
+
+    OPTIONS:
+    allow_scripts = True
+
+    VARIABLES:
+    pagerange = format_pagerange(entry, options)
+
+    DEFINITIONS:
+    def format_pagerange(entry, options):
+        '''
+        If the "pages" field is comma-delimited, then return the pages field as-is. Otherwise
+        return the standard startpage--endpage range.
+        '''
+
+        if not ('pages' in entry):
+            return(None)
+        elif (',' in entry['pages']):
+            return(entry['pages'])
+        elif ('endpage' in entry):
+            return(entry['startpage']--entry['endpage'])
+        else:
+            return(entry['startpage'])

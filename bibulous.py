@@ -3954,7 +3954,7 @@ def parse_pagerange(pages_str, citekey=None, disable=None):
         startpage = pages_str
         endpage = None
 
-    ## For user convenience, add a check here that if endpage and startpages are both numbers and endpage <= startpage,
+    ## For user convenience, add a check here that if endpage and startpage are both numbers and endpage <= startpage,
     ## then there is a typo.
     if startpage.isdigit() and endpage and endpage.isdigit():
         if int(endpage) < int(startpage):
