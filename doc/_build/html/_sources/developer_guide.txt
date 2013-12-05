@@ -1,8 +1,8 @@
 Developer guide
 ***************
 
-Guidelines for Python coding style
-==================================
+Guidelines and notes for Python coding style
+============================================
 
 1. Note that one can mix 8-bit Python strings (ASCII text) with UTF-8 encoded text as long as the 8-bit string contains only ASCII characters.
 
