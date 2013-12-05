@@ -28,7 +28,6 @@ edmsg2 = , eds                            ## the label to use after the editor n
 
 VARIABLES:
 year_bce = format_yearstyle(entry, options)     ## format the year at append 'BC', 'AD', etc endings, depending on options settings
-#auth = get_author(entry, options)              ## creates a user-defined variable from 'author' or 'writer' fields, as defined below.
 pagerange = format_pagerange(entry, options)
 for_japanese_audience = '{}' if (options['document_language'] == 'Japanese') else None
 for_english_audience = '{}' if (options['document_language'] == 'English') else None
@@ -70,21 +69,6 @@ def format_yearstyle(entry, options):
         result = str(yearnum) + ' ' + suffix
 
     return(result)
-
-## ==================================
-#def get_author(entry, options):
-#    '''
-#    In the test5 database, a given entry may have a "writer" field or an "author" field.
-#    Allow either one to be used in the same way. Note that this skips Bibulous' default
-#    reformatting of the list of authors. Here it is easy to do this since each author/writer
-#    is only one person, and so we can use the raw input.
-#    '''
-#    if ('author' in entry):
-#        return(entry['author'])
-#    elif ('writer' in entry):
-#        return(entry['writer'])
-#    else:
-#        return(options['undefstr'])
 
 ## ==================================
 def format_pagerange(entry, options):

@@ -61,6 +61,18 @@
             <p class="logo"><a href="index.html">
               <img class="logo" src="_static/logo_small.svg" alt="Logo"/>
             </a></p>
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Guidelines for writing bibliography style templates</a><ul>
+<li><a class="reference internal" href="#syntax">Syntax</a></li>
+<li><a class="reference internal" href="#default-fields">Default Fields</a></li>
+<li><a class="reference internal" href="#operators">Operators</a></li>
+<li><a class="reference internal" href="#options-keywords">Options keywords</a></li>
+<li><a class="reference internal" href="#example-definitions-for-namelist-formatting">Example definitions for namelist formatting</a></li>
+</ul>
+</li>
+</ul>
+
   <h4>Previous topic</h4>
   <p class="topless"><a href="getting_started.html"
                         title="previous chapter">Getting started</a></p>
@@ -95,39 +107,41 @@
             
   <div class="section" id="guidelines-for-writing-bibliography-style-templates">
 <h1>Guidelines for writing bibliography style templates<a class="headerlink" href="#guidelines-for-writing-bibliography-style-templates" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic">
-<li><p class="first">Comments begin with <tt class="docutils literal"><span class="pre">#</span></tt>. (A single <tt class="docutils literal"><span class="pre">#</span></tt> indicates a symbol and not a comment!)</p>
+<li><p class="first">Comments begin with <tt class="docutils literal"><span class="pre">#</span></tt>, following the Python convention.</p>
 </li>
-<li><p class="first">A line which begins with an entrytype name followed by an <tt class="docutils literal"><span class="pre">=</span></tt> sign defines the bibliographic format for that entrytype. For example:</p>
-<div class="highlight-python"><pre>article = &lt;authorlist&gt;, ``&lt;title&gt;,'' &lt;journal&gt;, &lt;volume&gt;, ...
-           [&lt;startpage&gt;--&lt;endpage&gt;|&lt;eid&gt;|]  (&lt;year&gt;). [&lt;note&gt;.]</pre>
+<li><p class="first">Each template file can have as many as five sections. None of the sections are required to be in the file, but any definitions in the file must be placed inside a section header so that the code knows how to deal with the definition. The four possible section headers are: TEMPLATES, SPECIAL-TEMPLATES, OPTIONS, VARIABLES, DEFINITIONS. And note that a section header is always placed by itself on a line and has a colon appended to it, as in <tt class="docutils literal"><span class="pre">TEMPLATES:</span></tt>.</p>
+</li>
+<li><p class="first">All variable definitions use the variable name followed by whitespace, an equals sign, more whitespace, and then the definition itself. Thus the whitespace+=+whitespace is the delimiter between variable and definition, and is required syntax.</p>
+</li>
+<li><p class="first">Inside the <tt class="docutils literal"><span class="pre">TEMPLATES</span></tt> section, all of the variable definitions are intended to map to a database entrytype name. For example:</p>
+<div class="highlight-python"><pre>article = &lt;au&gt;, ``&lt;title&gt;,'' &lt;journal&gt;, &lt;volume&gt;, &lt;startpage&gt;--&lt;endpage&gt; (&lt;year&gt;).</pre>
 </div>
-<p>Here the <tt class="docutils literal"><span class="pre">article</span></tt> entrytype will be typeset so that the list of authors is followed by the article title in double quotes, the journal name in standard font (i.e. not italics), the volume number, the page range, and the year.</p>
+<p>Here the <tt class="docutils literal"><span class="pre">article</span></tt> entrytype will be typeset so that the list of authors (<tt class="docutils literal"><span class="pre">&lt;au&gt;</span></tt>) is followed by the article title in double quotes, the journal name in standard font (i.e. not italics), the volume number, the page range, and the year.</p>
 </li>
-<li><p class="first">Square brackets <tt class="docutils literal"><span class="pre">[]</span></tt> indicate an optional entry; any required entries which are not defined in the BibTeX database file (.bib file) are replaced with &#8216;???&#8217; by default. Optional arguments is undefined are simply skipped. If a <tt class="docutils literal"><span class="pre">|</span></tt> is present within the square brackets, it indicates an &#8220;elseif&#8221; argument (if not the final <tt class="docutils literal"><span class="pre">|</span></tt> within the brackets), or an &#8220;else&#8221; argument (if the final <tt class="docutils literal"><span class="pre">|</span></tt>). The &#8220;else&#8221; indicates a <em>required</em> argument, so if you want an optional entry to be replaced with something, you can use <tt class="docutils literal"><span class="pre">[option|]</span></tt> &#8212; the use of an empty cell inside the square brackets indicates that we simply use the default replacement for an undefined required argument (i.e. <tt class="docutils literal"><span class="pre">???</span></tt>). If you want all of the cells to be optional, then use <tt class="docutils literal"><span class="pre">|'']</span></tt> in the last cell &#8211; that is, the last cell should be an empty string. For  now, the format currently does not allow nesting of brackets.</p>
+<li><p class="first">A variable is indicated by angle brackets, as <tt class="docutils literal"><span class="pre">&lt;var&gt;</span></tt> and represents the contents of a field found within the bibliography database. Thus, when typesetting the bibliography, Bibulous will replace the variable <tt class="docutils literal"><span class="pre">&lt;authorlist&gt;</span></tt> with the string stored in the <tt class="docutils literal"><span class="pre">authorlist</span></tt> field of the current entry being formatted. An example list of typical variables one might use is:</p>
+<blockquote>
+<div><p><tt class="docutils literal"><span class="pre">&lt;au&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;booktitle&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;chapter&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;edition&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;ed&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;eid&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;endpage&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;institution&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;journal&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;nationality&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;note&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;number&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;organization&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;publisher&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;school&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;series&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;startpage&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;title&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;version&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;volume&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;year&gt;</span></tt>.</p>
+</div></blockquote>
+<p>This list is actually freely extensible. A user can add any additional variables needed, so that if a <tt class="docutils literal"><span class="pre">video</span></tt> field is used in a <tt class="docutils literal"><span class="pre">.bib</span></tt> database file, then this can be used within a formatted reference simply by placing <tt class="docutils literal"><span class="pre">&lt;video&gt;</span></tt> into the template wherever the information needs to be inserted.</p>
 </li>
-<li><p class="first">If you need the square brackets or <tt class="docutils literal"><span class="pre">|</span></tt> symbol as formatting elements, then simply use <tt class="docutils literal"><span class="pre">{\makeopenbracket}</span></tt>, <tt class="docutils literal"><span class="pre">{\makeclosebracket}</span></tt>, or <tt class="docutils literal"><span class="pre">{\makeverticalbar}</span></tt>. If you need the angle brackets as formatting elements, then use <tt class="docutils literal"><span class="pre">{\makegreaterthan}</span></tt> and <tt class="docutils literal"><span class="pre">{\makelessthan}</span></tt>. Note that the curly brackets are needed here so that when Bibulous replaces the command with the appropriate symbol, that symbol can be used correctly in LaTeX commands.</p>
+<li><p class="first">Any variable placed within square brackets <tt class="docutils literal"><span class="pre">[]</span></tt> indicate that it is an optional variable &#8212; it is not required that the database have that entry. While required entries that are not defined in the BibTeX database file (.bib file) are replaced with &#8216;???&#8217;, and undefined optional variables are simply skipped. If a <tt class="docutils literal"><span class="pre">|</span></tt> is present within the square brackets, it indicates an &#8220;elseif&#8221; clause. That is, if the template is <tt class="docutils literal"><span class="pre">[&lt;var1&gt;|&lt;var2&gt;</span> <span class="pre">and</span> <span class="pre">&lt;var3&gt;]</span></tt>, then the code will look for <tt class="docutils literal"><span class="pre">var1</span></tt> as a field within the current database entry being formatted. If it does not find the entry, then it will try the next block, where it finds the two variables <tt class="docutils literal"><span class="pre">var2</span></tt> and <tt class="docutils literal"><span class="pre">var3</span></tt>. If both are defined, then the original template <tt class="docutils literal"><span class="pre">[&lt;var1&gt;|&lt;var2&gt;</span> <span class="pre">and</span> <span class="pre">&lt;var3&gt;]</span></tt> is replaced with <tt class="docutils literal"><span class="pre">&lt;var2&gt;</span> <span class="pre">and</span> <span class="pre">&lt;var3&gt;</span></tt> (i.e. removing the square brackets) and proceeds to replace the two variables with their corresponding fields. If either one of <tt class="docutils literal"><span class="pre">var2</span></tt> or <tt class="docutils literal"><span class="pre">var3</span></tt> is undefined in the entry, then the entire optional [...] portion of the template is skipped.</p>
 </li>
-<li><p class="first">Unlike BibTeX, Bibulous does <em>not</em> change the capitalization state of any entry variables. It assumes that the authors have defined it the way they want it.</p>
+<li><p class="first">If the <tt class="docutils literal"><span class="pre">|</span></tt> symbol is used to create an empty last cell, as in <tt class="docutils literal"><span class="pre">[&lt;var1&gt;|&lt;var2&gt;|]</span></tt>, this indicates that while the individual cells within the optional block are themselves optional, it is required to have at least _one_ among the cells to be defined. Thus, <tt class="docutils literal"><span class="pre">[&lt;note&gt;|]</span></tt> has the same meaning as simply <tt class="docutils literal"><span class="pre">&lt;note&gt;</span></tt> does.</p>
 </li>
-<li><p class="first">If an entrytype format definition contains only another entrytype on the right hand side of the <tt class="docutils literal"><span class="pre">=</span></tt>, for example:</p>
+<li><p class="first">Nesting of <tt class="docutils literal"><span class="pre">[]</span></tt> brackets is allowed, but the syntax becomes computationally expensive to parse, so that these structures should be used sparingly:</p>
+</li>
+<li><p class="first">Users that need to use <tt class="docutils literal"><span class="pre">[</span></tt>, <tt class="docutils literal"><span class="pre">]</span></tt>, <tt class="docutils literal"><span class="pre">#</span></tt>, <tt class="docutils literal"><span class="pre">&lt;</span></tt>, <tt class="docutils literal"><span class="pre">&gt;</span></tt>, or <tt class="docutils literal"><span class="pre">|</span></tt> symbols as formatting elements within the reference list can implement them using some custom LaTeX-markup commands: <tt class="docutils literal"><span class="pre">{\makeopenbracket}</span></tt>, <tt class="docutils literal"><span class="pre">{\makehashsign}</span></tt>, <tt class="docutils literal"><span class="pre">{\makeclosebracket}</span></tt>, <tt class="docutils literal"><span class="pre">{\makegreaterthan}</span></tt>, <tt class="docutils literal"><span class="pre">{\makelessthan}</span></tt>, or <tt class="docutils literal"><span class="pre">{\makeverticalbar}</span></tt>. Note that the curly brackets used in each case are required.</p>
+</li>
+<li><p class="first">In the <tt class="docutils literal"><span class="pre">TEMPLATES</span></tt> section of the file, if an entrytype format definition contains only another entrytype name on the right hand side of the <tt class="docutils literal"><span class="pre">=</span></tt>, i.e.:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">inbook</span> <span class="o">=</span> <span class="n">incollection</span>
 </pre></div>
 </div>
-<p>then this simply defines the format for the entrytype on the left hand side as identical to that of the entrytype given on the right hand side.</p>
+<p>then this means that the existing <tt class="docutils literal"><span class="pre">incollection</span></tt> template should be copied for use with <tt class="docutils literal"><span class="pre">inbook</span></tt> entrytypes. (Note that <tt class="docutils literal"><span class="pre">incollection</span></tt> should be defined above this line in order for this to work.)</p>
 </li>
-<li><p class="first">The second type of data present in the file are the formatting options. These are defined by writing <tt class="docutils literal"><span class="pre">options</span></tt> followed by a period and then the option name, for example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">options</span><span class="o">.</span><span class="n">authorlist_format</span> <span class="o">=</span> <span class="s">&#39;first_name_first&#39;</span>
-</pre></div>
-</div>
-</li>
-<li><p class="first">Bibulous only allows string variables to be inserted into a given position within an entrytype template, and all Bibulous variables are surrounded with angle brackets. Thus, when typesetting the bibliography, Bibulous will replace the variable <tt class="docutils literal"><span class="pre">&lt;authorlist&gt;</span></tt> with the string stored in the <tt class="docutils literal"><span class="pre">authorlist</span></tt> field of the current entry being formatted. An example list of variables one may choose to use is:</p>
-<blockquote>
-<div><p><tt class="docutils literal"><span class="pre">&lt;authorlist&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;booktitle&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;chapter&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;edition_ordinal&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;editorlist&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;eid&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;endpage&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;institution&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;journal&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;nationality&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;note&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;number&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;organization&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;publisher&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;school&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;series&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;startpage&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;title&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;version&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;volume&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;year&gt;</span></tt>.</p>
-</div></blockquote>
-<p>As one can see, these primarily consist of the various fields one can expect to see within a given BibTeX-formatted database file. This list is actually freely extensible. You can add whatever additional variables you like, so that if you use a special <tt class="docutils literal"><span class="pre">video</span></tt> field in your database, you can insert that field&#8217;s value into the template wherever <tt class="docutils literal"><span class="pre">&lt;movie&gt;</span></tt> is located.</p>
-</li>
-<li><p class="first">Note that several fields are defined by default which are <em>not</em> directly from the bibliography database. These are <tt class="docutils literal"><span class="pre">authorlist</span></tt>, <tt class="docutils literal"><span class="pre">editorlist</span></tt>, <tt class="docutils literal"><span class="pre">startpage</span></tt>, <tt class="docutils literal"><span class="pre">endpage</span></tt>, and <tt class="docutils literal"><span class="pre">edition_ordinal</span></tt>. These fields are derived from the original database file, but have been reformatted.</p>
+<li><p class="first">Note that several fields are defined by default which are <em>not</em> directly from the bibliography database. These are <tt class="docutils literal"><span class="pre">au</span></tt>, <tt class="docutils literal"><span class="pre">authorlist</span></tt>, <tt class="docutils literal"><span class="pre">citekey</span></tt>, <tt class="docutils literal"><span class="pre">citenum</span></tt>, <tt class="docutils literal"><span class="pre">ed</span></tt>, <tt class="docutils literal"><span class="pre">editorlist</span></tt>, <tt class="docutils literal"><span class="pre">endpage</span></tt>, and <tt class="docutils literal"><span class="pre">startpage</span></tt>. These fields are derived from the original database file, but have been reformatted. See the <em>Default Fields</em> section below.</p>
 </li>
 <li><p class="first">Although the entrytype template definitions listed below are in alphabetical order, that can be put in any desired order within the file. (The exception to this rule is that if a definition consists of, for example:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">inbook</span> <span class="o">=</span> <span class="n">incollection</span>
@@ -137,7 +151,121 @@
 </li>
 <li><p class="first">A user wanting a localized form of quotation should use <tt class="docutils literal"><span class="pre">\enquote{&lt;title&gt;}</span></tt> rather than <tt class="docutils literal"><span class="pre">``&lt;title&gt;''</span></tt>, and add <tt class="docutils literal"><span class="pre">\usepackage{csquotes}</span></tt> to the preamble of the LaTeX document.</p>
 </li>
+<li><p class="first">In the <tt class="docutils literal"><span class="pre">OPTIONS</span></tt> section of the file are the formatting options. None of these definitions are required. The complete list is given in the <em>Options keywords</em> section below, together with explanations of each.</p>
+</li>
+<li><p class="first">The <tt class="docutils literal"><span class="pre">SPECIAL-TEMPLATES</span></tt> section is where users can define their own fields that get generated for every database entry evaluated. For example, the variable definition:</p>
+<div class="highlight-python"><pre>group = [&lt;organization&gt;|&lt;institution&gt;|&lt;corporation&gt;|]
+
+in the ``SPECIAL-TEMPLATES`` section will create a ``group`` field that can be used as the variable ``&lt;group&gt;`` within the regular ``TEMPLATES`` section of the file. This effectively allows users to create a shortcut. Where they could write out ``[&lt;organization&gt;|&lt;institution&gt;|&lt;corporation&gt;|]`` inside each template that needs this structure, the special template definition allows them to replace each instance with a simple ``&lt;group&gt;``.</pre>
+</div>
+</li>
+<li><p class="first">The order in which any definitions are placed within the special templates is important. For example, if a user has <tt class="docutils literal"><span class="pre">au</span> <span class="pre">=</span> <span class="pre">&lt;authorlist.format_authorlist()&gt;</span></tt> and then below that defines <tt class="docutils literal"><span class="pre">authorlist</span> <span class="pre">=</span> <span class="pre">&lt;author.to_namelist()&gt;</span></tt>, then the code will issue an error stating that <tt class="docutils literal"><span class="pre">authorlist</span></tt> is not defined when attempting to create the <tt class="docutils literal"><span class="pre">au</span></tt> variable. Since the definition for <tt class="docutils literal"><span class="pre">au</span></tt> assumes the presence of the <tt class="docutils literal"><span class="pre">authorlist</span></tt> variable, the latter definition must be placed above it.</p>
+</li>
+<li><p class="first">[ADD MORE DETAILS HERE ON NEWER CODE STRUCTURES, such as implicit indexing and implicit loops. What else to go here?]</p>
+</li>
 </ol>
+</div>
+<div class="section" id="default-fields">
+<h2>Default Fields<a class="headerlink" href="#default-fields" title="Permalink to this headline">¶</a></h2>
+<p>A complete of the existing default fields is::</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">au</span>
+<span class="n">authorlist</span>
+<span class="n">citekey</span>
+<span class="n">citenum</span>
+<span class="n">ed</span>
+<span class="n">editorlist</span>
+</pre></div>
+</div>
+<p>Each of these default fields are defined as &#8220;special templates&#8221;. If a user defines a special template with the same name as one of the above, then the default is overwritten with the user&#8217;s version. The definitions of these six default special templates are::</p>
+<div class="highlight-python"><pre>authorlist = &lt;author.to_namelist()&gt;
+editorlist = &lt;editor.to_namelist()&gt;
+citelabel = &lt;citenum.remove_leading_zeros()&gt;
+sortkey = &lt;citenum&gt;
+au = &lt;authorlist.format_authorlist()&gt;
+ed = &lt;editorlist.format_editorlist()&gt;</pre>
+</div>
+<p>Note that the ordering of definitions is important. The following summarizes what these definitions are used for.</p>
+<p><strong>authorlist</strong> creates a list of dictionaries (one dictionary for each author name found within the database entry&#8217;s <tt class="docutils literal"><span class="pre">author</span></tt> field). Each name dictionary has keys &#8220;first&#8221;, &#8220;middle&#8221;, &#8220;prefix&#8221;, &#8220;last&#8221;, and &#8220;suffix&#8221;, where each of these keys is optional except for &#8220;last&#8221;. Thus, a user can access the first and last name of the first author in the database entry using <tt class="docutils literal"><span class="pre">&lt;authorlist.0.first&gt;</span> <span class="pre">&lt;authorlist.0.last&gt;</span></tt>. To access the middle name(s) of the second author, use <tt class="docutils literal"><span class="pre">&lt;authorlist.1.middle&gt;</span></tt>.</p>
+<p><strong>editorlist</strong> behaves exactly as <tt class="docutils literal"><span class="pre">authorlist</span></tt> but derives its list of names from the database entry&#8217;s <tt class="docutils literal"><span class="pre">editor</span></tt> field rather than <tt class="docutils literal"><span class="pre">author</span></tt> field.</p>
+<p><strong>citelabel</strong> is the thing that appears at the front of the formatted reference, and is identical to the citation label used in the manuscript to point to the item in the reference list. In technical journal articles, this is typically just a number, as in the default definition <tt class="docutils literal"><span class="pre">&lt;citenum.remove_leading_zeros()&gt;</span></tt>. The number used here for the label indicates the order in which the entry was cited. Since the variable <tt class="docutils literal"><span class="pre">citenum</span></tt> is a string that contains leading zeros, so that the entries are properly sorted in order of 001, 002, ..., 009, 010, 011, ... and not in the strict alphabetical order of 1, 10, 11, ..., 19, 2, 20, 21, .... But for a citation label, the leading zeros are unsightly, and so we use the <tt class="docutils literal"><span class="pre">.remove_leading_zeros()</span></tt> operator to remove them from the string before creating the label.</p>
+<p><strong>sortkey</strong> is the string used to sort the entry within the reference list. For technical journal articles, what is generally wanted is just the citation order, as indicated by the <tt class="docutils literal"><span class="pre">&lt;citenum&gt;</span></tt> variable.</p>
+<p><strong>au</strong> is the string representing the formatted list of author names. In the default definition shown above, the name list is a standard form, and so simply uses the <tt class="docutils literal"><span class="pre">.format_authorlist()</span></tt> operator. Generally, this operator creates name lists that have the form &#8220;firstauthor&#8221; for only one author, &#8220;firstauthor and secondauthor&#8221; if only two authors, &#8220;firstauthor, secondauthor, ..., and lastauthor&#8221; if more than two authors but less than the maximum, and &#8220;firstauthor, secondauthor, ..., minauthor, et al.&#8221; if more than the maximum allowed number of authors. Which author in the list is &#8220;minauthor&#8221; is defined using the <tt class="docutils literal"><span class="pre">minauthors</span></tt> option keyword. The maximum number of allowed authors is set by the <tt class="docutils literal"><span class="pre">maxauthors</span></tt> option keyword.</p>
+<p><strong>ed</strong> follows the same basic structure as <tt class="docutils literal"><span class="pre">au</span></tt>, but uses the <tt class="docutils literal"><span class="pre">maxeditors</span></tt> and <tt class="docutils literal"><span class="pre">mineditors</span></tt> keywords.</p>
+</div>
+<div class="section" id="operators">
+<h2>Operators<a class="headerlink" href="#operators" title="Permalink to this headline">¶</a></h2>
+<p>One can use the &#8220;dot&#8221; operator inside a variable name, as in <tt class="docutils literal"><span class="pre">&lt;authorname.0.last.initial()&gt;''</span> <span class="pre">to</span> <span class="pre">perform</span> <span class="pre">any</span> <span class="pre">one</span> <span class="pre">of</span> <span class="pre">three</span> <span class="pre">functions:</span> <span class="pre">a</span> <span class="pre">numerical</span> <span class="pre">index</span> <span class="pre">(the</span> <span class="pre">``0</span></tt> shown here), a dictionary lookup (the <tt class="docutils literal"><span class="pre">last</span></tt> used here), or the application of an operator (in this case, the <tt class="docutils literal"><span class="pre">.initial()</span></tt> operator which is used to reduce a name to its initial). A numerical index must apply to a list-type of variable, and a key index must apply to a dict-type of variable (i.e. a dictionary).</p>
+<p>The complete list of operators available is::</p>
+<div class="highlight-python"><pre>.compress()
+.format_authorlist()
+.format_editorlist()
+.frenchinitial()
+.if_singular(var1,var2,var3)
+.initial()
+.monthabbrev()
+.monthname()
+.ordinal()
+.remove_leading_zeros()
+.sentence_case()
+.tie()
+.to_namelist()</pre>
+</div>
+<p>The function of each operator is summarized below.</p>
+<p><strong>.compress()</strong> removes any whitespace found within the string. This is useful for generating namelists where the format requires &#8220;tight&#8221; spacing. An example would be &#8220;RMA Azzam&#8221;, where the three initials are grouped together without spacing. And example template for generating this type of name would be:</p>
+<div class="highlight-python"><pre>&lt;authorlist.0.first&gt;&lt;authorlist.0.middle.initial().compress()&gt; &lt;authorlist.0.last&gt;</pre>
+</div>
+<p>Without the <tt class="docutils literal"><span class="pre">.compress()</span></tt> operator, the name would come out as &#8220;RM A Azzam&#8221;, where the two middle name initials &#8220;M&#8221; amnd &#8220;A&#8221; are spaced apart from one another by default.</p>
+<p><strong>.format_authorlist()</strong> operates on a list of dictionaries type of variable (a namelist), and uses the keyword-based default formatting scheme to create a formatted string of names. The complete list keywords that it work with is: <tt class="docutils literal"><span class="pre">etal_message</span></tt>, <tt class="docutils literal"><span class="pre">maxauthors</span></tt>, <tt class="docutils literal"><span class="pre">minauthors</span></tt>, <tt class="docutils literal"><span class="pre">namelist_format</span></tt>, <tt class="docutils literal"><span class="pre">period_after_initial</span></tt>, <tt class="docutils literal"><span class="pre">terse_inits</span></tt>, <tt class="docutils literal"><span class="pre">use_firstname_initials</span></tt>, <tt class="docutils literal"><span class="pre">use_name_ties</span></tt>. The default formatter, while fast, is not very flexible, so that users looking for more customizability will want to make use of Bibulous&#8217; implicit-index and implicit-loop based definitions. See the <em>Example definitions for namelist formatting</em> section below.</p>
+<p><strong>.format_editorlist()</strong> operates on a list of dictionaries type of variable (a namelist), and uses the keyword-based default formatting scheme to create a formatted string of names.  The complete list keywords that it work with is: <tt class="docutils literal"><span class="pre">etal_message</span></tt>, <tt class="docutils literal"><span class="pre">maxeditors</span></tt>, <tt class="docutils literal"><span class="pre">mineditors</span></tt>, <tt class="docutils literal"><span class="pre">namelist_format</span></tt>, <tt class="docutils literal"><span class="pre">period_after_initial</span></tt>, <tt class="docutils literal"><span class="pre">terse_inits</span></tt>, <tt class="docutils literal"><span class="pre">use_firstname_initials</span></tt>, <tt class="docutils literal"><span class="pre">use_name_ties</span></tt>. (The difference with the <tt class="docutils literal"><span class="pre">.format_authorlist()</span></tt> operator is that it uses <tt class="docutils literal"><span class="pre">maxeditors</span></tt> and <tt class="docutils literal"><span class="pre">mineditors</span></tt> rather than <tt class="docutils literal"><span class="pre">maxauthors</span></tt> and <tt class="docutils literal"><span class="pre">minauthors</span></tt>) The default formatter, while fast, is not very flexible, so that users looking for more customizability will want to make use of Bibulous&#8217; implicit-index and implicit-loop based definitions. See the <em>Example definitions for namelist formatting</em> section below.</p>
+<p><strong>.frenchinitial()</strong> is an alternative form of the <tt class="docutils literal"><span class="pre">.initial()</span></tt> operator that has slightly different behavior. If a name begins with one of the digraphs
+&#8220;Ch&#8221;, &#8220;Gn&#8221;, &#8220;Ll&#8221;, &#8220;Ph&#8221;, &#8220;Ss&#8221;, or &#8220;Th&#8221;, then the initial will truncate the name after the digraph instead of after the first letter.</p>
+<p><strong>.if_singular(var1,var2,var3)</strong></p>
+<p><strong>.initial()</strong> will truncate the string to its first letter. Note that if a name begins with a LaTeX markup character, such as <tt class="docutils literal"><span class="pre">{\'E}</span></tt>, then the operator will convert the input string to its best attempt at a Unicode-equivalent (without character markup) prior to performing the truncation. Thus, applying the <tt class="docutils literal"><span class="pre">.initial()</span></tt> operator to the name <tt class="docutils literal"><span class="pre">{\v{Z}}ukauskas</span></tt> will produce the initialized form &#8220;Ž&#8221;.</p>
+<p><strong>.monthabbrev()</strong> assumes that the input field is a number from 1 to 12, and converts the numerical input into the abbreviated month according to the user&#8217;s current locale. If the system cannot determine the user&#8217;s locale, the operator will default to using the American English locale, which replaces the numerical field operated on with one of &#8220;Jan&#8221;, &#8220;Feb&#8221;, &#8220;Mar&#8221;, &#8220;Apr&#8221;, &#8220;May&#8221;, &#8220;Jun&#8221;, &#8220;Jul&#8221;, &#8220;Aug&#8221;, &#8220;Sep&#8221;, &#8220;Oct&#8221;, &#8220;Nov&#8221;, or &#8220;Dec&#8221; according to the field&#8217;s value. Thus, if the bibliography database entry has a field <tt class="docutils literal"><span class="pre">month</span> <span class="pre">=</span> <span class="pre">11</span></tt>, and the template has the form <tt class="docutils literal"><span class="pre">&lt;month.monthabbrev()&gt;</span></tt>, then the template will be replaced with &#8220;Nov&#8221; for the default locale. For users with locale &#8220;Japan&#8221;, this same operator will return &#8220;11月&#8221;.</p>
+<p><strong>.monthname()</strong> behaves much like <tt class="docutils literal"><span class="pre">.monthabbrev()</span></tt> but rather than using an abbreviated form for the month&#8217;s name, it uses the full form. Thus if the bibliography database entry has a field <tt class="docutils literal"><span class="pre">month</span> <span class="pre">=</span> <span class="pre">3</span></tt>, and the template has the form <tt class="docutils literal"><span class="pre">&lt;month.monthname()&gt;</span></tt>, then the template variable will be replaced with &#8220;March&#8221; for the default locale. For users with locale &#8220;Norway&#8221;, this same operator will return &#8220;Mars&#8221;.</p>
+<p><strong>.ordinal()</strong></p>
+<p><strong>.remove_leading_zeros()</strong> deletes any zeros from the front of the field operated on. Thus &#8220;003&#8221; will be returned as &#8220;3&#8221;.</p>
+<p><strong>.sentence_case()</strong> reduces the lower case any characters in the field, except for the initial letter and any letters protected within a pair of curly braces. For example, if the database entry has <tt class="docutils literal"><span class="pre">title</span> <span class="pre">=</span> <span class="pre">{Understanding</span> <span class="pre">Bohmian</span> <span class="pre">mechanics}</span></tt> and the template has the form <tt class="docutils literal"><span class="pre">&lt;title.sentence_case()&gt;</span></tt>, then the template variable will be replaced with &#8220;Understanding bohmian mechanics&#8221;. However, if the entry has <tt class="docutils literal"><span class="pre">title</span> <span class="pre">=</span> <span class="pre">{Understanding</span> <span class="pre">{B}ohmian</span> <span class="pre">mechanics}</span></tt>, the result will be &#8220;Understanding {B}ohmian mechanics&#8221;.</p>
+<p><strong>.tie()</strong> replaces any spaces with an unbreakable space. Thus, &#8220;R. M. A.&#8221; becomes &#8220;R.~M.~A.&#8221;. An example use of this operator would be the following template::</p>
+<div class="highlight-python"><pre>authorname = [&lt;authorlist.n.first.initial()&gt;.~][&lt;authorlist.n.middle.initial().tie()&gt;. ]...
+             [&lt;authorlist.n.prefix&gt;~]&lt;authorlist.n.last&gt;[, &lt;authorlist.n.suffix&gt;]</pre>
+</div>
+<p><strong>.to_namelist()</strong> parses the field (assumed to be a BibTeX-format &#8220;and&#8221;-delimited list of names) into a Bibulous-format namelist (i.e. a list of dictionaries).</p>
+</div>
+<div class="section" id="options-keywords">
+<h2>Options keywords<a class="headerlink" href="#options-keywords" title="Permalink to this headline">¶</a></h2>
+<p>A complete list of existing options keywords, together with their default definitions, is::</p>
+<div class="highlight-python"><pre>allow_scripts = False
+backrefs = False
+backrefstyle = none
+bibitemsep = None
+case_sensitive_field_names = False
+edmsg1 = , ed.
+edmsg2 = , eds
+etal_message = , \\textit{et al.}
+maxauthors = 9
+maxeditors = 5
+minauthors = 9
+mineditors = 5
+month_abbrev = True
+namelist_format = first_name_first
+period_after_initial = True
+procspie_as_journal = False
+show_urls = False
+sort_case = True
+terse_inits = False
+undefstr = ???
+use_abbrevs = True
+use_citeextract = True
+use_firstname_initials = True
+use_name_ties = False</pre>
+</div>
+<p>[GIVE AN EXPLANATION OF EACH IN TURN]</p>
+</div>
+<div class="section" id="example-definitions-for-namelist-formatting">
+<h2>Example definitions for namelist formatting<a class="headerlink" href="#example-definitions-for-namelist-formatting" title="Permalink to this headline">¶</a></h2>
+<p>[NEED STUFF FROM TEST1 HERE]</p>
+</div>
 </div>
 
 
