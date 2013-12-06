@@ -939,10 +939,10 @@ class Bibdata(object):
                     if (var not in self.specials_list):
                         self.specials_list.append(var)
 
-                    var_is_namelist = re.search(self.namelist_variable_pattern, value)
-                    if var_is_namelist:
-                        print('foundit:', var_is_namelist.group(0))
-                        raise
+                    #var_is_namelist = re.search(self.namelist_variable_pattern, value)
+                    #if var_is_namelist:
+                    #    print('foundit:', var_is_namelist.group(0))
+                    #    raise
 
                     ## Find out if the template has nested option blocks. If so, then add it to
                     ## the list of nested templates.
@@ -1126,9 +1126,9 @@ class Bibdata(object):
             sortdict[sortkey] = unicode(c)      ## use "unicode()" to convert to string in case the key is an integer
 
         ## This part can be a little tricky. If the sortkey is generated such that it begins with an integer, then we
-        ## should make sure that negative-values get sorted in front of positive ones. This happens in simple sort() but
-        ## not when we use locale's "strcoll". So we have to separate the two cases manually. Also, use [::-1] on the
-        ## negative integers because they need to be ordered from largest number to smallest.
+        ## should make sure that negative-values get sorted in front of positive ones. This happens correctly in simple
+        ## sort() but not when we use locale's "strcoll". So we have to separate the two cases manually. Also, use
+        ## [::-1] on the negative integers because they need to be ordered from largest number to smallest.
         variables = re.findall(r'<.*?>', self.specials['sortkey'])
         if (variables[0] in ['<year>','<sortyear>']):
             firstdict = {k:sortdict[k] for k in sortdict if k[0] == '-'}
