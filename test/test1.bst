@@ -52,6 +52,7 @@ period_after_initial = <au-C>, \enquote{<title>} (<year>).
 terse_inits = <au-D>, \enquote{<title>} (<year>).
 author_firstname_initials = <au-E>, \enquote{<title>} (<year>).
 editor_firstname_initials = <ed-A.if_singular(editorlist, edmsg1, edmsg2)>, \enquote{<title>} (<year>).
+andothers = \textit{<au>} <title> // <booktitle>[ / Ed. by <ed-B.if_singular(editorlist, nothing, etal_message)>]. -- <publisher>, <address>, <year>. -- P.~[<startpage> -- <endpage>|<startpage>|<eid>|].
 
 
 SPECIAL-TEMPLATES:
@@ -74,6 +75,7 @@ authorname-E.n = [<authorlist.n.first> ][<authorlist.n.middle> ][<authorlist.n.p
 au-E = <authorname-E.0>, ...,{ and }<authorname-E.N>
 editorname-A.n = [<editorlist.n.first> ][<editorlist.n.middle> ][<editorlist.n.prefix> ]<editorlist.n.last>[, <editorlist.n.suffix>]
 ed-A = <editorname-A.0>, ...,{ and }<editorname-A.N>
+ed-B = <editorname.0>
 group = [<institution>|<organization>|<corporation>|]
 citelabel = None
 sortkey = <citenum>
