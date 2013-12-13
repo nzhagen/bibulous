@@ -52,7 +52,7 @@ period_after_initial = <au-C>, \enquote{<title>} (<year>).
 terse_inits = <au-D>, \enquote{<title>} (<year>).
 author_firstname_initials = <au-E>, \enquote{<title>} (<year>).
 editor_firstname_initials = <ed-A.if_singular(editorlist, edmsg1, edmsg2)>, \enquote{<title>} (<year>).
-andothers = \textit{<au>} <title> // <booktitle>[ / Ed. by <ed-B.if_singular(editorlist, nothing, etal_message)>]. -- <publisher>, <address>, <year>. -- P.~[<startpage> -- <endpage>|<startpage>|<eid>|].
+andothers = \textit{<au>}. <title> // <booktitle>[ / Ed. by <ed-B.if_singular(editorlist, nothing, etal_message)>]. -- <publisher>, <address>, <year>. -- P.~[<startpage> -- <endpage>|<startpage>|<eid>|].
 
 
 SPECIAL-TEMPLATES:
@@ -95,6 +95,7 @@ use_citeextract = False                   ## turn off cite extraction, since thi
 etal_message = , \textit{et~al.}          ## what text to place at the end of an authorlist when there are too many
 edmsg1 = , ed.                            ## the label to use after the editor namelist when only one editor is present
 edmsg2 = , eds                            ## the label to use after the editor namelist when multiple editors are present
+nothing = {}                              ## the "if_singular()" operator need to print something, so here's an empty something
 
 
 VARIABLES:
