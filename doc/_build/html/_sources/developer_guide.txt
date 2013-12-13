@@ -4,16 +4,16 @@ Developer guide
 Guidelines and notes for Python coding style
 ============================================
 
-1. Note that one can mix 8-bit Python strings (ASCII text) with UTF-8 encoded text as long as the 8-bit string contains only ASCII characters.
+#. Note that one can mix 8-bit Python strings (ASCII text) with UTF-8 encoded text as long as the 8-bit string contains only ASCII characters.
 
-2. Keep in mind when running into Unicode errors: reading a line of text from a file produces a line of bytes and not characters. To decode the bytes into a string of characters, you need to know the encoding.
+#. Keep in mind when running into Unicode errors: reading a line of text from a file produces a line of bytes and not characters. To decode the bytes into a string of characters, you need to know the encoding.
 
-3. There are a couple of minor points where the Bibulous coding standards deviates from Python's PEP8:
+#. There are a couple of minor points where the Bibulous coding standards deviates from Python's PEP8:
 
     (a) A line width of 120 is the standard (not 80).
     (b) In general, statements that evaluate to a boolean are placed within parentheses (i.e. ``if (a < b):`` rather than ``if a < b:``).
 
-4. Many developers prefer to spread out code among a large number of small files, but Bibulous is currently organized in a single large file. This is partly because there is no large block of code that fits by itself so that a separate file makes sense. (Parsing of ``.bib`` files, for example, only requires a couple hundred lines.
+#. Many developers prefer to spread out code among a large number of small files, but Bibulous is currently organized in a single large file. This is partly because there is no large block of code that fits by itself so that a separate file makes sense. (Parsing of ``.bib`` files, for example, only requires a couple hundred lines.
 
 Overall project strategy and code structure
 ===========================================
@@ -22,13 +22,13 @@ The basic function of BibTeX is to accept an ``.aux`` file as input and to produ
 
 The basic program flow is as follows:
 
-    1. Read the ``.aux`` file and get the names of the bibliography databases (``.bib`` files), the style templates (``.bst`` files) to use, and the entire set of citations.
-    2. If an "extracted" database file exist, then compare the citations in the extracted database against those in the ``.aux`` file. If there are any differences, then re-extract the database. Otherwise, use the extracted database rather than the full one specified in the ``.aux`` file.
-    3. Read in all of the bibliography database files into one long dictionary (`bibdata`), replacing any abbreviations with their full form. Cross-referenced data is *not* yet inserted at this point. That is delayed until the time of writing the BBL file in order to speed up parsing.
-    4. Read in the Bibulous style template file as a dictionary (`bstdict`).
-    5. Now that all the information is collected, go through each citation key, find the corresponding entry key in `bibdata`. If there is crossref data, then fill in missing values here. Also create the "special fields" here. Finally, from the entry type, select a template from `bstdict` and begin inserting the variables one-by-one into the template.
+    #. Read the ``.aux`` file and get the names of the bibliography databases (``.bib`` files), the style templates (``.bst`` files) to use, together with the entire set of citations.
+    #. Read in the Bibulous style template file as a dictionary (``bstdict``).
+    #. If the ``use_citeextract`` keyword is set to True, and if an "extracted" database file exists, then compare the citations in the extracted database against those in the ``.aux`` file. If there are any differences, then re-extract the database. Otherwise, use the extracted database rather than the full one specified in the ``.aux`` file.
+    #. Read in all of the bibliography database files into one long dictionary (``bibdata``), replacing any abbreviations with their full form. In an "extracted" database, all entries are parsed, whereas in any other type of database file, only those entries whose keywords are found in the citation list are actually parsed. All other entries have their data saved as unparsed strings. Cross-referenced data is *not* yet inserted at this point. That is delayed until the time of writing the BBL file in order to speed up parsing. It is only then that the cross-referenced entries have their data parsed into dictionary form.
+    #. Now that all the information is collected, we can generate the ``.bbl`` file. Create the list of sortkeys, then go through each corresponding citation key in turn, and find the corresponding entry key in ``bibdata``. If there is crossref data, then fill in missing values here. Also create the "special variables" here. Finally, from the entry type, select a template from ``bstdict`` and begin inserting the variables one-by-one into the template.
 
-Because the ``.bib`` file is highly structured, it is straightforward to write a parser by hand in Python: the ``parse_bibfile()`` method converts the ``.bib`` file contents into a Python dictionary (the ``Bibdata`` class' ``bibdata``). The ``.aux`` file is even easier to parse, and the ``parse_auxfile()`` method converts the citation information into the ``Bibdata`` class' ``citedict`` dictionary. The ``.bst`` style template file, having its own domain specific language, is much more complicated, so that its parser is generated from a grammar written for the ``Antlr`` parser generator. (This creates Bibulous' only external dependency -- Java -- which we may be able to eliminate if we use a Python-based parser generator, such as ``pyparsing``.)
+Because the ``.bib`` file is highly structured, it is straightforward to write a parser by hand in Python: the ``parse_bibfile()`` method converts the ``.bib`` file contents into a Python dictionary (the ``Bibdata`` class' ``bibdata``). The ``.aux`` file is even easier to parse, and the ``parse_auxfile()`` method converts the citation information into the ``Bibdata`` class' ``citedict`` dictionary.
 
 The ``Bibdata`` class thus holds all relevant information needed to operate on a bibliography and generate the output LaTeX-formatted ``.bbl`` file.
 
@@ -38,65 +38,77 @@ Parsing BIB files
 parse_bibfile()
 ---------------
 
-The strategy for ``parse_bibfile()`` is to find each individual bibliography entry, determine its entry type, and save all of the text between the entry's opening and closing braces as one long string, to be passed to ``parse_bibentry()`` for parsing. To gather the entry data string, we first look for the next line that starts with ``@``. On that line, we look for a string after the ``@`` followed by ``{``, where the string gives the entry type. After we know the entry type, we look for the corresponding closing brace. If we don't find it on the same line, then we read in the next line, and so forth, concatenating all of the lines into one long "entry string" until we encounter the corresponding closing brace. Once we have this extended "entry string" we feed it to ``parse_bibentry()`` to generate the bibliography data. Once we have come to the end of a given entry, we continue reading down the file looking for the next '@' and so on.
+The strategy for ``parse_bibfile()`` is to find each individual bibliography entry, determine its entry type, and save all of the text between the entry's opening and closing braces as one long string, to be passed to ``parse_bibentry()`` for further parsing. To gather the entry data string, we first look for a line that starts with ``@``. On that line, we look for a string after the ``@`` followed by ``{``, where the string gives the entry type. After we know the entry type, we look for the corresponding closing brace. If we don't find it on the same line, then we read in the next line, and so forth, concatenating all of the lines into one long "entry string" until we encounter the corresponding closing brace. Once we have this extended "entry string" we feed it to ``parse_bibentry()`` to generate the bibliography data. Once we have come to the end of a given entry, we continue reading down the file looking for the next '@' and so on.
 
-Although this approach effectively means that we have to pass twice through the same data, dealing with brace-matching can otherwise become a mess since the BibTeX format, since it allows nested delimiters, is not directly compatible with regular expressions.
+Although this approach effectively means that we have to pass twice through the same data, dealing with brace-matching can otherwise become a mess for the BibTeX format, since it allows nested delimiters, is not directly compatible with regular expressions.
 
 parse_bibentry()
 ----------------
 
-``parse_bibentry()`` only needs to worry about a single entry, and there are four possible formats for the entry string passed to the function:
+Because ``parse_bibfile()`` has already split the data by individual entry, ``parse_bibentry()`` only needs to worry about parsing a single entry, and there are five possible formats for the entry string passed to the function:
 
-    1. If the entrytype is a comment, then skip everything, adding nothing to the database dictionary.
-    2. If the entrytype is a preamble, then treat the entire entry contents as a single fieldvalue. Append the string onto the ``preamble`` value in the ``bibdata`` dictionary.
-    3. If the entrytype is a ``string`` (i.e. an abbreviation), then there is no entrykey. Get the fieldname (abbreviation key), and the remainder of the string is a single field value (the full form of the abbreviated string. Add this key-value pair to the ``abbrevs`` dictionary.
-    4. If the entry is any other type, then get the entrykey, and the remainder of the string is a *series* of field-value pairs.
+    #. If the entrytype is a ``comment``, then skip everything, adding nothing to the database dictionary.
+    #. If the entrytype is a ``preamble``, then treat the entire entry contents as a single fieldvalue. Append the string onto the ``preamble`` value in the ``bibdata`` dictionary.
+    #. If the entrytype is a ``acronym``, then get the entrykey and copy it into the ``name`` field. The remainder of the string is a single field value (the full form of the acronym); copy that into the ``description`` field.
+    #. If the entrytype is a ``string`` (i.e. an abbreviation), then there is no entrykey. Get the fieldname (abbreviation key), and the remainder of the string is a single field value (the full form of the abbreviated string). Add this key-value pair to the ``abbrevs`` dictionary.
+    #. If the entry is any other type, then get the entrykey, and the remainder of the string is a *series* of field-value pairs.
 
-Once it determines which of these four options to use, ``parse_bibentry()`` extracts the entry key (if present), separates out each of the fields (if more than one is present) and loops over each field with a call to ``parse_bibfield()`` to extract the field key-value pairs.
+Once it determines which of these four options to use, ``parse_bibentry()`` extracts the entry key (if present), it locates each individual field and separates out the string corresponding to the key-value pair for each field. It does not actually *parse* the individual fields. For that, it loops over each field with a call to ``parse_bibfield()`` to extract the field key-value pairs.
 
 parse_bibfield()
 ----------------
 
 ``parse_bibfield()`` is the workhorse function of the BIB parsing. And because of BibTeX's method for allowing concatenation, use of abbreviation keys, and use of two different types of delimiters (``"..."`` or ``{...}``), this function is a little messy. However, for the format of a given field, there are four parsing possibilities:
 
-    1. If the field begins with a double quote ``"`` then scan until you find the next ``"``. Add that to the result string. If the ending ``"`` is followed by a comma, then the field is done; return the result string. If the ending is followed by a ``#`` then expect another field string. Scan for it and append it to the current result string.
-    2. If the field begins with ``{`` then scan until you resolve the brace level. This should be followed by a comma, since no concatenation is allowed of brace-delimited fields. Otherwise issue a syntax error warning.
-    3. If the field begins with a ``#`` (concatenation operator) then skip whitespace to the next character set, where you should expect a quote-delimited field. Append that to the current result string.
-    4. If the field begins with anything else, then the substring up until the first whitespace character represents an abbreviation key. Locate it and substitute it in. If you don't find the key in the ``abbrevs`` dictionary, give a warning and skip.
+    #. If the field begins with a double quote ``"`` then scan until you find the next unnested ``"``. Add that to the result string. If the ending ``"`` is followed by a comma, then the field is done; return the result string. If the ending is followed by a ``#`` then expect another field string. Scan for it and append it to the current result string.
+    #. If the field begins with ``{`` then scan until you resolve the brace level. This should be followed by a comma, since no concatenation is allowed for brace-delimited fields. Otherwise issue a syntax error warning.
+    #. If the field begins with a ``#`` (concatenation operator) then skip whitespace to the next character set, where you should expect a quote-delimited field. Append that to the current result string.
+    #. If the field begins with anything else, then the substring up until the first whitespace character represents an abbreviation key. Locate it and substitute it in. If you don't find the key in the ``abbrevs`` dictionary, give a warning and continue on.
 
 Parsing AUX files
 =================
 
 The ``.aux`` file contains the filenames of the ``.bib`` database file and the ``.bst`` style template file, as well as the citations. The ``get_bibfilenames()`` method scans through the ``.aux`` file and locates a line with ``\bibdata{...}`` which contains a filename or a comma-delimited list of filenames, giving the database files. Another line with ``\bibstyle{...}`` gives the filename or comma-delimited list of filenames for style templates. The filenames obtained are saved into the ``filedict`` attribute -- a dictionary whose keys are the file extensions ``aux``, ``bbl``, ``bib``, ``bst``, or ``tex``.
 
-The ``parse_auxfile()`` method makes a second pass through the ``.aux`` file, this time looking for the citation information. (Auxiliary files are generally quite small, so taking multiple passes through them cost very little time.) Each line with ``\citation{...}`` contains a citation key or comma-delimited list of citation keys -- each one is added into the citation dictionary (``citedict``), with a value corresponding to the citation order.
+The ``parse_auxfile()`` method makes a second pass through the ``.aux`` file, this time looking for the citation information. (Auxiliary files are generally quite small, so taking multiple passes through them costs very little time.) Each line with ``\citation{...}`` contains a citation key or comma-delimited list of citation keys -- each one is added into the citation dictionary (``citedict``), with a value corresponding to the citation order.
 
 Parsing BST files
 =================
 
-(This part is changing at the moment, and so the documentation is not available yet.)
+Parsing a ``.bst`` file basically involves looking for one of several syntactical structures. 
 
-Note format_bibitem() is where we compile any scripts present in the BST files. Doing it before this step basically requires that we run any script on all of the entries of the database and not just the ones that have been cited. For large databases, this can be a significant amount of extra computation. There are two different compilation steps here. The first is that, before looping over the bibitems, we compile the scripts so that any functions defined there are available to the local namespace. Second, once we're inside the loop, if the template string for the current entry has a variable which is a user-defined variable, then we have to use Python's ``eval()`` function to obtain the result of evaluating the script on the current entry.
+    #. First, any ``#`` present in a line indicates a comment. All text following the ``#`` are ignored.
+    #. Any line containing all capital letters and ending in ``:`` indicates a section header. The sections recognized are: ``TEMPLATES``, ``SPECIAL-TEMPLATES``, ``OPTIONS``, ``VARIABLES``, and ``DEFINITIONS``. The first three sections (``TEMPLATES``, ``SPECIAL-TEMPLATES``, and ``OPTIONS``) use template syntax, while the last two ( ``VARIABLES`` and ``DEFINITIONS``) use Python syntax.
+    #. In the TEMPLATES, SPECIAL-TEMPLATES, or OPTIONS sections of the file, any line ending in an ellipsis (``...``) means that the following line is a continuation. Thus, the following line is appended to the current one.
+    #. For each ``var = definition`` pair found in the ``VARIABLES`` section of the file, the code creates a new entry in the ``user_variables`` dictionary, with value equal to the given definition.
+    #. For each ``entrytype = template`` pair found in the ``TEMPLATES`` section of the file, the code creates a corresponding entry in ``bstdict``, with the key given by the ``entrytype`` and value given by the ``template``. The code next examines the template definition to see if it contains a nested options block. If so, it adds it to the list of nested templates.
+    #. For each ``keyword = value`` pair found in the ``OPTIONS`` section of the file, the code creates a new entry in the ``options`` dictionary, with the dictionary key being the keyword itself, and the value copied from the right hand side of the option definition.
+    #. For each ``var = definition`` pair found in the ``SPECIAL-TEMPLATES`` section of the file, the code has to do a little more work than elsewhere. First it creates a new entry in the ``specials`` dictionary, with the dictionary key given by the ``var``, and the value given by the ``definition``. It then appens the key to the ``specials_list``. (Since a dictionary is not ordered, we need an order-preserving means of iterating through the list of specials to make sure that one can always be defined before another that depends on it.) Next it examines the template definition to see if it contains a nested options block. If so, it adds it to the list of nested templates. It also looks to see if there is an ellipsis representing an implicit loop. If so, it adds the template key to the list of "looped templates". Finally it looks to see if the template's key represents an inmplicitly-indexed variable. If so, it adds the key to the list of implicitly indexed variables.
 
+Once the initial parsing is done, there are several steps in which it analyzes the results:
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+    #. Iterating through each of the regular templates, the code looks to see if any of the templates are defined as copies of other templates, as, for example, ``inbook = incollection``. If it finds this kind of definition, then it copies the template from the one (``incollection`` here) to the other (``inbook`` here).
+    #. The code looks at the functions defined in the ``DEFINITIONS`` section of the file. If the ``allow_scripts`` keyword is set to True, then it goes ahead and evaluates these function definitions so that they will be available during the process of formatting bibliography entries.
+    #. Finally, the code passes each template definition through the ``validate_templatestr()`` function to validate that the template has proper syntax.
 
 Writing the BBL file
 ====================
 
-Now that all the information is available to Bibulous, we can begin writing the output BBL file. First we write a few lines to the preamble, including the ``preamble`` string obtained from the ``.bib`` database files. We also create the citation list -- the citations listed in the sorting order as defined in the style template files. (This requires a surprising amount of code to get right -- see **Generating sortkeys** below.) We loop over each citation in the desired order, and insert cross-reference information to fill in missing fields, and parse each name field (see the "Formatting names" subsection below). The cross-referencing and name parsing steps can be delayed until later on in the processing chain, but would require more complex code to do there, so doing them here keeps the code simpler without sacrificing much speed. (The assumption here is that the citation list is small, at least in comparison to the database, so that limiting the difficult parsing to only those entries cited will allow significant improvement in speed.) Finally, at each step in the loop, we call ``format_bibitem()`` to insert the database entry fields into the appropriate style template, incorporating any extra formatting requested by the user in the style template file.
+Now that all the information is available to Bibulous, we can begin writing the output BBL file. First we write a few lines to the preamble, including the ``preamble`` string obtained from the ``.bib`` database files. Then, for each citation key we found in the ``.aux`` file, we
+
+    #. Insert any cross-reference data from any other database entries into the current one.
+    #. Define all of the "special variables", including the ``sortkey`` and ``citelabel``, as fields within the current entry.
+
+Now that we have all of the sortkeys, we generate the ``citation_list`` --- the thing we iterate through one by one to format the references in order. At each iteration, we call ``format_bibitem()``, which does the following:
+
+    #. Write the line ``\bibitem[citelabel]{citekey}`` into the ``.bbl`` file.
+    #. Import the template corresponding to the current entry's ``entrytype``.
+    #. If there are any user-deefined variables (from the ``VARIABLES`` section of the file), then evaluate those variables now, so that they can be used inside the template.
+    #. For each option block in the template, go through and determine how to "simplify" the block. This amounts to locating the first cell in each block that has a defined value, and then replacing the ``[...]`` square-bracket-delimited block with its contents. At this point the template variables are still there; only the square brackets have been dropped.
+    #. Now that the optional pieces are all gone, go through each template variable and replace it with the corresponding field from the database entry.
+    #. If there are any nested ``\textit{...\textit{...}...}`` operators in the result, replace odd-level operators with ``\textup{...}`` in order to get the right behavior of flipping between italics and regular font.
+    #. If there are any nested ``\textbf{...\textbf{...}...}`` operators in the result, replace odd-level operators with ``\textup{...}`` in order to get the right behavior of flipping between bold and regular weight.
+    #. If there are any nested quotation marks in the result, then re-order them according to the American standard. This means having double-quotation-marks at the outermost level, single-quotation-marks inside that, then double inside that, single inside that, and so on. This is messy and difficult code, and so users should always be recommended to use the ``\enquote{...}`` LaTeX operator instead of manually-implemented quotation marks.
 
 Name formatting
 ================
@@ -142,18 +154,18 @@ Testing
 
 The suite of regression tests for Bibulous consist of various template definitions and database entries designed to test individual features of the program. The basic approach of the tests is as follows:
 
-    1. Once a change is made to the code (to fix a bug or add functionality), the developer also adds an entry to the ``test/test1.bib`` file, where the entry's "entrytype" is named in such a way to give an indication of what the test is for. For example, the entry in the BIB file may be defined with::
+    #. Once a change is made to the code (to fix a bug or add functionality), the developer also adds an entry to the ``test/test1.bib`` file, where the entry's "entrytype" is named in such a way to give an indication of what the test is for. For example, the entry in the BIB file may be defined with::
 
-           @test_initialize1{...
+           @initialize1{...
 
        where the developer provides an ``author`` field in the entry where one or more authors have names which are difficult to for generating initials correctly. The developer should also include at least a 1-line comment about the purpose of the entry as well. To make everything easy to find, use the entrytype as the entry's key as well. Thus, the example above would use::
 
-           @test_initialize1{test_initialize1, ...
+           @initialize1{initialize1, ...
 
-    2. If the above new entry is something which can be checked with normal options settings, then the developer should add a corresponding line in the BST file defining how that new entrytype (i.e. ``test_initialize1``) should be formatted. If *different* options settings are needed, then a new BST file is needed. Only a minimalist file is generally needed: the file can, for example, contain one line defining a new entrytype and one line to define the new option setting. You can define all of the other options if you want, but these are redundant and introduce a number of unnecessary "overwriting option value..." warning messages.
-    3. Next, the developer should add a line ``\citation{entrytype}`` to the AUX file where the key is the key given in the new entry of the BIB file you just put in (e.g. ``test_initialize1``). This is the same as the entrytype to keep everything consistent.
-    4. Next, the developer needs to add two lines to the ``test1_target.bbl`` file to say what the formatted result should look like. Take a look at other lines to get a feel for how these should look, and take in consideration the form of the template just added to the BST file.
-    5. Finally, run ``bibulous_test.py`` to check the result. This script will load the modified BIB and BST files and will write out several formatted BBL file ``test1.bbl`` etc. It will then run a ``diff`` program on the output file versus the target BBL file to see if there are any differences between the target and actual output BBL files.
+    #. If the above new entry is something which can be checked with normal options settings, then the developer should add a corresponding line in the BST file defining how that new entrytype (i.e. ``initialize1``) should be formatted. If *different* options settings are needed, then a new BST file is needed. Only a minimalist file is generally needed: the file can, for example, contain one line defining a new entrytype and one line to define the new option setting. You can define all of the other options if you want, but these are redundant and introduce a number of unnecessary "overwriting option value..." warning messages.
+    #. Next, the developer should add a line ``\citation{entrytype}`` to the AUX file where the ``entrytype`` is the key given in the new entry of the BIB file you just put in (e.g. ``initialize1``). This is the same as the entrytype to keep everything consistent.
+    #. Next, the developer needs to add two lines to the ``test1_target.bbl`` file to say what the formatted result should look like. Take a look at other lines to get a feel for how these should look, and take in consideration the form of the template just added to the BST file.
+    #. Finally, run ``bibulous_test.py`` to check the result. This script will load the modified BIB and BST files and will write out several formatted BBL file ``test1.bbl`` etc. It will then run a ``diff`` program on the output file versus the target BBL file to see if there are any differences between the target and actual output BBL files.
 
 Generating the documentation
 ============================

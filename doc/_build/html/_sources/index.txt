@@ -15,6 +15,7 @@ Contents:
    guidelines_for_writing_style_templates.rst
    instructions_for_reporting_bugs.rst
    developer_guide.rst
+   examples.rst
 
 .. include:: ../README.rst
 
