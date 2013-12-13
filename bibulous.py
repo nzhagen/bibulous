@@ -2593,7 +2593,7 @@ class Bibdata(object):
                     return('')
                 elif (len(self.bibdata[entrykey][variable_to_eval]) == 1):
                     suffix = self.options[singular_form.strip()]
-                    return(field + singular_form.strip())
+                    return(field + suffix)
                 else:
                     suffix = self.options[plural_form.strip()]
                     return(field + suffix)
