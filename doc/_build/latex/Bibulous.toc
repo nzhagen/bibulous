@@ -3,28 +3,37 @@
 \contentsline {section}{\numberline {1.1}Kile: replacing BibTeX with Bibulous}{3}{section.1.1}
 \contentsline {section}{\numberline {1.2}Modifying WinEdt5 to replace BibTeX with Bibulous}{4}{section.1.2}
 \contentsline {chapter}{\numberline {2}Guidelines for writing bibliography style templates}{7}{chapter.2}
-\contentsline {chapter}{\numberline {3}Instructions on how to report a bug to the Bibulous development team}{9}{chapter.3}
-\contentsline {section}{\numberline {3.1}Where to report a bug}{9}{section.3.1}
-\contentsline {section}{\numberline {3.2}How to report a bug}{9}{section.3.2}
-\contentsline {chapter}{\numberline {4}Developer guide}{11}{chapter.4}
-\contentsline {section}{\numberline {4.1}Guidelines for Python coding style}{11}{section.4.1}
-\contentsline {section}{\numberline {4.2}Overall project strategy and code structure}{11}{section.4.2}
-\contentsline {section}{\numberline {4.3}Parsing BIB files}{12}{section.4.3}
-\contentsline {subsection}{\numberline {4.3.1}parse\_bibfile()}{12}{subsection.4.3.1}
-\contentsline {subsection}{\numberline {4.3.2}parse\_bibentry()}{12}{subsection.4.3.2}
-\contentsline {subsection}{\numberline {4.3.3}parse\_bibfield()}{12}{subsection.4.3.3}
-\contentsline {section}{\numberline {4.4}Parsing AUX files}{13}{section.4.4}
-\contentsline {section}{\numberline {4.5}Parsing BST files}{13}{section.4.5}
-\contentsline {section}{\numberline {4.6}Writing the BBL file}{13}{section.4.6}
-\contentsline {section}{\numberline {4.7}Name formatting}{14}{section.4.7}
-\contentsline {subsection}{\numberline {4.7.1}create\_namelist()}{14}{subsection.4.7.1}
-\contentsline {subsection}{\numberline {4.7.2}format\_namelist()}{14}{subsection.4.7.2}
-\contentsline {section}{\numberline {4.8}Generating sortkeys}{15}{section.4.8}
-\contentsline {section}{\numberline {4.9}Testing}{15}{section.4.9}
-\contentsline {section}{\numberline {4.10}Generating the documentation}{16}{section.4.10}
-\contentsline {chapter}{\numberline {5}Bibulous Overview}{17}{chapter.5}
-\contentsline {section}{\numberline {5.1}Installation}{17}{section.5.1}
-\contentsline {section}{\numberline {5.2}Example}{17}{section.5.2}
-\contentsline {section}{\numberline {5.3}Developers}{18}{section.5.3}
-\contentsline {section}{\numberline {5.4}License}{18}{section.5.4}
-\contentsline {section}{\numberline {5.5}Indices and tables}{19}{section.5.5}
+\contentsline {section}{\numberline {2.1}Syntax}{7}{section.2.1}
+\contentsline {section}{\numberline {2.2}Default Fields}{9}{section.2.2}
+\contentsline {subsection}{\numberline {2.2.1}Operators}{10}{subsection.2.2.1}
+\contentsline {section}{\numberline {2.3}Options keywords}{12}{section.2.3}
+\contentsline {section}{\numberline {2.4}Examples for namelist formatting}{13}{section.2.4}
+\contentsline {section}{\numberline {2.5}Python API}{14}{section.2.5}
+\contentsline {chapter}{\numberline {3}Instructions on how to report a bug to the Bibulous development team}{19}{chapter.3}
+\contentsline {section}{\numberline {3.1}Where to report a bug}{19}{section.3.1}
+\contentsline {section}{\numberline {3.2}How to report a bug}{19}{section.3.2}
+\contentsline {chapter}{\numberline {4}Developer guide}{21}{chapter.4}
+\contentsline {section}{\numberline {4.1}Guidelines and notes for Python coding style}{21}{section.4.1}
+\contentsline {section}{\numberline {4.2}Overall project strategy and code structure}{21}{section.4.2}
+\contentsline {section}{\numberline {4.3}Parsing BIB files}{22}{section.4.3}
+\contentsline {subsection}{\numberline {4.3.1}parse\_bibfile()}{22}{subsection.4.3.1}
+\contentsline {subsection}{\numberline {4.3.2}parse\_bibentry()}{22}{subsection.4.3.2}
+\contentsline {subsection}{\numberline {4.3.3}parse\_bibfield()}{23}{subsection.4.3.3}
+\contentsline {section}{\numberline {4.4}Parsing AUX files}{23}{section.4.4}
+\contentsline {section}{\numberline {4.5}Parsing BST files}{23}{section.4.5}
+\contentsline {section}{\numberline {4.6}Writing the BBL file}{24}{section.4.6}
+\contentsline {section}{\numberline {4.7}Name formatting}{25}{section.4.7}
+\contentsline {subsection}{\numberline {4.7.1}create\_namelist()}{25}{subsection.4.7.1}
+\contentsline {subsection}{\numberline {4.7.2}format\_namelist()}{25}{subsection.4.7.2}
+\contentsline {section}{\numberline {4.8}Generating sortkeys}{26}{section.4.8}
+\contentsline {section}{\numberline {4.9}Testing}{26}{section.4.9}
+\contentsline {section}{\numberline {4.10}Generating the documentation}{27}{section.4.10}
+\contentsline {chapter}{\numberline {5}Examples}{29}{chapter.5}
+\contentsline {section}{\numberline {5.1}Example 1}{29}{section.5.1}
+\contentsline {section}{\numberline {5.2}Example 2}{30}{section.5.2}
+\contentsline {chapter}{\numberline {6}Bibulous Overview}{35}{chapter.6}
+\contentsline {section}{\numberline {6.1}Installation}{35}{section.6.1}
+\contentsline {section}{\numberline {6.2}Example}{35}{section.6.2}
+\contentsline {section}{\numberline {6.3}Developers}{36}{section.6.3}
+\contentsline {section}{\numberline {6.4}License}{36}{section.6.4}
+\contentsline {section}{\numberline {6.5}Indices and tables}{37}{section.6.5}

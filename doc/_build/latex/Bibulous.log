@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012/Debian) (format=pdflatex 2013.8.21)  14 NOV 2013 12:57
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012/Debian) (format=pdflatex 2013.8.21)  13 DEC 2013 12:32
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -871,7 +871,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 117--117
 
  []
 
-<banner.pdf, id=100, 1882.71153pt x 493.97911pt>
+<banner.pdf, id=132, 1882.71153pt x 493.97911pt>
 File: banner.pdf Graphic file (type pdf)
  <use banner.pdf>
 Package pdftex.def Info: banner.pdf used on input line 117.
@@ -936,7 +936,7 @@ LaTeX Font Info:    Try loading font information for T1+pcr on input line 126.
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1pcr.fd
 File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
 )
-<screenshot_for_kile_instructions.png, id=162, 765.6103pt x 552.82825pt>
+<screenshot_for_kile_instructions.png, id=203, 765.6103pt x 552.82825pt>
 File: screenshot_for_kile_instructions.png Graphic file (type png)
 
 <use screenshot_for_kile_instructions.png>
@@ -944,22 +944,22 @@ Package pdftex.def Info: screenshot_for_kile_instructions.png used on input lin
 e 139.
 (pdftex.def)             Requested size: 230.18253pt x 166.20404pt.
 
-<screenshot_for_kile_instructions2.png, id=164, 765.6103pt x 552.82825pt>
+<screenshot_for_kile_instructions2.png, id=205, 765.6103pt x 552.82825pt>
 File: screenshot_for_kile_instructions2.png Graphic file (type png)
 
 <use screenshot_for_kile_instructions2.png>
 Package pdftex.def Info: screenshot_for_kile_instructions2.png used on input li
 ne 141.
 (pdftex.def)             Requested size: 230.18253pt x 166.20404pt.
- [3 <./screenshot_for_kile_instructions.png>] <original_Winedt5_setup.png, id=1
-75, 708.6475pt x 558.085pt>
+ [3 <./screenshot_for_kile_instructions.png>] <original_Winedt5_setup.png, id=2
+15, 708.6475pt x 558.085pt>
 File: original_Winedt5_setup.png Graphic file (type png)
 
 <use original_Winedt5_setup.png>
 Package pdftex.def Info: original_Winedt5_setup.png used on input line 166.
 (pdftex.def)             Requested size: 230.18253pt x 181.27328pt.
 
-<modified_Winedt5_setup.png, id=176, 708.6475pt x 558.085pt>
+<modified_Winedt5_setup.png, id=216, 708.6475pt x 558.085pt>
 File: modified_Winedt5_setup.png Graphic file (type png)
 
 <use modified_Winedt5_setup.png>
@@ -971,67 +971,292 @@ Package pdftex.def Info: modified_Winedt5_setup.png used on input line 168.
 ]
 Chapter 2.
 [7]
-Underfull \hbox (badness 10000) in paragraph at lines 231--232
-\T1/pcr/m/n/10 <eid>\T1/ptm/m/n/10 , \T1/pcr/m/n/10 <endpage>\T1/ptm/m/n/10 , \
-T1/pcr/m/n/10 <institution>\T1/ptm/m/n/10 , \T1/pcr/m/n/10 <journal>\T1/ptm/m/n
-/10 , \T1/pcr/m/n/10 <nationality>\T1/ptm/m/n/10 , \T1/pcr/m/n/10 <note>\T1/ptm
-/m/n/10 ,
+Underfull \hbox (badness 10000) in paragraph at lines 223--224
+[]\T1/pcr/m/n/10 <au>\T1/ptm/m/n/10 , \T1/pcr/m/n/10 <booktitle>\T1/ptm/m/n/10 
+, \T1/pcr/m/n/10 <chapter>\T1/ptm/m/n/10 , \T1/pcr/m/n/10 <edition>\T1/ptm/m/n/
+10 , \T1/pcr/m/n/10 <ed>\T1/ptm/m/n/10 , \T1/pcr/m/n/10 <eid>\T1/ptm/m/n/10 , \
+T1/pcr/m/n/10 <endpage>\T1/ptm/m/n/10 ,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 223--224
+\T1/pcr/m/n/10 <institution>\T1/ptm/m/n/10 , \T1/pcr/m/n/10 <journal>\T1/ptm/m/
+n/10 , \T1/pcr/m/n/10 <nationality>\T1/ptm/m/n/10 , \T1/pcr/m/n/10 <note>\T1/pt
+m/m/n/10 , \T1/pcr/m/n/10 <number>\T1/ptm/m/n/10 ,
  []
 
 [8]
+
+! Package inputenc Error: Unicode char \u8:著 not set up for use with LaTeX.
+
+See the inputenc package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.277 ...tless{}author-en\textgreater{}\textbar{}]
+                                                  
+? 
+
+! Package inputenc Error: Unicode char \u8:者 not set up for use with LaTeX.
+
+See the inputenc package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.277 ...tless{}author-en\textgreater{}\textbar{}]
+                                                  
+? 
+
+! Package inputenc Error: Unicode char \u8:名 not set up for use with LaTeX.
+
+See the inputenc package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.277 ...tless{}author-en\textgreater{}\textbar{}]
+                                                  
+? 
+
+! Package inputenc Error: Unicode char \u8:著 not set up for use with LaTeX.
+
+See the inputenc package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.279 ...ate the missing {}`{}`author{}`{}` field.
+                                                  
+? 
+
+! Package inputenc Error: Unicode char \u8:者 not set up for use with LaTeX.
+
+See the inputenc package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.279 ...ate the missing {}`{}`author{}`{}` field.
+                                                  
+? 
+
+! Package inputenc Error: Unicode char \u8:名 not set up for use with LaTeX.
+
+See the inputenc package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.279 ...ate the missing {}`{}`author{}`{}` field.
+                                                  
+? 
+
+! Package inputenc Error: Unicode char \u8:著 not set up for use with LaTeX.
+
+See the inputenc package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.279 ...ate the missing {}`{}`author{}`{}` field.
+                                                  
+? 
+
+! Package inputenc Error: Unicode char \u8:者 not set up for use with LaTeX.
+
+See the inputenc package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.279 ...ate the missing {}`{}`author{}`{}` field.
+                                                  
+? 
+
+! Package inputenc Error: Unicode char \u8:名 not set up for use with LaTeX.
+
+See the inputenc package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.279 ...ate the missing {}`{}`author{}`{}` field.
+                                                  
+? 
+
+! Package inputenc Error: Unicode char \u8:著 not set up for use with LaTeX.
+
+See the inputenc package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.279 ...ate the missing {}`{}`author{}`{}` field.
+                                                  
+? 
+
+! Package inputenc Error: Unicode char \u8:者 not set up for use with LaTeX.
+
+See the inputenc package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.279 ...ate the missing {}`{}`author{}`{}` field.
+                                                  
+? 
+
+! Package inputenc Error: Unicode char \u8:名 not set up for use with LaTeX.
+
+See the inputenc package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.279 ...ate the missing {}`{}`author{}`{}` field.
+                                                  
+? 
+
+! Package inputenc Error: Unicode char \u8:著 not set up for use with LaTeX.
+
+See the inputenc package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.279 ...ate the missing {}`{}`author{}`{}` field.
+                                                  
+? 
+
+! Package inputenc Error: Unicode char \u8:者 not set up for use with LaTeX.
+
+See the inputenc package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.279 ...ate the missing {}`{}`author{}`{}` field.
+                                                  
+? 
+
+! Package inputenc Error: Unicode char \u8:名 not set up for use with LaTeX.
+
+See the inputenc package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.279 ...ate the missing {}`{}`author{}`{}` field.
+                                                  
+? 
+[9]
+LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <12> not available
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 327.
+
+Underfull \hbox (badness 10000) in paragraph at lines 329--330
+\T1/pcr/m/n/10 perform any one of four functions: a explicit numerical index (t
+he ``0 \T1/ptm/m/n/10 shown
+ []
+
+
+Underfull \hbox (badness 6268) in paragraph at lines 361--362
+\T1/ptm/m/n/10 based de-fault for-mat-ting scheme to cre-ate a for-mat-ted stri
+ng of names. The com-plete list key-
+ []
+
+
+Underfull \hbox (badness 5696) in paragraph at lines 361--362
+\T1/ptm/m/n/10 words that it work with is: \T1/pcr/m/n/10 etal_message\T1/ptm/m
+/n/10 , \T1/pcr/m/n/10 maxeditors\T1/ptm/m/n/10 , \T1/pcr/m/n/10 mineditors\T1/
+ptm/m/n/10 , \T1/pcr/m/n/10 namelist_format\T1/ptm/m/n/10 ,
+ []
+
+[10]
+
+! Package inputenc Error: Unicode char \u8:月 not set up for use with LaTeX.
+
+See the inputenc package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.370 ...', this same operator will return ``11月
+                                                  ''.
+? 
+[11] [12] [13] [14] [15] [16] [17] [18
+
+]
 Chapter 3.
-LaTeX Font Info:    Try loading font information for TS1+ptm on input line 272.
+LaTeX Font Info:    Try loading font information for TS1+ptm on input line 657.
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
-) [9
-
-] [10]
+) [19] [20]
 Chapter 4.
-[11
+[21
 
-]
-LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <12> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 352.
- [12] [13]
-Underfull \hbox (badness 10000) in paragraph at lines 451--452
+] [22] [23] [24]
+Underfull \hbox (badness 10000) in paragraph at lines 909--910
 []\T1/ptm/m/n/10 A five-element comma-separated list: \T1/pcr/m/n/10 [firstname
 , middlenames, prefix, lastname,
  []
 
-[14] [15] [16]
-Chapter 5.
-[17
+[25] [26] [27] [28
 
-] [18] (./Bibulous.ind)
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 608.
- [19]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 608.
+]
+Chapter 5.
+
+Overfull \hbox (304.99297pt too wide) in paragraph at lines 970--971
+\T1/ptm/m/n/10 The fol-low-ing ex-am-ple is taken from a ques-tion posted at \T
+1/pcr/m/n/10 http://tex.stackexchange.com/questions/147675/bibtex-scientific-st
+yle-with-pages-at-the-end\T1/ptm/m/n/10 .
+ []
+
+<example1a.png, id=403, 501.875pt x 216.81pt>
+File: example1a.png Graphic file (type png)
+ <use example1a.png>
+Package pdftex.def Info: example1a.png used on input line 976.
+(pdftex.def)             Requested size: 234.8775pt x 101.46733pt.
+ [29 <./example1a.png>] <example1b.png, id=409, 1190.19656pt x 376.99608pt>
+File: example1b.png Graphic file (type png)
+
+<use example1b.png>
+Package pdftex.def Info: example1b.png used on input line 1044.
+(pdftex.def)             Requested size: 281.85587pt x 89.27287pt.
+ <example2a.png, id=410, 336.2964pt x 257.763pt>
+File: example2a.png Graphic file (type png)
+
+<use example2a.png>
+Package pdftex.def Info: example2a.png used on input line 1055.
+(pdftex.def)             Requested size: 234.8775pt x 180.0317pt.
+ [30 <./example1b.png>] [31 <./example2a.png (PNG copy)>]
+Underfull \vbox (badness 10000) detected at line 1176
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 1176
+ []
+
+[32] [33] [34
+
+]
+Chapter 6.
+[35] [36] (./Bibulous.ind)
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1282.
+ [37]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1282.
  (./Bibulous.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 608.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 608.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1282.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1282.
+
 Package rerunfilecheck Info: File `Bibulous.out' has not changed.
-(rerunfilecheck)             Checksum: 86C55384483DD149F33FA06DCF77AC27;1627.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 608.
+(rerunfilecheck)             Checksum: B53240D28956AEC2265EC5D1AC145293;2106.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1282.
  ) 
 Here is how much of TeX's memory you used:
- 8943 strings out of 495036
- 124117 string characters out of 3180976
- 222188 words of memory out of 3000000
- 11846 multiletter control sequences out of 15000+200000
+ 9035 strings out of 495036
+ 125334 string characters out of 3180976
+ 225610 words of memory out of 3000000
+ 11879 multiletter control sequences out of 15000+200000
  55056 words of font info for 61 fonts, out of 3000000 for 9000
  15 hyphenation exceptions out of 8191
- 36i,12n,45p,1323b,424s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 36i,12n,45p,1322b,458s stack positions out of 5000i,500n,10000p,200000b,50000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
 e/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texlive/texmf-dist/
 fonts/type1/urw/helvetic/uhvb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/
 urw/helvetic/uhvbo8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/u
 tmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr
 /share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Bibulous.pdf (23 pages, 465923 bytes).
+Output written on Bibulous.pdf (41 pages, 651573 bytes).
 PDF statistics:
- 340 PDF objects out of 1000 (max. 8388607)
- 297 compressed objects within 3 object streams
- 99 named destinations out of 1000 (max. 500000)
- 218 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 505 PDF objects out of 1000 (max. 8388607)
+ 437 compressed objects within 5 object streams
+ 155 named destinations out of 1000 (max. 500000)
+ 297 words of extra memory for PDF output out of 10000 (max. 10000000)
 
