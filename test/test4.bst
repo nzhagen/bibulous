@@ -1,6 +1,6 @@
 TEMPLATES:
 article = <au>, \enquote{<title>} (<year>).
-incollection = <au>, \enquote{<title>,} [in <booktitle>, ]<publisher> (<year>).[ {\makeopenbracket}In <language>.{\makeclosebracket}]
+incollection = [<au>|<ed.if_singular(editorlist, edmsg1, edmsg2)>|], \enquote{<title>,} [in <booktitle>, ]<publisher> (<year>).[ {\makeopenbracket}In <language>.{\makeclosebracket}]
 
 
 SPECIAL-TEMPLATES:
@@ -10,6 +10,8 @@ title = [<title-ja>|<title-en>|]
 publisher = [<publisher-ja>|<publisher-en>|]
 authorname.n = [<authorlist.n.first.initial()>. ][<authorlist.n.middle.initial()>. ][<authorlist.n.prefix> ]<authorlist.n.last>[, <authorlist.n.suffix>]
 au = <authorname.0>, ...,{ and }<authorname.6>
+authorlabel = [<authorlist.0.prefix>|<authorlist.0.last>]
+editorlabel = [<editorlist.0.prefix>|<editorlist.0.last>]
 citelabel = None
 sortkey = <citenum>
 

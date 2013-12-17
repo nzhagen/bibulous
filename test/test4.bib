@@ -49,7 +49,7 @@
 }
 
 %% Test on an entry that has editors but no authors.
-@ARTICLE{Blouke2000,
+@INCOLLECTION{Blouke2000,
   title = {Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications},
   year = {2000},
   volume = 6501,
@@ -85,6 +85,15 @@
   language = {Japanese}
 }
 
+%% This time, we force the code to operate with Japanese characters.
+@INCOLLECTION{乙部2006a,
+  author = {{乙部} {厳己} and Paul Horton},
+  title = {jBibTEXの使用法},
+  publisher = {ソフトバンクパブリッシング},
+  year = {2006},
+  pages = {17--24}
+}
+
 %% Test that sorting on a LaTeX-markup character correctly operates on a Unicode equivalent.
 @ARTICLE{AAberg2010,
   title = {A low dark current and high quantum efficiency monolithic Germanium-on-Silicon CMOS imager technology for day and night imaging applications},
@@ -96,7 +105,7 @@
 @ARTICLE{Strangekey,
   title = {Nothing of consequence},
   author = {Mister Aaa},
-  year = {1901}
+  year = 1901
 }
 
 %% Test with an entry that uses a unicode character.
@@ -104,7 +113,7 @@
   title = {Quantitative Förster resonance energy transfer efficiency measurements using simultaneous spectral unmixing of excitation and emission spectra},
   author = {Sanam Mustafa and John Hannagan and Paul Rigby and Kevin Pfleger and Ben Corry},
   volume = 18,
-  year = {2013}
+  year = 2013
 }
 
 %% Change the title umlaut encoding from UTF8 to TeX-markup ASCII and make sure both methods produce the same sortkey.
@@ -112,7 +121,7 @@
   title = {Quantitative F{\"o}rster resonance energy transfer efficiency measurements using simultaneous spectral unmixing of excitation and emission spectra},
   author = {Sanam Mustafa and John Hannagan and Paul Rigby and Kevin Pfleger and Ben Corry},
   volume = 18,
-  year = {2013}
+  year = 2013
 }
 
 %% Change the publication year from the above and see if it gets sorted corrected. Note that the entrykey's tag year does not match the year intentionally.
@@ -120,7 +129,7 @@
   title = {Quantitative F{\"o}rster resonance energy transfer efficiency measurements using simultaneous spectral unmixing of excitation and emission spectra},
   author = {Sanam Mustafa and John Hannagan and Paul Rigby and Kevin Pfleger and Ben Corry},
   volume = 18,
-  year = {2012}
+  year = 2012
 }
 
 %% Test that "sortyear", "sorttitle" and "sortname" are working.
@@ -138,7 +147,7 @@
 @INCOLLECTION{Gemert1995,
   title = {One dimensional transport theory},
   author = {Martin J. C. van Gemert},
-  booktitle = {Optical-Thermal Response of Laer-Irradiated Tissue},
+  booktitle = {Optical-Thermal Response of Laser-Irradiated Tissue},
   publisher = {Plenum Press},
   year = {1995},
   editor = {A. J. Welch and Martin J. C. van Gemert},

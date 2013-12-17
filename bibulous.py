@@ -1315,7 +1315,6 @@ class Bibdata(object):
             entry['citealpha'] = create_citation_alpha(entry)
 
         ## Substitute entry fields for template variables.
-        #templatestr = self.fillout_implicit_loop(templatestr, citekey)     ## zzz: this line shouldn't be necessary!
         templatestr = self.template_substitution(templatestr, citekey)
         sortkey = purify_string(templatestr)
         sortkey = sortkey.replace(' ','')
