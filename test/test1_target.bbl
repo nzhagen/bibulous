@@ -103,7 +103,9 @@ Alain Aspect, Philippe Grangier, and G{\'e}rard Roger, ``Experimental realizatio
 \bibitem{editor_firstname_initials}
 David B. Chenault and Dennis H. Goldstein, eds, ``Polarization: Measurement, Analysis, and Remote Sensing X'' (2012).
 \bibitem{andothers}
-\textit{R. Smolanzuk, J. Skalski, and A. Sobiczewski} Masses and half-life of superheavy elements // Proc.\ of the International Workshop 24 on Gross Properties of Nuclei and Nuclear Excitations / Ed. by H. Feldmeier, \textit{et~al.}. -- GSI, Darmstadt, 1996. -- P.~35 -- 42.
+\textit{Smolanzuk, R., Skalski, J., Sobiczewski, A.} Masses and half-life of superheavy elements // Proc.\ of the International Workshop 24 on Gross Properties of Nuclei and Nuclear Excitations / Ed. by Feldmeier, H., \textit{et~al.} -- GSI, Darmstadt, 1996. -- P.~35 -- 42.
+\bibitem{lowerupper}
+M. C. A. Name, TITLE WAS IN LOWER CASE (Sentencecase, lowercase, 1985).
 \bibitem[key_not_in_database]{key_not_in_database}
 \textit{Warning: citation key "key_not_in_database" is not in the bibliography database}.
 
