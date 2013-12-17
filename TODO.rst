@@ -18,16 +18,10 @@ For version 1.3, the goal is to have namelist templates working.
   when the BST file is parsed, rather than when we do string substitution in the template
   for every entry.
 
-- Rewrite the ``Overall project strategy and code structure`` section of
-  ``developer_guide.rst`` to take into account the new program flow.
-
 - Get ``backrefs`` option back up and working.
 
 - Allow direct integration with front-end for: generating glossaries, customizing the
   appearance of citation labels, etc.
-
-- Look into whether the code can be simplified and user scripts still benefit if you move some
-  bibulous module functions from module scope functions to Bibdata class methods.
 
 - Write a ``bibclean`` function which checks a ``*.bib`` file for errors. Include using
   ``namefield_to_namelist()`` to check for name format errors.

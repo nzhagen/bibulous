@@ -62,8 +62,8 @@ __all__ = ['sentence_case', 'stringsplit', 'finditer', 'namefield_to_namelist', 
            'enwrap_nested_string', 'enwrap_nested_quotes', 'purify_string', 'latex_to_utf8',
            'search_middlename_for_prefixes', 'get_edition_ordinal', 'export_bibfile', 'parse_pagerange',
            'parse_nameabbrev', 'make_sortkey_unique', 'filter_script', 'str_is_integer', 'bib_warning',
-           'create_citation_alpha', 'toplevel_split', 'get_variable_name_elements', 'get_indexed_vars_in_template',
-           'get_names', 'format_namelist', 'namedict_to_formatted_namestr']
+           'create_citation_alpha', 'toplevel_split', 'get_variable_name_elements', 'get_names', 'format_namelist',
+           'namedict_to_formatted_namestr']
 
 
 class Bibdata(object):
@@ -152,6 +152,7 @@ class Bibdata(object):
     simplify_template_bracket
     get_variable
     get_indexed_variable
+    get_indexed_vars_in_template
 
     Example
     -------
@@ -167,6 +168,7 @@ class Bibdata(object):
         self.filedict = {}          ## the dictionary containing all of the files associated with the bibliography
         self.citedict = {}          ## the dictionary containing the original data from the AUX file
         self.citelist = []          ## the *sorted* list of citation keys
+        self.sortdict = {}          ## a temporary dictionary to hold sorting keys prior to creating "self.citelist"
         self.bstdict = {}           ## the dictionary containing all information from template files
         self.user_script = ''       ## any user-written Python scripts go here
         self.user_variables = {}    ## any user-defined variables from the BST files
@@ -239,7 +241,8 @@ class Bibdata(object):
         self.options['french_intials'] = False
         self.options['period_after_initial'] = True
 
-        ## Compile some patterns for use in regex searches.
+        ## Compile some patterns for use in regex searches. Note that "[\-\+\*\#\$\w]" matches any alphanumeric character plus any of [~@%&-+*#$^?!=:]
+        pat = r'[~@%&\-\+\*\#\$\^\?\!\=\:\w]+?'
         self.anybrace_pattern = re.compile(r'(?<!\\)[{}]', re.UNICODE)
         self.startbrace_pattern = re.compile(r'(?<!\\){', re.UNICODE)
         self.endbrace_pattern = re.compile(r'(?<!\\)}', re.UNICODE)
@@ -247,8 +250,8 @@ class Bibdata(object):
         self.abbrevkey_pattern = re.compile(r'(?<!\\)[,#]', re.UNICODE)
         self.anybraceorquote_pattern = re.compile(r'(?<!\\)[{}"]', re.UNICODE)
         self.integer_pattern = re.compile(r'^-?[0-9]+', re.UNICODE)
-        self.index_pattern = re.compile(r'(<\w+?\.\d+\.\w+?>)|(<\w+?\.\d+>)|(<\w+?\.(nN)\.\w+?>)|(\w+?\.(nN)>)', re.UNICODE)
-        self.implicit_index_pattern = re.compile(r'(<\w+?\.n\.\w+?>)|(<\w+?\.n>)', re.UNICODE)
+        self.index_pattern = re.compile(r'(<'+pat+r'\.\d+\.'+pat+r'>)|(<'+pat+r'\.\d+>)|(<'+pat+r'\.(nN)\.'+pat+r'>)|('+pat+r'\.(nN)>)', re.UNICODE)
+        self.implicit_index_pattern = re.compile(r'(<'+pat+r'\.n\.'+pat+r'>)|(<'+pat+r'\.n>)', re.UNICODE)
         self.template_variable_pattern = re.compile(r'(?<=<)\.+?(?=>)', re.UNICODE)
         self.namelist_variable_pattern = re.compile(r'(?<=<)\.+?(?=.to_namelist\(\)>)', re.UNICODE)
 
@@ -1112,18 +1115,14 @@ class Bibdata(object):
         Create the list of citation keys, sorted into the proper order.
         '''
 
-        ## Create a temporary dictionary to hold the citation keys (as dictionary values) and the strings we wish to
-        ## use for sorting (as the dictionary keys).
-        sortdict = {}
-
         ## Generate a sortkey for each citation. If the sortkey is already present in the dictionary, it will replace
         ## the the old entry with the new, and we would lose a citation in the process. To prevent this, we need to
         ## make sure that it is unique.
         for c in self.citedict:
             sortkey = self.generate_sortkey(c)
-            if (sortkey in sortdict):
-                sortkey = make_sortkey_unique(sortkey, sortdict)
-            sortdict[sortkey] = unicode(c)      ## use "unicode()" to convert to string in case the key is an integer
+            if (sortkey in self.sortdict):
+                sortkey = make_sortkey_unique(sortkey, self.sortdict)
+            self.sortdict[sortkey] = unicode(c)      ## use "unicode()" to convert to string in case the key is an integer
 
         ## This part can be a little tricky. If the sortkey is generated such that it begins with an integer, then we
         ## should make sure that negative-values get sorted in front of positive ones. This happens correctly in simple
@@ -1131,12 +1130,12 @@ class Bibdata(object):
         ## [::-1] on the negative integers because they need to be ordered from largest number to smallest.
         variables = re.findall(r'<.*?>', self.specials['sortkey'])
         if (variables[0] in ['<year>','<sortyear>']):
-            firstdict = {k:sortdict[k] for k in sortdict if k[0] == '-'}
-            seconddict = {k:sortdict[k] for k in sortdict if k[0] != '-'}
+            firstdict = {k:self.sortdict[k] for k in self.sortdict if k[0] == '-'}
+            seconddict = {k:self.sortdict[k] for k in self.sortdict if k[0] != '-'}
             self.citelist = sorted(firstdict.iterkeys(), cmp=locale.strcoll)[::-1]
             self.citelist += sorted(seconddict.iterkeys(), cmp=locale.strcoll)
         else:
-            self.citelist = sorted(sortdict.iterkeys(), cmp=locale.strcoll)
+            self.citelist = sorted(self.sortdict.iterkeys(), cmp=locale.strcoll)
 
         ## If using a citation order which is descending rather than ascending, then reverse the list.
         if (self.specials['sortkey'][0] == '-'):
@@ -1144,9 +1143,9 @@ class Bibdata(object):
 
         ## Finally, now that we have them in the order we want, we keep only the citation keys, so that we know which
         ## entry maps to which in the ".aux" file.
-        self.citelist = [sortdict[a] for a in self.citelist]
+        self.citelist = [self.sortdict[a] for a in self.citelist]
         for c in self.citelist:
-            sortkey = (key for key,value in sortdict.items() if value==c).next()
+            sortkey = (key for key,value in self.sortdict.items() if value==c).next()
             if self.debug:
                 print('citekey=%20s: sortkey=%s' % (c, sortkey))
 
@@ -1316,7 +1315,7 @@ class Bibdata(object):
             entry['citealpha'] = create_citation_alpha(entry)
 
         ## Substitute entry fields for template variables.
-        templatestr = self.fillout_implicit_loop(templatestr, citekey)
+        #templatestr = self.fillout_implicit_loop(templatestr, citekey)     ## zzz: this line shouldn't be necessary!
         templatestr = self.template_substitution(templatestr, citekey)
         sortkey = purify_string(templatestr)
         sortkey = sortkey.replace(' ','')
@@ -1614,7 +1613,7 @@ class Bibdata(object):
 
         ## Fill out the template if it contains an implicit loop structure.
         ## Substitute field values from the bibliography entry into the template variables.
-        templatestr = self.fillout_implicit_loop(templatestr, citekey)
+        #templatestr = self.fillout_implicit_loop(templatestr, citekey)     ## this line shouldn't be necessary!
         templatestr = self.template_substitution(templatestr, citekey)
         citelabel = purify_string(templatestr)
 
@@ -1998,16 +1997,18 @@ class Bibdata(object):
         ## (dot plus 'N'); and then followed by either another dot or by '>'.
         has_index = True if re.search(self.index_pattern, templatestr) else False
         has_implicit_loop = ('...' in templatestr)
+
         if not has_implicit_loop and not has_index:
             return(templatestr)
         elif has_index and not has_implicit_loop:
             ## Get a list of the indexed variables
-            indexed_vars = get_indexed_vars_in_template(templatestr)
+            indexed_vars = self.get_indexed_vars_in_template(templatestr)
             for v in indexed_vars:
                 elem = get_variable_name_elements(v)
                 varname = elem['name'] + '.' + elem['prefix'] + 'n'
                 if (varname in self.specials):
-                    templatestr.replace(varname, self.specials[varname])
+                    ## Replace ".n" with "." plus explicit index.
+                    templatestr = templatestr.replace('<'+v+'>', self.specials[varname])
                     templatestr = re.sub(r'(?<=\.)n(?=\.)|(?<=\.)n(?=>)', elem['index'], templatestr)
             return(templatestr)
         else:
@@ -2599,6 +2600,16 @@ class Bibdata(object):
                     return(field + suffix)
             elif (index_elements[0] == 'remove_leading_zeros()'):
                 return(field.lstrip('0'))
+            elif (index_elements[0] == 'lower()'):
+                return(field.lower())
+            elif (index_elements[0] == 'upper()'):
+                return(field.upper())
+            elif (index_elements[0] == 'uniquify(num)'):
+                newkey = make_sortkey_unique(field, self.sortdict, style='num', always_append=True)
+                return(newkey)
+            elif (index_elements[0] == 'uniquify(alpha)'):
+                newkey = make_sortkey_unique(field, self.sortdict, style='alpha', always_append=True)
+                return(newkey)
             else:
                 msg = 'Warning 029c: the template for entry ' + entrykey + ' has an unknown function ' + \
                       '"' + index_elements[0] + '". Aborting template substitution'
@@ -2631,6 +2642,33 @@ class Bibdata(object):
         msg = 'Warning 029e: Invalid field type error. Aborting template substitution'
         bib_warning(msg, disable=self.disable)
         return(None)
+
+    ## ===================================
+    def get_indexed_vars_in_template(self, templatestr):
+        '''
+        Get a list of the indxed variables within a template.
+
+        Parameters
+        ----------
+        templatestr : str
+            The template to analyze.
+
+        Returns
+        -------
+        indexed_vars : list of str
+            The list of variable names that are indexed variables.
+        '''
+
+        variables = re.findall(r'<.*?>', templatestr)
+        indexed_vars = []
+        for v in variables:
+            found_indexed_var = re.findall(self.index_pattern, v)
+            if found_indexed_var:
+                varname = v[1:-1]
+                if (varname not in indexed_vars):
+                    indexed_vars.append(varname)
+
+        return(indexed_vars)
 
 
 ## ================================================================================================
@@ -3994,10 +4032,10 @@ def parse_nameabbrev(abbrevstr):
     return(nameabbrev_dict)
 
 ## =============================
-def make_sortkey_unique(sortkey, sortdict):
+def make_sortkey_unique(sortkey, sortdict, style='num', always_append=False):
     '''
-    Given a key that matches an already-present key in the input dictionary, generate a new key by appending zeros to
-    the key string.
+    Given a key that matches an already-present key in the input dictionary, generate a new key by appending characters
+    to the key string.
 
     Parameters
     ----------
@@ -4005,6 +4043,10 @@ def make_sortkey_unique(sortkey, sortdict):
         The key to be modified.
     sortdict : dict
         The dictionary whose keys we can query to check for uniqueness.
+    style : str
+        The type of characters to append to the string to make it unique. Can be in ('num','alpha').
+    always_append : bool
+        If True, then always append a character. If False, then only append if needed in order to make it unique.
 
     Returns
     -------
@@ -4012,12 +4054,24 @@ def make_sortkey_unique(sortkey, sortdict):
         The new (and unique) key.
     '''
 
-    if (sortkey not in sortdict):
+    if (sortkey not in sortdict) and not always_append:
         return(sortkey)
 
-    newkey = sortkey
+    startkey = sortkey
+    q = 1                   ## counter for the appending of number/letters
+
     while True:
-        newkey += '0'
+        q += 1
+        if (style == 'num'):
+            newkey = startkey + str(q)
+        elif (style == 'alpha'):
+            if (i < 27):
+                newkey = startkey + chr(q+97)               ## 97 == 'a', 98 == 'b', etc.
+            elif (i < 52):
+                newkey = startkey + chr(q+97) + chr(q+97)   ## double up if a single append doesn't work
+            elif (i < 78):
+                newkey = startkey + chr(q+97) + chr(q+97) + chr(q+97)   ## triple up if necessary
+
         if (newkey not in sortdict):
             break
 
@@ -4230,33 +4284,6 @@ def get_variable_name_elements(variable):
             var_dict['suffix'] += '.' + piece
 
     return(var_dict)
-
-## ===================================
-def get_indexed_vars_in_template(templatestr):
-    '''
-    Get a list of the indxed variables within a template.
-
-    Parameters
-    ----------
-    templatestr : str
-        The template to analyze.
-
-    Returns
-    -------
-    indexed_vars : list of str
-        The list of variable names that are indexed variables.
-    '''
-
-    variables = re.findall(r'<.*?>', templatestr)
-    indexed_vars = []
-    for v in variables:
-        found_indexed_var = re.findall(r'(<\w+\.\d+\.\w+?>)|(<\w+\.\d+>)|(<\w+\.n\.\w+?>)|(\w+\.n>)|(<\w+\.N\.\w+?>)|(<\w+\.N>)', v)
-        if found_indexed_var:
-            varname = re.findall(r'\w+(?=\.\d+)|\w+(?=\.n)|\w+(?=\.N)', v[1:-1])[0]
-            if (varname not in indexed_vars):
-                indexed_vars.append(varname)
-
-    return(indexed_vars)
 
 ## ===================================
 def get_names(entry, templatestr):
