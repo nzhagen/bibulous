@@ -61,8 +61,8 @@ __all__ = ['sentence_case', 'stringsplit', 'finditer', 'namefield_to_namelist', 
            'initialize_name', 'get_delim_levels', 'show_levels_debug', 'get_quote_levels', 'splitat', 'multisplit',
            'enwrap_nested_string', 'enwrap_nested_quotes', 'purify_string', 'latex_to_utf8',
            'search_middlename_for_prefixes', 'get_edition_ordinal', 'export_bibfile', 'parse_pagerange',
-           'parse_nameabbrev', 'make_sortkey_unique', 'filter_script', 'str_is_integer', 'bib_warning',
-           'create_citation_alpha', 'toplevel_split', 'get_variable_name_elements', 'get_names', 'format_namelist',
+           'parse_nameabbrev', 'filter_script', 'str_is_integer', 'bib_warning', 'create_citation_alpha',
+           'toplevel_split', 'get_variable_name_elements', 'get_names', 'format_namelist',
            'namedict_to_formatted_namestr']
 
 
@@ -179,6 +179,7 @@ class Bibdata(object):
         self.looped_templates = ['au','ed']  ## which templates have implicit loops
         self.implicitly_indexed_vars = ['authorname','editorname'] ## which templates have implicit indexing
         self.namelists = []         ## the namelists defined within the templates
+        self.uniquify_vars = {}     ## dict containing all variables calling the "uniquify" operator
 
         if (uselocale == None):
             self.locale = locale.setlocale(locale.LC_ALL,'')    ## set the locale to the user's default
@@ -1118,11 +1119,16 @@ class Bibdata(object):
         ## Generate a sortkey for each citation. If the sortkey is already present in the dictionary, it will replace
         ## the the old entry with the new, and we would lose a citation in the process. To prevent this, we need to
         ## make sure that it is unique.
+        sortdict = {}
         for c in self.citedict:
-            sortkey = self.generate_sortkey(c)
-            if (sortkey in self.sortdict):
-                sortkey = make_sortkey_unique(sortkey, self.sortdict)
-            self.sortdict[sortkey] = unicode(c)      ## use "unicode()" to convert to string in case the key is an integer
+            sortkey = self.generate_sortkey(c)     #zzz is exchanging this okay?!?
+            if (sortkey in sortdict):
+                while True:
+                    sortkey += '0'
+                    if (sortkey not in sortdict):
+                        break
+            sortdict[sortkey] = unicode(c)      ## use "unicode()" to convert to string in case the key is an integer
+            #sortdict[sortkey] = self.bibdata[c]['sortkey']       ## zzz: WHY CAN'T WE JUST DO THIS?
 
         ## This part can be a little tricky. If the sortkey is generated such that it begins with an integer, then we
         ## should make sure that negative-values get sorted in front of positive ones. This happens correctly in simple
@@ -1130,12 +1136,12 @@ class Bibdata(object):
         ## [::-1] on the negative integers because they need to be ordered from largest number to smallest.
         variables = re.findall(r'<.*?>', self.specials['sortkey'])
         if (variables[0] in ['<year>','<sortyear>']):
-            firstdict = {k:self.sortdict[k] for k in self.sortdict if k[0] == '-'}
-            seconddict = {k:self.sortdict[k] for k in self.sortdict if k[0] != '-'}
+            firstdict = {k:sortdict[k] for k in sortdict if k[0] == '-'}
+            seconddict = {k:sortdict[k] for k in sortdict if k[0] != '-'}
             self.citelist = sorted(firstdict.iterkeys(), cmp=locale.strcoll)[::-1]
             self.citelist += sorted(seconddict.iterkeys(), cmp=locale.strcoll)
         else:
-            self.citelist = sorted(self.sortdict.iterkeys(), cmp=locale.strcoll)
+            self.citelist = sorted(sortdict.iterkeys(), cmp=locale.strcoll)
 
         ## If using a citation order which is descending rather than ascending, then reverse the list.
         if (self.specials['sortkey'][0] == '-'):
@@ -1143,11 +1149,11 @@ class Bibdata(object):
 
         ## Finally, now that we have them in the order we want, we keep only the citation keys, so that we know which
         ## entry maps to which in the ".aux" file.
-        self.citelist = [self.sortdict[a] for a in self.citelist]
+        self.citelist = [sortdict[a] for a in self.citelist]
         for c in self.citelist:
-            sortkey = (key for key,value in self.sortdict.items() if value==c).next()
+            sortkey = (key for key,value in sortdict.items() if value==c).next()
             if self.debug:
-                print('citekey=%20s: sortkey=%s' % (c, sortkey))
+                print('citekey=%25s: sortkey=%s' % (c, sortkey))
 
         return
 
@@ -1271,14 +1277,6 @@ class Bibdata(object):
             bib_warning('Warning 010a: ' + msg, self.disable)
             return('Warning: ' + msg)
 
-        ## Define the variable "citenum". Since the number value in "citedict" is an integer type rather than a string,
-        ## which causes problems. We can use "unicode()" to convert the int-type to string, but this won't sort
-        ## properly --- "10" will get sorted between "1" and "2". So we need to pad with zeros. How many zeros depends
-        ## on how many citations there are. Hence the "zfill" command below.
-        ncites = len(self.citedict)
-        ndigits = 1 + int(log10(ncites))
-        citenum = unicode(self.citedict[citekey]).zfill(ndigits)
-
         entry = self.bibdata[citekey]
         templatestr = self.specials['sortkey']
 
@@ -1289,8 +1287,8 @@ class Bibdata(object):
 
         ## Define the variable "citeyear", to use in place of the entry field "year". This is necessary to make sure
         ## that alphabetical sorting treats numbers correctly, we need to append zeros so that, say, "10" does not get
-        ## sorted before "2". Note that this formatting should work for years between -999 and +9999.
-        if ('year' in entry):
+        ## sorted before "2". Note that this formatting should work for years between -9999 and +9999.
+        if ('year' in entry) and ('<year>' in templatestr):
             if str_is_integer(entry['year']):
                 if (int(entry['year']) < 0):
                     citeyear = unicode('-%04i' % abs(int(entry['year'])))
@@ -1301,16 +1299,12 @@ class Bibdata(object):
         else:
             citeyear = '9999'
 
-        ## Replace the special "year" variable (which needs to be zero-padded in order to be properly sorted).
+        ## Replace the "year" variable (which needs to be zero-padded in order to be properly sorted).
         if ('<year>' in templatestr):
             templatestr = templatestr.replace('<year>', citeyear)
 
         ## Before we parse the template string to remove any undefined variables, we need to make sure that the entry
         ## has all the proper variables in it.
-        if ('<citekey>' in templatestr) and ('citekey' not in entry):
-            entry['citekey'] = citekey
-        if ('<citenum>' in templatestr) and ('citenum' not in entry):
-            entry['citenum'] = citenum
         if ('<citealpha>' in templatestr):
             entry['citealpha'] = create_citation_alpha(entry)
 
@@ -1603,10 +1597,10 @@ class Bibdata(object):
 
         ## Before we parse the template string to remove any undefined variables, we need to make sure that ehe entry
         ## has all the proper variables in it.
-        if ('<citekey>' in templatestr) and ('citekey' not in entry):
-            entry['citekey'] = citekey
-        if ('<citenum>' in templatestr) and ('citenum' not in entry):
-            entry['citenum'] = citenum
+        #if ('<citekey>' in templatestr) and ('citekey' not in entry):
+        #    entry['citekey'] = citekey
+        #if ('<citenum>' in templatestr) and ('citenum' not in entry):
+        #    entry['citenum'] = citenum
         if ('<citealpha>' in templatestr):
             entry['citealpha'] = create_citation_alpha(entry)
 
@@ -1879,6 +1873,16 @@ class Bibdata(object):
             if not entry['doi'].startswith('http://dx.doi.org/'):
                 entry['doi'] = 'http://dx.doi.org/' + entry['doi']
 
+        ## Define the variables "citekey" and "citenum". Since the number value in "citedict" is an integer type rather
+        ## than a string, which causes problems. We can use "unicode()" to convert the int-type to string, but this
+        ## won't sort properly --- "10" will get sorted between "1" and "2". So we need to pad with zeros. How many
+        ## zeros depends on how many citations there are. Hence the "zfill" command below.
+        self.bibdata[entrykey]['citekey'] = entrykey
+        ncites = len(self.citedict)
+        ndigits = 1 + int(log10(ncites))
+        citenum = unicode(self.citedict[entrykey]).zfill(ndigits)
+        self.bibdata[entrykey]['citenum'] = citenum
+
         ## Next loop through the "special" variables. These are variable definitions from the SPECIAL-
         ## TEMPLATES section of the style file. Note that we do want to deal with only *user-defined* specials, so we
         ## have to eliminate the fixed list of specials from the list of keys. Note that rather than looping through
@@ -1890,10 +1894,11 @@ class Bibdata(object):
 
             templatestr = self.specials[key]
 
-            ## If this special template is an implicitly indexed one, then it can only be used within an implicit loop
-            ## and not by itself, so we have to skip it here. We can't use "if (key in self.implicitly_indexed_vars)"
-            ## here because the "key" contains the implicit index too (i.e. "name.n" and not "name"), and so the
-            ## strings in the "implicitly_indexed_vars" list are not quite what we have in our keys here.
+            ## If this special template is an implicitly indexed one, then it can only be used after explicit index
+            ## replacement (such as within an implicit loop) and not by itself, so we have to skip it here. We
+            ## can't use "if (key in self.implicitly_indexed_vars)" here because the "key" contains the implicit
+            ## index too (i.e. "name.n" and not "name"), and so the strings in the "implicitly_indexed_vars" list
+            ## are not quite what we have in our keys here.
             template_has_implicit_index = True if re.search(self.implicit_index_pattern, templatestr) else False
             if re.search('\.n\.', key) or re.search('\.n$', key) or template_has_implicit_index:
                 continue
@@ -2561,54 +2566,115 @@ class Bibdata(object):
                     newindexer = '.'.join(index_elements[1:])
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
             elif (index_elements[0] == 'sentence_case()'):
-                return(sentence_case(field))
+                newfield = sentence_case(field)
+                if (nelements == 1):
+                    return(newfield)
+                else:
+                    newindexer = '.'.join(index_elements[1:])
+                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
             elif (index_elements[0] == 'ordinal()'):
-                edition_ordinal = get_edition_ordinal(field, disable=None)
-                return(edition_ordinal)
+                newfield = get_edition_ordinal(field, disable=None)
+                if (nelements == 1):
+                    return(newfield)
+                else:
+                    newindexer = '.'.join(index_elements[1:])
+                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
             elif (index_elements[0] == 'monthname()'):
                 if field in self.monthnames:
-                    return(self.monthnames[field])
+                    newfield = self.monthnames[field]
                 else:
-                    return(field)
+                    newfield = field
+                if (nelements == 1):
+                    return(newfield)
+                else:
+                    newindexer = '.'.join(index_elements[1:])
+                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
             elif (index_elements[0] == 'monthabbrev()'):
                 if field in self.monthabbrevs:
-                    return(self.monthabbrevs[field])
+                    newfield = self.monthabbrevs[field]
                 else:
-                    return(field)
+                    newfield = field
+                if (nelements == 1):
+                    return(newfield)
+                else:
+                    newindexer = '.'.join(index_elements[1:])
+                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
             elif (index_elements[0] == 'to_namelist()'):
-                namelist = namefield_to_namelist(field, key=entrykey, disable=self.disable)
-                return(namelist)
+                newfield = namefield_to_namelist(field, key=entrykey, disable=self.disable)
+                if (nelements == 1):
+                    return(newfield)
+                else:
+                    newindexer = '.'.join(index_elements[1:])
+                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
             elif (index_elements[0] == 'format_authorlist()'):
-                result = format_namelist(field, nametype='author')
-                return(result)
+                newfield = format_namelist(field, nametype='author')
+                if (nelements == 1):
+                    return(newfield)
+                else:
+                    newindexer = '.'.join(index_elements[1:])
+                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
             elif (index_elements[0] == 'format_editorlist()'):
-                result = format_namelist(field, nametype='editor')
-                return(result)
+                newfield = format_namelist(field, nametype='editor')
+                if (nelements == 1):
+                    return(newfield)
+                else:
+                    newindexer = '.'.join(index_elements[1:])
+                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
             elif re.search(r'if_singular\(.*\)', index_elements[0], re.UNICODE):
                 match = re.search(r'if_singular\(.*\)', index_elements[0], re.UNICODE)
                 result = match.group(0)[12:-1]
                 (variable_to_eval, singular_form, plural_form) = result.split(',')
 
                 if (variable_to_eval not in self.bibdata[entrykey]):
-                    return('')
+                    newfield = ''
                 elif (len(self.bibdata[entrykey][variable_to_eval]) == 1):
                     suffix = self.options[singular_form.strip()]
-                    return(field + suffix)
+                    newfield = field + suffix
                 else:
                     suffix = self.options[plural_form.strip()]
-                    return(field + suffix)
+                    newfield = field + suffix
+
+                if (nelements == 1):
+                    return(newfield)
+                else:
+                    newindexer = '.'.join(index_elements[1:])
+                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
             elif (index_elements[0] == 'remove_leading_zeros()'):
-                return(field.lstrip('0'))
+                newfield = field.lstrip('0')
+                if (nelements == 1):
+                    return(newfield)
+                else:
+                    newindexer = '.'.join(index_elements[1:])
+                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
             elif (index_elements[0] == 'lower()'):
-                return(field.lower())
+                newfield = field.lower()
+                if (nelements == 1):
+                    return(newfield)
+                else:
+                    newindexer = '.'.join(index_elements[1:])
+                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
             elif (index_elements[0] == 'upper()'):
-                return(field.upper())
+                newfield = field.upper()
+                if (nelements == 1):
+                    return(newfield)
+                else:
+                    newindexer = '.'.join(index_elements[1:])
+                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
             elif (index_elements[0] == 'uniquify(num)'):
-                newkey = make_sortkey_unique(field, self.sortdict, style='num', always_append=True)
-                return(newkey)
+                pass
+                #print('field=%s, newfield=%s' % (field, newfield))
+                if (nelements == 1):
+                    return(newfield)
+                else:
+                    newindexer = '.'.join(index_elements[1:])
+                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
             elif (index_elements[0] == 'uniquify(alpha)'):
-                newkey = make_sortkey_unique(field, self.sortdict, style='alpha', always_append=True)
-                return(newkey)
+                pass
+                if (nelements == 1):
+                    return(newfield)
+                else:
+                    newindexer = '.'.join(index_elements[1:])
+                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
             else:
                 msg = 'Warning 029c: the template for entry ' + entrykey + ' has an unknown function ' + \
                       '"' + index_elements[0] + '". Aborting template substitution'
@@ -4029,52 +4095,6 @@ def parse_nameabbrev(abbrevstr):
         nameabbrev_dict[pair[0]] = pair[1].strip()
 
     return(nameabbrev_dict)
-
-## =============================
-def make_sortkey_unique(sortkey, sortdict, style='num', always_append=False):
-    '''
-    Given a key that matches an already-present key in the input dictionary, generate a new key by appending characters
-    to the key string.
-
-    Parameters
-    ----------
-    sortkey : str
-        The key to be modified.
-    sortdict : dict
-        The dictionary whose keys we can query to check for uniqueness.
-    style : str
-        The type of characters to append to the string to make it unique. Can be in ('num','alpha').
-    always_append : bool
-        If True, then always append a character. If False, then only append if needed in order to make it unique.
-
-    Returns
-    -------
-    newkey : str
-        The new (and unique) key.
-    '''
-
-    if (sortkey not in sortdict) and not always_append:
-        return(sortkey)
-
-    startkey = sortkey
-    q = 1                   ## counter for the appending of number/letters
-
-    while True:
-        q += 1
-        if (style == 'num'):
-            newkey = startkey + str(q)
-        elif (style == 'alpha'):
-            if (i < 27):
-                newkey = startkey + chr(q+97)               ## 97 == 'a', 98 == 'b', etc.
-            elif (i < 52):
-                newkey = startkey + chr(q+97) + chr(q+97)   ## double up if a single append doesn't work
-            elif (i < 78):
-                newkey = startkey + chr(q+97) + chr(q+97) + chr(q+97)   ## triple up if necessary
-
-        if (newkey not in sortdict):
-            break
-
-    return(newkey)
 
 ## =============================
 def filter_script(line):
