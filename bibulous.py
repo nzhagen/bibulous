@@ -1907,7 +1907,7 @@ class Bibdata(object):
             ## special template contains an implicit loop, then we DO NOT fill it out here. Filling out an implicit loop
             ## has to be done while performing template substitution because it requires querying entry fields, and is
             ## not a matter of creating entry fields.
-            res = self.template_substitution(templatestr, entrykey, is_nested=(key in self.nested_templates))
+            res = self.template_substitution(templatestr, entrykey, templatekey=key)
 
             ## Insert the result as a new field in the database entry. Note that the "('???' not in res)" piece of code
             ## is not quite ideal, but it is an easy solution that has a low probability of breaking (low prob. that
@@ -2147,7 +2147,7 @@ class Bibdata(object):
         return(new_templatestr)
 
     ## =============================
-    def template_substitution(self, templatestr, entrykey, is_nested=None):
+    def template_substitution(self, templatestr, entrykey, templatekey=None):
         '''
         Substitute database entry variables into template string.
 
@@ -2157,8 +2157,9 @@ class Bibdata(object):
             The template string itself.
         entrykey : dict
             The key of the database entry from which to get fields to substitute into the template.
-        is_nested : bool
-            Whether or not the template to be operated on is known a priori to be a nested template.
+        templatekey : str
+            If this template is for a special variable rather than an entrytype, then this key will tell which special \
+            variable is being operated on.
 
         Returns
         -------
@@ -2171,7 +2172,9 @@ class Bibdata(object):
         ## Fill out the template if there is an implicit loop structure
         templatestr = self.fillout_implicit_indices(templatestr, entrykey)
 
-        if (is_nested == None):
+        if (templatekey != None):
+            is_nested = (templatekey in self.nested_templates)
+        else:
             is_nested = (bibentry['entrytype'] in self.nested_templates)
         variables = re.findall(r'<.*?>', templatestr)
 
@@ -2479,9 +2482,6 @@ class Bibdata(object):
 
         indexer = '.'.join(var_parts[1:])
         result = self.get_indexed_variable(bibentry[fieldname], indexer, bibentry['entrykey'], options=options)
-
-        #zzz
-        #print(variable, indexer, fieldname)
 
         return(result)
 
