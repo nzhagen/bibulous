@@ -144,7 +144,7 @@ class Bibdata(object):
     add_crossrefs_to_searchkeys
     insert_specials
     validate_templatestr
-    fillout_implicit_loop
+    fillout_implicit_indices
     template_substitution
     insert_title_into_template
     remove_nested_template_options_brackets
@@ -1606,7 +1606,7 @@ class Bibdata(object):
 
         ## Fill out the template if it contains an implicit loop structure.
         ## Substitute field values from the bibliography entry into the template variables.
-        #templatestr = self.fillout_implicit_loop(templatestr, citekey)     ## this line shouldn't be necessary!
+        #templatestr = self.fillout_implicit_indices(templatestr, citekey)     ## this line shouldn't be necessary!
         templatestr = self.template_substitution(templatestr, citekey)
         citelabel = purify_string(templatestr)
 
@@ -1977,7 +1977,7 @@ class Bibdata(object):
         return(okay)
 
     ## ===================================
-    def fillout_implicit_loop(self, templatestr, entrykey):
+    def fillout_implicit_indices(self, templatestr, entrykey):
         '''
         From a template containing an implicit loop ('...' notation), build a full-size template without an ellipsis.
 
@@ -2169,7 +2169,7 @@ class Bibdata(object):
         bibentry = self.bibdata[entrykey]
 
         ## Fill out the template if there is an implicit loop structure
-        templatestr = self.fillout_implicit_loop(templatestr, entrykey)
+        templatestr = self.fillout_implicit_indices(templatestr, entrykey)
 
         if (is_nested == None):
             is_nested = (bibentry['entrytype'] in self.nested_templates)
@@ -2479,6 +2479,9 @@ class Bibdata(object):
 
         indexer = '.'.join(var_parts[1:])
         result = self.get_indexed_variable(bibentry[fieldname], indexer, bibentry['entrykey'], options=options)
+
+        #zzz
+        #print(variable, indexer, fieldname)
 
         return(result)
 
