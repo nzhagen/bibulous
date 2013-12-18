@@ -1907,7 +1907,7 @@ class Bibdata(object):
             ## special template contains an implicit loop, then we DO NOT fill it out here. Filling out an implicit loop
             ## has to be done while performing template substitution because it requires querying entry fields, and is
             ## not a matter of creating entry fields.
-            res = self.template_substitution(templatestr, entrykey)
+            res = self.template_substitution(templatestr, entrykey, is_nested=(key in self.nested_templates))
 
             ## Insert the result as a new field in the database entry. Note that the "('???' not in res)" piece of code
             ## is not quite ideal, but it is an easy solution that has a low probability of breaking (low prob. that
@@ -2147,7 +2147,7 @@ class Bibdata(object):
         return(new_templatestr)
 
     ## =============================
-    def template_substitution(self, templatestr, entrykey):
+    def template_substitution(self, templatestr, entrykey, is_nested=None):
         '''
         Substitute database entry variables into template string.
 
@@ -2157,6 +2157,8 @@ class Bibdata(object):
             The template string itself.
         entrykey : dict
             The key of the database entry from which to get fields to substitute into the template.
+        is_nested : bool
+            Whether or not the template to be operated on is known a priori to be a nested template.
 
         Returns
         -------
@@ -2169,7 +2171,8 @@ class Bibdata(object):
         ## Fill out the template if there is an implicit loop structure
         templatestr = self.fillout_implicit_loop(templatestr, entrykey)
 
-        is_nested = (bibentry['entrytype'] in self.nested_templates)
+        if (is_nested == None):
+            is_nested = (bibentry['entrytype'] in self.nested_templates)
         variables = re.findall(r'<.*?>', templatestr)
 
         ## Don't call the nested version of removing template option brackets if you don't have to, because it has to
@@ -2661,7 +2664,7 @@ class Bibdata(object):
                     newindexer = '.'.join(index_elements[1:])
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
             elif (index_elements[0] == 'uniquify(num)'):
-                pass
+                newfield = field
                 #print('field=%s, newfield=%s' % (field, newfield))
                 if (nelements == 1):
                     return(newfield)
@@ -2669,7 +2672,7 @@ class Bibdata(object):
                     newindexer = '.'.join(index_elements[1:])
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
             elif (index_elements[0] == 'uniquify(alpha)'):
-                pass
+                newfield = field
                 if (nelements == 1):
                     return(newfield)
                 else:
