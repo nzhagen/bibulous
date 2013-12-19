@@ -1133,7 +1133,7 @@ class Bibdata(object):
         ## sort() but not when we use locale's "strcoll". So we have to separate the two cases manually. Also, use
         ## [::-1] on the negative integers because they need to be ordered from largest number to smallest.
         variables = re.findall(r'<.*?>', self.specials['sortkey'])
-        if (variables[0] in ['<year>','<sortyear>']):
+        if (variables[0] in ['<year>','<sortyear>','<year.zfill()>','<sortyear.zfill()>']):
             neg_idx = [i for (i,k) in enumerate(self.sortlist) if k[0] == '-']
             pos_idx = [i for (i,k) in enumerate(self.sortlist) if k[0] != '-']
             pos_sortkeys = [self.sortlist[x] for x in pos_idx]
@@ -2672,7 +2672,7 @@ class Bibdata(object):
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
             elif (index_elements[0] == 'zfill()'):
                 if str_is_integer(field) and (int(field) < 0):
-                    newfield = '-' + str(field).zfill(4)
+                    newfield = '-' + str(field[1:]).zfill(4)
                 else:
                     newfield = str(field).zfill(4)
                 if (nelements == 1):

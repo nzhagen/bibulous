@@ -6,9 +6,7 @@ For version 1.3, the goal is to have namelist templates working.
 
 - Simplify the get_indexed_variable() function!
 
-- Add a test that checks that concatenating operatos, like <var.upper().initial()> works.
-
-- Now that you added three new template variable operators: .upper(), .lower(), and .uniquify(arg),
+- Now that you added three new template variable operators: .upper(), .lower(), .zfill(), and .uniquify(arg),
   update the documentation to show them.
 
 - Note that the special template definition::
@@ -83,6 +81,10 @@ For version 1.3, the goal is to have namelist templates working.
 
 Python testing to-do
 --------------------
+
+- Add a test that checks that concatenating operators, like <var.upper().initial()> works.
+
+- Add a test for the new .zfill() operator.
 
 - Add a test for locale-dependent sorting? This requires a lot of work to set up for full
   BIB-AUX-BBL mapping. So it may be best to wait for a more directed test to come along.
