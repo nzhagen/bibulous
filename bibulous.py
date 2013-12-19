@@ -195,7 +195,7 @@ class Bibdata(object):
         self.specials = {}
         self.specials['authorlist'] = '<author.to_namelist()>'
         self.specials['editorlist'] = '<editor.to_namelist()>'
-        self.specials['citelabel'] = '<citenum.remove_leading_zeros()>'
+        self.specials['citelabel'] = '<citenum>'
         self.specials['sortkey'] = '<citenum>'
         self.specials['au'] = '<authorlist.format_authorlist()>'
         self.specials['ed'] = '<editorlist.format_editorlist()>'
@@ -1124,8 +1124,6 @@ class Bibdata(object):
         ## Generate a sortkey for each citation.
         for c in self.citedict:
             s = self.generate_sortkey(c)
-            #print('>', c, s)
-            #self.sortlist.append(self.generate_sortkey(c))
             self.sortlist.append(s)
             self.citelist.append(c)
             #self.bibdata[c]['sortkey']       ## zzz: WHY CAN'T WE JUST USE THIS?
@@ -2658,13 +2656,6 @@ class Bibdata(object):
                 else:
                     newindexer = '.'.join(index_elements[1:])
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
-            elif (index_elements[0] == 'remove_leading_zeros()'):
-                newfield = field.lstrip('0')
-                if (nelements == 1):
-                    return(newfield)
-                else:
-                    newindexer = '.'.join(index_elements[1:])
-                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
             elif (index_elements[0] == 'lower()'):
                 newfield = field.lower()
                 if (nelements == 1):
@@ -2674,6 +2665,16 @@ class Bibdata(object):
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
             elif (index_elements[0] == 'upper()'):
                 newfield = field.upper()
+                if (nelements == 1):
+                    return(newfield)
+                else:
+                    newindexer = '.'.join(index_elements[1:])
+                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
+            elif (index_elements[0] == 'zfill()'):
+                if str_is_integer(field) and (int(field) < 0):
+                    newfield = '-' + str(field).zfill(4)
+                else:
+                    newfield = str(field).zfill(4)
                 if (nelements == 1):
                     return(newfield)
                 else:
@@ -4553,7 +4554,9 @@ def argsort(seq, reverse=False):
         The indices needed for a sorted list.
     '''
 
-    return(sorted(range(len(seq)), key=seq.__getitem__, cmp=locale.strcoll, reverse=reverse))
+    res = sorted(range(len(seq)), key=seq.__getitem__, cmp=locale.strcoll, reverse=reverse)
+    return(res)
+
 
 ## ==================================================================================================
 
