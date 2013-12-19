@@ -10,8 +10,7 @@ title = [<title-ja>|<title-en>|]
 publisher = [<publisher-ja>|<publisher-en>|]
 authorname.n = [<authorlist.n.first.initial()>. ][<authorlist.n.middle.initial()>. ][<authorlist.n.prefix> ]<authorlist.n.last>[, <authorlist.n.suffix>]
 au = <authorname.0>, ...,{ and }<authorname.6>
-authorlabel = [<authorlist.0.prefix>|<authorlist.0.last>]
-editorlabel = [<editorlist.0.prefix>|<editorlist.0.last>]
+author_or_editor = [[<authorlist.0.prefix>|<authorlist.0.last>]|[<editorlist.0.prefix>|<editorlist.0.last>]]
 citelabel = None
 sortkey = <citenum>
 

@@ -13,9 +13,9 @@ I. {\AA}berg, B. Ackland, J. V. Beach, C. Godek, R. Johnson, C. A. King, A. Latt
 \bibitem{Aspect1982}
 A. Aspect, P. Grangier, and G. Roger, ``Experimental realization of Einstein-Podolsky-Rosen-Bohm \textit{Gedenkenexperiment}: a new violation of Bell's inequalities'' (1982).
 \bibitem{bb0000}
-A. bb and AA, ``Nothing much'' (0000).
+A. bb and AA, ``Nothing much'' (-1).
 \bibitem{Blouke2000}
-M. M. Blouke, N. Sampat, G. M. Williams, Jr., and T. Yeh, eds, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications,'' ??? (2000).
+M. M. Blouke, N. Sampat, G. M. Williams, Jr., and T. Yeh, eds, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications,'' SPIE (2000).
 \bibitem{Bunny1}
 B. Bunny, ``Looney tunes'' (2001).
 \bibitem{Chang1992}
@@ -44,6 +44,7 @@ Y. Otobe and P. Horton, ``jBibTEXの使用法,'' ソフトバンクパブリッ�
 乙. {厳己} and P. Horton, ``jBibTEXの使用法,'' ソフトバンクパブリッシング (2006).
 
 
+%% SETTING SORTKEY = [<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear>|<year>|][<sorttitle>|<title>]
 \bibitem{AA0000}
 AA and A. bb, ``None'' (0000).
 \bibitem{Strangekey}
@@ -53,9 +54,9 @@ I. {\AA}berg, B. Ackland, J. V. Beach, C. Godek, R. Johnson, C. A. King, A. Latt
 \bibitem{Aspect1982}
 A. Aspect, P. Grangier, and G. Roger, ``Experimental realization of Einstein-Podolsky-Rosen-Bohm \textit{Gedenkenexperiment}: a new violation of Bell's inequalities'' (1982).
 \bibitem{bb0000}
-A. bb and AA, ``Nothing much'' (0000).
+A. bb and AA, ``Nothing much'' (-1).
 \bibitem{Blouke2000}
-M. M. Blouke, N. Sampat, G. M. Williams, Jr., and T. Yeh, eds, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications,'' ??? (2000).
+M. M. Blouke, N. Sampat, G. M. Williams, Jr., and T. Yeh, eds, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications,'' SPIE (2000).
 \bibitem{Chang1992}
 C.-I. Chang, ``Implementation scheme for recursion in spectral dimension'' (1992).
 \bibitem{Gemert1995}
@@ -82,6 +83,7 @@ B. Yanny, C. Rockosi, H. J. Newberg, G. R. Knapp, J. K. Adelman-McCarthy, B. Alc
 乙. {厳己} and P. Horton, ``jBibTEXの使用法,'' ソフトバンクパブリッシング (2006).
 
 
+%% SETTING SORTKEY = [<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sorttitle>|<title>][<sortyear>|<year>|]
 \bibitem{Strangekey}
 M. Aaa, ``Nothing of consequence'' (1901).
 \bibitem{AA0000}
@@ -91,9 +93,9 @@ I. {\AA}berg, B. Ackland, J. V. Beach, C. Godek, R. Johnson, C. A. King, A. Latt
 \bibitem{Aspect1982}
 A. Aspect, P. Grangier, and G. Roger, ``Experimental realization of Einstein-Podolsky-Rosen-Bohm \textit{Gedenkenexperiment}: a new violation of Bell's inequalities'' (1982).
 \bibitem{bb0000}
-A. bb and AA, ``Nothing much'' (0000).
+A. bb and AA, ``Nothing much'' (-1).
 \bibitem{Blouke2000}
-M. M. Blouke, N. Sampat, G. M. Williams, Jr., and T. Yeh, eds, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications,'' ??? (2000).
+M. M. Blouke, N. Sampat, G. M. Williams, Jr., and T. Yeh, eds, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications,'' SPIE (2000).
 \bibitem{Chang1992}
 C.-I. Chang, ``Implementation scheme for recursion in spectral dimension'' (1992).
 \bibitem{Gemert1995}
@@ -120,6 +122,7 @@ B. Yanny, C. Rockosi, H. J. Newberg, G. R. Knapp, J. K. Adelman-McCarthy, B. Alc
 乙. {厳己} and P. Horton, ``jBibTEXの使用法,'' ソフトバンクパブリッシング (2006).
 
 
+%% SETTING SORTKEY = [<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear>|<year>|]<volume>[<sorttitle>|<title>]
 \bibitem{AA0000}
 AA and A. bb, ``None'' (0000).
 \bibitem{Strangekey}
@@ -129,9 +132,9 @@ I. {\AA}berg, B. Ackland, J. V. Beach, C. Godek, R. Johnson, C. A. King, A. Latt
 \bibitem{Aspect1982}
 A. Aspect, P. Grangier, and G. Roger, ``Experimental realization of Einstein-Podolsky-Rosen-Bohm \textit{Gedenkenexperiment}: a new violation of Bell's inequalities'' (1982).
 \bibitem{bb0000}
-A. bb and AA, ``Nothing much'' (0000).
+A. bb and AA, ``Nothing much'' (-1).
 \bibitem{Blouke2000}
-M. M. Blouke, N. Sampat, G. M. Williams, Jr., and T. Yeh, eds, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications,'' ??? (2000).
+M. M. Blouke, N. Sampat, G. M. Williams, Jr., and T. Yeh, eds, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications,'' SPIE (2000).
 \bibitem{Chang1992}
 C.-I. Chang, ``Implementation scheme for recursion in spectral dimension'' (1992).
 \bibitem{Gemert1995}
@@ -158,6 +161,7 @@ B. Yanny, C. Rockosi, H. J. Newberg, G. R. Knapp, J. K. Adelman-McCarthy, B. Alc
 乙. {厳己} and P. Horton, ``jBibTEXの使用法,'' ソフトバンクパブリッシング (2006).
 
 
+%% SETTING SORTKEY = [<alphalabel>][<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear>|<year>|][<sorttitle>|<title>]
 \bibitem{Strangekey}
 M. Aaa, ``Nothing of consequence'' (1901).
 \bibitem{AA0000}
@@ -169,9 +173,9 @@ A. Aspect, P. Grangier, and G. Roger, ``Experimental realization of Einstein-Pod
 \bibitem{Yanny2009}
 B. Yanny, C. Rockosi, H. J. Newberg, G. R. Knapp, J. K. Adelman-McCarthy, B. Alcorn, S. Allam, \textit{et~al.}, ``SEGUE: a spectroscopic survey of 240,000 stars with $g = 14$--20'' (2009).
 \bibitem{bb0000}
-A. bb and AA, ``Nothing much'' (0000).
+A. bb and AA, ``Nothing much'' (-1).
 \bibitem{Blouke2000}
-M. M. Blouke, N. Sampat, G. M. Williams, Jr., and T. Yeh, eds, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications,'' ??? (2000).
+M. M. Blouke, N. Sampat, G. M. Williams, Jr., and T. Yeh, eds, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications,'' SPIE (2000).
 \bibitem{Chang1992}
 C.-I. Chang, ``Implementation scheme for recursion in spectral dimension'' (1992).
 \bibitem{Gemert1995}
@@ -196,6 +200,7 @@ B. Bunny, ``Looney tunes'' (2001).
 乙. {厳己} and P. Horton, ``jBibTEXの使用法,'' ソフトバンクパブリッシング (2006).
 
 
+%% SETTING SORTKEY = [<alphalabel>][<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear>|<year>|]<volume>[<sorttitle>|<title>]
 \bibitem{Strangekey}
 M. Aaa, ``Nothing of consequence'' (1901).
 \bibitem{AA0000}
@@ -207,9 +212,9 @@ A. Aspect, P. Grangier, and G. Roger, ``Experimental realization of Einstein-Pod
 \bibitem{Yanny2009}
 B. Yanny, C. Rockosi, H. J. Newberg, G. R. Knapp, J. K. Adelman-McCarthy, B. Alcorn, S. Allam, \textit{et~al.}, ``SEGUE: a spectroscopic survey of 240,000 stars with $g = 14$--20'' (2009).
 \bibitem{bb0000}
-A. bb and AA, ``Nothing much'' (0000).
+A. bb and AA, ``Nothing much'' (-1).
 \bibitem{Blouke2000}
-M. M. Blouke, N. Sampat, G. M. Williams, Jr., and T. Yeh, eds, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications,'' ??? (2000).
+M. M. Blouke, N. Sampat, G. M. Williams, Jr., and T. Yeh, eds, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications,'' SPIE (2000).
 \bibitem{Chang1992}
 C.-I. Chang, ``Implementation scheme for recursion in spectral dimension'' (1992).
 \bibitem{Gemert1995}
@@ -234,10 +239,11 @@ B. Bunny, ``Looney tunes'' (2001).
 乙. {厳己} and P. Horton, ``jBibTEXの使用法,'' ソフトバンクパブリッシング (2006).
 
 
+%% SETTING SORTKEY = [<sortyear>|<year>][<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sorttitle>|<title>]
+\bibitem{bb0000}
+A. bb and AA, ``Nothing much'' (-1).
 \bibitem{AA0000}
 AA and A. bb, ``None'' (0000).
-\bibitem{bb0000}
-A. bb and AA, ``Nothing much'' (0000).
 \bibitem{Thomson1848}
 W. {Thomson [Lord Kelvin]}, ``On an absolute thermometric scale, founded on Carnot's theory of the motive power of heat'' (1848).
 \bibitem{Kelvin1869}
@@ -253,7 +259,7 @@ C.-I. Chang, ``Implementation scheme for recursion in spectral dimension'' (1992
 \bibitem{Gemert1995}
 M. J. C. van Gemert, ``One dimensional transport theory,'' in Optical-Thermal Response of Laser-Irradiated Tissue, Plenum Press (1995).
 \bibitem{Blouke2000}
-M. M. Blouke, N. Sampat, G. M. Williams, Jr., and T. Yeh, eds, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications,'' ??? (2000).
+M. M. Blouke, N. Sampat, G. M. Williams, Jr., and T. Yeh, eds, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications,'' SPIE (2000).
 \bibitem{乙部2006}
 Y. Otobe and P. Horton, ``jBibTEXの使用法,'' ソフトバンクパブリッシング (2006). [In Japanese.]
 \bibitem{Otobe2006}
@@ -272,6 +278,7 @@ S. Mustafa, J. Hannagan, P. Rigby, K. Pfleger, and B. Corry, ``Quantitative F{\"
 S. Mustafa, J. Hannagan, P. Rigby, K. Pfleger, and B. Corry, ``Quantitative Förster resonance energy transfer efficiency measurements using simultaneous spectral unmixing of excitation and emission spectra'' (2013).
 
 
+%% SETTING SORTKEY = -[<sortyear>|<year>][<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sorttitle>|<title>]
 \bibitem{Mustafa2013}
 S. Mustafa, J. Hannagan, P. Rigby, K. Pfleger, and B. Corry, ``Quantitative Förster resonance energy transfer efficiency measurements using simultaneous spectral unmixing of excitation and emission spectra'' (2013).
 \bibitem{Mustafa2013a}
@@ -289,7 +296,7 @@ Y. Otobe and P. Horton, ``jBibTEXの使用法,'' ソフトバンクパブリッ�
 \bibitem{乙部2006}
 Y. Otobe and P. Horton, ``jBibTEXの使用法,'' ソフトバンクパブリッシング (2006). [In Japanese.]
 \bibitem{Blouke2000}
-M. M. Blouke, N. Sampat, G. M. Williams, Jr., and T. Yeh, eds, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications,'' ??? (2000).
+M. M. Blouke, N. Sampat, G. M. Williams, Jr., and T. Yeh, eds, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications,'' SPIE (2000).
 \bibitem{Gemert1995}
 M. J. C. van Gemert, ``One dimensional transport theory,'' in Optical-Thermal Response of Laser-Irradiated Tissue, Plenum Press (1995).
 \bibitem{Chang1992}
@@ -304,12 +311,13 @@ M. Aaa, ``Nothing of consequence'' (1901).
 L. Kelvin, ``On vortex motion'' (1869).
 \bibitem{Thomson1848}
 W. {Thomson [Lord Kelvin]}, ``On an absolute thermometric scale, founded on Carnot's theory of the motive power of heat'' (1848).
-\bibitem{bb0000}
-A. bb and AA, ``Nothing much'' (0000).
 \bibitem{AA0000}
 AA and A. bb, ``None'' (0000).
+\bibitem{bb0000}
+A. bb and AA, ``Nothing much'' (-1).
 
 
+%% SETTING SORTKEY = <author_or_editor.uniquify(num)>
 \bibitem{AA0000}
 AA and A. bb, ``None'' (0000).
 \bibitem{Strangekey}
@@ -319,9 +327,9 @@ I. {\AA}berg, B. Ackland, J. V. Beach, C. Godek, R. Johnson, C. A. King, A. Latt
 \bibitem{Aspect1982}
 A. Aspect, P. Grangier, and G. Roger, ``Experimental realization of Einstein-Podolsky-Rosen-Bohm \textit{Gedenkenexperiment}: a new violation of Bell's inequalities'' (1982).
 \bibitem{bb0000}
-A. bb and AA, ``Nothing much'' (0000).
+A. bb and AA, ``Nothing much'' (-1).
 \bibitem{Blouke2000}
-M. M. Blouke, N. Sampat, G. M. Williams, Jr., and T. Yeh, eds, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications,'' ??? (2000).
+M. M. Blouke, N. Sampat, G. M. Williams, Jr., and T. Yeh, eds, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications,'' SPIE (2000).
 \bibitem{Bunny1}
 B. Bunny, ``Looney tunes'' (2001).
 \bibitem{Chang1992}
@@ -348,6 +356,7 @@ B. Yanny, C. Rockosi, H. J. Newberg, G. R. Knapp, J. K. Adelman-McCarthy, B. Alc
 乙. {厳己} and P. Horton, ``jBibTEXの使用法,'' ソフトバンクパブリッシング (2006).
 
 
+%% SETTING SORTKEY = [<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear>|<year>][<sorttitle>|<title>]
 \bibitem{AA0000}
 AA and A. bb, ``None'' (0000).
 \bibitem{Strangekey}
@@ -357,9 +366,9 @@ I. {\AA}berg, B. Ackland, J. V. Beach, C. Godek, R. Johnson, C. A. King, A. Latt
 \bibitem{Aspect1982}
 A. Aspect, P. Grangier, and G. Roger, ``Experimental realization of Einstein-Podolsky-Rosen-Bohm \textit{Gedenkenexperiment}: a new violation of Bell's inequalities'' (1982).
 \bibitem{bb0000}
-A. bb and AA, ``Nothing much'' (0000).
+A. bb and AA, ``Nothing much'' (-1).
 \bibitem{Blouke2000}
-M. M. Blouke, N. Sampat, G. M. Williams, Jr., and T. Yeh, eds, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications,'' ??? (2000).
+M. M. Blouke, N. Sampat, G. M. Williams, Jr., and T. Yeh, eds, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications,'' SPIE (2000).
 \bibitem{Chang1992}
 C.-I. Chang, ``Implementation scheme for recursion in spectral dimension'' (1992).
 \bibitem{Gemert1995}
