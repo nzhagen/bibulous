@@ -63,7 +63,7 @@ __all__ = ['sentence_case', 'stringsplit', 'finditer', 'namefield_to_namelist', 
            'search_middlename_for_prefixes', 'get_edition_ordinal', 'export_bibfile', 'parse_pagerange',
            'parse_nameabbrev', 'filter_script', 'str_is_integer', 'bib_warning', 'create_citation_alpha',
            'toplevel_split', 'get_variable_name_elements', 'get_names', 'format_namelist',
-           'namedict_to_formatted_namestr']
+           'namedict_to_formatted_namestr', 'argsort']
 
 
 class Bibdata(object):
@@ -167,8 +167,8 @@ class Bibdata(object):
         self.bibdata = {'preamble':''}
         self.filedict = {}          ## the dictionary containing all of the files associated with the bibliography
         self.citedict = {}          ## the dictionary containing the original data from the AUX file
-        self.citelist = []          ## the *sorted* list of citation keys
-        self.sortdict = {}          ## a temporary dictionary to hold sorting keys prior to creating "self.citelist"
+        self.citelist = []          ## the list of citation keys, given in the order determined by "self.sortlist"
+        self.sortlist = []          ## the (sorted) list of sorting keys
         self.bstdict = {}           ## the dictionary containing all information from template files
         self.user_script = ''       ## any user-written Python scripts go here
         self.user_variables = {}    ## any user-defined variables from the BST files
@@ -1072,7 +1072,8 @@ class Bibdata(object):
 
         ## Use a try-except block here, so that if any exception is raised then we can make sure to produce a valid
         ## BBL file.
-        try:
+        #try:
+        if True: #zzz
             ## First insert special variables, so that the citation sorter and everything else can use them. Also
             ## insert cross-reference data. Doing these here means that we don't have to add lots of extra checks later.
             for c in self.citedict:
@@ -1100,10 +1101,11 @@ class Bibdata(object):
                 if (s != ''):
                     ## Need two line EOL's here and not one so that backrefs can work properly.
                     filehandle.write((s + '\n').encode('utf-8'))
-        except Exception, err:
-            ## Swallow the exception
-            print('Exception encountered: ' + repr(err))
-        finally:
+        #except Exception, err:
+        #    ## Swallow the exception
+        #    print('Exception encountered: ' + repr(err))
+        #finally:
+        if True: #zzz
             if write_postamble:
                 filehandle.write('\n\\end{thebibliography}\n'.encode('utf-8'))
             filehandle.close()
@@ -1116,19 +1118,17 @@ class Bibdata(object):
         Create the list of citation keys, sorted into the proper order.
         '''
 
-        ## Generate a sortkey for each citation. If the sortkey is already present in the dictionary, it will replace
-        ## the the old entry with the new, and we would lose a citation in the process. To prevent this, we need to
-        ## make sure that it is unique.
-        sortdict = {}
+        self.citelist = []
+        self.sortlist = []
+
+        ## Generate a sortkey for each citation.
         for c in self.citedict:
-            sortkey = self.generate_sortkey(c)     #zzz is exchanging this okay?!?
-            if (sortkey in sortdict):
-                while True:
-                    sortkey += '0'
-                    if (sortkey not in sortdict):
-                        break
-            sortdict[sortkey] = unicode(c)      ## use "unicode()" to convert to string in case the key is an integer
-            #sortdict[sortkey] = self.bibdata[c]['sortkey']       ## zzz: WHY CAN'T WE JUST DO THIS?
+            s = self.generate_sortkey(c)
+            #print('>', c, s)
+            #self.sortlist.append(self.generate_sortkey(c))
+            self.sortlist.append(s)
+            self.citelist.append(c)
+            #self.bibdata[c]['sortkey']       ## zzz: WHY CAN'T WE JUST USE THIS?
 
         ## This part can be a little tricky. If the sortkey is generated such that it begins with an integer, then we
         ## should make sure that negative-values get sorted in front of positive ones. This happens correctly in simple
@@ -1136,24 +1136,30 @@ class Bibdata(object):
         ## [::-1] on the negative integers because they need to be ordered from largest number to smallest.
         variables = re.findall(r'<.*?>', self.specials['sortkey'])
         if (variables[0] in ['<year>','<sortyear>']):
-            firstdict = {k:sortdict[k] for k in sortdict if k[0] == '-'}
-            seconddict = {k:sortdict[k] for k in sortdict if k[0] != '-'}
-            self.citelist = sorted(firstdict.iterkeys(), cmp=locale.strcoll)[::-1]
-            self.citelist += sorted(seconddict.iterkeys(), cmp=locale.strcoll)
+            neg_idx = [i for (i,k) in enumerate(self.sortlist) if k[0] == '-']
+            pos_idx = [i for (i,k) in enumerate(self.sortlist) if k[0] != '-']
+            pos_sortkeys = [self.sortlist[x] for x in pos_idx]
+            neg_sortkeys = [self.sortlist[x] for x in neg_idx]
+            pos_citekeys = [self.citelist[x] for x in pos_idx]
+            neg_citekeys = [self.citelist[x] for x in neg_idx]
+
+            pos_idx = argsort(pos_sortkeys)
+            neg_idx = argsort(neg_sortkeys, reverse=True)
+            self.sortlist = [neg_sortkeys[x] for x in neg_idx] + [pos_sortkeys[x] for x in pos_idx]
+            self.citelist = [neg_citekeys[x] for x in neg_idx] + [pos_citekeys[x] for x in pos_idx]
         else:
-            self.citelist = sorted(sortdict.iterkeys(), cmp=locale.strcoll)
+            idx = argsort(self.sortlist)
+            self.sortlist = [self.sortlist[x] for x in idx]
+            self.citelist = [self.citelist[x] for x in idx]
 
         ## If using a citation order which is descending rather than ascending, then reverse the list.
         if (self.specials['sortkey'][0] == '-'):
+            self.sortlist = self.sortlist[::-1]
             self.citelist = self.citelist[::-1]
 
-        ## Finally, now that we have them in the order we want, we keep only the citation keys, so that we know which
-        ## entry maps to which in the ".aux" file.
-        self.citelist = [sortdict[a] for a in self.citelist]
-        for c in self.citelist:
-            sortkey = (key for key,value in sortdict.items() if value==c).next()
-            if self.debug:
-                print('citekey=%25s: sortkey=%s' % (c, sortkey))
+        if self.debug:
+            for i in range(len(self.citelist)):
+                print('citekey=%25s: sortkey=%s' % (self.citelist[i], self.sortlist[i]))
 
         return
 
@@ -2185,6 +2191,8 @@ class Bibdata(object):
         else:
             templatestr = self.remove_template_options_brackets(templatestr, bibentry, variables)
 
+        var_options = {}
+
         ## Go ahead and replace all of the template variables with the corresponding fields.
         for var in variables:
             if (var in templatestr):
@@ -2203,9 +2211,9 @@ class Bibdata(object):
                 if (idx + len(var) > 10):
                     period_after_initial = (templatestr[idx+len(var)-10:idx+len(var)+1] == 'initial()>.') or \
                                            (templatestr[idx+len(var)-16:idx+len(var)+1] == 'initial().tie()>.')
-                    var_options = {'period_after_initial':period_after_initial}
+                    var_options.update({'period_after_initial':period_after_initial})
                 else:
-                    var_options = {'period_after_initial':False}
+                    var_options.update({'period_after_initial':False})
 
                 ## Get the result of querying the variable in the entry. This will replace the template variable.
                 res = self.get_variable(bibentry, varname, options=var_options)
@@ -2321,7 +2329,8 @@ class Bibdata(object):
             for block in blocks:
                 block_variables = re.findall(r'<.*?>', block)
                 newblock = self.remove_nested_template_options_brackets(block, entry, block_variables)
-                newblocks.append(newblock)
+                if (newblock not in ('',None)):
+                    newblocks.append(newblock)
 
             new_substr = '|'.join(newblocks)
             res = self.simplify_template_bracket(new_substr, entry, variables)
@@ -2479,6 +2488,10 @@ class Bibdata(object):
             fieldname = var_parts[0]
         else:
             return(None)
+
+        ## When using the "uniquify" operator, we need to be able to tell it the variable name.
+        if ('.uniquify(num)' in variable):
+            options.update({'varname':fieldname})
 
         indexer = '.'.join(var_parts[1:])
         result = self.get_indexed_variable(bibentry[fieldname], indexer, bibentry['entrykey'], options=options)
@@ -2667,15 +2680,45 @@ class Bibdata(object):
                     newindexer = '.'.join(index_elements[1:])
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
             elif (index_elements[0] == 'uniquify(num)'):
-                newfield = field
-                #print('field=%s, newfield=%s' % (field, newfield))
+                if (options['varname'] not in self.uniquify_vars):
+                    self.uniquify_vars[options['varname']] = []
+
+                newfield = field + '1'
+                #pdb.set_trace()
+                if (field+'1' in self.uniquify_vars[options['varname']]):
+                    q = 2
+                    while True:
+                        newfield = field + str(q)
+                        q += 1
+                        if (newfield not in self.uniquify_vars[options['varname']]):
+                            break
+                self.uniquify_vars[options['varname']].append(newfield)
+                #print('varname=%s, field=%s, newfield=%s' % (options['varname'], field, newfield))
                 if (nelements == 1):
                     return(newfield)
                 else:
                     newindexer = '.'.join(index_elements[1:])
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
             elif (index_elements[0] == 'uniquify(alpha)'):
+                if (options['varname'] not in self.uniquify_vars):
+                    self.uniquify_vars[options['varname']] = []
+
                 newfield = field
+                if (field in self.uniquify_vars[options['varname']]):
+                    q = 1
+                    while True:
+                        if (i < 27):
+                            newfield = field + chr(q+96)               ## 97 == 'a', 98 == 'b', etc.
+                        elif (i < 52):
+                            newfield = field + chr(q+96) + chr(q+96)   ## double up if a single append doesn't work
+                        elif (i < 78):
+                            newfield = field + chr(q+96) + chr(q+96) + chr(q+96)   ## triple up if necessary
+                        newfield += str(q)
+                        q += 1
+                        if (newfield not in self.uniquify_vars[options['varname']]):
+                            break
+                self.uniquify_vars[options['varname']].append(newfield)
+                print('varname=%s, field=%s, newfield=%s' % (options['varname'], field, newfield))
                 if (nelements == 1):
                     return(newfield)
                 else:
@@ -4491,6 +4534,26 @@ def namedict_to_formatted_namestr(namedict, options=None):
         namestr = prefix + lastname + frontname + suffix
 
     return(namestr)
+
+## =============================
+def argsort(seq, reverse=False):
+    '''
+    Return the indices for producing a sorted list.
+
+    Parameters
+    ----------
+    seq : iterable
+        The iterable object to sort.
+    reverse : bool
+        Whether to return a reversed list.
+
+    Returns
+    -------
+    idx : list of ints
+        The indices needed for a sorted list.
+    '''
+
+    return(sorted(range(len(seq)), key=seq.__getitem__, cmp=locale.strcoll, reverse=reverse))
 
 ## ==================================================================================================
 
