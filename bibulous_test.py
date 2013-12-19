@@ -130,13 +130,13 @@ def run_test4():
     ## Need to make a list of all the citation sort options we want to try. Skip "citenum" since that is the default,
     ## and so has been tested already.
     sortkeys = ['<citekey>',
-                '[<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear>|<year>|][<sorttitle>|<title>]',
-                '[<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sorttitle>|<title>][<sortyear>|<year>|]',
-                '[<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear>|<year>|]<volume>[<sorttitle>|<title>]',
-                '[<alphalabel>][<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear>|<year>|][<sorttitle>|<title>]',
-                '[<alphalabel>][<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear>|<year>|]<volume>[<sorttitle>|<title>]',
-                '[<sortyear>|<year>][<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sorttitle>|<title>]',
-                '-[<sortyear>|<year>][<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sorttitle>|<title>]',
+                '[<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear.zfill()>|<year.zfill()>|][<sorttitle>|<title>]',
+                '[<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sorttitle>|<title>][<sortyear.zfill()>|<year.zfill()>|]',
+                '[<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear.zfill()>|<year.zfill()>|]<volume>[<sorttitle>|<title>]',
+                '[<alphalabel>][<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear.zfill()>|<year.zfill()>|][<sorttitle>|<title>]',
+                '[<alphalabel>][<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear.zfill()>|<year.zfill()>|]<volume>[<sorttitle>|<title>]',
+                '[<sortyear.zfill()>|<year.zfill()>][<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sorttitle>|<title>]',
+                '-[<sortyear.zfill()>|<year.zfill()>][<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sorttitle>|<title>]',
                 '<author_or_editor.uniquify(num)>']
 
     print('\n' + '='*75)
@@ -168,12 +168,12 @@ def run_test4():
     ## Delete the old citekeys so that the new test contains only the new keys.
     print('Setting option sort_case = True')
     filehandle = open(bblfile, 'a')
-    filehandle.write('%% SETTING SORTKEY = [<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear>|<year>][<sorttitle>|<title>]\n')
+    filehandle.write('%% SETTING SORTKEY = [<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear.zfill()>|<year.zfill()>][<sorttitle>|<title>]\n')
     filehandle.close()
 
     bibobj.citedict = {}
     bibobj.sortdict = {}
-    bibobj.specials['sortkey'] = '[<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear>|<year>][<sorttitle>|<title>]'
+    bibobj.specials['sortkey'] = '[<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear.zfill()>|<year.zfill()>][<sorttitle>|<title>]'
     bibobj.options['sort_case'] = True
     bibobj.parse_auxfile(auxfile)      ## this generates the citations
     bibobj.write_bblfile(write_preamble=False, write_postamble=True)
