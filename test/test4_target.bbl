@@ -12,7 +12,7 @@ AA and A. bb, ``None'' (0000).
 I. {\AA}berg, B. Ackland, J. V. Beach, C. Godek, R. Johnson, C. A. King, A. Lattes, \textit{et~al.}, ``A low dark current and high quantum efficiency monolithic Germanium-on-Silicon CMOS imager technology for day and night imaging applications'' (2010).
 \bibitem{Aspect1982}
 A. Aspect, P. Grangier, and G. Roger, ``Experimental realization of Einstein-Podolsky-Rosen-Bohm \textit{Gedenkenexperiment}: a new violation of Bell's inequalities'' (1982).
-\bibitem{bb0000}
+\bibitem{bb-1}
 A. bb and AA, ``Nothing much'' (-1).
 \bibitem{Blouke2000}
 M. M. Blouke, N. Sampat, G. M. Williams, Jr., and T. Yeh, eds, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications,'' SPIE (2000).
@@ -44,7 +44,7 @@ Y. Otobe and P. Horton, ``jBibTEXの使用法,'' ソフトバンクパブリッ�
 乙. {厳己} and P. Horton, ``jBibTEXの使用法,'' ソフトバンクパブリッシング (2006).
 
 
-%% SETTING SORTKEY = [<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear>|<year>|][<sorttitle>|<title>]
+%% SETTING SORTKEY = [<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear.zfill()>|<year.zfill()>|][<sorttitle>|<title>]
 \bibitem{AA0000}
 AA and A. bb, ``None'' (0000).
 \bibitem{Strangekey}
@@ -53,7 +53,7 @@ M. Aaa, ``Nothing of consequence'' (1901).
 I. {\AA}berg, B. Ackland, J. V. Beach, C. Godek, R. Johnson, C. A. King, A. Lattes, \textit{et~al.}, ``A low dark current and high quantum efficiency monolithic Germanium-on-Silicon CMOS imager technology for day and night imaging applications'' (2010).
 \bibitem{Aspect1982}
 A. Aspect, P. Grangier, and G. Roger, ``Experimental realization of Einstein-Podolsky-Rosen-Bohm \textit{Gedenkenexperiment}: a new violation of Bell's inequalities'' (1982).
-\bibitem{bb0000}
+\bibitem{bb-1}
 A. bb and AA, ``Nothing much'' (-1).
 \bibitem{Blouke2000}
 M. M. Blouke, N. Sampat, G. M. Williams, Jr., and T. Yeh, eds, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications,'' SPIE (2000).
@@ -83,7 +83,7 @@ B. Yanny, C. Rockosi, H. J. Newberg, G. R. Knapp, J. K. Adelman-McCarthy, B. Alc
 乙. {厳己} and P. Horton, ``jBibTEXの使用法,'' ソフトバンクパブリッシング (2006).
 
 
-%% SETTING SORTKEY = [<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sorttitle>|<title>][<sortyear>|<year>|]
+%% SETTING SORTKEY = [<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sorttitle>|<title>][<sortyear.zfill()>|<year.zfill()>|]
 \bibitem{Strangekey}
 M. Aaa, ``Nothing of consequence'' (1901).
 \bibitem{AA0000}
@@ -92,7 +92,7 @@ AA and A. bb, ``None'' (0000).
 I. {\AA}berg, B. Ackland, J. V. Beach, C. Godek, R. Johnson, C. A. King, A. Lattes, \textit{et~al.}, ``A low dark current and high quantum efficiency monolithic Germanium-on-Silicon CMOS imager technology for day and night imaging applications'' (2010).
 \bibitem{Aspect1982}
 A. Aspect, P. Grangier, and G. Roger, ``Experimental realization of Einstein-Podolsky-Rosen-Bohm \textit{Gedenkenexperiment}: a new violation of Bell's inequalities'' (1982).
-\bibitem{bb0000}
+\bibitem{bb-1}
 A. bb and AA, ``Nothing much'' (-1).
 \bibitem{Blouke2000}
 M. M. Blouke, N. Sampat, G. M. Williams, Jr., and T. Yeh, eds, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications,'' SPIE (2000).
@@ -122,7 +122,7 @@ B. Yanny, C. Rockosi, H. J. Newberg, G. R. Knapp, J. K. Adelman-McCarthy, B. Alc
 乙. {厳己} and P. Horton, ``jBibTEXの使用法,'' ソフトバンクパブリッシング (2006).
 
 
-%% SETTING SORTKEY = [<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear>|<year>|]<volume>[<sorttitle>|<title>]
+%% SETTING SORTKEY = [<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear.zfill()>|<year.zfill()>|]<volume>[<sorttitle>|<title>]
 \bibitem{AA0000}
 AA and A. bb, ``None'' (0000).
 \bibitem{Strangekey}
@@ -131,7 +131,7 @@ M. Aaa, ``Nothing of consequence'' (1901).
 I. {\AA}berg, B. Ackland, J. V. Beach, C. Godek, R. Johnson, C. A. King, A. Lattes, \textit{et~al.}, ``A low dark current and high quantum efficiency monolithic Germanium-on-Silicon CMOS imager technology for day and night imaging applications'' (2010).
 \bibitem{Aspect1982}
 A. Aspect, P. Grangier, and G. Roger, ``Experimental realization of Einstein-Podolsky-Rosen-Bohm \textit{Gedenkenexperiment}: a new violation of Bell's inequalities'' (1982).
-\bibitem{bb0000}
+\bibitem{bb-1}
 A. bb and AA, ``Nothing much'' (-1).
 \bibitem{Blouke2000}
 M. M. Blouke, N. Sampat, G. M. Williams, Jr., and T. Yeh, eds, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications,'' SPIE (2000).
@@ -161,7 +161,7 @@ B. Yanny, C. Rockosi, H. J. Newberg, G. R. Knapp, J. K. Adelman-McCarthy, B. Alc
 乙. {厳己} and P. Horton, ``jBibTEXの使用法,'' ソフトバンクパブリッシング (2006).
 
 
-%% SETTING SORTKEY = [<alphalabel>][<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear>|<year>|][<sorttitle>|<title>]
+%% SETTING SORTKEY = [<alphalabel>][<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear.zfill()>|<year.zfill()>|][<sorttitle>|<title>]
 \bibitem{Strangekey}
 M. Aaa, ``Nothing of consequence'' (1901).
 \bibitem{AA0000}
@@ -172,7 +172,7 @@ I. {\AA}berg, B. Ackland, J. V. Beach, C. Godek, R. Johnson, C. A. King, A. Latt
 A. Aspect, P. Grangier, and G. Roger, ``Experimental realization of Einstein-Podolsky-Rosen-Bohm \textit{Gedenkenexperiment}: a new violation of Bell's inequalities'' (1982).
 \bibitem{Yanny2009}
 B. Yanny, C. Rockosi, H. J. Newberg, G. R. Knapp, J. K. Adelman-McCarthy, B. Alcorn, S. Allam, \textit{et~al.}, ``SEGUE: a spectroscopic survey of 240,000 stars with $g = 14$--20'' (2009).
-\bibitem{bb0000}
+\bibitem{bb-1}
 A. bb and AA, ``Nothing much'' (-1).
 \bibitem{Blouke2000}
 M. M. Blouke, N. Sampat, G. M. Williams, Jr., and T. Yeh, eds, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications,'' SPIE (2000).
@@ -200,7 +200,7 @@ B. Bunny, ``Looney tunes'' (2001).
 乙. {厳己} and P. Horton, ``jBibTEXの使用法,'' ソフトバンクパブリッシング (2006).
 
 
-%% SETTING SORTKEY = [<alphalabel>][<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear>|<year>|]<volume>[<sorttitle>|<title>]
+%% SETTING SORTKEY = [<alphalabel>][<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear.zfill()>|<year.zfill()>|]<volume>[<sorttitle>|<title>]
 \bibitem{Strangekey}
 M. Aaa, ``Nothing of consequence'' (1901).
 \bibitem{AA0000}
@@ -211,7 +211,7 @@ I. {\AA}berg, B. Ackland, J. V. Beach, C. Godek, R. Johnson, C. A. King, A. Latt
 A. Aspect, P. Grangier, and G. Roger, ``Experimental realization of Einstein-Podolsky-Rosen-Bohm \textit{Gedenkenexperiment}: a new violation of Bell's inequalities'' (1982).
 \bibitem{Yanny2009}
 B. Yanny, C. Rockosi, H. J. Newberg, G. R. Knapp, J. K. Adelman-McCarthy, B. Alcorn, S. Allam, \textit{et~al.}, ``SEGUE: a spectroscopic survey of 240,000 stars with $g = 14$--20'' (2009).
-\bibitem{bb0000}
+\bibitem{bb-1}
 A. bb and AA, ``Nothing much'' (-1).
 \bibitem{Blouke2000}
 M. M. Blouke, N. Sampat, G. M. Williams, Jr., and T. Yeh, eds, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications,'' SPIE (2000).
@@ -239,8 +239,8 @@ B. Bunny, ``Looney tunes'' (2001).
 乙. {厳己} and P. Horton, ``jBibTEXの使用法,'' ソフトバンクパブリッシング (2006).
 
 
-%% SETTING SORTKEY = [<sortyear>|<year>][<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sorttitle>|<title>]
-\bibitem{bb0000}
+%% SETTING SORTKEY = [<sortyear.zfill()>|<year.zfill()>][<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sorttitle>|<title>]
+\bibitem{bb-1}
 A. bb and AA, ``Nothing much'' (-1).
 \bibitem{AA0000}
 AA and A. bb, ``None'' (0000).
@@ -278,7 +278,7 @@ S. Mustafa, J. Hannagan, P. Rigby, K. Pfleger, and B. Corry, ``Quantitative F{\"
 S. Mustafa, J. Hannagan, P. Rigby, K. Pfleger, and B. Corry, ``Quantitative Förster resonance energy transfer efficiency measurements using simultaneous spectral unmixing of excitation and emission spectra'' (2013).
 
 
-%% SETTING SORTKEY = -[<sortyear>|<year>][<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sorttitle>|<title>]
+%% SETTING SORTKEY = -[<sortyear.zfill()>|<year.zfill()>][<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sorttitle>|<title>]
 \bibitem{Mustafa2013}
 S. Mustafa, J. Hannagan, P. Rigby, K. Pfleger, and B. Corry, ``Quantitative Förster resonance energy transfer efficiency measurements using simultaneous spectral unmixing of excitation and emission spectra'' (2013).
 \bibitem{Mustafa2013a}
@@ -313,7 +313,7 @@ L. Kelvin, ``On vortex motion'' (1869).
 W. {Thomson [Lord Kelvin]}, ``On an absolute thermometric scale, founded on Carnot's theory of the motive power of heat'' (1848).
 \bibitem{AA0000}
 AA and A. bb, ``None'' (0000).
-\bibitem{bb0000}
+\bibitem{bb-1}
 A. bb and AA, ``Nothing much'' (-1).
 
 
@@ -326,7 +326,7 @@ M. Aaa, ``Nothing of consequence'' (1901).
 I. {\AA}berg, B. Ackland, J. V. Beach, C. Godek, R. Johnson, C. A. King, A. Lattes, \textit{et~al.}, ``A low dark current and high quantum efficiency monolithic Germanium-on-Silicon CMOS imager technology for day and night imaging applications'' (2010).
 \bibitem{Aspect1982}
 A. Aspect, P. Grangier, and G. Roger, ``Experimental realization of Einstein-Podolsky-Rosen-Bohm \textit{Gedenkenexperiment}: a new violation of Bell's inequalities'' (1982).
-\bibitem{bb0000}
+\bibitem{bb-1}
 A. bb and AA, ``Nothing much'' (-1).
 \bibitem{Blouke2000}
 M. M. Blouke, N. Sampat, G. M. Williams, Jr., and T. Yeh, eds, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications,'' SPIE (2000).
@@ -356,7 +356,7 @@ B. Yanny, C. Rockosi, H. J. Newberg, G. R. Knapp, J. K. Adelman-McCarthy, B. Alc
 乙. {厳己} and P. Horton, ``jBibTEXの使用法,'' ソフトバンクパブリッシング (2006).
 
 
-%% SETTING SORTKEY = [<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear>|<year>][<sorttitle>|<title>]
+%% SETTING SORTKEY = [<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear.zfill()>|<year.zfill()>][<sorttitle>|<title>]
 \bibitem{AA0000}
 AA and A. bb, ``None'' (0000).
 \bibitem{Strangekey}
@@ -365,7 +365,7 @@ M. Aaa, ``Nothing of consequence'' (1901).
 I. {\AA}berg, B. Ackland, J. V. Beach, C. Godek, R. Johnson, C. A. King, A. Lattes, \textit{et~al.}, ``A low dark current and high quantum efficiency monolithic Germanium-on-Silicon CMOS imager technology for day and night imaging applications'' (2010).
 \bibitem{Aspect1982}
 A. Aspect, P. Grangier, and G. Roger, ``Experimental realization of Einstein-Podolsky-Rosen-Bohm \textit{Gedenkenexperiment}: a new violation of Bell's inequalities'' (1982).
-\bibitem{bb0000}
+\bibitem{bb-1}
 A. bb and AA, ``Nothing much'' (-1).
 \bibitem{Blouke2000}
 M. M. Blouke, N. Sampat, G. M. Williams, Jr., and T. Yeh, eds, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications,'' SPIE (2000).
