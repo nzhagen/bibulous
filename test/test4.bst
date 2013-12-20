@@ -28,6 +28,7 @@ use_citeextract = False                   ## turn off cite extraction, since thi
 etal_message = , \textit{et~al.}          ## what text to place at the end of a namelist when there are too many names
 edmsg1 = , ed.                            ## the label to use after the editor namelist when only one editor is present
 edmsg2 = , eds                            ## the label to use after the editor namelist when multiple editors are present
+sort_order = Forward
 
 
 VARIABLES:
