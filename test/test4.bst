@@ -12,12 +12,12 @@ authorname.n = [<authorlist.n.first.initial()>. ][<authorlist.n.middle.initial()
 au = <authorname.0>, ...,{ and }<authorname.6>
 author_or_editor = [[<authorlist.0.prefix>|<authorlist.0.last>]|[<editorlist.0.prefix>|<editorlist.0.last>]]
 citelabel = None
-sortkey = <citenum>
+sortkey = [<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear.zfill()>|<year.zfill()>][<sorttitle>|<title>]
 
 
 OPTIONS:
 procspie_as_journal = True                ## treat SPIE conference proceedings like a journal, with journal name 'Proc. SPIE'
-sort_case = False                         ## whether to use case-sensitive citation sorting (default is False)
+sort_case = True
 backrefs = False                          ## whether to implement backreferences in the bibliography -- maybe put in template strings?
 backrefstyle = none                       ## can be one of {"none", "three", "two", "two+", "three+", "all+"}
 hyperref = False                          ## whether to turn on (True) or off (False). If "hyperref" package is loaded, the default value is True, else default is False.

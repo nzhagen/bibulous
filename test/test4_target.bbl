@@ -5,6 +5,7 @@
 \setlength{\itemsep}{0pt}
 
 
+%% SETTING SORTKEY = <citekey>
 
 \bibitem{AA0000}
 AA and A. bb, ``None'' (0000).
@@ -317,19 +318,19 @@ AA and A. bb, ``None'' (0000).
 A. bb and AA, ``Nothing much'' (-1).
 
 
-%% SETTING SORTKEY = <author_or_editor.uniquify(num)>
-\bibitem{AA0000}
-AA and A. bb, ``None'' (0000).
+%% SETTING SORTKEY = <author_or_editor.initial().upper().uniquify(num)>
 \bibitem{Strangekey}
 M. Aaa, ``Nothing of consequence'' (1901).
 \bibitem{AAberg2010}
 I. {\AA}berg, B. Ackland, J. V. Beach, C. Godek, R. Johnson, C. A. King, A. Lattes, \textit{et~al.}, ``A low dark current and high quantum efficiency monolithic Germanium-on-Silicon CMOS imager technology for day and night imaging applications'' (2010).
+\bibitem{AA0000}
+AA and A. bb, ``None'' (0000).
 \bibitem{Aspect1982}
 A. Aspect, P. Grangier, and G. Roger, ``Experimental realization of Einstein-Podolsky-Rosen-Bohm \textit{Gedenkenexperiment}: a new violation of Bell's inequalities'' (1982).
-\bibitem{bb-1}
-A. bb and AA, ``Nothing much'' (-1).
 \bibitem{Blouke2000}
 M. M. Blouke, N. Sampat, G. M. Williams, Jr., and T. Yeh, eds, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications,'' SPIE (2000).
+\bibitem{bb-1}
+A. bb and AA, ``Nothing much'' (-1).
 \bibitem{Bunny1}
 B. Bunny, ``Looney tunes'' (2001).
 \bibitem{Chang1992}
@@ -395,5 +396,3 @@ B. Yanny, C. Rockosi, H. J. Newberg, G. R. Knapp, J. K. Adelman-McCarthy, B. Alc
 乙. {厳己} and P. Horton, ``jBibTEXの使用法,'' ソフトバンクパブリッシング (2006).
 
 \end{thebibliography}
-
-
