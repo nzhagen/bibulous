@@ -138,11 +138,12 @@ def run_test4():
                 '[<alphalabel>][<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear.zfill()>|<year.zfill()>|][<sorttitle>|<title>]',
                 '[<alphalabel>][<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear.zfill()>|<year.zfill()>|]<volume>[<sorttitle>|<title>]',
                 '[<sortyear.zfill()>|<year.zfill()>][<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sorttitle>|<title>]',
-                '-[<sortyear.zfill()>|<year.zfill()>][<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sorttitle>|<title>]',
+                '[<sortyear.zfill()>|<year.zfill()>][<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sorttitle>|<title>]',
                 '<author_or_editor.initial().upper().uniquify(num)>',
                 '[<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear.zfill()>|<year.zfill()>][<sorttitle>|<title>]']
 
-    case_options = ['False', 'False', 'False', 'False', 'False', 'False', 'False', 'False', 'False', 'True']
+    sort_case_options = ['False', 'False', 'False', 'False', 'False', 'False', 'False', 'False', 'False', 'True']
+    sort_order_options = ['Forward', 'Forward', 'Forward', 'Forward', 'Forward', 'Forward', 'Forward', 'Reverse', 'Forward', 'Forward']
 
     print('\n' + '='*75)
     print('Running Bibulous Test #4')
@@ -153,7 +154,8 @@ def run_test4():
 
     for i in range(len(sortkeys)):
         sortkey = sortkeys[i]
-        case_option = case_options[i]
+        sort_case_option = sort_case_options[i]
+        sort_order_option = sort_order_options[i]
 
         ## First go into the BST file and rewrite the "sortkey" line to be the current sortkey template.
         filehandle = open(bstfile, 'w')
@@ -161,7 +163,9 @@ def run_test4():
             if line.startswith('sortkey = '):
                 filehandle.write('sortkey = ' + sortkey + '\n')
             elif line.startswith('sort_case = '):
-                filehandle.write('sort_case = ' + case_options[i] + '\n')
+                filehandle.write('sort_case = ' + sort_case_option + '\n')
+            elif line.startswith('sort_order = '):
+                filehandle.write('sort_order = ' + sort_order_option + '\n')
             else:
                 filehandle.write(line)
         filehandle.close()
@@ -169,7 +173,6 @@ def run_test4():
         bibobj = Bibdata(auxfile, disable=[9])
         bibobj.locale = thislocale
         bibobj.bibdata['preamble'] = '\n\n%% SETTING SORTKEY = ' + sortkey
-        if (case_option == 'True'): bibobj.bibdata['preamble'] += '\n%% SETTING SORT_CASE = True'
         #bibobj.debug = True     ## turn on debugging for citekey printing
         print('Setting sortkey = ' + sortkey)
 
@@ -178,6 +181,8 @@ def run_test4():
         if not write_preamble:
             filehandle = open(bblfile, 'a')
             filehandle.write('\n\n%% SETTING SORTKEY = ' + sortkey + '\n')
+            if (sort_case_option == 'True'): filehandle.write('%% SETTING SORT_CASE = True\n')
+            if (sort_order_option == 'Reverse'): filehandle.write('%% SETTING SORT_ORDER = Reverse\n')
             filehandle.close()
 
         bibobj.write_bblfile(write_preamble=write_preamble, write_postamble=write_postamble, bibsize='ZZZ')
