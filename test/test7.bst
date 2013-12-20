@@ -10,7 +10,7 @@ authorname.n = [<authorlist.n.first.initial()>. ][<authorlist.n.middle.initial()
 au = <authorname.0>, ...,{ and }<authorname.6>
 editorname.n = [<editorlist.n.first.initial()>. ][<editorlist.n.middle.initial()>. ][<editorlist.n.prefix> ]<editorlist.n.last>[, <editorlist.n.suffix>]
 ed = <editorname.0>, ...,{ and }<editorname.2>
-citelabel = None
+citelabel = [<authorlist.0.last>|<editorlist.0.last>|] (<year>)
 sortkey = <citenum>
 
 
