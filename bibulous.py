@@ -227,6 +227,7 @@ class Bibdata(object):
         self.options['edmsg1'] = ', ed.'
         self.options['edmsg2'] = ', eds'
         self.options['replace_newlines'] = True
+        self.options['sort_order'] = 'Forward'
 
         ## These options all relate to the default name formatting (the more rigid namelist formatting that does not use
         ## the implicit indexing and implicit loop structures).
@@ -1146,7 +1147,8 @@ class Bibdata(object):
             self.citelist = [self.citelist[x] for x in idx]
 
         ## If using a citation order which is descending rather than ascending, then reverse the list.
-        if (self.specials['sortkey'][0] == '-'):
+        #if (self.specials['sortkey'][0] == '-'):
+        if (self.options['sort_order'] == 'Reverse'):
             self.sortlist = self.sortlist[::-1]
             self.citelist = self.citelist[::-1]
 
@@ -1283,10 +1285,10 @@ class Bibdata(object):
         entry = self.bibdata[citekey]
         templatestr = self.specials['sortkey']
 
-        ## If the template begins with a '-', then remove it. It just tells us to use reverse sorting order, and we
-        ## only generate the sortkey here, rather than perform the actual sorting.
-        if templatestr.startswith('-'):
-            templatestr = templatestr[1:]
+#        ## If the template begins with a '-', then remove it. It just tells us to use reverse sorting order, and we
+#        ## only generate the sortkey here, rather than perform the actual sorting.
+#        if templatestr.startswith('-'):
+#            templatestr = templatestr[1:]
 
         ## Substitute entry fields for template variables.
         templatestr = self.template_substitution(templatestr, citekey)
