@@ -1072,8 +1072,7 @@ class Bibdata(object):
 
         ## Use a try-except block here, so that if any exception is raised then we can make sure to produce a valid
         ## BBL file.
-        #try:
-        if True: #zzz
+        try:
             ## First insert special variables, so that the citation sorter and everything else can use them. Also
             ## insert cross-reference data. Doing these here means that we don't have to add lots of extra checks later.
             for c in self.citedict:
@@ -1101,11 +1100,10 @@ class Bibdata(object):
                 if (s != ''):
                     ## Need two line EOL's here and not one so that backrefs can work properly.
                     filehandle.write((s + '\n').encode('utf-8'))
-        #except Exception, err:
-        #    ## Swallow the exception
-        #    print('Exception encountered: ' + repr(err))
-        #finally:
-        if True: #zzz
+        except Exception, err:
+            ## Swallow the exception
+            print('Exception encountered: ' + repr(err))
+        finally:
             if write_postamble:
                 filehandle.write('\n\\end{thebibliography}\n'.encode('utf-8'))
             filehandle.close()
@@ -1123,10 +1121,12 @@ class Bibdata(object):
 
         ## Generate a sortkey for each citation.
         for c in self.citedict:
-            s = self.generate_sortkey(c)
+            if (c in self.bibdata):
+                s = self.bibdata[c]['sortkey']
+            else:
+                s = c
             self.sortlist.append(s)
             self.citelist.append(c)
-            #self.bibdata[c]['sortkey']       ## zzz: WHY CAN'T WE JUST USE THIS?
 
         ## This part can be a little tricky. If the sortkey is generated such that it begins with an integer, then we
         ## should make sure that negative-values get sorted in front of positive ones. This happens correctly in simple
@@ -1307,10 +1307,10 @@ class Bibdata(object):
         if ('<year>' in templatestr):
             templatestr = templatestr.replace('<year>', citeyear)
 
-        ## Before we parse the template string to remove any undefined variables, we need to make sure that the entry
-        ## has all the proper variables in it.
-        if ('<citealpha>' in templatestr):
-            entry['citealpha'] = create_citation_alpha(entry)
+#        ## Before we parse the template string to remove any undefined variables, we need to make sure that the entry
+#        ## has all the proper variables in it.
+#        if ('<citealpha>' in templatestr):
+#            entry['citealpha'] = create_citation_alpha(entry)
 
         ## Substitute entry fields for template variables.
         templatestr = self.template_substitution(templatestr, citekey)
@@ -1599,18 +1599,13 @@ class Bibdata(object):
         if (templatestr == 'None'):
             return(None)
 
-        ## Before we parse the template string to remove any undefined variables, we need to make sure that ehe entry
-        ## has all the proper variables in it.
-        #if ('<citekey>' in templatestr) and ('citekey' not in entry):
-        #    entry['citekey'] = citekey
-        #if ('<citenum>' in templatestr) and ('citenum' not in entry):
-        #    entry['citenum'] = citenum
-        if ('<citealpha>' in templatestr):
-            entry['citealpha'] = create_citation_alpha(entry)
+#        ## Before we parse the template string to remove any undefined variables, we need to make sure that ehe entry
+#        ## has all the proper variables in it.
+#        if ('<citealpha>' in templatestr):
+#            entry['citealpha'] = create_citation_alpha(entry)
 
         ## Fill out the template if it contains an implicit loop structure.
         ## Substitute field values from the bibliography entry into the template variables.
-        #templatestr = self.fillout_implicit_indices(templatestr, citekey)     ## this line shouldn't be necessary!
         templatestr = self.template_substitution(templatestr, citekey)
         citelabel = purify_string(templatestr)
 
@@ -1894,6 +1889,12 @@ class Bibdata(object):
         for key in self.specials_list:
             ## Only insert the user-defined special field if the field is missing.
             if (key in entry):
+                continue
+
+            ## The "sortkey" special requires a special function to operate correctly.
+            if (key == 'sortkey'):
+                res = self.generate_sortkey(entrykey)
+                self.bibdata[entrykey][key] = res
                 continue
 
             templatestr = self.specials[key]
@@ -2200,6 +2201,10 @@ class Bibdata(object):
                 if varname.startswith('title') and ('title' in bibentry):
                     templatestr = self.insert_title_into_template(var, templatestr, bibentry)
                     continue
+                elif varname.startswith('citealpha'):
+                    ## Before we parse the template string to remove any undefined variables, we need to make sure that the entry
+                    ## has all the proper variables in it.
+                    templatestr = templatestr.replace(var, create_citation_alpha(bibentry))
 
                 ## If the variable contains a function asking for initials, then one tricky part is that the "middle"
                 ## name part of a name dictionary can have multiple elements, so that each one needs to be initialed
@@ -2983,11 +2988,17 @@ def initialize_name(name, options=None, debug=False):
         The name element converted to its initials form.
     '''
 
+    #zzz
+    #if (name == '{Thomson [Lord Kelvin]}'):
+    #    pdb.set_trace()
+
     if (name == ''):
         return(name)
     if (options == None): options = {}
     if ('period_after_initial' not in options): options['period_after_initial'] = False
     if ('french_initials' not in options): options['french_initials'] = False
+    if ('{' in name) and ('}' in name):
+        name = purify_string(name)
 
     ## Go through the author's name elements and truncate the first and middle names to their initials. If using French
     ## initials, then a hyphenated name produces hyphenated initials (for example "Jean-Paul" -> "J.-P." and not "J."),
@@ -3000,8 +3011,7 @@ def initialize_name(name, options=None, debug=False):
     ## remove any empty list elements produced by the split. Also remove any parenthetical names (such as used for
     ## nicknames).
     nametokens = list(name.split(' '))
-    nametokens = [x for x in nametokens if x]
-    nametokens = [x for x in nametokens if not (x.startswith('(') and x.endswith(')'))]
+    nametokens = [x for x in nametokens if x and not (x.startswith('(') or x.endswith(')') or x.startswith('[') or x.endswith(']'))]
 
     for j,token in enumerate(nametokens):
         if ('{' in token) and ('}' in token):

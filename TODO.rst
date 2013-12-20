@@ -86,6 +86,9 @@ Python testing to-do
 
 - Add a test for the new .zfill() operator.
 
+- Add a test that uses the ``<citealpha>`` variable. And is there a way to implement it with templates
+  rather than using an internal special-case function?
+
 - Add a test for locale-dependent sorting? This requires a lot of work to set up for full
   BIB-AUX-BBL mapping. So it may be best to wait for a more directed test to come along.
 
