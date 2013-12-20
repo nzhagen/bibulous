@@ -233,6 +233,7 @@ def run_test7():
     ## Although three of these files were copied from "test1", it is a bad idea to use the "test1.*" files here because
     ## any changes to test1 would then require changes to the test7_target.bbl as well.
     bblfile = './test/test7.bbl'
+    bstfile = './test/test7.bst'
     auxfile = './test/test7.aux'
     target_bblfile = './test/test7_target.bbl'
 
@@ -252,25 +253,36 @@ def run_test7():
     print('\n' + '='*75)
     print('Running Bibulous Test #7')
 
-    #bibobj = Bibdata([bibfile,auxfile,bblfile,bstfile], disable=[9])
-    bibobj = Bibdata(auxfile, disable=[9])
-    bibobj.locale = thislocale
-    bibobj.bibdata['preamble'] = '\n'
-    #bibobj.debug = True     ## turn on debugging for citekey printing
+    filehandle = open(bstfile, 'r')
+    lines = filehandle.readlines()
+    filehandle.close()
 
-    for citelabel in citelabels:
-        ## Delete the old citekeys so that the new test contains only the new keys.
+    for i in range(len(citelabels)):
+        citelabel = citelabels[i]
+
+        ## First go into the BST file and rewrite the "citelabel" line to be the current sortkey template.
+        filehandle = open(bstfile, 'w')
+        for line in lines:
+            if line.startswith('citelabel = '):
+                filehandle.write('citelabel = ' + citelabel + '\n')
+            else:
+                filehandle.write(line)
+        filehandle.close()
+
+        bibobj = Bibdata(auxfile, disable=[9])
+        bibobj.locale = thislocale
+        bibobj.bibdata['preamble'] = '\n\n%% SETTING CITELABEL = ' + citelabel
+        #bibobj.debug = True     ## turn on debugging for citekey printing
+
         print('Setting citation_label = ' + citelabel)
-        bibobj.citedict = {}
-        bibobj.specials['citelabel'] = citelabel
-        bibobj.parse_auxfile(auxfile)      ## this generates the citations
         write_preamble = (citelabel == citelabels[0])
         write_postamble = (citelabel == citelabels[-1])
-        bibobj.write_bblfile(write_preamble=write_preamble, write_postamble=write_postamble)
+        if not write_preamble:
+            filehandle = open(bblfile, 'a')
+            filehandle.write('\n\n%% SETTING SETTING CITELABEL = ' + citelabel + '\n')
+            filehandle.close()
 
-        filehandle = open(bblfile, 'a')
-        filehandle.write('\n\n')
-        filehandle.close()
+        bibobj.write_bblfile(write_preamble=write_preamble, write_postamble=write_postamble)
 
     return(bblfile, target_bblfile)
 
@@ -290,7 +302,6 @@ def run_test8():
     print('\n' + '='*75)
     print('Running Bibulous Test #8')
 
-    #bibobj = Bibdata([texfile,bibfile,auxfile,bblfile,bstfile], debug=False)
     bibobj = Bibdata(auxfile, debug=False)
     bibobj.write_bblfile()
 
@@ -371,48 +382,48 @@ def check_file_match(testnum, outputfile, targetfile):
 if (__name__ == '__main__'):
     suite_pass = True
 
-#    ## Run test #1.
-#    (outputfile, targetfile) = run_test1()
-#    result = check_file_match(1, outputfile, targetfile)
-#    suite_pass *= result
-#
-#    ## Run test #2.
-#    result = run_test2()
-#    suite_pass *= result
-#
-#    ## Run test #3.
-#    (outputfile, targetfile) = run_test3()
-#    result = check_file_match(3, outputfile, targetfile)
-#    suite_pass *= result
-#
-#    ## Run test #4.
-#    (outputfile, targetfile) = run_test4()
-#    result = check_file_match(4, outputfile, targetfile)
-#    suite_pass *= result
-#
+    ## Run test #1.
+    (outputfile, targetfile) = run_test1()
+    result = check_file_match(1, outputfile, targetfile)
+    suite_pass *= result
+
+    ## Run test #2.
+    result = run_test2()
+    suite_pass *= result
+
+    ## Run test #3.
+    (outputfile, targetfile) = run_test3()
+    result = check_file_match(3, outputfile, targetfile)
+    suite_pass *= result
+
+    ## Run test #4.
+    (outputfile, targetfile) = run_test4()
+    result = check_file_match(4, outputfile, targetfile)
+    suite_pass *= result
+
     ## Run test #5.
     (outputfile, targetfile) = run_test5()
     result = check_file_match(5, outputfile, targetfile)
     suite_pass *= result
-#
-#    ## Run test #6.
-#    result = run_test6()
-#    suite_pass *= result
-#
-#    ## Run test #7.
-#    (outputfile, targetfile) = run_test7()
-#    result = check_file_match(7, outputfile, targetfile)
-#    suite_pass *= result
-#
-#    ## Run test #8.
-#    (outputfile, targetfile) = run_test8()
-#    result = check_file_match(8, outputfile, targetfile)
-#    suite_pass *= result
-#
-#    ## Run test #9.
-#    (outputfile, targetfile) = run_test9()
-#    result = check_file_match(9, outputfile, targetfile)
-#    suite_pass *= result
+
+    ## Run test #6.
+    result = run_test6()
+    suite_pass *= result
+
+    ## Run test #7.
+    (outputfile, targetfile) = run_test7()
+    result = check_file_match(7, outputfile, targetfile)
+    suite_pass *= result
+
+    ## Run test #8.
+    (outputfile, targetfile) = run_test8()
+    result = check_file_match(8, outputfile, targetfile)
+    suite_pass *= result
+
+    ## Run test #9.
+    (outputfile, targetfile) = run_test9()
+    result = check_file_match(9, outputfile, targetfile)
+    suite_pass *= result
 
     if suite_pass:
         print('\n***** THE CODE PASSES ALL TESTS IN THE TESTING SUITE. *****')
