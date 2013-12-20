@@ -9,6 +9,9 @@ For version 1.3, the goal is to have namelist templates working.
 - Now that you added three new template variable operators: .upper(), .lower(), .zfill(), and .uniquify(arg),
   update the documentation to show them.
 
+- Is there a way to implement the ``<citealpha>`` variable with templates rather than using an internal 
+  special-case function?
+
 - Note that the special template definition::
 
     author = [<著者名>|<author-en>|]
@@ -85,9 +88,6 @@ Python testing to-do
 - Add a test that checks that concatenating operators, like <var.upper().initial()> works.
 
 - Add a test for the new .zfill() operator.
-
-- Add a test that uses the ``<citealpha>`` variable. And is there a way to implement it with templates
-  rather than using an internal special-case function?
 
 - Add a test for locale-dependent sorting? This requires a lot of work to set up for full
   BIB-AUX-BBL mapping. So it may be best to wait for a more directed test to come along.
