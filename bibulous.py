@@ -138,7 +138,6 @@ class Bibdata(object):
     write_citeextract
     write_authorextract
     replace_abbrevs_with_full
-    generate_bibitem_label
     get_bibfilenames
     check_citekeys_in_datakeys
     add_crossrefs_to_searchkeys
@@ -943,11 +942,6 @@ class Bibdata(object):
                     if (var not in self.specials_list):
                         self.specials_list.append(var)
 
-                    #var_is_namelist = re.search(self.namelist_variable_pattern, value)
-                    #if var_is_namelist:
-                    #    print('foundit:', var_is_namelist.group(0))
-                    #    raise
-
                     ## Find out if the template has nested option blocks. If so, then add it to
                     ## the list of nested templates.
                     levels = get_delim_levels(value, ('[',']'))
@@ -1187,8 +1181,12 @@ class Bibdata(object):
         if (c == 'preamble'):
             return('')
 
-        bibitem_label = self.generate_bibitem_label(c)
-        if (bibitem_label == None):
+        if (c in self.bibdata):
+            bibitem_label = self.bibdata[c]['citelabel']
+        else:
+            bibitem_label = c
+
+        if (unicode(bibitem_label) == 'None'):
             itemstr = r'\bibitem{' + c + '}\n'
         else:
             itemstr = r'\bibitem[' + bibitem_label + ']{' + c + '}\n'
@@ -1568,51 +1566,6 @@ class Bibdata(object):
                 raise SyntaxError('if-else mismatch inside replace_abbrevs_with_full().')
 
         return(fieldstr, resultstr, end_of_field)
-
-    ## =============================
-    def generate_bibitem_label(self, citekey):
-        '''
-        Generate the bibitem label.
-
-        Parameters
-        ----------
-        citekey : str
-            The citation key.
-
-        Returns
-        -------
-        citelabel : str
-            The citation label to use for the item.
-        '''
-
-        if not (citekey in self.bibdata):
-            bib_warning('Warning 010d: cannot find citation key "' + citekey + '" in the database. Ignoring and '
-                        'continuing ...', self.disable)
-            return(citekey)
-
-        entry = self.bibdata[citekey]
-
-        ## Define the variable "citenum".
-        citenum = unicode(self.citedict[citekey])
-
-        templatestr = self.specials['citelabel']
-        if (templatestr == 'None'):
-            return(None)
-
-#        ## Before we parse the template string to remove any undefined variables, we need to make sure that ehe entry
-#        ## has all the proper variables in it.
-#        if ('<citealpha>' in templatestr):
-#            entry['citealpha'] = create_citation_alpha(entry)
-
-        ## Fill out the template if it contains an implicit loop structure.
-        ## Substitute field values from the bibliography entry into the template variables.
-        templatestr = self.template_substitution(templatestr, citekey)
-        citelabel = purify_string(templatestr)
-
-        if self.debug:
-            print('citekey=%s: citelabel=%s' % (citekey, citelabel))
-
-        return(citelabel)
 
     ## =============================
     def write_auxfile(self, filename=None):
@@ -2205,6 +2158,7 @@ class Bibdata(object):
                     ## Before we parse the template string to remove any undefined variables, we need to make sure that the entry
                     ## has all the proper variables in it.
                     templatestr = templatestr.replace(var, create_citation_alpha(bibentry))
+                    continue
 
                 ## If the variable contains a function asking for initials, then one tricky part is that the "middle"
                 ## name part of a name dictionary can have multiple elements, so that each one needs to be initialed
@@ -2690,8 +2644,7 @@ class Bibdata(object):
                     self.uniquify_vars[options['varname']] = []
 
                 newfield = field + '1'
-                #pdb.set_trace()
-                if (field+'1' in self.uniquify_vars[options['varname']]):
+                if (newfield in self.uniquify_vars[options['varname']]):
                     q = 2
                     while True:
                         newfield = field + str(q)
@@ -2987,10 +2940,6 @@ def initialize_name(name, options=None, debug=False):
     new_name : str
         The name element converted to its initials form.
     '''
-
-    #zzz
-    #if (name == '{Thomson [Lord Kelvin]}'):
-    #    pdb.set_trace()
 
     if (name == ''):
         return(name)
