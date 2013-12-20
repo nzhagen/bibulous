@@ -1081,9 +1081,10 @@ class Bibdata(object):
             ## be deleted, so we need the check below to see if the return string is empty before writing it to the
             ## file.
             for c in self.citelist:
-                if (c not in self.bibdata):
-                    msg = 'citation key "' + c + '" is not in the bibliography database'
-                    bib_warning('Warning 010b: ' + msg, self.disable)
+                #zzz: I think we don't need this (now commented out) code block any more!
+                #if (c not in self.bibdata):
+                #    msg = 'citation key "' + c + '" is not in the bibliography database'
+                #    bib_warning('Warning 010c: ' + msg, self.disable)
 
                 ## Verbose output is for debugging.
                 if debug: print('Writing entry "' + c + '" to "' + filename + '" ...')
@@ -1194,7 +1195,7 @@ class Bibdata(object):
         ## If the citation key is not in the database, replace the format string with a message to the fact.
         if (c not in self.bibdata):
             msg = 'citation key "' + c + '" is not in the bibliography database'
-            bib_warning('Warning 010c: ' + msg, self.disable)
+            bib_warning('Warning 010a: ' + msg, self.disable)
             return(itemstr + '\\textit{Warning: ' + msg + '}.')
         else:
             entry = self.bibdata[c]
@@ -1276,7 +1277,7 @@ class Bibdata(object):
 
         if citekey not in self.bibdata:
             msg = '"' + citekey + '" is not in the bibliography database.'
-            bib_warning('Warning 010a: ' + msg, self.disable)
+            #bib_warning('Warning 010b: ' + msg, self.disable)
             return('Warning: ' + msg)
 
         entry = self.bibdata[citekey]
@@ -1286,29 +1287,6 @@ class Bibdata(object):
         ## only generate the sortkey here, rather than perform the actual sorting.
         if templatestr.startswith('-'):
             templatestr = templatestr[1:]
-
-        ## Define the variable "citeyear", to use in place of the entry field "year". This is necessary to make sure
-        ## that alphabetical sorting treats numbers correctly, we need to append zeros so that, say, "10" does not get
-        ## sorted before "2". Note that this formatting should work for years between -9999 and +9999.
-        if ('year' in entry) and ('<year>' in templatestr):
-            if str_is_integer(entry['year']):
-                if (int(entry['year']) < 0):
-                    citeyear = unicode('-%04i' % abs(int(entry['year'])))
-                else:
-                    citeyear = unicode('%04i' % int(entry['year']))
-            else:
-                citeyear = entry['year']
-        else:
-            citeyear = '9999'
-
-        ## Replace the "year" variable (which needs to be zero-padded in order to be properly sorted).
-        if ('<year>' in templatestr):
-            templatestr = templatestr.replace('<year>', citeyear)
-
-#        ## Before we parse the template string to remove any undefined variables, we need to make sure that the entry
-#        ## has all the proper variables in it.
-#        if ('<citealpha>' in templatestr):
-#            entry['citealpha'] = create_citation_alpha(entry)
 
         ## Substitute entry fields for template variables.
         templatestr = self.template_substitution(templatestr, citekey)
