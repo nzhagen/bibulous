@@ -1810,12 +1810,13 @@ class Bibdata(object):
         ## won't sort properly --- "10" will get sorted between "1" and "2". So we need to pad with zeros. How many
         ## zeros depends on how many citations there are. Hence the "zfill" command below.
         self.bibdata[entrykey]['citekey'] = entrykey
-        ncites = len(self.citedict)
-        if ncites:
+        if self.citedict:
+            ncites = len(self.citedict)
             ndigits = 1 + int(log10(ncites))
+            citenum = unicode(self.citedict[entrykey]).zfill(ndigits)
         else:
-            ndigits = 1
-        citenum = unicode(self.citedict[entrykey]).zfill(ndigits)
+            citenum = '0'
+
         self.bibdata[entrykey]['citenum'] = citenum
 
         ## Next loop through the "special" variables. These are variable definitions from the SPECIAL-
