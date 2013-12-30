@@ -1811,7 +1811,10 @@ class Bibdata(object):
         ## zeros depends on how many citations there are. Hence the "zfill" command below.
         self.bibdata[entrykey]['citekey'] = entrykey
         ncites = len(self.citedict)
-        ndigits = 1 + int(log10(ncites))
+        if ncites:
+            ndigits = 1 + int(log10(ncites))
+        else:
+            ndigits = 1
         citenum = unicode(self.citedict[entrykey]).zfill(ndigits)
         self.bibdata[entrykey]['citenum'] = citenum
 

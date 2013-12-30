@@ -10,7 +10,8 @@ For version 1.3, the goal is to have namelist templates working.
   update the documentation to show them.
 
 - Is there a way to implement the ``<citealpha>`` variable with templates rather than using an internal 
-  special-case function?
+  special-case function? Also, is it possible to remove the ``generate_sortkey()`` function and use
+  templates to do everything needed?
 
 - Note that the special template definition::
 
