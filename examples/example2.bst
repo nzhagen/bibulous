@@ -14,11 +14,12 @@ editorname.n = [<editorlist.n.prefix> ]<editorlist.n.last>[, <editorlist.n.first
 ed = <editorname.0>, ...,{ and }<editorname.5>
 authorlabel = [<authorlist.0.prefix>|<authorlist.0.last>]
 editorlabel = [<editorlist.0.prefix>|<editorlist.0.last>]
-sortkey = [<authorlabel><year>|<editorlabel><year>]
-citelabel = (<sortkey.initial()>)
+sortkey = [<authorlabel><year.zfill()>|<editorlabel><year>]
+citelabel = (<citealnum>)
+
 
 OPTIONS:
 eds_msg1 = { }(ed.)
 eds_msg2 = { }(eds.)
-use_citeextract = False
+use_citeextract = True
 
