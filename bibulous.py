@@ -63,7 +63,7 @@ __all__ = ['sentence_case', 'stringsplit', 'finditer', 'namefield_to_namelist', 
            'search_middlename_for_prefixes', 'get_edition_ordinal', 'export_bibfile', 'parse_pagerange',
            'parse_nameabbrev', 'filter_script', 'str_is_integer', 'bib_warning', 'create_citation_alpha',
            'toplevel_split', 'get_variable_name_elements', 'get_names', 'format_namelist',
-           'namedict_to_formatted_namestr', 'argsort']
+           'namedict_to_formatted_namestr', 'argsort', 'create_alphanum_citelabels']
 
 
 class Bibdata(object):
@@ -178,7 +178,6 @@ class Bibdata(object):
         self.looped_templates = ['au','ed']  ## which templates have implicit loops
         self.implicitly_indexed_vars = ['authorname','editorname'] ## which templates have implicit indexing
         self.namelists = []         ## the namelists defined within the templates
-        self.uniquify_vars = {}     ## dict containing all variables calling the "uniquify" operator
 
         if (uselocale == None):
             self.locale = locale.setlocale(locale.LC_ALL,'')    ## set the locale to the user's default
@@ -1067,7 +1066,8 @@ class Bibdata(object):
 
         ## Use a try-except block here, so that if any exception is raised then we can make sure to produce a valid
         ## BBL file.
-        try:
+        #try:
+        if True: #zzz
             ## First insert special variables, so that the citation sorter and everything else can use them. Also
             ## insert cross-reference data. Doing these here means that we don't have to add lots of extra checks later.
             for c in self.citedict:
@@ -1077,6 +1077,11 @@ class Bibdata(object):
             ## Define a list which contains the citation keys, sorted in the order in which we need for writing into
             ## the BBL file.
             self.create_citation_list()
+
+            if ('<citealnum' in self.specials['citelabel']):
+                alphanums = create_alphanum_citelabels(c, self.bibdata, self.citelist)
+                for c in self.citelist:
+                    self.bibdata[c]['citelabel'] = alphanums[c]
 
             ## Write out each individual bibliography entry. Some formatting options will actually cause the entry to
             ## be deleted, so we need the check below to see if the return string is empty before writing it to the
@@ -1096,10 +1101,11 @@ class Bibdata(object):
                 if (s != ''):
                     ## Need two line EOL's here and not one so that backrefs can work properly.
                     filehandle.write((s + '\n').encode('utf-8'))
-        except Exception, err:
-            ## Swallow the exception
-            print('Exception encountered: ' + repr(err))
-        finally:
+        #except Exception, err:
+        #    ## Swallow the exception
+        #    print('Exception encountered: ' + repr(err))
+        #finally:
+        if True: #zzz
             if write_postamble:
                 filehandle.write('\n\\end{thebibliography}\n'.encode('utf-8'))
             filehandle.close()
@@ -2139,9 +2145,13 @@ class Bibdata(object):
                     templatestr = self.insert_title_into_template(var, templatestr, bibentry)
                     continue
                 elif varname.startswith('citealpha'):
-                    ## Before we parse the template string to remove any undefined variables, we need to make sure that the entry
-                    ## has all the proper variables in it.
+                    ## Before we parse the template string to remove any undefined variables, we need to make sure that
+                    ## the entry has all the proper variables in it.
                     templatestr = templatestr.replace(var, create_citation_alpha(bibentry))
+                    continue
+                elif varname.startswith('citealnum'):
+                    ## The "citealphanum" style has to be handled outside of the usual specials loop --- it requires
+                    ## that *all* of the citelist be fully defined before it can start.
                     continue
 
                 ## If the variable contains a function asking for initials, then one tricky part is that the "middle"
@@ -2430,10 +2440,6 @@ class Bibdata(object):
         else:
             return(None)
 
-        ## When using the "uniquify" operator, we need to be able to tell it the variable name.
-        if ('.uniquify(num)' in variable):
-            options.update({'varname':fieldname})
-
         indexer = '.'.join(var_parts[1:])
         result = self.get_indexed_variable(bibentry[fieldname], indexer, bibentry['entrykey'], options=options)
 
@@ -2618,50 +2624,6 @@ class Bibdata(object):
                     newfield = '-' + str(field[1:]).zfill(4)
                 else:
                     newfield = str(field).zfill(4)
-                if (nelements == 1):
-                    return(newfield)
-                else:
-                    newindexer = '.'.join(index_elements[1:])
-                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
-            elif (index_elements[0] == 'uniquify(num)'):
-                if (options['varname'] not in self.uniquify_vars):
-                    self.uniquify_vars[options['varname']] = []
-
-                newfield = field + '1'
-                if (newfield in self.uniquify_vars[options['varname']]):
-                    q = 2
-                    while True:
-                        newfield = field + str(q)
-                        q += 1
-                        if (newfield not in self.uniquify_vars[options['varname']]):
-                            break
-                self.uniquify_vars[options['varname']].append(newfield)
-                #print('varname=%s, field=%s, newfield=%s' % (options['varname'], field, newfield))
-                if (nelements == 1):
-                    return(newfield)
-                else:
-                    newindexer = '.'.join(index_elements[1:])
-                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
-            elif (index_elements[0] == 'uniquify(alpha)'):
-                if (options['varname'] not in self.uniquify_vars):
-                    self.uniquify_vars[options['varname']] = []
-
-                newfield = field
-                if (field in self.uniquify_vars[options['varname']]):
-                    q = 1
-                    while True:
-                        if (i < 27):
-                            newfield = field + chr(q+96)               ## 97 == 'a', 98 == 'b', etc.
-                        elif (i < 52):
-                            newfield = field + chr(q+96) + chr(q+96)   ## double up if a single append doesn't work
-                        elif (i < 78):
-                            newfield = field + chr(q+96) + chr(q+96) + chr(q+96)   ## triple up if necessary
-                        newfield += str(q)
-                        q += 1
-                        if (newfield not in self.uniquify_vars[options['varname']]):
-                            break
-                self.uniquify_vars[options['varname']].append(newfield)
-                print('varname=%s, field=%s, newfield=%s' % (options['varname'], field, newfield))
                 if (nelements == 1):
                     return(newfield)
                 else:
@@ -4182,7 +4144,7 @@ def bib_warning(msg, disable=None):
 ## =============================
 def create_citation_alpha(entry):
     '''
-    Create an alpha-style citation key (typically the first three letters of the author's last name, followed by the
+    Create an "alpha" style citation key (typically the first three letters of the author's last name, followed by the
     last two numbers of the year).
 
     Parameters
@@ -4499,6 +4461,59 @@ def argsort(seq, reverse=False):
 
     res = sorted(range(len(seq)), key=seq.__getitem__, cmp=locale.strcoll, reverse=reverse)
     return(res)
+
+## =============================
+def create_alphanum_citelabels(entrykey, bibdata, citelist):
+    '''
+    Create an alphanumeric style citation key (the first letter of the author's last name, followed by a number giving
+    the sort order).
+
+    Warning: do *not* run this function on a large database of citations --- it is not optimized for that use and will
+    take quite a while to complete.
+
+    Parameters
+    ----------
+    entry : dict
+        The bibliography entry.
+    bibdata : dict
+        The entire bibliography database.
+    citelist : list of str
+        The sorted list of citation keys.
+
+    Returns
+    -------
+    citelabels : str
+        The dictionary of citation labels.
+    '''
+
+    citelabels = {}
+    alphanums = []
+
+    for c in citelist:
+        if ('authorlist' in bibdata[c]):
+            namelist = bibdata[c]['authorlist']
+        elif ('editorlist' in bibdata[c]):
+            namelist = bibdata[c]['editorlist']
+        else:
+            continue
+
+        ## Note: you need to run "purify" before extracting the name, because the first character might be a
+        ## curly brace that purify can get rid of, or the "first letter" be something like "\AA" that ought to
+        ## be extracted as a single unicode character.
+        letter = purify_string(namelist[0]['last'])[0]
+        if (letter+'1' not in alphanums):
+            citelabels[c] = letter+'1'
+            alphanums.append(letter+'1')
+            #print('[%s]: %s' % (c, letter+'1'))
+        else:
+            q = 1
+            while (letter+str(q) in alphanums):
+                q += 1
+            citelabels[c] = letter+str(q)
+            alphanums.append(letter+str(q))
+            #print('[%s]: %s' % (c, letter+str(q)))
+
+    return(citelabels)
 
 
 ## ==================================================================================================

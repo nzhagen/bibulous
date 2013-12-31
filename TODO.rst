@@ -4,6 +4,8 @@ Python code to-do list: (including goals for version 2.0)
 The primary goal for version 2.0 is to incorporate integration with a front-end LaTeX package.
 For version 1.3, the goal is to have namelist templates working.
 
+- Update the documentation to mention the new ``citealnum`` citelabel style.
+
 - Simplify the get_indexed_variable() function!
 
 - Now that you added three new template variable operators: .upper(), .lower(), .zfill(), and .uniquify(arg),
