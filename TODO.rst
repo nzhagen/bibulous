@@ -95,6 +95,8 @@ Python testing to-do
 - Add a test for locale-dependent sorting? This requires a lot of work to set up for full
   BIB-AUX-BBL mapping. So it may be best to wait for a more directed test to come along.
 
+- Add a test of the ``citealnum`` citelabel style into the testing suite.
+
 - The following should create a malformed implicit loop error but doesn't::
 
     au = <name.0>, ..., and <name.N.last>
