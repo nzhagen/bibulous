@@ -159,7 +159,7 @@ class Bibdata(object):
     bibdata.write_bblfile()
     '''
 
-    def __init__(self, filename, disable=None, culldata=True, uselocale=None, debug=False):
+    def __init__(self, filename, disable=None, culldata=True, uselocale=None, silent=False, debug=False):
         self.debug = debug
         self.abbrevs = {'jan':'1', 'feb':'2', 'mar':'3', 'apr':'4', 'may':'5', 'jun':'6',
                         'jul':'7', 'aug':'8', 'sep':'9', 'oct':'10', 'nov':'11', 'dec':'12'}
@@ -285,13 +285,14 @@ class Bibdata(object):
             return
 
         ## Print out some info on Bibulous and the files it is working on.
-        print('This is Bibulous, version ' + unicode(__version__))
-        print('The current working directory is: ' + os.getcwd())
-        print('The top-level TeX file: ' + unicode(self.filedict['tex']))
-        print('The top-level auxiliary file: ' + unicode(self.filedict['aux']))
-        print('The bibliography database file(s): ' + unicode(self.filedict['bib']))
-        print('The Bibulous style template file(s): ' + unicode(self.filedict['bst']))
-        print('The output formatted bibliography file: ' + unicode(self.filedict['bbl']) + '\n')
+        if not silent:
+            print('This is Bibulous, version ' + unicode(__version__))
+            print('The current working directory is: ' + os.getcwd())
+            print('The top-level TeX file: ' + unicode(self.filedict['tex']))
+            print('The top-level auxiliary file: ' + unicode(self.filedict['aux']))
+            print('The bibliography database file(s): ' + unicode(self.filedict['bib']))
+            print('The Bibulous style template file(s): ' + unicode(self.filedict['bst']))
+            print('The output formatted bibliography file: ' + unicode(self.filedict['bbl']) + '\n')
 
         if self.filedict['aux']:
             self.parse_auxfile(self.filedict['aux'])
@@ -2606,14 +2607,14 @@ class Bibdata(object):
                     newindexer = '.'.join(index_elements[1:])
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
             elif (index_elements[0] == 'lower()'):
-                newfield = field.lower()
+                newfield = purify_string(field).lower()
                 if (nelements == 1):
                     return(newfield)
                 else:
                     newindexer = '.'.join(index_elements[1:])
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
             elif (index_elements[0] == 'upper()'):
-                newfield = field.upper()
+                newfield = purify_string(field).upper()
                 if (nelements == 1):
                     return(newfield)
                 else:
@@ -2806,36 +2807,38 @@ def namefield_to_namelist(namefield, key=None, disable=None):
 
     namefield = namefield.strip()
     namelist = []
+    and_pattern = re.compile(r'\sand\s', re.UNICODE)
 
     ## Look for common typos.
-    if re.search('\sand,\s', namefield, re.UNICODE):
+    if re.search(r'\sand,\s', namefield, re.UNICODE):
         bib_warning('Warning 017a: The name string in entry "' + unicode(key) + '" has " and, ", which is likely a'
              ' typo. Continuing on anyway ...', disable)
-    if re.search(', and', namefield, re.UNICODE):
+    if re.search(r', and', namefield, re.UNICODE):
         bib_warning('Warning 017b: The name string in entry "' + unicode(key) + '" has ", and", which is likely a'
              ' typo. Continuing on anyway ...', disable)
-    if re.search('\sand\s+and\s', namefield, re.UNICODE):
+    if re.search(r'\sand\s+and\s', namefield, re.UNICODE):
         bib_warning('Warning 017c: The name string in entry "' + unicode(key) + '" has two "and"s separated by spaces, '
              'which is likely a typo. Continuing on anyway ...', disable)
-        namefield = re.sub('(?<=\s)and\s+and(?=\s)', namefield, 'and', re.UNICODE)
+        ## Replace the two "and"s with just one "and".
+        namefield = re.sub(r'(?<=\s)and\s+and(?=\s)', namefield, 'and', re.UNICODE)
 
     ## Split the string of names into individual strings, one for each complete name. Here we can split on whitespace
     ## surround the word "and" so that "{and}" and "word~and~word" will not allow the split. Need to treat the case of a
     ## single author separate from that of multiple authors in order to return a single-element *list* rather than a
     ## scalar.
-    if not re.search('\sand\s', namefield, re.UNICODE):
+    if not re.search(and_pattern, namefield):
         namedict = namestr_to_namedict(namefield, disable)
         namelist.append(namedict)
     else:
         if '{' not in namefield:
-            names = re.split('\sand\s', namefield.strip())
+            names = re.split(and_pattern, namefield.strip())
         else:
             ## If there are braces in the string, then we need to be careful to only allow splitting of the names when
             ## ' and ' is at brace level 0. This requires replacing re.split() with a bunch of low-level code.
             z = get_delim_levels(namefield, ('{','}'))
             separators = []
 
-            for match in re.finditer(r'\sand\s', namefield):
+            for match in re.finditer(and_pattern, namefield):
                 (i,j) = match.span()
                 if (z[i] == 0):
                     ## Record the indices of the start and end of the match.
