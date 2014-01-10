@@ -188,6 +188,7 @@ A complete list of existing options keywords, together with their default defini
     maxeditors = 5
     minauthors = 9
     mineditors = 5
+    name_separator = and
     namelist_format = first_name_first
     period_after_initial = True
     procspie_as_journal = False
@@ -225,6 +226,8 @@ Each of the keywords is summarized below.
 **minauthors** [default value: 9] provides the minimum number of author names to use when truncating an overlength author name list. (This keyword is only used within the ``.format_namelist()`` operator.)
 
 **mineditors** [default value: 5] provides the minimum number of editor names to use when truncating an overlength author name list. (This keyword is only used within the ``.format_namelist()`` operator.)
+
+**name_separator** [default value: and] informs Bibulous how to separate the individual names in a BibTeX-format field of names. For example, with a BibTeX-format field of ``Bugs Bunny and Porky Pig``, using the separator ``and`` allows Bibulous to determine that there are two separate people, ``Bugs Bunny`` and ``Porky Pig``.
 
 **namelist_format** [default value: first_name_first, allowed values: {first_name_first, last_name_first}] defines how the formatted list of names should appear. If ``namelist_format = first_name_first`` then the individual names will appear in the order "firstname middle prefix last, suffix". If ``namelist_format = last_name_first`` then the individual names will appear in the order "prefix last, firstname middle, suffix". (This keyword is only used within the ``.format_namelist()`` operator.)
 
