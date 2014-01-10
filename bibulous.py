@@ -2810,38 +2810,38 @@ def namefield_to_namelist(namefield, key=None, sep='and', disable=None):
 
     namefield = namefield.strip()
     namelist = []
-    and_pattern = re.compile(r'\s'+sep+'\s', re.UNICODE)
+    sep_pattern = re.compile(r'\s'+sep+'\s', re.UNICODE)
 
     ## Look for common typos.
-    if re.search(r'\sand,\s', namefield, re.UNICODE):
-        bib_warning('Warning 017a: The name string in entry "' + unicode(key) + '" has " and, ", which is likely a'
+    if re.search(r'\s'+sep+',\s', namefield, re.UNICODE):
+        bib_warning('Warning 017a: The name string in entry "' + unicode(key) + '" has " '+sep+', ", which is likely a'
              ' typo. Continuing on anyway ...', disable)
     if re.search(r', and', namefield, re.UNICODE):
-        bib_warning('Warning 017b: The name string in entry "' + unicode(key) + '" has ", and", which is likely a'
+        bib_warning('Warning 017b: The name string in entry "' + unicode(key) + '" has ", '+sep+'", which is likely a'
              ' typo. Continuing on anyway ...', disable)
     if re.search(r'\sand\s+and\s', namefield, re.UNICODE):
-        bib_warning('Warning 017c: The name string in entry "' + unicode(key) + '" has two "and"s separated by spaces, '
+        bib_warning('Warning 017c: The name string in entry "' + unicode(key) + '" has two "'+sep+'"s separated by spaces, '
              'which is likely a typo. Continuing on anyway ...', disable)
         ## Replace the two "and"s with just one "and".
-        namefield = re.sub(r'(?<=\s)and\s+and(?=\s)', namefield, 'and', re.UNICODE)
+        namefield = re.sub(r'(?<=\s)'+sep+'\s+'+sep+'(?=\s)', namefield, sep, re.UNICODE)
 
     ## Split the string of names into individual strings, one for each complete name. Here we can split on whitespace
     ## surround the word "and" so that "{and}" and "word~and~word" will not allow the split. Need to treat the case of a
     ## single author separate from that of multiple authors in order to return a single-element *list* rather than a
     ## scalar.
-    if not re.search(and_pattern, namefield):
+    if not re.search(sep_pattern, namefield):
         namedict = namestr_to_namedict(namefield, disable)
         namelist.append(namedict)
     else:
         if '{' not in namefield:
-            names = re.split(and_pattern, namefield.strip())
+            names = re.split(sep_pattern, namefield.strip())
         else:
             ## If there are braces in the string, then we need to be careful to only allow splitting of the names when
             ## ' and ' is at brace level 0. This requires replacing re.split() with a bunch of low-level code.
             z = get_delim_levels(namefield, ('{','}'))
             separators = []
 
-            for match in re.finditer(and_pattern, namefield):
+            for match in re.finditer(sep_pattern, namefield):
                 (i,j) = match.span()
                 if (z[i] == 0):
                     ## Record the indices of the start and end of the match.
