@@ -1431,6 +1431,7 @@ class Bibdata(object):
 
         searchname = namestr_to_namedict(searchname, self.disable)
         nkeys = len(searchname.keys())
+        sep = self.options['name_separator']
 
         ## Find out if any of the tokens in the search name are initials. If so, then we need to perform the search
         ## over initialized names and not full names. Save the set of booleans (one for each name part) in a dictionary
@@ -1447,9 +1448,9 @@ class Bibdata(object):
             ## Get the list of name dictionaries from the entry.
             name_list_of_dicts = []
             if ('author' in self.bibdata[k]):
-                name_list_of_dicts = namefield_to_namelist(self.bibdata[k]['author'], key=k, disable=self.disable)
+                name_list_of_dicts = namefield_to_namelist(self.bibdata[k]['author'], key=k, sep=sep, disable=self.disable)
             if ('editor' in self.bibdata[k]):
-                namelist = namefield_to_namelist(self.bibdata[k]['editor'], key=k, disable=self.disable)
+                namelist = namefield_to_namelist(self.bibdata[k]['editor'], key=k, sep=sep, disable=self.disable)
                 if not ('author' in self.bibdata[k]):
                     name_list_of_dicts = namelist
                 else:
@@ -2568,7 +2569,8 @@ class Bibdata(object):
                     newindexer = '.'.join(index_elements[1:])
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
             elif (index_elements[0] == 'to_namelist()'):
-                newfield = namefield_to_namelist(field, key=entrykey, disable=self.disable)
+                sep = self.options['name_separator']
+                newfield = namefield_to_namelist(field, key=entrykey, sep=sep, disable=self.disable)
                 if (nelements == 1):
                     return(newfield)
                 else:
@@ -2816,10 +2818,10 @@ def namefield_to_namelist(namefield, key=None, sep='and', disable=None):
     if re.search(r'\s'+sep+',\s', namefield, re.UNICODE):
         bib_warning('Warning 017a: The name string in entry "' + unicode(key) + '" has " '+sep+', ", which is likely a'
              ' typo. Continuing on anyway ...', disable)
-    if re.search(r', and', namefield, re.UNICODE):
+    if re.search(r', '+sep, namefield, re.UNICODE):
         bib_warning('Warning 017b: The name string in entry "' + unicode(key) + '" has ", '+sep+'", which is likely a'
              ' typo. Continuing on anyway ...', disable)
-    if re.search(r'\sand\s+and\s', namefield, re.UNICODE):
+    if re.search(r'\s'+sep+'\s+'+sep+'\s', namefield, re.UNICODE):
         bib_warning('Warning 017c: The name string in entry "' + unicode(key) + '" has two "'+sep+'"s separated by spaces, '
              'which is likely a typo. Continuing on anyway ...', disable)
         ## Replace the two "and"s with just one "and".
