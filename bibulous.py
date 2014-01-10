@@ -240,6 +240,7 @@ class Bibdata(object):
         self.options['terse_inits'] = False
         self.options['french_intials'] = False
         self.options['period_after_initial'] = True
+        self.options['name_separator'] = 'and'
 
         ## Compile some patterns for use in regex searches. Note that "[\-\+\*\#\$\w]" matches any alphanumeric character plus any of [~@%&-+*#$^?!=:]
         pat = r'[~@%&\-\+\*\#\$\^\?\!\=\:\w]+?'
@@ -2148,7 +2149,7 @@ class Bibdata(object):
                 elif varname.startswith('citealpha'):
                     ## Before we parse the template string to remove any undefined variables, we need to make sure that
                     ## the entry has all the proper variables in it.
-                    templatestr = templatestr.replace(var, create_citation_alpha(bibentry))
+                    templatestr = templatestr.replace(var, create_citation_alpha(bibentry, self.options))
                     continue
                 elif varname.startswith('citealnum'):
                     ## The "citealphanum" style has to be handled outside of the usual specials loop --- it requires
@@ -2785,7 +2786,7 @@ def stringsplit(s, sep=r' |(?<!\\)~'):
     return(tokens)
 
 ## =============================
-def namefield_to_namelist(namefield, key=None, disable=None):
+def namefield_to_namelist(namefield, key=None, sep='and', disable=None):
     '''
     Parse a name field ("author" or "editor") of a BibTeX entry into a list of dicts, one for each person.
 
@@ -2795,6 +2796,8 @@ def namefield_to_namelist(namefield, key=None, disable=None):
         Either the "author" field of a database entry or the "editor" field.
     key : str, optional
         The bibliography data entry key.
+    sep : str, optional
+        The string defining the string to be used as a name separator.
     disable : list of int, optional
         The list of warning message numbers to ignore.
 
@@ -2807,7 +2810,7 @@ def namefield_to_namelist(namefield, key=None, disable=None):
 
     namefield = namefield.strip()
     namelist = []
-    and_pattern = re.compile(r'\sand\s', re.UNICODE)
+    and_pattern = re.compile(r'\s'+sep+'\s', re.UNICODE)
 
     ## Look for common typos.
     if re.search(r'\sand,\s', namefield, re.UNICODE):
@@ -4145,7 +4148,7 @@ def bib_warning(msg, disable=None):
     return
 
 ## =============================
-def create_citation_alpha(entry):
+def create_citation_alpha(entry, options):
     '''
     Create an "alpha" style citation key (typically the first three letters of the author's last name, followed by the
     last two numbers of the year).
@@ -4154,6 +4157,8 @@ def create_citation_alpha(entry):
     ----------
     entry : dict
         The bibliography entry.
+    options : dict
+        The dictionary of keyword options (the only key used is "name_separator").
 
     Returns
     -------
@@ -4166,9 +4171,9 @@ def create_citation_alpha(entry):
     elif ('editorlist' in entry):
         namelist = entry['editorlist']
     elif ('author' in entry):
-        namelist = namefield_to_namelist(entry['author'])
+        namelist = namefield_to_namelist(entry['author'], sep=options['name_separator'])
     elif ('editor' in entry):
-        namelist = namefield_to_namelist(entry['editor'])
+        namelist = namefield_to_namelist(entry['editor'], sep=options['name_separator'])
     else:
         return('UNDEFINED')
 
