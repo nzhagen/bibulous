@@ -38,6 +38,7 @@ replace_newlines = True                   ## whether to replace newline characte
 allow_scripts = False                     ## whether to allow user scripts in BST files
 case_sensitive_field_names = False        ## whether to allow field names to be case sensitive (i.e. so that "BOOK" will not be the same entrytype as "book")
 use_citeextract = True                    ## whether to automatically perform citation extraction each time Bibulous is run
+name_separator = and                      ## the string used to separate names in a BibTeX-format field of names
 
 VARIABLES:
 

@@ -51,7 +51,7 @@ def run_test1():
     print('\n' + '='*75)
     print('Running Bibulous Test #1')
 
-    bibobj = Bibdata(auxfile, disable=[9,17])
+    bibobj = Bibdata(auxfile, disable=[9,17,28,29])
     bibobj.write_bblfile(write_preamble=True, write_postamble=True, bibsize='ZZ')
 
     return(bblfile, target_bblfile)
@@ -139,11 +139,11 @@ def run_test4():
                 '[<alphalabel>][<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear.zfill()>|<year.zfill()>|]<volume>[<sorttitle>|<title>]',
                 '[<sortyear.zfill()>|<year.zfill()>][<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sorttitle>|<title>]',
                 '[<sortyear.zfill()>|<year.zfill()>][<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sorttitle>|<title>]',
-                '<author_or_editor.initial().upper().uniquify(num)>',
+                #'<author_or_editor.initial().upper().uniquify(num)>',
                 '[<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear.zfill()>|<year.zfill()>][<sorttitle>|<title>]']
 
-    sort_case_options = ['False', 'False', 'False', 'False', 'False', 'False', 'False', 'False', 'False', 'True']
-    sort_order_options = ['Forward', 'Forward', 'Forward', 'Forward', 'Forward', 'Forward', 'Forward', 'Reverse', 'Forward', 'Forward']
+    sort_case_options = ['False', 'False', 'False', 'False', 'False', 'False', 'False', 'False', 'True']
+    sort_order_options = ['Forward', 'Forward', 'Forward', 'Forward', 'Forward', 'Forward', 'Forward', 'Reverse', 'Forward']
 
     print('\n' + '='*75)
     print('Running Bibulous Test #4')
@@ -170,7 +170,7 @@ def run_test4():
                 filehandle.write(line)
         filehandle.close()
 
-        bibobj = Bibdata(auxfile, disable=[9])
+        bibobj = Bibdata(auxfile, disable=[9], silent=(i>0))
         bibobj.locale = thislocale
         bibobj.bibdata['preamble'] = '\n\n%% SETTING SORTKEY = ' + sortkey
         #bibobj.debug = True     ## turn on debugging for citekey printing
@@ -274,7 +274,7 @@ def run_test7():
                 filehandle.write(line)
         filehandle.close()
 
-        bibobj = Bibdata(auxfile, disable=[9])
+        bibobj = Bibdata(auxfile, disable=[9], silent=(i>0))
         bibobj.locale = thislocale
         bibobj.bibdata['preamble'] = '\n\n%% SETTING CITELABEL = ' + citelabel
         #bibobj.debug = True     ## turn on debugging for citekey printing

@@ -8,7 +8,7 @@ For version 1.3, the goal is to have namelist templates working.
   number of the codebase, as it would allow bibliographic sections and a much more flexible way
   of manipulating reference lists.
 
-- Added the operator .uniquify(arg) to the documentation?
+- Add the operator .uniquify(arg) to the documentation?
 
 - Is there a way to implement the ``<citealpha>`` variable with templates rather than using an internal 
   special-case function? Also, is it possible to remove the ``generate_sortkey()`` function and use
@@ -106,6 +106,8 @@ For version 1.3, the goal is to have namelist templates working.
 
 Python testing to-do
 --------------------
+
+- Add a test for using a name separator different from ``and``.
 
 - Add a test that checks that concatenating operators, like <var.upper().initial()> works.
 
