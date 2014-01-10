@@ -4,16 +4,35 @@ Python code to-do list: (including goals for version 2.0)
 The primary goal for version 2.0 is to incorporate integration with a front-end LaTeX package.
 For version 1.3, the goal is to have namelist templates working.
 
-- Update the documentation to mention the new ``citealnum`` citelabel style.
+- Implementing the GROUP-TEMPLATES section idea. This is a big enough change to bump the version
+  number of the codebase, as it would allow bibliographic sections and a much more flexible way
+  of manipulating reference lists.
 
-- Simplify the get_indexed_variable() function!
-
-- Now that you added three new template variable operators: .upper(), .lower(), .zfill(), and .uniquify(arg),
-  update the documentation to show them.
+- Added the operator .uniquify(arg) to the documentation?
 
 - Is there a way to implement the ``<citealpha>`` variable with templates rather than using an internal 
   special-case function? Also, is it possible to remove the ``generate_sortkey()`` function and use
   templates to do everything needed?
+
+- For every style file you have in the ``templates/`` folder, you should construct an example to put into the
+  documentation. Use a standard bibliography database for each, format it with LaTeX, take a screenshot of the
+  result, and show.
+
+- Figure out how to get an formatting list of authors like in the following to work::
+
+  Doe, John, David Dane, and Marry Dewy (2000). "This and that". In: Journal of Deep Understanding of Things.
+
+  That is, the first author is given as ``lastname, firstname'' whereas the other authors are given as 
+  ``firstname lastname``.
+
+- Simplify the ``get_indexed_variable()`` function!
+
+- Find out how to make the following functionality possible. A user wants to make a given author's name bold 
+  (or underlined, or in color, or whatever) every time it shows up in the bibliography.
+
+- In Italian, the word for "and" is "e". So, in the formatted reference, an authorlist would look like
+  "name1, name2, e name3" --- here we used "e" instead of the default "and". How to allow users to switch this
+  easily? Using an operator that looks for a "language" field? Or a language keyword?
 
 - Note that the special template definition::
 

@@ -4262,7 +4262,7 @@ def get_variable_name_elements(variable):
 ## ===================================
 def get_names(entry, templatestr):
     '''
-    Get the number of names associated with a given entry, assuming priority to authornames and then to editornames.
+    Get the list of names associated with a given entry, assuming priority to authornames and then to editornames.
 
     Parameters
     ----------
