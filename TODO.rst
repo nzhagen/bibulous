@@ -4,9 +4,16 @@ Python code to-do list: (including goals for version 2.0)
 The primary goal for version 2.0 is to incorporate integration with a front-end LaTeX package.
 For version 1.3, the goal is to have namelist templates working.
 
+- In Italian, the word for "and" is "e". So, in the formatted reference, an authorlist would look like
+  "name1, name2, e name3" --- here we used "e" instead of the default "and". How to allow users to switch this
+  easily? Using an operator that looks for a "language" field? Or a language keyword? Once you get this
+  working, test it for Italian and Japanese. For Japanese, test using a "space" character for a separator.
+
 - Implementing the GROUP-TEMPLATES section idea. This is a big enough change to bump the version
   number of the codebase, as it would allow bibliographic sections and a much more flexible way
-  of manipulating reference lists.
+  of manipulating reference lists. The first step here would be to write a wrapper around write_bblfile(),
+  and expanding write_bblfile()'s ability (or removing it to the higher level) of turning on/off writing
+  of preamble and postambles.
 
 - Add the operator .uniquify(arg) to the documentation?
 
@@ -30,9 +37,7 @@ For version 1.3, the goal is to have namelist templates working.
 - Find out how to make the following functionality possible. A user wants to make a given author's name bold 
   (or underlined, or in color, or whatever) every time it shows up in the bibliography.
 
-- In Italian, the word for "and" is "e". So, in the formatted reference, an authorlist would look like
-  "name1, name2, e name3" --- here we used "e" instead of the default "and". How to allow users to switch this
-  easily? Using an operator that looks for a "language" field? Or a language keyword?
+- You no longer have functionality using the ``.N`` index (for maximum index). Put that back in.
 
 - Note that the special template definition::
 
@@ -40,8 +45,6 @@ For version 1.3, the goal is to have namelist templates working.
 
   never *replaces* the ``author`` field. It only applies this definition if the field is already missing.
   Need to clarify this in the documentation.
-
-- You no longer have functionality using the ``.N`` index (for maximum index). Put that back in?
 
 - If a user added any options blocks to their defined variables, then they may have turned an
   unnested sequence into a nested one. Need to look for that. We can probably do this check

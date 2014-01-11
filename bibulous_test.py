@@ -318,8 +318,6 @@ def run_test9():
     Test #9 is a pltform for running conditions in which the entire database needs to be re-read with each test.
     '''
 
-    bstfile =  ['./test/test9_case_sensitive_fieldnames.bst']
-    bibfiles = ['./test/test9_case_sensitive_fieldnames.bib']
     auxfiles = ['./test/test9_case_sensitive_fieldnames.aux']
     bblfile = './test/test9.bbl'
     target_bblfile = './test/test9_target.bbl'
@@ -327,16 +325,11 @@ def run_test9():
     print('\n' + '='*75)
     print('Running Bibulous Test #9')
 
-    for bibfile in bibfiles:
-        auxfile = bibfile[:-4] + '.aux'
-        bstfile = bibfile[:-4] + '.bst'
-        print('Reading ' + bibfile + ', ' + bstfile + ', and ' + auxfile)
-        bibobj = Bibdata([bibfile,auxfile,bblfile,bstfile], disable=[9])
-
-        ## Note: you have to parse the bibfile *after* reading the style options in order for this to work right!
-        #bibobj.parse_bibfile(bibfile)
-        write_preamble = (bibfile == bibfiles[0])
-        write_postamble = (bibfile == bibfiles[-1])
+    for auxfile in auxfiles:
+        bibobj = Bibdata(auxfile, disable=[9], silent=(auxfile != auxfiles[0]))
+        bibobj.filedict['bbl'] = bblfile
+        write_preamble = (auxfile == auxfiles[0])
+        write_postamble = (auxfile == auxfiles[-1])
         bibobj.write_bblfile(write_preamble=write_preamble, write_postamble=write_postamble)
 
     return(bblfile, target_bblfile)
@@ -387,43 +380,43 @@ def check_file_match(testnum, outputfile, targetfile):
 if (__name__ == '__main__'):
     suite_pass = True
 
-    ## Run test #1.
-    (outputfile, targetfile) = run_test1()
-    result = check_file_match(1, outputfile, targetfile)
-    suite_pass *= result
-
-    ## Run test #2.
-    result = run_test2()
-    suite_pass *= result
-
-    ## Run test #3.
-    (outputfile, targetfile) = run_test3()
-    result = check_file_match(3, outputfile, targetfile)
-    suite_pass *= result
-
-    ## Run test #4.
-    (outputfile, targetfile) = run_test4()
-    result = check_file_match(4, outputfile, targetfile)
-    suite_pass *= result
-
-    ## Run test #5.
-    (outputfile, targetfile) = run_test5()
-    result = check_file_match(5, outputfile, targetfile)
-    suite_pass *= result
-
-    ## Run test #6.
-    result = run_test6()
-    suite_pass *= result
-
-    ## Run test #7.
-    (outputfile, targetfile) = run_test7()
-    result = check_file_match(7, outputfile, targetfile)
-    suite_pass *= result
-
-    ## Run test #8.
-    (outputfile, targetfile) = run_test8()
-    result = check_file_match(8, outputfile, targetfile)
-    suite_pass *= result
+#    ## Run test #1.
+#    (outputfile, targetfile) = run_test1()
+#    result = check_file_match(1, outputfile, targetfile)
+#    suite_pass *= result
+#
+#    ## Run test #2.
+#    result = run_test2()
+#    suite_pass *= result
+#
+#    ## Run test #3.
+#    (outputfile, targetfile) = run_test3()
+#    result = check_file_match(3, outputfile, targetfile)
+#    suite_pass *= result
+#
+#    ## Run test #4.
+#    (outputfile, targetfile) = run_test4()
+#    result = check_file_match(4, outputfile, targetfile)
+#    suite_pass *= result
+#
+#    ## Run test #5.
+#    (outputfile, targetfile) = run_test5()
+#    result = check_file_match(5, outputfile, targetfile)
+#    suite_pass *= result
+#
+#    ## Run test #6.
+#    result = run_test6()
+#    suite_pass *= result
+#
+#    ## Run test #7.
+#    (outputfile, targetfile) = run_test7()
+#    result = check_file_match(7, outputfile, targetfile)
+#    suite_pass *= result
+#
+#    ## Run test #8.
+#    (outputfile, targetfile) = run_test8()
+#    result = check_file_match(8, outputfile, targetfile)
+#    suite_pass *= result
 
     ## Run test #9.
     (outputfile, targetfile) = run_test9()
