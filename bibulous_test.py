@@ -318,7 +318,8 @@ def run_test9():
     Test #9 is a pltform for running conditions in which the entire database needs to be re-read with each test.
     '''
 
-    auxfiles = ['./test/test9_case_sensitive_fieldnames.aux']
+    auxfiles = ['./test/test9_case_sensitive_fieldnames.aux',
+                './test/test9_italian_name_separator.aux']
     bblfile = './test/test9.bbl'
     target_bblfile = './test/test9_target.bbl'
 
@@ -326,11 +327,13 @@ def run_test9():
     print('Running Bibulous Test #9')
 
     for auxfile in auxfiles:
-        bibobj = Bibdata(auxfile, disable=[9], silent=(auxfile != auxfiles[0]))
+        print('Reading ' + auxfile) #zzz
+        bibobj = Bibdata(auxfile, disable=[9]) #, silent=(auxfile != auxfiles[0]))
         bibobj.filedict['bbl'] = bblfile
         write_preamble = (auxfile == auxfiles[0])
         write_postamble = (auxfile == auxfiles[-1])
         bibobj.write_bblfile(write_preamble=write_preamble, write_postamble=write_postamble)
+        print('')
 
     return(bblfile, target_bblfile)
 
