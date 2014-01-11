@@ -872,7 +872,7 @@ class Bibdata(object):
                 ## make troubleshooting those more difficult.
                 if not line: continue
                 if not continuation:
-                    ## If the line ends with an ellpsis, then remove the ellipsis and set continuation to True.
+                    ## If the line ends with an ellipsis, then remove the ellipsis and set continuation to True.
                     if line.endswith('...'):
                         line = line[:-3].strip()
                         continuation = True
@@ -932,6 +932,10 @@ class Bibdata(object):
                         value = int(value)
                     elif (value in ('True','False')):
                         value = (value == 'True')
+
+                    if (var == 'name_separator') and (value == ''):
+                        value = ' '
+
                     self.options[var] = value
 
                 elif (section == 'SPECIAL-TEMPLATES'):
@@ -943,6 +947,9 @@ class Bibdata(object):
                     self.specials[var] = value
                     if (var not in self.specials_list):
                         self.specials_list.append(var)
+
+                    if ('.to_namelist()>' in value):
+                        self.namelists.append(var)
 
                     ## Find out if the template has nested option blocks. If so, then add it to
                     ## the list of nested templates.
@@ -1068,8 +1075,7 @@ class Bibdata(object):
 
         ## Use a try-except block here, so that if any exception is raised then we can make sure to produce a valid
         ## BBL file.
-        #try:
-        if True: #zzz
+        try:
             ## First insert special variables, so that the citation sorter and everything else can use them. Also
             ## insert cross-reference data. Doing these here means that we don't have to add lots of extra checks later.
             for c in self.citedict:
@@ -1089,11 +1095,6 @@ class Bibdata(object):
             ## be deleted, so we need the check below to see if the return string is empty before writing it to the
             ## file.
             for c in self.citelist:
-                #zzz: I think we don't need this (now commented out) code block any more!
-                #if (c not in self.bibdata):
-                #    msg = 'citation key "' + c + '" is not in the bibliography database'
-                #    bib_warning('Warning 010c: ' + msg, self.disable)
-
                 ## Verbose output is for debugging.
                 if debug: print('Writing entry "' + c + '" to "' + filename + '" ...')
 
@@ -1103,11 +1104,10 @@ class Bibdata(object):
                 if (s != ''):
                     ## Need two line EOL's here and not one so that backrefs can work properly.
                     filehandle.write((s + '\n').encode('utf-8'))
-        #except Exception, err:
-        #    ## Swallow the exception
-        #    print('Exception encountered: ' + repr(err))
-        #finally:
-        if True: #zzz
+        except Exception, err:
+            ## Swallow the exception
+            print('Exception encountered: ' + repr(err))
+        finally:
             if write_postamble:
                 filehandle.write('\n\\end{thebibliography}\n'.encode('utf-8'))
             filehandle.close()
@@ -1155,7 +1155,6 @@ class Bibdata(object):
             self.citelist = [self.citelist[x] for x in idx]
 
         ## If using a citation order which is descending rather than ascending, then reverse the list.
-        #if (self.specials['sortkey'][0] == '-'):
         if (self.options['sort_order'] == 'Reverse'):
             self.sortlist = self.sortlist[::-1]
             self.citelist = self.citelist[::-1]
@@ -1292,11 +1291,6 @@ class Bibdata(object):
 
         entry = self.bibdata[citekey]
         templatestr = self.specials['sortkey']
-
-#        ## If the template begins with a '-', then remove it. It just tells us to use reverse sorting order, and we
-#        ## only generate the sortkey here, rather than perform the actual sorting.
-#        if templatestr.startswith('-'):
-#            templatestr = templatestr[1:]
 
         ## Substitute entry fields for template variables.
         templatestr = self.template_substitution(templatestr, citekey)
@@ -2777,12 +2771,10 @@ def stringsplit(s, sep=r' |(?<!\\)~'):
         for n in xrange(ntokens):
             if (n == ntokens-1):
                 j = indices[n][1]            ## the end of *this* separator
-                #print('n,j=', n, j)
                 tokens.append(s[j:])
             else:
                 nexti = indices[n+1][0]      ## the beginning of the *next* separator
                 j = indices[n][1]            ## the end of *this* separator
-                #print('n,j,nexti=', n, j, nexti)
                 tokens.append(s[j:nexti])
 
     return(tokens)
@@ -2860,12 +2852,10 @@ def namefield_to_namelist(namefield, key=None, sep='and', disable=None):
             for n in xrange(num_names):
                 if (n == num_names-1):
                     j = separators[n][1]            ## the end of *this* separator
-                    #print('n,j=', n, j)
                     names.append(namefield[j:].strip())
                 else:
                     nexti = separators[n+1][0]      ## the beginning of the *next* separator
                     j = separators[n][1]            ## the end of *this* separator
-                    #print('n,j,nexti=', n, j, nexti)
                     names.append(namefield[j:nexti].strip())
 
         nauthors = len(names)
@@ -3016,7 +3006,6 @@ def show_levels_debug(s, levels):
             q += len(line)
     else:
         print(s)
-        #print(unicode(levels)[2:-1].replace(',','').replace(' ',''))
         print(unicode(levels)[1:-1].replace(',','').replace(' ',''))
     return
 
@@ -3154,7 +3143,6 @@ def splitat(s, ilist):
         for n in range(numsplit-1):
             start = ilist[n] + 1
             end = ilist[n+1]
-            #print(n, start, end)
             slist.append(s[start:end])
         slist.append(s[ilist[-1]+1:])
 
@@ -4077,7 +4065,6 @@ def filter_script(line):
     '''
 
     line = line.strip()
-    #identifier_pattern = re.compile(r'[A-Za-z_]\w+', re.UNICODE)
     os_pattern = re.compile(r'\Wos.', re.UNICODE)
     sys_pattern = re.compile(r'\Wsys.', re.UNICODE)
 
