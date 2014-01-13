@@ -84,18 +84,20 @@ Each of these default fields are defined as "special templates". If a user defin
 
     authorlist = <author.to_namelist()>
     editorlist = <editor.to_namelist()>
-    citelabel = <citenum.remove_leading_zeros()>
+    citelabel = <citenum>
     sortkey = <citenum>
     au = <authorlist.format_authorlist()>
     ed = <editorlist.format_editorlist()>
 
 Note that the ordering of definitions is important. The following summarizes what these definitions are used for.
 
+Also, in addition to these default fields, there are also two special variables defined, ``citealpha`` and ``citealnum``, that can be accessed as ``<citealpha>`` and ``<citealnum>`` within any template. The first, ``<citealpha>``, is designed to reproduce the citation label style used by BibTeX's ``alpha`` style. For example, ``GKP94`` is the ``alpha``--style citation label for the book *Concrete Mathematics*, 2nd Edition, by Ronald L. Graham, Donald E. Knuth, and Oren Patashnik (1994). The second variable ``<citealnum>`` is a variant of this that creates a citation label from the first letter of the author's last name, followed by an integer indicating its place in the sorted bibliography. Thus the book by Graham *et al.* would have the label "G2" if preceded by, say, *Introduction to Fourier Optics* by Joseph W. Goodman (1968), since the latter, being published earlier, would be placed earlier in the sorted list.
+
 **authorlist** creates a list of dictionaries (one dictionary for each author name found within the database entry's ``author`` field). Each name dictionary has keys "first", "middle", "prefix", "last", and "suffix", where each of these keys is optional except for "last". Thus, a user can access the first and last name of the first author in the database entry using ``<authorlist.0.first> <authorlist.0.last>``. To access the middle name(s) of the second author, use ``<authorlist.1.middle>``.
 
 **editorlist** behaves exactly as ``authorlist`` but derives its list of names from the database entry's ``editor`` field rather than ``author`` field.
 
-**citelabel** is the thing that appears at the front of the formatted reference, and is identical to the citation label used in the manuscript to point to the item in the reference list. In technical journal articles, this is typically just a number, as in the default definition ``<citenum.remove_leading_zeros()>``. The number used here for the label indicates the order in which the entry was cited. Since the variable ``citenum`` is a string that contains leading zeros, so that the entries are properly sorted in order of 001, 002, ..., 009, 010, 011, ... and not in the strict alphabetical order of 1, 10, 11, ..., 19, 2, 20, 21, .... But for a citation label, the leading zeros are unsightly, and so we use the ``.remove_leading_zeros()`` operator to remove them from the string before creating the label.
+**citelabel** is the thing that appears at the front of the formatted reference, and is identical to the citation label used in the manuscript to point to the item in the reference list. In technical journal articles, this is typically just a number, as in the default definition ``<citenum>``. The number used here for the label indicates the order in which the entry was cited.
 
 **sortkey** is the string used to sort the entry within the reference list. For technical journal articles, what is generally wanted is just the citation order, as indicated by the ``<citenum>`` variable.
 
@@ -116,6 +118,7 @@ The complete list of operators available is:::
     .frenchinitial()
     .if_singular(var1,var2,var3)
     .initial()
+    .lower()
     .monthabbrev()
     .monthname()
     .ordinal()
@@ -123,6 +126,8 @@ The complete list of operators available is:::
     .sentence_case()
     .tie()
     .to_namelist()
+    .upper()
+    .zfill(num)
 
 The function of each operator is summarized below.
 
@@ -143,6 +148,8 @@ Without the ``.compress()`` operator, the name would come out as "RM A Azzam", w
 
 **.initial()** will truncate the string to its first letter. Note that if a name begins with a LaTeX markup character, such as ``{\'E}``, then the operator will convert the input string to its best attempt at a Unicode-equivalent (without character markup) prior to performing the truncation. Thus, applying the ``.initial()`` operator to the name ``{\v{Z}}ukauskas`` will produce the initialized form "Ž". 
 
+**.lower()** reduces all letters in its argument to lower case. If any LaTeX markup letters exist in the argument, then they will be converted to Unicode equivalents first before applying the operator. Thus, if the field ``au`` contains ``{\AA}`` then the operator will first convert this to the letter Å and then reduce it to the lower case å.
+
 **.monthabbrev()** assumes that the input field is a number from 1 to 12, and converts the numerical input into the abbreviated month according to the user's current locale. If the system cannot determine the user's locale, the operator will default to using the American English locale, which replaces the numerical field operated on with one of "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", or "Dec" according to the field's value. Thus, if the bibliography database entry has a field ``month = 11``, and the template has the form ``<month.monthabbrev()>``, then the template will be replaced with "Nov" for the default locale. For users with locale "Japan", this same operator will return "11月".
 
 **.monthname()** behaves much like ``.monthabbrev()`` but rather than using an abbreviated form for the month's name, it uses the full form. Thus if the bibliography database entry has a field ``month = 3``, and the template has the form ``<month.monthname()>``, then the template variable will be replaced with "March" for the default locale. For users with locale "Norway", this same operator will return "Mars".
@@ -159,6 +166,10 @@ Without the ``.compress()`` operator, the name would come out as "RM A Azzam", w
                  [<authorlist.n.prefix>~]<authorlist.n.last>[, <authorlist.n.suffix>]
 
 **.to_namelist()** parses the field (assumed to be a BibTeX-format "and"-delimited list of names) into a Bibulous-format namelist (i.e. a list of dictionaries).
+
+**.upper()** raises all letters in its argument to upper case. If any LaTeX markup letters exist in the argument, then they will be converted to Unicode equivalents first before applying the operator. Thus, if the field ``au`` contains ``{\aa}`` then the operator will first convert this to the letter å and then raise it to the upper case Å.
+
+**.zfill(num)** appends zeros to the front of its argument, where ``num`` indicates the desired final length of the string. For example, if the field ``vol`` contains the number ``11``, then calling ``<vol.zfill(3)>`` produces the result ``011``.
 
 Options keywords
 ================
@@ -177,6 +188,7 @@ A complete list of existing options keywords, together with their default defini
     maxeditors = 5
     minauthors = 9
     mineditors = 5
+    name_separator = and
     namelist_format = first_name_first
     period_after_initial = True
     procspie_as_journal = False
@@ -214,6 +226,8 @@ Each of the keywords is summarized below.
 **minauthors** [default value: 9] provides the minimum number of author names to use when truncating an overlength author name list. (This keyword is only used within the ``.format_namelist()`` operator.)
 
 **mineditors** [default value: 5] provides the minimum number of editor names to use when truncating an overlength author name list. (This keyword is only used within the ``.format_namelist()`` operator.)
+
+**name_separator** [default value: and] informs Bibulous how to separate the individual names in a BibTeX-format field of names. For example, with a BibTeX-format field of ``Bugs Bunny and Porky Pig``, using the separator ``and`` allows Bibulous to determine that there are two separate people, ``Bugs Bunny`` and ``Porky Pig``. If the option keyword has an empty field (*i.e.* it is written as ``name_separator =``, with nothing on the right hand side of the equals) then it is assumed that the intended separator is a space character. This is useful for alphabets (such as Chinese and Japanese) that often work without spaces.
 
 **namelist_format** [default value: first_name_first, allowed values: {first_name_first, last_name_first}] defines how the formatted list of names should appear. If ``namelist_format = first_name_first`` then the individual names will appear in the order "firstname middle prefix last, suffix". If ``namelist_format = last_name_first`` then the individual names will appear in the order "prefix last, firstname middle, suffix". (This keyword is only used within the ``.format_namelist()`` operator.)
 

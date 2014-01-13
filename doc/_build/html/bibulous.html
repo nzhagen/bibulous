@@ -154,7 +154,7 @@ character is at nonzero brace level.</p>
 
 <dl class="function">
 <dt id="bibulous.namefield_to_namelist">
-<tt class="descclassname">bibulous.</tt><tt class="descname">namefield_to_namelist</tt><big>(</big><em>namefield</em>, <em>key=None</em>, <em>disable=None</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#namefield_to_namelist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.namefield_to_namelist" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">bibulous.</tt><tt class="descname">namefield_to_namelist</tt><big>(</big><em>namefield</em>, <em>key=None</em>, <em>sep=u'and'</em>, <em>disable=None</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#namefield_to_namelist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.namefield_to_namelist" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse a name field (&#8220;author&#8221; or &#8220;editor&#8221;) of a BibTeX entry into a list of dicts, one for each person.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -167,6 +167,10 @@ character is at nonzero brace level.</p>
 <p><strong>key</strong> : str, optional</p>
 <blockquote>
 <div><p>The bibliography data entry key.</p>
+</div></blockquote>
+<p><strong>sep</strong> : str, optional</p>
+<blockquote>
+<div><p>The string defining the string to be used as a name separator.</p>
 </div></blockquote>
 <p><strong>disable</strong> : list of int, optional</p>
 <blockquote>
@@ -663,35 +667,6 @@ into a dictionary of names and abbreviations.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="bibulous.make_sortkey_unique">
-<tt class="descclassname">bibulous.</tt><tt class="descname">make_sortkey_unique</tt><big>(</big><em>sortkey</em>, <em>sortdict</em><big>)</big><a class="headerlink" href="#bibulous.make_sortkey_unique" title="Permalink to this definition">¶</a></dt>
-<dd><p>Given a key that matches an already-present key in the input dictionary, generate a new key by appending zeros to
-the key string.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>sortkey</strong> : str</p>
-<blockquote>
-<div><p>The key to be modified.</p>
-</div></blockquote>
-<p><strong>sortdict</strong> : dict</p>
-<blockquote>
-<div><p>The dictionary whose keys we can query to check for uniqueness.</p>
-</div></blockquote>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>newkey</strong> : str</p>
-<blockquote class="last">
-<div><p>The new (and unique) key.</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
 <dt id="bibulous.filter_script">
 <tt class="descclassname">bibulous.</tt><tt class="descname">filter_script</tt><big>(</big><em>line</em><big>)</big><a class="headerlink" href="#bibulous.filter_script" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove elements from a Python script which are provide the most egregious security flaws; also replace some
@@ -765,8 +740,8 @@ scripts.</p>
 
 <dl class="function">
 <dt id="bibulous.create_citation_alpha">
-<tt class="descclassname">bibulous.</tt><tt class="descname">create_citation_alpha</tt><big>(</big><em>entry</em><big>)</big><a class="headerlink" href="#bibulous.create_citation_alpha" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create an alpha-style citation key (typically the first three letters of the author&#8217;s last name, followed by the
+<tt class="descclassname">bibulous.</tt><tt class="descname">create_citation_alpha</tt><big>(</big><em>entry</em>, <em>options</em><big>)</big><a class="headerlink" href="#bibulous.create_citation_alpha" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an &#8220;alpha&#8221; style citation key (typically the first three letters of the author&#8217;s last name, followed by the
 last two numbers of the year).</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -775,6 +750,10 @@ last two numbers of the year).</p>
 <tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>entry</strong> : dict</p>
 <blockquote>
 <div><p>The bibliography entry.</p>
+</div></blockquote>
+<p><strong>options</strong> : dict</p>
+<blockquote>
+<div><p>The dictionary of keyword options (the only key used is &#8220;name_separator&#8221;).</p>
 </div></blockquote>
 </td>
 </tr>
@@ -847,33 +826,9 @@ hand-side part).</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="bibulous.get_indexed_vars_in_template">
-<tt class="descclassname">bibulous.</tt><tt class="descname">get_indexed_vars_in_template</tt><big>(</big><em>templatestr</em><big>)</big><a class="headerlink" href="#bibulous.get_indexed_vars_in_template" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get a list of the indxed variables within a template.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>templatestr</strong> : str</p>
-<blockquote>
-<div><p>The template to analyze.</p>
-</div></blockquote>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>indexed_vars</strong> : list of str</p>
-<blockquote class="last">
-<div><p>The list of variable names that are indexed variables.</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
 <dt id="bibulous.get_names">
 <tt class="descclassname">bibulous.</tt><tt class="descname">get_names</tt><big>(</big><em>entry</em>, <em>templatestr</em><big>)</big><a class="headerlink" href="#bibulous.get_names" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the number of names associated with a given entry, assuming priority to authornames and then to editornames.</p>
+<dd><p>Get the list of names associated with a given entry, assuming priority to authornames and then to editornames.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -959,9 +914,72 @@ directives in the bibliography style template.</p>
 </table>
 </dd></dl>
 
+<dl class="function">
+<dt id="bibulous.argsort">
+<tt class="descclassname">bibulous.</tt><tt class="descname">argsort</tt><big>(</big><em>seq</em>, <em>reverse=False</em><big>)</big><a class="headerlink" href="#bibulous.argsort" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the indices for producing a sorted list.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>seq</strong> : iterable</p>
+<blockquote>
+<div><p>The iterable object to sort.</p>
+</div></blockquote>
+<p><strong>reverse</strong> : bool</p>
+<blockquote>
+<div><p>Whether to return a reversed list.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>idx</strong> : list of ints</p>
+<blockquote class="last">
+<div><p>The indices needed for a sorted list.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="bibulous.create_alphanum_citelabels">
+<tt class="descclassname">bibulous.</tt><tt class="descname">create_alphanum_citelabels</tt><big>(</big><em>entrykey</em>, <em>bibdata</em>, <em>citelist</em><big>)</big><a class="headerlink" href="#bibulous.create_alphanum_citelabels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an alphanumeric style citation key (the first letter of the author&#8217;s last name, followed by a number giving
+the sort order).</p>
+<p>Warning: do <em>not</em> run this function on a large database of citations &#8212; it is not optimized for that use and will
+take quite a while to complete.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>entry</strong> : dict</p>
+<blockquote>
+<div><p>The bibliography entry.</p>
+</div></blockquote>
+<p><strong>bibdata</strong> : dict</p>
+<blockquote>
+<div><p>The entire bibliography database.</p>
+</div></blockquote>
+<p><strong>citelist</strong> : list of str</p>
+<blockquote>
+<div><p>The sorted list of citation keys.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>citelabels</strong> : str</p>
+<blockquote class="last">
+<div><p>The dictionary of citation labels.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="class">
 <dt id="bibulous.Bibdata">
-<em class="property">class </em><tt class="descclassname">bibulous.</tt><tt class="descname">Bibdata</tt><big>(</big><em>filename</em>, <em>disable=None</em>, <em>culldata=True</em>, <em>uselocale=None</em>, <em>debug=False</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#Bibdata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.Bibdata" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">bibulous.</tt><tt class="descname">Bibdata</tt><big>(</big><em>filename</em>, <em>disable=None</em>, <em>culldata=True</em>, <em>uselocale=None</em>, <em>silent=False</em>, <em>debug=False</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#Bibdata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.Bibdata" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bibdata is a class to hold all data related to a bibliography database, a citation list, and a style template.</p>
 <p>To initialize the class, either call it with the filename of the <cite>.aux</cite> file containing the relevant file locations
 (for the <cite>.bib</cite> database files and the <cite>.bst</cite> template files) or simply call it with a list of all filenames to be
@@ -1097,47 +1115,47 @@ values their string template.</td>
 <tr class="row-odd"><td><a class="reference internal" href="#bibulous.Bibdata.replace_abbrevs_with_full" title="bibulous.Bibdata.replace_abbrevs_with_full"><tt class="xref py py-obj docutils literal"><span class="pre">replace_abbrevs_with_full</span></tt></a>(fieldstr,&nbsp;resultstr)</td>
 <td>Given an input str, locate the abbreviation key within it and replace the abbreviation with its full form.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#bibulous.Bibdata.generate_bibitem_label" title="bibulous.Bibdata.generate_bibitem_label"><tt class="xref py py-obj docutils literal"><span class="pre">generate_bibitem_label</span></tt></a>(citekey)</td>
-<td>Generate the bibitem label.</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="#bibulous.Bibdata.get_bibfilenames" title="bibulous.Bibdata.get_bibfilenames"><tt class="xref py py-obj docutils literal"><span class="pre">get_bibfilenames</span></tt></a>(filename)</td>
+<tr class="row-even"><td><a class="reference internal" href="#bibulous.Bibdata.get_bibfilenames" title="bibulous.Bibdata.get_bibfilenames"><tt class="xref py py-obj docutils literal"><span class="pre">get_bibfilenames</span></tt></a>(filename)</td>
 <td>If the input is a filename ending in <cite>.aux</cite>, then read through the <cite>.aux</cite> file and locate the lines <cite>ibdata{...}</cite> and <cite>ibstyle{...}</cite> to get the filename(s) for the bibliography database and style template.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#bibulous.Bibdata.check_citekeys_in_datakeys" title="bibulous.Bibdata.check_citekeys_in_datakeys"><tt class="xref py py-obj docutils literal"><span class="pre">check_citekeys_in_datakeys</span></tt></a>()</td>
+<tr class="row-odd"><td><a class="reference internal" href="#bibulous.Bibdata.check_citekeys_in_datakeys" title="bibulous.Bibdata.check_citekeys_in_datakeys"><tt class="xref py py-obj docutils literal"><span class="pre">check_citekeys_in_datakeys</span></tt></a>()</td>
 <td>Check to see if all of the citation keys (from the AUX file) exist within the current set of database entrykeys.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#bibulous.Bibdata.add_crossrefs_to_searchkeys" title="bibulous.Bibdata.add_crossrefs_to_searchkeys"><tt class="xref py py-obj docutils literal"><span class="pre">add_crossrefs_to_searchkeys</span></tt></a>()</td>
+<tr class="row-even"><td><a class="reference internal" href="#bibulous.Bibdata.add_crossrefs_to_searchkeys" title="bibulous.Bibdata.add_crossrefs_to_searchkeys"><tt class="xref py py-obj docutils literal"><span class="pre">add_crossrefs_to_searchkeys</span></tt></a>()</td>
 <td>Add any cross-referenced entrykeys into the <cite>searchkeys</cite>, the list which is used to cull the database so that</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#bibulous.Bibdata.insert_specials" title="bibulous.Bibdata.insert_specials"><tt class="xref py py-obj docutils literal"><span class="pre">insert_specials</span></tt></a>(entrykey)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#bibulous.Bibdata.insert_specials" title="bibulous.Bibdata.insert_specials"><tt class="xref py py-obj docutils literal"><span class="pre">insert_specials</span></tt></a>(entrykey)</td>
 <td>Insert &#8220;special&#8221; fields into a database entry.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#bibulous.Bibdata.validate_templatestr" title="bibulous.Bibdata.validate_templatestr"><tt class="xref py py-obj docutils literal"><span class="pre">validate_templatestr</span></tt></a>(templatestr,&nbsp;entrytype)</td>
+<tr class="row-even"><td><a class="reference internal" href="#bibulous.Bibdata.validate_templatestr" title="bibulous.Bibdata.validate_templatestr"><tt class="xref py py-obj docutils literal"><span class="pre">validate_templatestr</span></tt></a>(templatestr,&nbsp;entrytype)</td>
 <td>Validate the template string so that it contains no formatting errors.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#bibulous.Bibdata.fillout_implicit_loop" title="bibulous.Bibdata.fillout_implicit_loop"><tt class="xref py py-obj docutils literal"><span class="pre">fillout_implicit_loop</span></tt></a>(templatestr,&nbsp;entrykey)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#bibulous.Bibdata.fillout_implicit_indices" title="bibulous.Bibdata.fillout_implicit_indices"><tt class="xref py py-obj docutils literal"><span class="pre">fillout_implicit_indices</span></tt></a>(templatestr,&nbsp;entrykey)</td>
 <td>From a template containing an implicit loop (&#8216;...&#8217; notation), build a full-size template without an ellipsis.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#bibulous.Bibdata.template_substitution" title="bibulous.Bibdata.template_substitution"><tt class="xref py py-obj docutils literal"><span class="pre">template_substitution</span></tt></a>(templatestr,&nbsp;entrykey)</td>
+<tr class="row-even"><td><a class="reference internal" href="#bibulous.Bibdata.template_substitution" title="bibulous.Bibdata.template_substitution"><tt class="xref py py-obj docutils literal"><span class="pre">template_substitution</span></tt></a>(templatestr,&nbsp;entrykey)</td>
 <td>Substitute database entry variables into template string.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#bibulous.Bibdata.insert_title_into_template" title="bibulous.Bibdata.insert_title_into_template"><tt class="xref py py-obj docutils literal"><span class="pre">insert_title_into_template</span></tt></a>(title_var,&nbsp;...)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#bibulous.Bibdata.insert_title_into_template" title="bibulous.Bibdata.insert_title_into_template"><tt class="xref py py-obj docutils literal"><span class="pre">insert_title_into_template</span></tt></a>(title_var,&nbsp;...)</td>
 <td>Insert the title field into a template string.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#bibulous.Bibdata.remove_nested_template_options_brackets" title="bibulous.Bibdata.remove_nested_template_options_brackets"><tt class="xref py py-obj docutils literal"><span class="pre">remove_nested_template_options_brackets</span></tt></a>(...)</td>
+<tr class="row-even"><td><a class="reference internal" href="#bibulous.Bibdata.remove_nested_template_options_brackets" title="bibulous.Bibdata.remove_nested_template_options_brackets"><tt class="xref py py-obj docutils literal"><span class="pre">remove_nested_template_options_brackets</span></tt></a>(...)</td>
 <td>Given a template string, go through each options sequence [...] and search for undefined variables.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#bibulous.Bibdata.remove_template_options_brackets" title="bibulous.Bibdata.remove_template_options_brackets"><tt class="xref py py-obj docutils literal"><span class="pre">remove_template_options_brackets</span></tt></a>(...)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#bibulous.Bibdata.remove_template_options_brackets" title="bibulous.Bibdata.remove_template_options_brackets"><tt class="xref py py-obj docutils literal"><span class="pre">remove_template_options_brackets</span></tt></a>(...)</td>
 <td>Given a template string, go through each options sequence [...] and search for undefined variables.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#bibulous.Bibdata.simplify_template_bracket" title="bibulous.Bibdata.simplify_template_bracket"><tt class="xref py py-obj docutils literal"><span class="pre">simplify_template_bracket</span></tt></a>(templatestr,&nbsp;...)</td>
+<tr class="row-even"><td><a class="reference internal" href="#bibulous.Bibdata.simplify_template_bracket" title="bibulous.Bibdata.simplify_template_bracket"><tt class="xref py py-obj docutils literal"><span class="pre">simplify_template_bracket</span></tt></a>(templatestr,&nbsp;...)</td>
 <td>From an &#8220;options train&#8221; <cite>[...|...|...]</cite>, find the first fully defined block in the sequence.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#bibulous.Bibdata.get_variable" title="bibulous.Bibdata.get_variable"><tt class="xref py py-obj docutils literal"><span class="pre">get_variable</span></tt></a>(bibentry,&nbsp;variable[,&nbsp;options])</td>
+<tr class="row-odd"><td><a class="reference internal" href="#bibulous.Bibdata.get_variable" title="bibulous.Bibdata.get_variable"><tt class="xref py py-obj docutils literal"><span class="pre">get_variable</span></tt></a>(bibentry,&nbsp;variable[,&nbsp;options])</td>
 <td>Get the variable (i.e.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#bibulous.Bibdata.get_indexed_variable" title="bibulous.Bibdata.get_indexed_variable"><tt class="xref py py-obj docutils literal"><span class="pre">get_indexed_variable</span></tt></a>(field,&nbsp;indexer[,&nbsp;...])</td>
+<tr class="row-even"><td><a class="reference internal" href="#bibulous.Bibdata.get_indexed_variable" title="bibulous.Bibdata.get_indexed_variable"><tt class="xref py py-obj docutils literal"><span class="pre">get_indexed_variable</span></tt></a>(field,&nbsp;indexer[,&nbsp;...])</td>
 <td>Get the result of dot-indexing into a field.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#bibulous.Bibdata.get_indexed_vars_in_template" title="bibulous.Bibdata.get_indexed_vars_in_template"><tt class="xref py py-obj docutils literal"><span class="pre">get_indexed_vars_in_template</span></tt></a>(templatestr)</td>
+<td>Get a list of the indxed variables within a template.</td>
 </tr>
 </tbody>
 </table>
@@ -1173,8 +1191,8 @@ only necessary entries are parsed.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="bibulous.Bibdata.fillout_implicit_loop">
-<tt class="descname">fillout_implicit_loop</tt><big>(</big><em>templatestr</em>, <em>entrykey</em><big>)</big><a class="headerlink" href="#bibulous.Bibdata.fillout_implicit_loop" title="Permalink to this definition">¶</a></dt>
+<dt id="bibulous.Bibdata.fillout_implicit_indices">
+<tt class="descname">fillout_implicit_indices</tt><big>(</big><em>templatestr</em>, <em>entrykey</em><big>)</big><a class="headerlink" href="#bibulous.Bibdata.fillout_implicit_indices" title="Permalink to this definition">¶</a></dt>
 <dd><p>From a template containing an implicit loop (&#8216;...&#8217; notation), build a full-size template without an ellipsis.</p>
 <p>Right now, the code only allows one implicit loop in any given template.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1218,30 +1236,6 @@ you&#8217;re done formatting that entry. Write the result to the BBL file.</p>
 <tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>itemstr</strong> : str</p>
 <blockquote class="last">
 <div><p>The string containing the ibitem{} citation key and LaTeX-formatted string for the formatted             bibliography. (That is, this string is designed to be inserted directly into the LaTeX document.)</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="bibulous.Bibdata.generate_bibitem_label">
-<tt class="descname">generate_bibitem_label</tt><big>(</big><em>citekey</em><big>)</big><a class="headerlink" href="#bibulous.Bibdata.generate_bibitem_label" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate the bibitem label.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>citekey</strong> : str</p>
-<blockquote>
-<div><p>The citation key.</p>
-</div></blockquote>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>citelabel</strong> : str</p>
-<blockquote class="last">
-<div><p>The citation label to use for the item.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -1331,6 +1325,30 @@ of operating on a string with a function.</p>
 <tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>result</strong> : str</p>
 <blockquote class="last">
 <div><p>The string resulting from the dot-indexing operation on the field. If a valid operation cannot be performed,            then return &#8220;None&#8221;.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="bibulous.Bibdata.get_indexed_vars_in_template">
+<tt class="descname">get_indexed_vars_in_template</tt><big>(</big><em>templatestr</em><big>)</big><a class="headerlink" href="#bibulous.Bibdata.get_indexed_vars_in_template" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a list of the indxed variables within a template.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters :</th><td class="field-body"><p class="first"><strong>templatestr</strong> : str</p>
+<blockquote>
+<div><p>The template to analyze.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns :</th><td class="field-body"><p class="first"><strong>indexed_vars</strong> : list of str</p>
+<blockquote class="last">
+<div><p>The list of variable names that are indexed variables.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -1696,7 +1714,7 @@ find that none of the blocks have all their variables defined, then we replace t
 
 <dl class="method">
 <dt id="bibulous.Bibdata.template_substitution">
-<tt class="descname">template_substitution</tt><big>(</big><em>templatestr</em>, <em>entrykey</em><big>)</big><a class="headerlink" href="#bibulous.Bibdata.template_substitution" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">template_substitution</tt><big>(</big><em>templatestr</em>, <em>entrykey</em>, <em>templatekey=None</em><big>)</big><a class="headerlink" href="#bibulous.Bibdata.template_substitution" title="Permalink to this definition">¶</a></dt>
 <dd><p>Substitute database entry variables into template string.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1709,6 +1727,10 @@ find that none of the blocks have all their variables defined, then we replace t
 <p><strong>entrykey</strong> : dict</p>
 <blockquote>
 <div><p>The key of the database entry from which to get fields to substitute into the template.</p>
+</div></blockquote>
+<p><strong>templatekey</strong> : str</p>
+<blockquote>
+<div><p>If this template is for a special variable rather than an entrytype, then this key will tell which special             variable is being operated on.</p>
 </div></blockquote>
 </td>
 </tr>

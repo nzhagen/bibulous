@@ -44,7 +44,7 @@ so that if we use this template together with the following database file::
     @book{Bertsch,
       author = {G. F. Bertsch and R. A. Broglia},
       title = {Oscillations in finite quantum systems},
-      chapter = 6,
+      chapter = 6,bibulous
       address = {Cambridge},
       publisher = {Cambridge University},
       year = 1994,
@@ -205,3 +205,14 @@ so that with the following database file::
     }
 
 we get the following formatted result
+
+Example 3
+=========
+
+Example 4
+=========
+
+Example 5
+=========
+
+This follows an online question posted at ``http://tex.stackexchange.com/questions/961/bibtex-style-that-groups-by-author``.
