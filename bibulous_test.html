@@ -1,0 +1,199 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>bibulous_test module &mdash; Bibulous 1.2 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Bibulous 1.2 documentation" href="index.html" /> 
+  </head>
+  <body>
+
+<div style="background-color: white; text-align: left; padding: 10px 10px 15px 15px">
+<a href="index.html"><img src="_static/banner.svg" border="0" height=300 alt="py4sci"/></a>
+</div>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="index.html">home</a>|&nbsp;</li>
+        <li><a href="search.html">search</a>|&nbsp;</li>
+ 
+      </ul>
+    </div>
+
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/logo_small.svg" alt="Logo"/>
+            </a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/bibulous_test.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-bibulous_test">
+<span id="bibulous-test-module"></span><h1>bibulous_test module<a class="headerlink" href="#module-bibulous_test" title="Permalink to this headline">¶</a></h1>
+<p>Bibulous_test.py is a script which runs through the entire Bibulous regression testing suite.</p>
+<p>The basic approach of the tests is as follows:
+(1) Once a change is made to the code (to fix a bug or add functionality), the writer should add an entry to the</p>
+<blockquote>
+<div><p>/test/test1.bib file, where the &#8220;entrytype&#8221; gives an indication of what the test is for. For example, the entry
+in the BIB file may start with</p>
+<blockquote>
+<div>&#64;test_initialize1{...</div></blockquote>
+<p>and provide an &#8220;author&#8221; field where one or more authors have names which the code for generating initials can
+potentially break is not written carefully. Include a 1-line comment about the purpose of the entry as well.</p>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li>If this is something which can be checked with normal options settings, then add a corresponding line in the BST
+file defining how that new entrytype (&#8220;test_initialize1&#8221;) should be formatted. If different options settings are
+needed, then a new BST file is needed. To make this, copy the &#8220;test1.bst&#8221; file, remove the entrytype definitions
+(you can keep them, but they would be redundant), and change the options to the needed settings. Then add a line
+in this file to define the entrytype template.</li>
+<li>Add a line &#8220;citation{key}&#8221; to the AUX file where &#8220;key&#8221; is the key given in the new entry of the BIB file you
+just put in (e.g. &#8220;test_initialize1&#8221;)</li>
+<li>Add two lines to the test1_target.bbl file (one for the &#8220;bibentry&#8221; function call, and one for the entry
+contents) to say what the formatted result should look like.</li>
+<li>Finally, run this script to check the result. This script will load the modified BIB and BST files and will
+write out a formatted BBL file &#8220;test1.bbl&#8221;. It will then try to run a &#8220;diff&#8221; program on these two files to see
+if there are any differences between the target and actual output BBL files.</li>
+</ol>
+<dl class="function">
+<dt id="bibulous_test.check_file_match">
+<tt class="descclassname">bibulous_test.</tt><tt class="descname">check_file_match</tt><big>(</big><em>testnum</em>, <em>outputfile</em>, <em>targetfile</em><big>)</big><a class="reference internal" href="_modules/bibulous_test.html#check_file_match"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous_test.check_file_match" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="bibulous_test.run_test1">
+<tt class="descclassname">bibulous_test.</tt><tt class="descname">run_test1</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/bibulous_test.html#run_test1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous_test.run_test1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test #1 consists of a suite of single tests of options and features that are valid with the default template file.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="bibulous_test.run_test2">
+<tt class="descclassname">bibulous_test.</tt><tt class="descname">run_test2</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/bibulous_test.html#run_test2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous_test.run_test2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test #2 loads a number of large .bib database files to put the BibTeX parser and the BBL file writer through a
+comprehensive set of conditions. Every entry in the BIB files is written to the output BBL file to test as much
+of the processing chain as possible.</p>
+<p>Rather than checking the output against a target file, this test really just makes sure that no exceptions are
+emitted when processing the entire database through the full chain of functions.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="bibulous_test.run_test3">
+<tt class="descclassname">bibulous_test.</tt><tt class="descname">run_test3</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/bibulous_test.html#run_test3"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous_test.run_test3" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test #3 tests that the &#8220;authorextract&#8221; method functions correctly.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="bibulous_test.run_test4">
+<tt class="descclassname">bibulous_test.</tt><tt class="descname">run_test4</tt><big>(</big><big>)</big><a class="headerlink" href="#bibulous_test.run_test4" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test #4 checks the operation of generating citation keys.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="bibulous_test.run_test5">
+<tt class="descclassname">bibulous_test.</tt><tt class="descname">run_test5</tt><big>(</big><big>)</big><a class="headerlink" href="#bibulous_test.run_test5" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test #5 flexes the Python API.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="bibulous_test.run_test6">
+<tt class="descclassname">bibulous_test.</tt><tt class="descname">run_test6</tt><big>(</big><big>)</big><a class="headerlink" href="#bibulous_test.run_test6" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test #6 makes sure to raise an exception when attempting to load a BibTeX-format BST file.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="bibulous_test.run_test7">
+<tt class="descclassname">bibulous_test.</tt><tt class="descname">run_test7</tt><big>(</big><big>)</big><a class="headerlink" href="#bibulous_test.run_test7" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test #7 checks the operation of generating reference list labels.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="bibulous_test.run_test8">
+<tt class="descclassname">bibulous_test.</tt><tt class="descname">run_test8</tt><big>(</big><big>)</big><a class="headerlink" href="#bibulous_test.run_test8" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test #8 tests Bibulous&#8217; ability to generate glossaries, symbol lists, and acronym lists.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="bibulous_test.run_test9">
+<tt class="descclassname">bibulous_test.</tt><tt class="descname">run_test9</tt><big>(</big><big>)</big><a class="headerlink" href="#bibulous_test.run_test9" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test #9 is a pltform for running conditions in which the entire database needs to be re-read with each test.</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="index.html">home</a>|&nbsp;</li>
+        <li><a href="search.html">search</a>|&nbsp;</li>
+ 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Bibulous developers.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
