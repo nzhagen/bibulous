@@ -4,6 +4,12 @@ Python code to-do list: (including goals for version 2.0)
 The primary goal for version 2.0 is to incorporate integration with a front-end LaTeX package.
 For version 1.3, the goal is to have namelist templates working.
 
+- In the get_names() function, you've hard-coded the authorlist and editorlist variables. Switch to querying
+  the member variables inside "self.namelists".
+
+- What's going on with the "show_urls" keyword? This appears in bibulous.py, and was used at some point,
+  but is commented out now. Remind yourself what it does and maybe resurrect it.
+
 - In Italian, the word for "and" is "e". So, in the formatted reference, an authorlist would look like
   "name1, name2, e name3" --- here we used "e" instead of the default "and". How to allow users to switch this
   easily? Using an operator that looks for a "language" field? Or a language keyword? Once you get this
