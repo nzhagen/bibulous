@@ -187,7 +187,6 @@ class Bibdata(object):
         ## Not only do we need a dictionary for "special templates" but we also need to be able to iterate through it
         ## in the order given in the file. Thus, we have a "specials list" too.
         self.specials_list = []
-        #self.specials_list = ['authorlist','editorlist','citelabel','sortkey','au','ed']
 
         ## Put in the default special templates.
         self.specials = {}
@@ -214,7 +213,6 @@ class Bibdata(object):
         self.options['use_abbrevs'] = True
         self.options['undefstr'] = '???'
         self.options['procspie_as_journal'] = False
-        self.options['show_urls'] = False
         self.options['backrefstyle'] = 'none'
         self.options['backrefs'] = False
         self.options['sort_case'] = True
@@ -1058,9 +1056,6 @@ class Bibdata(object):
         if write_preamble:
             if not bibsize: bibsize = repr(len(self.citedict))
             filehandle.write('\\begin{thebibliography}{' + bibsize + '}\n'.encode('utf-8'))
-            #if self.options['show_urls']: filehandle.write(r'\providecommand{\url}[1]{\texttt{#1}}')
-            #if not self.options['show_urls']:
-            #    filehandle.write(r'\providecommand{\url}[1]{}')              ## i.e. ignore the URL
             filehandle.write("\\providecommand{\\enquote}[1]{``#1''}\n".encode('utf-8'))
             filehandle.write('\\providecommand{\\url}[1]{\\verb|#1|}\n'.encode('utf-8'))
             filehandle.write('\\providecommand{\\href}[2]{#2}\n'.encode('utf-8'))
@@ -1075,7 +1070,8 @@ class Bibdata(object):
 
         ## Use a try-except block here, so that if any exception is raised then we can make sure to produce a valid
         ## BBL file.
-        try:
+        #try:
+        if True: #zzz
             ## First insert special variables, so that the citation sorter and everything else can use them. Also
             ## insert cross-reference data. Doing these here means that we don't have to add lots of extra checks later.
             for c in self.citedict:
@@ -1104,10 +1100,11 @@ class Bibdata(object):
                 if (s != ''):
                     ## Need two line EOL's here and not one so that backrefs can work properly.
                     filehandle.write((s + '\n').encode('utf-8'))
-        except Exception, err:
-            ## Swallow the exception
-            print('Exception encountered: ' + repr(err))
-        finally:
+        #except Exception, err:
+        #    ## Swallow the exception
+        #    print('Exception encountered: ' + repr(err))
+        #finally:
+        if True: #zzz
             if write_postamble:
                 filehandle.write('\n\\end{thebibliography}\n'.encode('utf-8'))
             filehandle.close()
@@ -1832,6 +1829,7 @@ class Bibdata(object):
                 continue
 
             ## The "sortkey" special requires a special function to operate correctly.
+            #zzz
             if (key == 'sortkey'):
                 res = self.generate_sortkey(entrykey)
                 self.bibdata[entrykey][key] = res
@@ -1859,6 +1857,10 @@ class Bibdata(object):
             ## a user will need to use "???" in a template).
             if (res not in (None, '', self.options['undefstr'])) and ('???' not in res):
                 self.bibdata[entrykey][key] = res
+
+            if (key == 'sortkey'):
+                #pdb.set_trace()
+                print('generating sortkey for "' + entrykey + '": ' + res)
 
         return
 
@@ -1956,15 +1958,15 @@ class Bibdata(object):
                 elem = get_variable_name_elements(v)
                 varname = elem['name'] + '.' + elem['prefix'] + 'n'
                 if (varname in self.specials):
-                    ## Replace ".n" with "." plus explicit index.
+                    ## Replace ".n" with "." plus an explicit index.
                     templatestr = templatestr.replace('<'+v+'>', self.specials[varname])
                     templatestr = re.sub(r'(?<=\.)n(?=\.)|(?<=\.)n(?=>)', elem['index'], templatestr)
             return(templatestr)
-        else:
-            names = get_names(self.bibdata[entrykey], templatestr)
-            num_names = len(names)
-            #if (num_names == 0): num_names = 1
-            if (num_names == 0): return(templatestr)
+
+        names = get_names(self.bibdata[entrykey], templatestr)
+        num_names = len(names)
+        #if (num_names == 0): num_names = 1
+        if (num_names == 0): return(templatestr)
 
         ## Split the string in two at the ellipsis (for now assume that there is only one).
         idx = templatestr.find('...')
@@ -2419,8 +2421,8 @@ class Bibdata(object):
             The field value (if it exists). If no corresponding field is found, return `None`.
         '''
 
-        ## If there is no dot-indexer in the variable name, then return None, else return the entry field correspponding
-        ## to the variable.
+        ## If there is no dot-indexer in the variable name, then return the entry field corresponding to the variable,
+        ## if it exists in the entry.
         if ('.' not in variable):
             if (variable not in bibentry):
                 return(None)
@@ -2437,7 +2439,7 @@ class Bibdata(object):
         else:
             return(None)
 
-        indexer = '.'.join(var_parts[1:])
+        indexer = '.' + '.'.join(var_parts[1:])
         result = self.get_indexed_variable(bibentry[fieldname], indexer, bibentry['entrykey'], options=options)
 
         return(result)
@@ -2476,7 +2478,10 @@ class Bibdata(object):
         >>> Ramsey
         '''
 
+        ## We need to split the string by the "dot" character, but **not** when the dot lies between a pair of parentheses ---
+        ## that means that it's part of an operator argument!
         index_elements = indexer.split('.')
+        index_elements = [i for i in index_elements if i]
         nelements = len(index_elements)
 
         ## If the indexing element is an integer, then we assume that it wants a list or tuple. If it finds one, then get the indexed item.
@@ -2493,100 +2498,101 @@ class Bibdata(object):
                 if (nelements == 1):
                     return(newfield)
                 else:
-                    newindexer = '.'.join(index_elements[1:])
+                    newindexer = '.' + '.'.join(index_elements[1:])
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
 
         ## If the thing to the right of the dot-indexer is a *function*, then map the field to the function.
-        if index_elements[0].endswith(')'):
-            if (index_elements[0] == 'initial()'):
+        if ('(' in index_elements[0]):
+            if indexer.startswith('.initial()'):
                 options['french_initials'] = False
                 newfield = initialize_name(field, options=options)
-                if (nelements == 1):
+                newindexer = indexer[10:]
+                if (nelements == 1) or (newindexer == ''):
                     return(newfield)
                 else:
-                    newindexer = '.'.join(index_elements[1:])
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
-            elif (index_elements[0] == 'frenchinitial()'):
+            elif indexer.startswith('.frenchinitial()'):
                 options['french_initials'] = True
                 newfield = initialize_name(field, options=options)
-                if (nelements == 1):
+                newindexer = indexer[16:]
+                if (nelements == 1) or (newindexer == ''):
                     return(newfield)
                 else:
-                    newindexer = '.'.join(index_elements[1:])
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
-            elif (index_elements[0] == 'compress()'):
+            elif indexer.startswith('.compress()'):
                 newfield = field.replace(' ','')
-                if (nelements == 1):
+                newindexer = indexer[11:]
+                if (nelements == 1) or (newindexer == ''):
                     return(newfield)
                 else:
-                    newindexer = '.'.join(index_elements[1:])
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
-            elif (index_elements[0] == 'tie()'):
+            elif indexer.startswith('.tie()'):
                 newfield = field.replace(' ','~')
-                if (nelements == 1):
+                newindexer = indexer[6:]
+                if (nelements == 1) or (newindexer == ''):
                     return(newfield)
                 else:
-                    newindexer = '.'.join(index_elements[1:])
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
-            elif (index_elements[0] == 'sentence_case()'):
+            elif indexer.startswith('.sentence_case()'):
                 newfield = sentence_case(field)
-                if (nelements == 1):
+                newindexer = indexer[16:]
+                if (nelements == 1) or (newindexer == ''):
                     return(newfield)
                 else:
-                    newindexer = '.'.join(index_elements[1:])
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
-            elif (index_elements[0] == 'ordinal()'):
+            elif indexer.startswith('.ordinal()'):
                 newfield = get_edition_ordinal(field, disable=None)
-                if (nelements == 1):
+                newindexer = indexer[10:]
+                if (nelements == 1) or (newindexer == ''):
                     return(newfield)
                 else:
-                    newindexer = '.'.join(index_elements[1:])
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
-            elif (index_elements[0] == 'monthname()'):
+            elif indexer.startswith('.monthname()'):
                 if field in self.monthnames:
                     newfield = self.monthnames[field]
                 else:
                     newfield = field
-                if (nelements == 1):
+                newindexer = indexer[12:]
+                if (nelements == 1) or (newindexer == ''):
                     return(newfield)
                 else:
-                    newindexer = '.'.join(index_elements[1:])
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
-            elif (index_elements[0] == 'monthabbrev()'):
+            elif indexer.startswith('.monthabbrev()'):
                 if field in self.monthabbrevs:
                     newfield = self.monthabbrevs[field]
                 else:
                     newfield = field
-                if (nelements == 1):
+                newindexer = indexer[14:]
+                if (nelements == 1) or (newindexer == ''):
                     return(newfield)
                 else:
-                    newindexer = '.'.join(index_elements[1:])
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
-            elif (index_elements[0] == 'to_namelist()'):
+            elif indexer.startswith('.to_namelist()'):
                 sep = self.options['name_separator']
                 newfield = namefield_to_namelist(field, key=entrykey, sep=sep, disable=self.disable)
-                if (nelements == 1):
+                newindexer = indexer[14:]
+                if (nelements == 1) or (newindexer == ''):
                     return(newfield)
                 else:
-                    newindexer = '.'.join(index_elements[1:])
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
-            elif (index_elements[0] == 'format_authorlist()'):
+            elif indexer.startswith('.format_authorlist()'):
                 newfield = format_namelist(field, nametype='author')
-                if (nelements == 1):
+                newindexer = indexer[20:]
+                if (nelements == 1) or (newindexer == ''):
                     return(newfield)
                 else:
-                    newindexer = '.'.join(index_elements[1:])
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
-            elif (index_elements[0] == 'format_editorlist()'):
+            elif indexer.startswith('.format_editorlist()'):
                 newfield = format_namelist(field, nametype='editor')
-                if (nelements == 1):
+                newindexer = indexer[20:]
+                if (nelements == 1) or (newindexer == ''):
                     return(newfield)
                 else:
-                    newindexer = '.'.join(index_elements[1:])
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
-            elif re.search(r'if_singular\(.*\)', index_elements[0], re.UNICODE):
-                match = re.search(r'if_singular\(.*\)', index_elements[0], re.UNICODE)
-                result = match.group(0)[12:-1]
+            elif indexer.startswith('.if_singular('):
+                match = re.search(r'.if_singular\(.*\)', indexer, re.UNICODE)
+                end_idx = match.end(0)
+                result = match.group(0)[13:-1]
                 (variable_to_eval, singular_form, plural_form) = result.split(',')
 
                 if (variable_to_eval not in self.bibdata[entrykey]):
@@ -2598,40 +2604,66 @@ class Bibdata(object):
                     suffix = self.options[plural_form.strip()]
                     newfield = field + suffix
 
-                if (nelements == 1):
+                newindexer = indexer[end_idx:]
+                if (nelements == 1) or (newindexer == ''):
                     return(newfield)
                 else:
-                    newindexer = '.'.join(index_elements[1:])
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
-            elif (index_elements[0] == 'lower()'):
+            elif indexer.startswith('.lower()'):
                 newfield = purify_string(field).lower()
-                if (nelements == 1):
+                newindexer = indexer[8:]
+                if (nelements == 1) or (newindexer == ''):
                     return(newfield)
                 else:
-                    newindexer = '.'.join(index_elements[1:])
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
-            elif (index_elements[0] == 'upper()'):
+            elif indexer.startswith('.upper()'):
                 newfield = purify_string(field).upper()
-                if (nelements == 1):
+                newindexer = indexer[8:]
+                if (nelements == 1) or (newindexer == ''):
                     return(newfield)
                 else:
-                    newindexer = '.'.join(index_elements[1:])
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
-            elif (index_elements[0] == 'zfill()'):
+            elif indexer.startswith('.zfill()'):
                 if str_is_integer(field) and (int(field) < 0):
                     newfield = '-' + str(field[1:]).zfill(4)
                 else:
                     newfield = str(field).zfill(4)
-                if (nelements == 1):
+                newindexer = indexer[8:]
+                if (nelements == 1) or (newindexer == ''):
                     return(newfield)
                 else:
-                    newindexer = '.'.join(index_elements[1:])
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
-            else:
-                msg = 'Warning 029c: the template for entry ' + entrykey + ' has an unknown function ' + \
-                      '"' + index_elements[0] + '". Aborting template substitution'
-                bib_warning(msg, disable=self.disable)
-                return(None)
+            elif indexer.startswith('.substr_replace('):
+                match = re.search(r'.substr_replace\(.*\)', indexer, re.UNICODE)
+                end_idx = match.end(0)
+                result = match.group(0)[16:-1]
+                (old, new) = result.split(',')
+                if (old in field):
+                    newfield = field.replace(old, new)
+                else:
+                    newfield = field
+
+                newindexer = indexer[end_idx:]
+                if (nelements == 1) or (newindexer == ''):
+                    return(newfield)
+                else:
+                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
+            elif indexer.startswith('.purify()'):
+                newfield = purify_string(field)
+                newindexer = indexer[9:]
+                if (nelements == 1) or (newindexer == ''):
+                    return(newfield)
+                else:
+                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
+
+                #sortkey = purify_string(templatestr)
+
+
+            #else:
+            #    msg = 'Warning 029c: the template for entry ' + entrykey + ' has an unknown function ' + \
+            #          '"' + index_elements[0] + '". Aborting template substitution'
+            #    bib_warning(msg, disable=self.disable)
+            #    return(None)
 
         if isinstance(field, str):
             return(field)
@@ -2652,7 +2684,7 @@ class Bibdata(object):
             if (nelements == 1):
                 return(newfield)
             else:
-                newindexer = '.'.join(index_elements[1:])
+                newindexer = '.' + '.'.join(index_elements[1:])
                 return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
 
         ## The code should never reach here!
@@ -2663,7 +2695,7 @@ class Bibdata(object):
     ## ===================================
     def get_indexed_vars_in_template(self, templatestr):
         '''
-        Get a list of the indxed variables within a template.
+        Get a list of the indexed variables within a template.
 
         Parameters
         ----------
@@ -4259,7 +4291,8 @@ def get_variable_name_elements(variable):
 ## ===================================
 def get_names(entry, templatestr):
     '''
-    Get the list of names associated with a given entry, assuming priority to authornames and then to editornames.
+    Get the list of names associated with a given entry, giving priority to the first namelist
+    present in the "namelists" list.
 
     Parameters
     ----------
@@ -4274,13 +4307,14 @@ def get_names(entry, templatestr):
         The list of names found.
     '''
 
-    ## TODO: right now I've hard-coded "authorname" and "editorname" here. Need this to be more flexible.
+    ## TODO: currently, the code is tied to using the 'authorname' and 'editorname'. Users should
+    ## have the ability to use whatever names they want. How can we achieve that?
     if ('authorname' in templatestr) and ('authorlist' in entry):
         return(entry['authorlist'])
     elif ('editorname' in templatestr) and ('editorlist' in entry):
         return(entry['editorlist'])
-    else:
-        return([])
+
+    return([])
 
 ## =============================
 def format_namelist(namelist, nametype='author', options=None):
