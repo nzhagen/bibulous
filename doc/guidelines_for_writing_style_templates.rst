@@ -62,9 +62,9 @@ Syntax
 
     Another example usage would be the following:::
 
-    author = [<著者名>|<author-en>|]
+    author = [<author-en>|<author-jp>|]
 
-    where the ``author`` field is actually redefined to include not only the *existing* author field, but also the fields ``著者名`` or ``author-en``. That is, if the ``author`` field is missing in the database entry, the code next searches for the ``著者名`` field. If it finds it, then it will create an ``author`` field that contains a copy of the ``著者名``'s field's contents. If the ``著者名`` is also missing, the code next searches for ``author-en`` and uses that fields contents to create the missing ``author`` field.
+    where the ``author`` field is actually redefined to include not only the *existing* author field, but also the fields ``author-en`` or ``author-jp``. That is, if the ``author`` field is missing in the database entry (the field matching the thing on the left hand side), the code next searches for the ``author-en`` field. If it finds it, then it will create an ``author`` field that contains a copy of the ``author-en``'s field's contents. If the ``author-en`` is also missing, the code next searches for ``author-jp`` and uses that fields contents to create the missing ``author`` field. This is a convenient way of grouping different variable names in order to simplify templates.
 
 #. The order in which any definitions are placed within the special templates is important. For example, if a user has ``au = <authorlist.format_authorlist()>`` and then below that defines ``authorlist = <author.to_namelist()>``, then the code will issue an error stating that ``authorlist`` is not defined when attempting to create the ``au`` variable. Since the definition for ``au`` assumes the presence of the ``authorlist`` variable, the latter definition must be placed above it.
 
@@ -122,7 +122,9 @@ The complete list of operators available is:::
     .monthabbrev()
     .monthname()
     .ordinal()
+    .purify()
     .remove_leading_zeros()
+    .replace(old,new)
     .sentence_case()
     .tie()
     .to_namelist()
@@ -135,7 +137,7 @@ The function of each operator is summarized below.
 
     <authorlist.0.first><authorlist.0.middle.initial().compress()> <authorlist.0.last>
 
-Without the ``.compress()`` operator, the name would come out as "RM A Azzam", where the two middle name initials "M" amnd "A" are spaced apart from one another by default.
+Without the ``.compress()`` operator, the name would come out as "RM A Azzam", since the two middle name initials "M" and "A" are spaced apart from one another by default.
 
 **.format_authorlist()** operates on a list of dictionaries type of variable (a namelist), and uses the keyword-based default formatting scheme to create a formatted string of names. The complete list keywords that it work with is: ``etal_message``, ``maxauthors``, ``minauthors``, ``namelist_format``, ``period_after_initial``, ``terse_inits``, ``use_firstname_initials``, ``use_name_ties``. The default formatter, while fast, is not very flexible, so that users looking for more customizability will want to make use of Bibulous' implicit-index and implicit-loop based definitions. See the *Example definitions for namelist formatting* section below.
 
@@ -156,7 +158,11 @@ Without the ``.compress()`` operator, the name would come out as "RM A Azzam", w
 
 **.ordinal()** creates an "ordinal" from a numerical field. Thus, if the field operated on is "1", "2", "3", or "4", then the operator will replace the template with "1st", "2nd", "3rd" or "4th". Any number above 4 simply has "th" appended to the end of it. Currently Bibulous does not support non-English locales for this function. (Anyone having suggestions of how this may be implemented without too much fuss should contact us!)
 
+**.purify()** attempts to convert its argument into a string without LaTeX-markup for foreign characters. Thus, if the entry contains ``title = {{\AA}land}`` then a template variable of the form ``<title.purify()>`` will produce the result ``Åland``. This can be useful when having to use ``substr_replace()`` and other functions where the markup may cause matching problems.
+
 **.remove_leading_zeros()** deletes any zeros from the front of the field operated on. Thus "003" will be returned as "3".
+
+**.replace(old,new)** will replace the substring ``old`` with ``new`` wherever it finds ``old`` within the string it is applied to. For example, if a user wants to make the name "J. W. Tukey" bold everywhere it appears in a reference, then ``.replace(J. W. Tukey,\textbf{J. W. Tukey})`` will work. Note that whitespace is preserved here. Thus, ``.replace(J. W. Tukey, \textbf{J. W. Tukey})`` will add a space in front of ``\textbf{J. W. Tukey}``. Also, Bibulous will not allow the use of ``<``, ``>``, ``|``, or ``)`` characters in the two arguments of the operator.
 
 **.sentence_case()** reduces the lower case any characters in the field, except for the initial letter and any letters protected within a pair of curly braces. For example, if the database entry has ``title = {Understanding Bohmian mechanics}`` and the template has the form ``<title.sentence_case()>``, then the template variable will be replaced with "Understanding bohmian mechanics". However, if the entry has ``title = {Understanding {B}ohmian mechanics}``, the result will be "Understanding {B}ohmian mechanics".
 
@@ -192,7 +198,6 @@ A complete list of existing options keywords, together with their default defini
     namelist_format = first_name_first
     period_after_initial = True
     procspie_as_journal = False
-    show_urls = False
     sort_case = True
     terse_inits = False
     undefstr = ???
@@ -234,8 +239,6 @@ Each of the keywords is summarized below.
 **period_after_initial** [default value: True] tells the ``.format_namelist()`` operator whether to place a period after each initial of an individual's name. Thus, if ``period_after_initial = True``, a name will appear as "R. M. A. Azzam", but if ``False`` will appear as "R M A Azzam". (This keyword is only used within the ``.format_namelist()`` operator.)
 
 **procspie_as_journal** [default value: False] The "Proceedings of SPIE" are treated as special by the journals of the Optical Society of America. That is, they format these proceedings (and only these) in the same way that they do journal articles. Thus, a special keyword is required to allow this behavior.
-
-**show_urls** [default value: False] informs Bibulous whether or not to use the ``hyperref`` package for placing hyperlinks into the formatted reference.
 
 **sort_case** [default value: True] informs Bibulous whether or not to use case-sensitive sorting of reference keys.
 
