@@ -126,7 +126,10 @@ def run_test4():
     ## The default locale will be US english. Ironically, the locale argument needs to use an ASCII string, and since
     ## the default string encoding here is Unicode, we have to re-encode it manually. Later below, we will try some
     ## other locale settings.
-    thislocale = locale.setlocale(locale.LC_ALL,'en_US.UTF8'.encode('ascii','replace'))
+    if (os.name == 'posix'):
+        thislocale = locale.setlocale(locale.LC_ALL,'en_US.UTF8'.encode('ascii','replace'))
+    elif (os.name == 'nt'):
+        thislocale = locale.setlocale(locale.LC_ALL,'usa_usa'.encode('ascii','replace'))
 
     ## Need to make a list of all the citation sort options we want to try. Skip "citenum" since that is the default,
     ## and so has been tested already. Note: In the "uniquify" example below, the .upper() operator is needed to force the
@@ -245,7 +248,10 @@ def run_test7():
     ## The default locale will be US english. Ironically, the locale argument needs to use an ASCII string, and since
     ## the default string encoding here is Unicode, we have to re-encode it manually. Later below, we will try some
     ## other locale settings.
-    thislocale = locale.setlocale(locale.LC_ALL,'en_US.UTF8'.encode('ascii','replace'))
+    if (os.name == 'posix'):
+        thislocale = locale.setlocale(locale.LC_ALL,'en_US.UTF8'.encode('ascii','replace'))
+    elif (os.name == 'nt'):
+        thislocale = locale.setlocale(locale.LC_ALL,'usa_usa'.encode('ascii','replace'))
 
     ## Need to make a list of all the citation label options we want to try. Skip "citenum" since that is the default,
     ## and so has been tested already.
@@ -318,7 +324,8 @@ def run_test9():
     Test #9 is a pltform for running conditions in which the entire database needs to be re-read with each test.
     '''
 
-    auxfiles = ['./test/test9_case_sensitive_fieldnames.aux']
+    auxfiles = ['./test/test9_case_sensitive_fieldnames.aux',
+                './test/test9_italian_name_separator.aux']
     bblfile = './test/test9.bbl'
     target_bblfile = './test/test9_target.bbl'
 
@@ -331,6 +338,7 @@ def run_test9():
         write_preamble = (auxfile == auxfiles[0])
         write_postamble = (auxfile == auxfiles[-1])
         bibobj.write_bblfile(write_preamble=write_preamble, write_postamble=write_postamble)
+        print('')
 
     return(bblfile, target_bblfile)
 
@@ -380,43 +388,43 @@ def check_file_match(testnum, outputfile, targetfile):
 if (__name__ == '__main__'):
     suite_pass = True
 
-#    ## Run test #1.
-#    (outputfile, targetfile) = run_test1()
-#    result = check_file_match(1, outputfile, targetfile)
-#    suite_pass *= result
-#
-#    ## Run test #2.
-#    result = run_test2()
-#    suite_pass *= result
-#
-#    ## Run test #3.
-#    (outputfile, targetfile) = run_test3()
-#    result = check_file_match(3, outputfile, targetfile)
-#    suite_pass *= result
-#
-#    ## Run test #4.
-#    (outputfile, targetfile) = run_test4()
-#    result = check_file_match(4, outputfile, targetfile)
-#    suite_pass *= result
-#
-#    ## Run test #5.
-#    (outputfile, targetfile) = run_test5()
-#    result = check_file_match(5, outputfile, targetfile)
-#    suite_pass *= result
-#
-#    ## Run test #6.
-#    result = run_test6()
-#    suite_pass *= result
-#
-#    ## Run test #7.
-#    (outputfile, targetfile) = run_test7()
-#    result = check_file_match(7, outputfile, targetfile)
-#    suite_pass *= result
-#
-#    ## Run test #8.
-#    (outputfile, targetfile) = run_test8()
-#    result = check_file_match(8, outputfile, targetfile)
-#    suite_pass *= result
+    ## Run test #1.
+    (outputfile, targetfile) = run_test1()
+    result = check_file_match(1, outputfile, targetfile)
+    suite_pass *= result
+
+    ## Run test #2.
+    result = run_test2()
+    suite_pass *= result
+
+    ## Run test #3.
+    (outputfile, targetfile) = run_test3()
+    result = check_file_match(3, outputfile, targetfile)
+    suite_pass *= result
+
+    ## Run test #4.
+    (outputfile, targetfile) = run_test4()
+    result = check_file_match(4, outputfile, targetfile)
+    suite_pass *= result
+
+    ## Run test #5.
+    (outputfile, targetfile) = run_test5()
+    result = check_file_match(5, outputfile, targetfile)
+    suite_pass *= result
+
+    ## Run test #6.
+    result = run_test6()
+    suite_pass *= result
+
+    ## Run test #7.
+    (outputfile, targetfile) = run_test7()
+    result = check_file_match(7, outputfile, targetfile)
+    suite_pass *= result
+
+    ## Run test #8.
+    (outputfile, targetfile) = run_test8()
+    result = check_file_match(8, outputfile, targetfile)
+    suite_pass *= result
 
     ## Run test #9.
     (outputfile, targetfile) = run_test9()

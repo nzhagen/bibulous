@@ -54,6 +54,7 @@ author_firstname_initials = <au-E>, \enquote{<title>} (<year>).
 editor_firstname_initials = <ed-A.if_singular(editorlist, edmsg1, edmsg2)>, \enquote{<title>} (<year>).
 andothers = \textit{<au-F>} <title> // <booktitle>[ / Ed. by <ed-B.if_singular(editorlist, nothing, etal_message)>] -- <publisher>, <address>, <year>. -- P.~<startpage> -- <endpage>.
 lowerupper = <au>, <title.upper()> (<publisher.sentence_case()>, <address.lower()>, <year.upper()>).
+substr_replace = <au.replace(J. W. Tukey,\textbf{J. W. Tukey})>, \enquote{<title.replace(Sunset,\color{red}Sunset\color{black})>,} <journal.replace(American,\textit{American})> \textbf{<volume>} (<year>).
 
 
 SPECIAL-TEMPLATES:

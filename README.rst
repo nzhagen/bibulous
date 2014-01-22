@@ -10,6 +10,8 @@ Bibulous incorporates this template approach, and at the same time implements ma
 
 Bibulous' “style template” files allow a user to visualize the entire bibliography format structure in a concise way within a single page of text. Moreover, the template is structured with its own Python-like mini-language, intended to allow uses to create flexible formatting instructions quickly and easily. The example below illustrates the simplicity of the format.
 
+The project website, with complete documentation, can be found at `http://nzhagen.github.io/bibulous/`_.
+
 Installation
 ============
 
@@ -40,12 +42,10 @@ Developers
 
 Bibulous is a new project, and so it has until now been a solo effort. Anyone interested in helping out is welcome to join; just send an email to the developers mailing list and we will try to help you get involved and show you the ropes. And, this being the maintainer's first open source project, any suggestions by experienced developers are welcome.
 
-Guidelines for developers are given in ``developer_guide.rst``, and includes an overview of the project's strategy and overall code structure. Note that a bug tracking system has not yet been set up for the project. HTML-based documentation is provided in ``bibulous/doc/_build/html/index.html``, and a corresponding PDF file in ``bibulous/doc/_build/latex/Bibulous.pdf``. The ``setup.py`` and ``MANIFEST.in`` files provided in the repository base directory are used to create a Python package using the ``disutils`` distribution utilities module.
+Guidelines for developers are given in ``developer_guide.rst``, and includes an overview of the project's strategy and overall code structure. Note that a bug tracking system has not yet been set up for the project. HTML-based documentation is provided at ``bibulous/doc/_build/html/index.html``, and a corresponding PDF file at ``bibulous/doc/_build/latex/Bibulous.pdf``. The ``setup.py`` and ``MANIFEST.in`` files provided in the repository base directory are used to create a Python package using the ``disutils`` distribution utilities module.
 
 License
 =======
 
-Bibulous is released under the MIT/X11 license, meaning that it is free and open source, and that it can be used without restriction in other programs, commercial or not. The license is given in the file ``LICENSE.txt``, the text of which is reproduced here:
-
-.. include:: ../LICENSE.txt
+Bibulous is released under the MIT/X11 license, meaning that it is free and open source, and that it can be used without restriction in other programs, commercial or not. The full license is given in the file ``LICENSE.txt``.
 

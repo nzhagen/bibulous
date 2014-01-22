@@ -2633,10 +2633,10 @@ class Bibdata(object):
                     return(newfield)
                 else:
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
-            elif indexer.startswith('.substr_replace('):
-                match = re.search(r'.substr_replace\(.*\)', indexer, re.UNICODE)
+            elif indexer.startswith('.replace('):
+                match = re.search(r'.replace\(.*\)', indexer, re.UNICODE)
                 end_idx = match.end(0)
-                result = match.group(0)[16:-1]
+                result = match.group(0)[9:-1]
                 (old, new) = result.split(',')
                 if (old in field):
                     newfield = field.replace(old, new)
@@ -2655,10 +2655,6 @@ class Bibdata(object):
                     return(newfield)
                 else:
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
-
-                #sortkey = purify_string(templatestr)
-
-
             #else:
             #    msg = 'Warning 029c: the template for entry ' + entrykey + ' has an unknown function ' + \
             #          '"' + index_elements[0] + '". Aborting template substitution'

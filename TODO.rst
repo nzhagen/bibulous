@@ -2,20 +2,14 @@ Python code to-do list: (including goals for version 2.0)
 ---------------------------------------------------------
 
 The primary goal for version 2.0 is to incorporate integration with a front-end LaTeX package.
-For version 1.3, the goal is to have namelist templates working.
-
-- In the get_names() function, you've hard-coded the authorlist and editorlist variables. Switch to querying
-  the member variables inside "self.namelists".
-
-- What's going on with the "show_urls" keyword? This appears in bibulous.py, and was used at some point,
-  but is commented out now. Remind yourself what it does and maybe resurrect it.
+For version 1.4, the goal is to have group templates working.
 
 - In Italian, the word for "and" is "e". So, in the formatted reference, an authorlist would look like
   "name1, name2, e name3" --- here we used "e" instead of the default "and". How to allow users to switch this
   easily? Using an operator that looks for a "language" field? Or a language keyword? Once you get this
   working, test it for Italian and Japanese. For Japanese, test using a "space" character for a separator.
 
-- Implementing the GROUP-TEMPLATES section idea. This is a big enough change to bump the version
+- Implement the GROUP-TEMPLATES section idea. This is a big enough change to bump the version
   number of the codebase, as it would allow bibliographic sections and a much more flexible way
   of manipulating reference lists. The first step here would be to write a wrapper around write_bblfile(),
   and expanding write_bblfile()'s ability (or removing it to the higher level) of turning on/off writing
@@ -38,26 +32,20 @@ For version 1.3, the goal is to have namelist templates working.
   That is, the first author is given as ``lastname, firstname'' whereas the other authors are given as 
   ``firstname lastname``.
 
+- In the get_names() function, you've hard-coded the "authorname" and "editorname" variables. Users should be
+  able to whatever names they like. Fixing this is harder than it looks at first glance! How to inform a given
+  template which namelist to query, when all it knows locally is the template string and not the actual field?
+
 - Simplify the ``get_indexed_variable()`` function!
 
-- Find out how to make the following functionality possible. A user wants to make a given author's name bold 
-  (or underlined, or in color, or whatever) every time it shows up in the bibliography.
-
 - You no longer have functionality using the ``.N`` index (for maximum index). Put that back in.
-
-- Note that the special template definition::
-
-    author = [<著者名>|<author-en>|]
-
-  never *replaces* the ``author`` field. It only applies this definition if the field is already missing.
-  Need to clarify this in the documentation.
 
 - If a user added any options blocks to their defined variables, then they may have turned an
   unnested sequence into a nested one. Need to look for that. We can probably do this check
   when the BST file is parsed, rather than when we do string substitution in the template
   for every entry.
 
-- Get ``backrefs`` option back up and working.
+- Get the ``backrefs`` option back up and working.
 
 - Allow direct integration with front-end for: generating glossaries, customizing the
   appearance of citation labels, etc.
@@ -116,11 +104,7 @@ For version 1.3, the goal is to have namelist templates working.
 Python testing to-do
 --------------------
 
-- Add a test for using a name separator different from ``and``.
-
-- Add a test that checks that concatenating operators, like <var.upper().initial()> works.
-
-- Add a test for the new .zfill() operator.
+- Add a test for the new .zfill() operator in test1 (and not just test5).
 
 - Add a test for locale-dependent sorting? This requires a lot of work to set up for full
   BIB-AUX-BBL mapping. So it may be best to wait for a more directed test to come along.
@@ -134,25 +118,3 @@ Python testing to-do
   That is, the first and last elements of the loop must have the same variable structure. Currently 
   the code simply truncates the RHS of the last element and ignores it, but it really should return
   a warning message.
-
-- When I put the line::
-
-    if ('(' in name): print('NAME:', name)
-
-  as the first line inside the function ``initialize_name()``, then in test1 I get::
-
-    NAME: E. (Eric)
-    NAME: E. (Eric)
-    NAME: E. (Eric)
-    NAME: E. (Eric)
-    NAME: E. (Eric)
-    NAME: E. (Eric)
-    NAME: E. (Eric)
-    NAME: E. (Eric)
-    NAME: E. (Eric)
-    NAME: E. (Eric)
-
-  So the question is: why does it go into this initializer 10 (!) times for the same name? I can see it doing
-  this once for the sortkey, and then once more for the actual entry, but why 10 times? That might be wasting 
-  a huge amount of computational time.
-
