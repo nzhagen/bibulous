@@ -108,6 +108,8 @@ David B. Chenault and Dennis H. Goldstein, eds, ``Polarization: Measurement, Ana
 M. C. A. Name, TITLE WAS IN LOWER CASE (Sentencecase, lowercase, 1985).
 \bibitem{substr_replace}
 \textbf{J. W. Tukey}, ``\color{red}Sunset\color{black} salvo,'' The \textit{American} Statistician \textbf{40} (1986).
+\bibitem{japanese_name_separator}
+舩冨卓哉 美濃導彦, 動物体三次元形状計測システム (2013).
 \bibitem[key_not_in_database]{key_not_in_database}
 \textit{Warning: citation key "key_not_in_database" is not in the bibliography database}.
 

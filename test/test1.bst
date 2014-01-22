@@ -55,6 +55,7 @@ editor_firstname_initials = <ed-A.if_singular(editorlist, edmsg1, edmsg2)>, \enq
 andothers = \textit{<au-F>} <title> // <booktitle>[ / Ed. by <ed-B.if_singular(editorlist, nothing, etal_message)>] -- <publisher>, <address>, <year>. -- P.~<startpage> -- <endpage>.
 lowerupper = <au>, <title.upper()> (<publisher.sentence_case()>, <address.lower()>, <year.upper()>).
 substr_replace = <au.replace(J. W. Tukey,\textbf{J. W. Tukey})>, \enquote{<title.replace(Sunset,\color{red}Sunset\color{black})>,} <journal.replace(American,\textit{American})> \textbf{<volume>} (<year>).
+japanese_name_separator = <au-G>, <title> (<year>).
 
 
 SPECIAL-TEMPLATES:
@@ -75,6 +76,9 @@ authorname-E.n = [<authorlist.n.first> ][<authorlist.n.middle> ][<authorlist.n.p
 au-E = <authorname-E.0>, ...,{ and }<authorname-E.N>
 authorname-F.n = [<authorlist.n.prefix> ]<authorlist.n.last>, <authorlist.n.first.initial()>.[ <authorlist.n.middle.initial()>.][,  <authorlist.n.suffix>.]
 au-F = <authorname-F.0>, ..., <authorname-F.N>
+authorname-G.n = <authorlist.n.first> <authorlist.n.last>
+au-G = <authorname-G.0>, ..., <authorname-G.N>
+
 editorname.n = [<editorlist.n.first.initial()>. ][<editorlist.n.middle.initial()>. ][<editorlist.n.prefix> ]<editorlist.n.last>[, <editorlist.n.suffix>]
 ed = <editorname.0>, ...,{ and }<editorname.2>
 editorname-A.n = [<editorlist.n.first> ][<editorlist.n.middle> ][<editorlist.n.prefix> ]<editorlist.n.last>[, <editorlist.n.suffix>]
