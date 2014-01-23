@@ -4,11 +4,6 @@ Python code to-do list: (including goals for version 2.0)
 The primary goal for version 2.0 is to incorporate integration with a front-end LaTeX package.
 For version 1.4, the goal is to have group templates working.
 
-- In Italian, the word for "and" is "e". So, in the formatted reference, an authorlist would look like
-  "name1, name2, e name3" --- here we used "e" instead of the default "and". How to allow users to switch this
-  easily? Using an operator that looks for a "language" field? Or a language keyword? Once you get this
-  working, test it for Italian and Japanese. For Japanese, test using a "space" character for a separator.
-
 - Implement the GROUP-TEMPLATES section idea. This is a big enough change to bump the version
   number of the codebase, as it would allow bibliographic sections and a much more flexible way
   of manipulating reference lists. The first step here would be to write a wrapper around write_bblfile(),
@@ -103,8 +98,6 @@ For version 1.4, the goal is to have group templates working.
 
 Python testing to-do
 --------------------
-
-- Add a test for the new .zfill() operator in test1 (and not just test5).
 
 - Add a test for locale-dependent sorting? This requires a lot of work to set up for full
   BIB-AUX-BBL mapping. So it may be best to wait for a more directed test to come along.

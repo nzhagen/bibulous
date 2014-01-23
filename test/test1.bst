@@ -56,6 +56,7 @@ andothers = \textit{<au-F>} <title> // <booktitle>[ / Ed. by <ed-B.if_singular(e
 lowerupper = <au>, <title.upper()> (<publisher.sentence_case()>, <address.lower()>, <year.upper()>).
 substr_replace = <au.replace(J. W. Tukey,\textbf{J. W. Tukey})>, \enquote{<title.replace(Sunset,\color{red}Sunset\color{black})>,} <journal.replace(American,\textit{American})> \textbf{<volume>} (<year>).
 japanese_name_separator = <au-G>, <title> (<year>).
+zfill = <au.zfill()>, <title> (<year.zfill()>).
 
 
 SPECIAL-TEMPLATES:
