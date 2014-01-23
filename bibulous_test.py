@@ -259,7 +259,8 @@ def run_test7():
                   '[<authorlist.0.last>|<editorlist.0.last>|]-<year>',
                   '<citealpha>',
                   '[<authorlist.0.last>|<editorlist.0.last>|], <year>',
-                  '[<authorlist.0.last>|<editorlist.0.last>|] (<year>)']
+                  '[<authorlist.0.last>|<editorlist.0.last>|] (<year>)',
+                  '(<citealnum>)']
 
     print('\n' + '='*75)
     print('Running Bibulous Test #7')
