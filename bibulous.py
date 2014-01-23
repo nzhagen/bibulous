@@ -1085,7 +1085,9 @@ class Bibdata(object):
             if ('<citealnum' in self.specials['citelabel']):
                 alphanums = create_alphanum_citelabels(c, self.bibdata, self.citelist)
                 for c in self.citelist:
-                    self.bibdata[c]['citelabel'] = alphanums[c]
+                    res = self.specials['citelabel'].replace('<citealnum>',alphanums[c])
+                    #res = template_substitution(self, templatestr, entrykey, templatekey
+                    self.bibdata[c]['citelabel'] = res
 
             ## Write out each individual bibliography entry. Some formatting options will actually cause the entry to
             ## be deleted, so we need the check below to see if the return string is empty before writing it to the
