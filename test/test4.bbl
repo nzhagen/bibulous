@@ -45,7 +45,7 @@ Y. Otobe and P. Horton, ``jBibTEXの使用法,'' ソフトバンクパブリッ�
 乙. {厳己} and P. Horton, ``jBibTEXの使用法,'' ソフトバンクパブリッシング (2006).
 
 
-%% SETTING SORTKEY = [<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear.zfill()>|<year.zfill()>|][<sorttitle>|<title>]
+%% SETTING SORTKEY = [<sortname.compress()>|<authorlist.0.last.purify().compress()>|<editorlist.0.last.purify().compress()>|][<authorlist.0.first.purify().compress()>|<editorlist.0.first.purify().compress()>][<sortyear.zfill()>|<year.zfill()>|][<sorttitle.purify().compress()>|<title.purify().compress()>]
 \bibitem{AA0000}
 AA and A. bb, ``None'' (0000).
 \bibitem{Strangekey}
@@ -84,7 +84,7 @@ B. Yanny, C. Rockosi, H. J. Newberg, G. R. Knapp, J. K. Adelman-McCarthy, B. Alc
 乙. {厳己} and P. Horton, ``jBibTEXの使用法,'' ソフトバンクパブリッシング (2006).
 
 
-%% SETTING SORTKEY = [<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sorttitle>|<title>][<sortyear.zfill()>|<year.zfill()>|]
+%% SETTING SORTKEY = [<sortname.compress()>|<authorlist.0.last.purify().compress()>|<editorlist.0.last.purify().compress()>|][<authorlist.0.first.purify().compress()>|<editorlist.0.first.purify().compress()>][<sorttitle.purify().compress()>|<title.purify().compress()>][<sortyear.zfill()>|<year.zfill()>|]
 \bibitem{Strangekey}
 M. Aaa, ``Nothing of consequence'' (1901).
 \bibitem{AA0000}
@@ -123,7 +123,7 @@ B. Yanny, C. Rockosi, H. J. Newberg, G. R. Knapp, J. K. Adelman-McCarthy, B. Alc
 乙. {厳己} and P. Horton, ``jBibTEXの使用法,'' ソフトバンクパブリッシング (2006).
 
 
-%% SETTING SORTKEY = [<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear.zfill()>|<year.zfill()>|]<volume>[<sorttitle>|<title>]
+%% SETTING SORTKEY = [<sortname.compress()>|<authorlist.0.last.purify().compress()>|<editorlist.0.last.purify().compress()>|][<authorlist.0.first.purify().compress()>|<editorlist.0.first.purify().compress()>][<sortyear.zfill()>|<year.zfill()>|]<volume>[<sorttitle.purify().compress()>|<title.purify().compress()>]
 \bibitem{AA0000}
 AA and A. bb, ``None'' (0000).
 \bibitem{Strangekey}
@@ -162,7 +162,7 @@ B. Yanny, C. Rockosi, H. J. Newberg, G. R. Knapp, J. K. Adelman-McCarthy, B. Alc
 乙. {厳己} and P. Horton, ``jBibTEXの使用法,'' ソフトバンクパブリッシング (2006).
 
 
-%% SETTING SORTKEY = [<alphalabel>][<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear.zfill()>|<year.zfill()>|][<sorttitle>|<title>]
+%% SETTING SORTKEY = [<alphalabel.compress()>][<sortname.compress()>|<authorlist.0.last.purify().compress()>|<editorlist.0.last.purify().compress()>|][<authorlist.0.first.purify().compress()>|<editorlist.0.first.purify().compress()>][<sortyear.zfill()>|<year.zfill()>|][<sorttitle>|<title.purify().compress()>]
 \bibitem{Strangekey}
 M. Aaa, ``Nothing of consequence'' (1901).
 \bibitem{AA0000}
@@ -201,7 +201,7 @@ B. Bunny, ``Looney tunes'' (2001).
 乙. {厳己} and P. Horton, ``jBibTEXの使用法,'' ソフトバンクパブリッシング (2006).
 
 
-%% SETTING SORTKEY = [<alphalabel>][<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear.zfill()>|<year.zfill()>|]<volume>[<sorttitle>|<title>]
+%% SETTING SORTKEY = [<alphalabel.compress()>][<sortname.compress()>|<authorlist.0.last.purify().compress()>|<editorlist.0.last.purify().compress()>|][<authorlist.0.first.purify().compress()>|<editorlist.0.first.purify().compress()>][<sortyear.zfill()>|<year.zfill()>|]<volume>[<sorttitle.purify().compress()>|<title.purify().compress()>]
 \bibitem{Strangekey}
 M. Aaa, ``Nothing of consequence'' (1901).
 \bibitem{AA0000}
@@ -240,7 +240,7 @@ B. Bunny, ``Looney tunes'' (2001).
 乙. {厳己} and P. Horton, ``jBibTEXの使用法,'' ソフトバンクパブリッシング (2006).
 
 
-%% SETTING SORTKEY = [<sortyear.zfill()>|<year.zfill()>][<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sorttitle>|<title>]
+%% SETTING SORTKEY = [<sortyear.zfill()>|<year.zfill()>][<sortname.compress()>|<authorlist.0.last.purify().compress()>|<editorlist.0.last.purify().compress()>|][<authorlist.0.first.purify().compress()>|<editorlist.0.first.purify().compress()>][<sorttitle.purify().compress()>|<title.purify().compress()>]
 \bibitem{bb-1}
 A. bb and AA, ``Nothing much'' (-1).
 \bibitem{AA0000}
@@ -279,7 +279,7 @@ S. Mustafa, J. Hannagan, P. Rigby, K. Pfleger, and B. Corry, ``Quantitative F{\"
 S. Mustafa, J. Hannagan, P. Rigby, K. Pfleger, and B. Corry, ``Quantitative Förster resonance energy transfer efficiency measurements using simultaneous spectral unmixing of excitation and emission spectra'' (2013).
 
 
-%% SETTING SORTKEY = [<sortyear.zfill()>|<year.zfill()>][<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sorttitle>|<title>]
+%% SETTING SORTKEY = [<sortyear.zfill()>|<year.zfill()>][<sortname.compress()>|<authorlist.0.last.purify().compress()>|<editorlist.0.last.purify().compress()>|][<authorlist.0.first.purify().compress()>|<editorlist.0.first.purify().compress()>][<sorttitle.purify().compress()>|<title.purify().compress()>]
 %% SETTING SORT_ORDER = Reverse
 \bibitem{Mustafa2013}
 S. Mustafa, J. Hannagan, P. Rigby, K. Pfleger, and B. Corry, ``Quantitative Förster resonance energy transfer efficiency measurements using simultaneous spectral unmixing of excitation and emission spectra'' (2013).
@@ -319,7 +319,7 @@ AA and A. bb, ``None'' (0000).
 A. bb and AA, ``Nothing much'' (-1).
 
 
-%% SETTING SORTKEY = [<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear.zfill()>|<year.zfill()>][<sorttitle>|<title>]
+%% SETTING SORTKEY = [<sortname.compress()>|<authorlist.0.last.purify().compress()>|<editorlist.0.last.purify().compress()>|][<authorlist.0.first.purify().compress()>|<editorlist.0.first.purify().compress()>][<sortyear.zfill()>|<year.zfill()>][<sorttitle.purify().compress()>|<title.purify().compress()>]
 %% SETTING SORT_CASE = True
 \bibitem{AA0000}
 AA and A. bb, ``None'' (0000).

@@ -12,7 +12,7 @@ authorname.n = [<authorlist.n.first.initial()>. ][<authorlist.n.middle.initial()
 au = <authorname.0>, ...,{ and }<authorname.6>
 author_or_editor = [[<authorlist.0.prefix>|<authorlist.0.last>]|[<editorlist.0.prefix>|<editorlist.0.last>]]
 citelabel = None
-sortkey = [<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear.zfill()>|<year.zfill()>][<sorttitle>|<title>]
+sortkey = [<sortname.compress()>|<authorlist.0.last.purify().compress()>|<editorlist.0.last.purify().compress()>|][<authorlist.0.first.purify().compress()>|<editorlist.0.first.purify().compress()>][<sortyear.zfill()>|<year.zfill()>][<sorttitle.purify().compress()>|<title.purify().compress()>]
 
 
 OPTIONS:
