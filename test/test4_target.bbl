@@ -5,7 +5,8 @@
 \setlength{\itemsep}{0pt}
 
 
-%% SETTING SORTKEY = <citekey>
+%% SETTING PRESORTKEY = <citekey>
+%% SETTING SORTKEY = <presortkey.purify().lower().compress()>
 
 \bibitem{AA0000}
 AA and A. bb, ``None'' (0000).
@@ -16,7 +17,7 @@ A. Aspect, P. Grangier, and G. Roger, ``Experimental realization of Einstein-Pod
 \bibitem{bb-1}
 A. bb and AA, ``Nothing much'' (-1).
 \bibitem{Blouke2000}
-M. M. Blouke, N. Sampat, G. M. Williams, Jr., and T. Yeh, eds, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications,'' SPIE (2000).
+M. M. Blouke, N. Sampat, G. M. Williams, Jr., and T. Yeh, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications,'' SPIE (2000).
 \bibitem{Bunny1}
 B. Bunny, ``Looney tunes'' (2001).
 \bibitem{Chang1992}
@@ -45,7 +46,8 @@ Y. Otobe and P. Horton, ``jBibTEXの使用法,'' ソフトバンクパブリッ�
 乙. {厳己} and P. Horton, ``jBibTEXの使用法,'' ソフトバンクパブリッシング (2006).
 
 
-%% SETTING SORTKEY = [<sortname.compress()>|<authorlist.0.last.purify().compress()>|<editorlist.0.last.purify().compress()>|][<authorlist.0.first.purify().compress()>|<editorlist.0.first.purify().compress()>][<sortyear.zfill()>|<year.zfill()>|][<sorttitle.purify().compress()>|<title.purify().compress()>]
+%% SETTING PRESORTKEY = [<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear.zfill()>|<year.zfill()>|][<sorttitle>|<title>]
+%% SETTING SORTKEY = <presortkey.purify().lower().compress()>
 \bibitem{AA0000}
 AA and A. bb, ``None'' (0000).
 \bibitem{Strangekey}
@@ -57,7 +59,7 @@ A. Aspect, P. Grangier, and G. Roger, ``Experimental realization of Einstein-Pod
 \bibitem{bb-1}
 A. bb and AA, ``Nothing much'' (-1).
 \bibitem{Blouke2000}
-M. M. Blouke, N. Sampat, G. M. Williams, Jr., and T. Yeh, eds, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications,'' SPIE (2000).
+M. M. Blouke, N. Sampat, G. M. Williams, Jr., and T. Yeh, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications,'' SPIE (2000).
 \bibitem{Chang1992}
 C.-I. Chang, ``Implementation scheme for recursion in spectral dimension'' (1992).
 \bibitem{Gemert1995}
@@ -84,7 +86,8 @@ B. Yanny, C. Rockosi, H. J. Newberg, G. R. Knapp, J. K. Adelman-McCarthy, B. Alc
 乙. {厳己} and P. Horton, ``jBibTEXの使用法,'' ソフトバンクパブリッシング (2006).
 
 
-%% SETTING SORTKEY = [<sortname.compress()>|<authorlist.0.last.purify().compress()>|<editorlist.0.last.purify().compress()>|][<authorlist.0.first.purify().compress()>|<editorlist.0.first.purify().compress()>][<sorttitle.purify().compress()>|<title.purify().compress()>][<sortyear.zfill()>|<year.zfill()>|]
+%% SETTING PRESORTKEY = [<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sorttitle>|<title>][<sortyear.zfill()>|<year.zfill()>|]
+%% SETTING SORTKEY = <presortkey.purify().lower().compress()>
 \bibitem{Strangekey}
 M. Aaa, ``Nothing of consequence'' (1901).
 \bibitem{AA0000}
@@ -96,7 +99,7 @@ A. Aspect, P. Grangier, and G. Roger, ``Experimental realization of Einstein-Pod
 \bibitem{bb-1}
 A. bb and AA, ``Nothing much'' (-1).
 \bibitem{Blouke2000}
-M. M. Blouke, N. Sampat, G. M. Williams, Jr., and T. Yeh, eds, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications,'' SPIE (2000).
+M. M. Blouke, N. Sampat, G. M. Williams, Jr., and T. Yeh, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications,'' SPIE (2000).
 \bibitem{Chang1992}
 C.-I. Chang, ``Implementation scheme for recursion in spectral dimension'' (1992).
 \bibitem{Gemert1995}
@@ -135,7 +138,7 @@ A. Aspect, P. Grangier, and G. Roger, ``Experimental realization of Einstein-Pod
 \bibitem{bb-1}
 A. bb and AA, ``Nothing much'' (-1).
 \bibitem{Blouke2000}
-M. M. Blouke, N. Sampat, G. M. Williams, Jr., and T. Yeh, eds, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications,'' SPIE (2000).
+M. M. Blouke, N. Sampat, G. M. Williams, Jr., and T. Yeh, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications,'' SPIE (2000).
 \bibitem{Chang1992}
 C.-I. Chang, ``Implementation scheme for recursion in spectral dimension'' (1992).
 \bibitem{Gemert1995}
@@ -162,7 +165,8 @@ B. Yanny, C. Rockosi, H. J. Newberg, G. R. Knapp, J. K. Adelman-McCarthy, B. Alc
 乙. {厳己} and P. Horton, ``jBibTEXの使用法,'' ソフトバンクパブリッシング (2006).
 
 
-%% SETTING SORTKEY = [<alphalabel.compress()>][<sortname.compress()>|<authorlist.0.last.purify().compress()>|<editorlist.0.last.purify().compress()>|][<authorlist.0.first.purify().compress()>|<editorlist.0.first.purify().compress()>][<sortyear.zfill()>|<year.zfill()>|][<sorttitle>|<title.purify().compress()>]
+%% SETTING PRESORTKEY = [<alphalabel>][<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear.zfill()>|<year.zfill()>|][<sorttitle>|<title>]
+%% SETTING SORTKEY = <presortkey.purify().lower().compress()>
 \bibitem{Strangekey}
 M. Aaa, ``Nothing of consequence'' (1901).
 \bibitem{AA0000}
@@ -176,7 +180,7 @@ B. Yanny, C. Rockosi, H. J. Newberg, G. R. Knapp, J. K. Adelman-McCarthy, B. Alc
 \bibitem{bb-1}
 A. bb and AA, ``Nothing much'' (-1).
 \bibitem{Blouke2000}
-M. M. Blouke, N. Sampat, G. M. Williams, Jr., and T. Yeh, eds, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications,'' SPIE (2000).
+M. M. Blouke, N. Sampat, G. M. Williams, Jr., and T. Yeh, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications,'' SPIE (2000).
 \bibitem{Chang1992}
 C.-I. Chang, ``Implementation scheme for recursion in spectral dimension'' (1992).
 \bibitem{Gemert1995}
@@ -215,7 +219,7 @@ B. Yanny, C. Rockosi, H. J. Newberg, G. R. Knapp, J. K. Adelman-McCarthy, B. Alc
 \bibitem{bb-1}
 A. bb and AA, ``Nothing much'' (-1).
 \bibitem{Blouke2000}
-M. M. Blouke, N. Sampat, G. M. Williams, Jr., and T. Yeh, eds, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications,'' SPIE (2000).
+M. M. Blouke, N. Sampat, G. M. Williams, Jr., and T. Yeh, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications,'' SPIE (2000).
 \bibitem{Chang1992}
 C.-I. Chang, ``Implementation scheme for recursion in spectral dimension'' (1992).
 \bibitem{Gemert1995}
@@ -260,7 +264,7 @@ C.-I. Chang, ``Implementation scheme for recursion in spectral dimension'' (1992
 \bibitem{Gemert1995}
 M. J. C. van Gemert, ``One dimensional transport theory,'' in Optical-Thermal Response of Laser-Irradiated Tissue, Plenum Press (1995).
 \bibitem{Blouke2000}
-M. M. Blouke, N. Sampat, G. M. Williams, Jr., and T. Yeh, eds, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications,'' SPIE (2000).
+M. M. Blouke, N. Sampat, G. M. Williams, Jr., and T. Yeh, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications,'' SPIE (2000).
 \bibitem{乙部2006}
 Y. Otobe and P. Horton, ``jBibTEXの使用法,'' ソフトバンクパブリッシング (2006). [In Japanese.]
 \bibitem{Otobe2006}
@@ -279,7 +283,8 @@ S. Mustafa, J. Hannagan, P. Rigby, K. Pfleger, and B. Corry, ``Quantitative F{\"
 S. Mustafa, J. Hannagan, P. Rigby, K. Pfleger, and B. Corry, ``Quantitative Förster resonance energy transfer efficiency measurements using simultaneous spectral unmixing of excitation and emission spectra'' (2013).
 
 
-%% SETTING SORTKEY = [<sortyear.zfill()>|<year.zfill()>][<sortname.compress()>|<authorlist.0.last.purify().compress()>|<editorlist.0.last.purify().compress()>|][<authorlist.0.first.purify().compress()>|<editorlist.0.first.purify().compress()>][<sorttitle.purify().compress()>|<title.purify().compress()>]
+%% SETTING PRESORTKEY = [<sortyear.zfill()>|<year.zfill()>][<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sorttitle>|<title>]
+%% SETTING SORTKEY = <presortkey.purify().lower().compress()>
 %% SETTING SORT_ORDER = Reverse
 \bibitem{Mustafa2013}
 S. Mustafa, J. Hannagan, P. Rigby, K. Pfleger, and B. Corry, ``Quantitative Förster resonance energy transfer efficiency measurements using simultaneous spectral unmixing of excitation and emission spectra'' (2013).
@@ -298,7 +303,7 @@ Y. Otobe and P. Horton, ``jBibTEXの使用法,'' ソフトバンクパブリッ�
 \bibitem{乙部2006}
 Y. Otobe and P. Horton, ``jBibTEXの使用法,'' ソフトバンクパブリッシング (2006). [In Japanese.]
 \bibitem{Blouke2000}
-M. M. Blouke, N. Sampat, G. M. Williams, Jr., and T. Yeh, eds, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications,'' SPIE (2000).
+M. M. Blouke, N. Sampat, G. M. Williams, Jr., and T. Yeh, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications,'' SPIE (2000).
 \bibitem{Gemert1995}
 M. J. C. van Gemert, ``One dimensional transport theory,'' in Optical-Thermal Response of Laser-Irradiated Tissue, Plenum Press (1995).
 \bibitem{Chang1992}
@@ -319,8 +324,8 @@ AA and A. bb, ``None'' (0000).
 A. bb and AA, ``Nothing much'' (-1).
 
 
-%% SETTING SORTKEY = [<sortname.compress()>|<authorlist.0.last.purify().compress()>|<editorlist.0.last.purify().compress()>|][<authorlist.0.first.purify().compress()>|<editorlist.0.first.purify().compress()>][<sortyear.zfill()>|<year.zfill()>][<sorttitle.purify().compress()>|<title.purify().compress()>]
-%% SETTING SORT_CASE = True
+%% SETTING PRESORTKEY = [<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear.zfill()>|<year.zfill()>][<sorttitle>|<title>]
+%% SETTING SORTKEY = <presortkey.purify().compress()>
 \bibitem{AA0000}
 AA and A. bb, ``None'' (0000).
 \bibitem{Strangekey}
@@ -332,7 +337,7 @@ A. Aspect, P. Grangier, and G. Roger, ``Experimental realization of Einstein-Pod
 \bibitem{bb-1}
 A. bb and AA, ``Nothing much'' (-1).
 \bibitem{Blouke2000}
-M. M. Blouke, N. Sampat, G. M. Williams, Jr., and T. Yeh, eds, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications,'' SPIE (2000).
+M. M. Blouke, N. Sampat, G. M. Williams, Jr., and T. Yeh, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications,'' SPIE (2000).
 \bibitem{Chang1992}
 C.-I. Chang, ``Implementation scheme for recursion in spectral dimension'' (1992).
 \bibitem{Gemert1995}
