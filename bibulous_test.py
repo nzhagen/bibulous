@@ -134,16 +134,26 @@ def run_test4():
     ## Need to make a list of all the citation sort options we want to try. Skip "citenum" since that is the default,
     ## and so has been tested already. Note: In the "uniquify" example below, the .upper() operator is needed to force the
     ## code to see 'b' and 'B' as being the same (and thus need a unique ending) when case-indep. sorting is being used.
-    sortkeys = ['<citekey>',
-                '[<sortname.compress()>|<authorlist.0.last.purify().compress()>|<editorlist.0.last.purify().compress()>|][<authorlist.0.first.purify().compress()>|<editorlist.0.first.purify().compress()>][<sortyear.zfill()>|<year.zfill()>|][<sorttitle.purify().compress()>|<title.purify().compress()>]',
-                '[<sortname.compress()>|<authorlist.0.last.purify().compress()>|<editorlist.0.last.purify().compress()>|][<authorlist.0.first.purify().compress()>|<editorlist.0.first.purify().compress()>][<sorttitle.purify().compress()>|<title.purify().compress()>][<sortyear.zfill()>|<year.zfill()>|]',
-                '[<sortname.compress()>|<authorlist.0.last.purify().compress()>|<editorlist.0.last.purify().compress()>|][<authorlist.0.first.purify().compress()>|<editorlist.0.first.purify().compress()>][<sortyear.zfill()>|<year.zfill()>|]<volume>[<sorttitle.purify().compress()>|<title.purify().compress()>]',
-                '[<alphalabel.compress()>][<sortname.compress()>|<authorlist.0.last.purify().compress()>|<editorlist.0.last.purify().compress()>|][<authorlist.0.first.purify().compress()>|<editorlist.0.first.purify().compress()>][<sortyear.zfill()>|<year.zfill()>|][<sorttitle>|<title.purify().compress()>]',
-                '[<alphalabel.compress()>][<sortname.compress()>|<authorlist.0.last.purify().compress()>|<editorlist.0.last.purify().compress()>|][<authorlist.0.first.purify().compress()>|<editorlist.0.first.purify().compress()>][<sortyear.zfill()>|<year.zfill()>|]<volume>[<sorttitle.purify().compress()>|<title.purify().compress()>]',
-                '[<sortyear.zfill()>|<year.zfill()>][<sortname.compress()>|<authorlist.0.last.purify().compress()>|<editorlist.0.last.purify().compress()>|][<authorlist.0.first.purify().compress()>|<editorlist.0.first.purify().compress()>][<sorttitle.purify().compress()>|<title.purify().compress()>]',
-                '[<sortyear.zfill()>|<year.zfill()>][<sortname.compress()>|<authorlist.0.last.purify().compress()>|<editorlist.0.last.purify().compress()>|][<authorlist.0.first.purify().compress()>|<editorlist.0.first.purify().compress()>][<sorttitle.purify().compress()>|<title.purify().compress()>]',
-                #'<author_or_editor.initial().upper().uniquify(num)>',
-                '[<sortname.compress()>|<authorlist.0.last.purify().compress()>|<editorlist.0.last.purify().compress()>|][<authorlist.0.first.purify().compress()>|<editorlist.0.first.purify().compress()>][<sortyear.zfill()>|<year.zfill()>][<sorttitle.purify().compress()>|<title.purify().compress()>]']
+    presortkeys = ['<citekey>',
+                   '[<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear.zfill()>|<year.zfill()>|][<sorttitle>|<title>]',
+                   '[<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sorttitle>|<title>][<sortyear.zfill()>|<year.zfill()>|]',
+                   '[<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear.zfill()>|<year.zfill()>|]<volume>[<sorttitle>|<title>]',
+                   '[<alphalabel>][<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear.zfill()>|<year.zfill()>|][<sorttitle>|<title>]',
+                   '[<alphalabel>][<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear.zfill()>|<year.zfill()>|]<volume>[<sorttitle>|<title>]',
+                   '[<sortyear.zfill()>|<year.zfill()>][<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sorttitle>|<title>]',
+                   '[<sortyear.zfill()>|<year.zfill()>][<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sorttitle>|<title>]',
+                   #'<author_or_editor.initial().upper().uniquify(num)>',
+                   '[<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear.zfill()>|<year.zfill()>][<sorttitle>|<title>]']
+    sortkeys = ['<presortkey.purify().lower().compress()>',
+                '<presortkey.purify().lower().compress()>',
+                '<presortkey.purify().lower().compress()>',
+                '<presortkey.purify().lower().compress()>',
+                '<presortkey.purify().lower().compress()>',
+                '<presortkey.purify().lower().compress()>',
+                '<presortkey.purify().lower().compress()>',
+                '<presortkey.purify().lower().compress()>',
+                #'<presortkey.purify().lower().compress()>',
+                '<presortkey.purify().compress()>']              ## do not use .lower() here, in order to test sorting *with* case sensitivity
 
     sort_case_options = ['False', 'False', 'False', 'False', 'False', 'False', 'False', 'False', 'True']
     #sort_case_options = ['True', 'True', 'True', 'True', 'True', 'True', 'True', 'True', 'True']
@@ -157,6 +167,7 @@ def run_test4():
     filehandle.close()
 
     for i in range(len(sortkeys)):
+        presortkey = presortkeys[i]
         sortkey = sortkeys[i]
         sort_case_option = sort_case_options[i]
         sort_order_option = sort_order_options[i]
@@ -164,7 +175,9 @@ def run_test4():
         ## First go into the BST file and rewrite the "sortkey" line to be the current sortkey template.
         filehandle = open(bstfile, 'w')
         for line in lines:
-            if line.startswith('sortkey = '):
+            if line.startswith('presortkey = '):
+                filehandle.write('presortkey = ' + presortkey + '\n')
+            elif line.startswith('sortkey = '):
                 filehandle.write('sortkey = ' + sortkey + '\n')
             elif line.startswith('sort_case = '):
                 filehandle.write('sort_case = ' + sort_case_option + '\n')
@@ -176,16 +189,19 @@ def run_test4():
 
         bibobj = Bibdata(auxfile, disable=[9], silent=(i>0))
         bibobj.locale = thislocale
-        bibobj.bibdata['preamble'] = '\n\n%% SETTING SORTKEY = ' + sortkey
+        bibobj.bibdata['preamble'] = '\n\n%% SETTING PRESORTKEY = ' + presortkey
+        bibobj.bibdata['preamble'] += '\n%% SETTING SORTKEY = ' + sortkey
         #bibobj.debug = True     ## turn on debugging for citekey printing
-        print('Setting sortkey = ' + sortkey)
+        print('Setting PRESORTKEY = ' + presortkey)
+        print('Setting SORTKEY = ' + sortkey)
 
-        write_preamble = (sortkey == sortkeys[0])
-        write_postamble = (sortkey == sortkeys[-1])
+        write_preamble = (presortkey == presortkeys[0])
+        write_postamble = (presortkey == presortkeys[-1])
         if not write_preamble:
             filehandle = open(bblfile, 'a')
-            filehandle.write('\n\n%% SETTING SORTKEY = ' + sortkey + '\n')
-            if (sort_case_option == 'True'): filehandle.write('%% SETTING SORT_CASE = True\n')
+            filehandle.write('\n\n%% SETTING PRESORTKEY = ' + presortkey + '\n')
+            filehandle.write('%% SETTING SORTKEY = ' + sortkey + '\n')
+            #if (sort_case_option == 'True'): filehandle.write('%% SETTING SORT_CASE = True\n')
             if (sort_order_option == 'Reverse'): filehandle.write('%% SETTING SORT_ORDER = Reverse\n')
             filehandle.close()
 
