@@ -1,17 +1,17 @@
 TEMPLATES:
 article = <au>, ``[\href{<url>}{<title>}|\href{<doi>}{<title>}|<title>|],'' \textit{<journal>} \textbf{<volume>}: [<startpage>--<endpage>|<startpage>|<eid>|] (<year>).[ <note>]
-book = [<au>|<ed.if_singular(editorlist, edmsg1, edmsg2)>|<organization>|<institution>|], \textit{<title>}[, <edition_ordinal>~ed.][, vol.~<volume>] (<publisher>, <year>)[ Chap.~<chapter>][, pp.~<startpage>--<endpage>].[ <note>]
+book = [<au>|<ed>|<organization>|<institution>|], \textit{<title>}[, <edition_ordinal>~ed.][, vol.~<volume>] (<publisher>, <year>)[ Chap.~<chapter>][, pp.~<startpage>--<endpage>].[ <note>]
 endnote = <note>
 inbook = incollection
-incollection = <au>, ``<title>,'' in \textit{<booktitle>}, [vol.~<volume>, ][<edition_ordinal>~ed., ][<ed.if_singular(editorlist, edmsg1, edmsg2)>, ][<series>, ][Chap.~<chapter>, ][pp.~<startpage>--<endpage>|<eid>|] (<publisher>, <year>).[ <note>]
-inproceedings = <au>, ``<title>,'' in \textit{<booktitle>}[, <ed.if_singular(editorlist, edmsg1, edmsg2)>][, in <series>][ \textbf{<volume>}][, pp.~<startpage>--<endpage>|, <eid>] (<year>). [<note>]
-manual = [<au>|<ed.if_singular(editorlist, edmsg1, edmsg2)>|<organization>|<institution>|], \textit{<title>}, [vol.~<volume>, ][<edition_ordinal>~ed., |ver.~<version>, ][<ed.if_singular(editorlist, edmsg1, edmsg2)>, ] (<organization>, <year>)[, Chap.~<chapter>][, pp.~<startpage>--<endpage>].[ <note>]
+incollection = <au>, ``<title>,'' in \textit{<booktitle>}, [vol.~<volume>, ][<edition_ordinal>~ed., ][<ed>, ][<series>, ][Chap.~<chapter>, ][pp.~<startpage>--<endpage>|<eid>|] (<publisher>, <year>).[ <note>]
+inproceedings = <au>, ``<title>,'' in \textit{<booktitle>}[, <ed>][, in <series>][ \textbf{<volume>}][, pp.~<startpage>--<endpage>|, <eid>] (<year>). [<note>]
+manual = [<au>|<ed>|<organization>|<institution>|], \textit{<title>}, [vol.~<volume>, ][<edition_ordinal>~ed., |ver.~<version>, ][<ed>, ] (<organization>, <year>)[, Chap.~<chapter>][, pp.~<startpage>--<endpage>].[ <note>]
 mastersthesis = <au>, ``<title>,'' M.S. dissertation (<school>, <year>).[ <note>]
 misc = [<au>, ][``<title>''][ (<organization>, <year>)| (<year>)].[ <note>]
 patent = <au>, ``<title>,'' <nationality> patent <number> (<year>).[ <note>]
 phdthesis = <au>, ``<title>,'' Ph.D. dissertation (<school>, <year>).[ <note>]
-proceedings = <ed.if_singular(editorlist, edmsg1, edmsg2)>, \textit{<title>}, [vol.~<volume>][, <edition_ordinal>~ed.] (<year>).[ <note>]
-techreport = [<au>, |<ed.if_singular(editorlist, edmsg1, edmsg2)>, ]``<title>,'' <institution>, Tech.\ Report <number> (<year>).[ <note>]
+proceedings = <ed>, \textit{<title>}, [vol.~<volume>][, <edition_ordinal>~ed.] (<year>).[ <note>]
+techreport = [<au>, |<ed>, ]``<title>,'' <institution>, Tech.\ Report <number> (<year>).[ <note>]
 unpublished = misc
 
 
