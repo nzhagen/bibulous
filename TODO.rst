@@ -4,6 +4,16 @@ Python code to-do list: (including goals for version 2.0)
 The primary goal for version 2.0 is to incorporate integration with a front-end LaTeX package.
 For version 1.4, the goal is to have group templates working.
 
+- You seem to have duplicate special variables "citekey" and "entrykey".
+
+- Add a test using the following special template: 
+  ``author_or_editor = [[[<authorlist.0.prefix>]<authorlist.0.last>]|[[<editorlist.0.prefix>]<editorlist.0.last>]]``.
+  This is a good test for allowing nested templates.
+
+- Note that while the special-template ``au = <authorname.0>, ...,{ and }<authorname.6>`` works fine, the
+  special-template ``au = [<authorname.0>, ...,{ and }<authorname.6>]`` does *not*. The code treats the final
+  square bracket as part of the implicit loop, and not as a signature of an optional template block. Fix that!
+
 - Implement the GROUP-TEMPLATES section idea. This is a big enough change to bump the version
   number of the codebase, as it would allow bibliographic sections and a much more flexible way
   of manipulating reference lists. The first step here would be to write a wrapper around write_bblfile(),
@@ -13,8 +23,7 @@ For version 1.4, the goal is to have group templates working.
 - Add the operator .uniquify(arg) to the documentation?
 
 - Is there a way to implement the ``<citealpha>`` variable with templates rather than using an internal 
-  special-case function? Also, is it possible to remove the ``generate_sortkey()`` function and use
-  templates to do everything needed?
+  special-case function?
 
 - For every style file you have in the ``templates/`` folder, you should construct an example to put into the
   documentation. Use a standard bibliography database for each, format it with LaTeX, take a screenshot of the
@@ -31,7 +40,7 @@ For version 1.4, the goal is to have group templates working.
   able to whatever names they like. Fixing this is harder than it looks at first glance! How to inform a given
   template which namelist to query, when all it knows locally is the template string and not the actual field?
 
-- Simplify the ``get_indexed_variable()`` function!
+- Simplify the ``get_indexed_variable()`` function inside ``bibulous.py``!
 
 - You no longer have functionality using the ``.N`` index (for maximum index). Put that back in.
 

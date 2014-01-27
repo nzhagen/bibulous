@@ -1070,8 +1070,7 @@ class Bibdata(object):
 
         ## Use a try-except block here, so that if any exception is raised then we can make sure to produce a valid
         ## BBL file.
-        #try:
-        if True: #zzz
+        try:
             ## First insert special variables, so that the citation sorter and everything else can use them. Also
             ## insert cross-reference data. Doing these here means that we don't have to add lots of extra checks later.
             for c in self.citedict:
@@ -1086,7 +1085,6 @@ class Bibdata(object):
                 alphanums = create_alphanum_citelabels(c, self.bibdata, self.citelist)
                 for c in self.citelist:
                     res = self.specials['citelabel'].replace('<citealnum>',alphanums[c])
-                    #res = template_substitution(self, templatestr, entrykey, templatekey
                     self.bibdata[c]['citelabel'] = res
 
             ## Write out each individual bibliography entry. Some formatting options will actually cause the entry to
@@ -1102,11 +1100,10 @@ class Bibdata(object):
                 if (s != ''):
                     ## Need two line EOL's here and not one so that backrefs can work properly.
                     filehandle.write((s + '\n').encode('utf-8'))
-        #except Exception, err:
-        #    ## Swallow the exception
-        #    print('Exception encountered: ' + repr(err))
-        #finally:
-        if True: #zzz
+        except Exception, err:
+            ## Swallow the exception
+            print('Exception encountered: ' + repr(err))
+        finally:
             if write_postamble:
                 filehandle.write('\n\\end{thebibliography}\n'.encode('utf-8'))
             filehandle.close()
@@ -1122,6 +1119,9 @@ class Bibdata(object):
         self.citelist = []
         self.sortlist = []
 
+        ## If the sortkeys all begin with numbers, then sort numerically (i.e. -100 before -99, 99 before 100, etc).
+        humansort = True
+
         ## Generate a sortkey for each citation.
         for c in self.citedict:
             if (c in self.bibdata):
@@ -1131,12 +1131,16 @@ class Bibdata(object):
             self.sortlist.append(s)
             self.citelist.append(c)
 
+            if not re.search(r'^-?[0-9]+', s, re.UNICODE) and not s.startswith(self.options['undefstr']):
+                humansort = False
+
         ## This part can be a little tricky. If the sortkey is generated such that it begins with an integer, then we
         ## should make sure that negative-values get sorted in front of positive ones. This happens correctly in simple
         ## sort() but not when we use locale's "strcoll". So we have to separate the two cases manually. Also, use
         ## [::-1] on the negative integers because they need to be ordered from largest number to smallest.
-        variables = re.findall(r'<.*?>', self.specials['sortkey'])
-        if (variables[0] in ['<year>','<sortyear>','<year.zfill()>','<sortyear.zfill()>']):
+        #variables = re.findall(r'<.*?>', self.specials['sortkey'])
+        #if variables and (variables[0] in ['<year>','<sortyear>','<year.zfill()>','<sortyear.zfill()>']):
+        if humansort:
             neg_idx = [i for (i,k) in enumerate(self.sortlist) if k[0] == '-']
             pos_idx = [i for (i,k) in enumerate(self.sortlist) if k[0] != '-']
             pos_sortkeys = [self.sortlist[x] for x in pos_idx]
@@ -1832,10 +1836,11 @@ class Bibdata(object):
 
             ## The "sortkey" special requires a special function to operate correctly.
             #zzz
-            if (key == 'sortkey'):
-                res = self.generate_sortkey(entrykey)
-                self.bibdata[entrykey][key] = res
-                continue
+            #if (key == 'sortkey'):
+            #    res = self.generate_sortkey(entrykey)
+            #    self.bibdata[entrykey][key] = res
+            #    print('generating sortkey for "' + entrykey + '": ' + res)
+            #    continue
 
             templatestr = self.specials[key]
 
@@ -1854,15 +1859,13 @@ class Bibdata(object):
             ## not a matter of creating entry fields.
             res = self.template_substitution(templatestr, entrykey, templatekey=key)
 
-            ## Insert the result as a new field in the database entry. Note that the "('???' not in res)" piece of code
-            ## is not quite ideal, but it is an easy solution that has a low probability of breaking (low prob. that
-            ## a user will need to use "???" in a template).
-            if (res not in (None, '', self.options['undefstr'])) and ('???' not in res):
+            ## Insert the result as a new field in the database entry. Note that the "(self.options['undefstr'] not in res)"
+            ## piece of code is not quite ideal, but it is an easy solution that has a low probability of breaking
+            ## (low prob. that a user will need to use the "undefstr" in a template).
+            if template_has_implicit_index and (self.options['undefstr'] not in res):
                 self.bibdata[entrykey][key] = res
-
-            if (key == 'sortkey'):
-                #pdb.set_trace()
-                print('generating sortkey for "' + entrykey + '": ' + res)
+            elif (res not in (None, '', self.options['undefstr'])):
+                self.bibdata[entrykey][key] = res
 
         return
 
@@ -1954,8 +1957,9 @@ class Bibdata(object):
         if not has_implicit_loop and not has_index:
             return(templatestr)
         elif has_index and not has_implicit_loop:
-            ## Get a list of the indexed variables
+            ## Get a list of the indexed variables.
             indexed_vars = self.get_indexed_vars_in_template(templatestr)
+
             for v in indexed_vars:
                 elem = get_variable_name_elements(v)
                 varname = elem['name'] + '.' + elem['prefix'] + 'n'
@@ -2118,7 +2122,14 @@ class Bibdata(object):
 
         bibentry = self.bibdata[entrykey]
 
-        ## Fill out the template if there is an implicit loop structure
+        ## Fill out the template if there is an implicit loop structure.
+        template_has_implicit_index = True if re.search(self.implicit_index_pattern, templatestr) else False
+        template_has_implicit_loop = True if '...' in templatestr else False
+        if template_has_implicit_loop:
+            ## In order to check if all of the variables use din an implicit loop are undefined, we make a template
+            ## string in which all of the variables are replaced with "???", and check to see if the result equals that.
+            templatestr_all_undef = re.sub(r'<.*?>', self.options['undefstr'], templatestr, re.UNICODE)
+
         templatestr = self.fillout_implicit_indices(templatestr, entrykey)
 
         if (templatekey != None):
@@ -2138,46 +2149,55 @@ class Bibdata(object):
 
         ## Go ahead and replace all of the template variables with the corresponding fields.
         for var in variables:
-            if (var in templatestr):
-                varname = var[1:-1]     ## remove angle brackets to extract just the name
+            if (var not in templatestr): continue
 
-                ## The "title" variable has to be treated specially to deal with punctuation conflicts.
-                if varname.startswith('title') and ('title' in bibentry):
-                    templatestr = self.insert_title_into_template(var, templatestr, bibentry)
-                    continue
-                elif varname.startswith('citealpha'):
-                    ## Before we parse the template string to remove any undefined variables, we need to make sure that
-                    ## the entry has all the proper variables in it.
-                    templatestr = templatestr.replace(var, create_citation_alpha(bibentry, self.options))
-                    continue
-                elif varname.startswith('citealnum'):
-                    ## The "citealphanum" style has to be handled outside of the usual specials loop --- it requires
-                    ## that *all* of the citelist be fully defined before it can start.
-                    continue
+            varname = var[1:-1]     ## remove angle brackets to extract just the name
 
-                ## If the variable contains a function asking for initials, then one tricky part is that the "middle"
-                ## name part of a name dictionary can have multiple elements, so that each one needs to be initialed
-                ## independently (and a period would thus need to be added to each separately). Note that "var_options"
-                ## has to be kept separate from "options".
-                idx = templatestr.index(var)
-                if (idx + len(var) > 10):
-                    period_after_initial = (templatestr[idx+len(var)-10:idx+len(var)+1] == 'initial()>.') or \
-                                           (templatestr[idx+len(var)-16:idx+len(var)+1] == 'initial().tie()>.')
-                    var_options.update({'period_after_initial':period_after_initial})
-                else:
-                    var_options.update({'period_after_initial':False})
+            ## The "title" variable has to be treated specially to deal with punctuation conflicts.
+            if varname.startswith('title') and ('title' in bibentry):
+                templatestr = self.insert_title_into_template(var, templatestr, bibentry)
+                continue
+            elif varname.startswith('citealpha'):
+                ## Before we parse the template string to remove any undefined variables, we need to make sure that
+                ## the entry has all the proper variables in it.
+                templatestr = templatestr.replace(var, create_citation_alpha(bibentry, self.options))
+                continue
+            elif varname.startswith('citealnum'):
+                ## The "citealphanum" style has to be handled outside of the usual specials loop --- it requires
+                ## that *all* of the citelist be fully defined before it can start.
+                continue
 
-                ## Get the result of querying the variable in the entry. This will replace the template variable.
-                res = self.get_variable(bibentry, varname, options=var_options)
+            ## If the variable contains a function asking for initials, then one tricky part is that the "middle"
+            ## name part of a name dictionary can have multiple elements, so that each one needs to be initialed
+            ## independently (and a period would thus need to be added to each separately). Note that "var_options"
+            ## has to be kept separate from "options".
+            idx = templatestr.index(var)
+            if (idx + len(var) > 10):
+                period_after_initial = (templatestr[idx+len(var)-10:idx+len(var)+1] == 'initial()>.') or \
+                                       (templatestr[idx+len(var)-16:idx+len(var)+1] == 'initial().tie()>.')
+                var_options.update({'period_after_initial':period_after_initial})
+            else:
+                var_options.update({'period_after_initial':False})
 
-                if (res == None):
-                    templatestr = templatestr.replace(var, self.options['undefstr'])
-                elif isinstance(res, (list,dict)):
-                    ## If the object is a list and not a string, then we need to return it immediately, since the
-                    ## steps below assume a string.
-                    return(res)
-                else:
-                    templatestr = templatestr.replace(var, res)
+            ## Get the result of querying the variable in the entry. This will replace the template variable.
+            res = self.get_variable(bibentry, varname, options=var_options)
+
+            if (res == None):
+                templatestr = templatestr.replace(var, self.options['undefstr'])
+            elif isinstance(res, (list,dict)):
+                ## If the object is a list and not a string, then we need to return it immediately, since the
+                ## steps below assume a string.
+                return(res)
+            elif template_has_implicit_index and (self.options['undefstr'] in res):
+                templatestr = templatestr.replace(var, self.options['undefstr'])
+            else:
+                templatestr = templatestr.replace(var, res)
+
+        ## If the template uses an implicit loop, check if all variables were undefined. If none are defined, then the
+        ## whole template should be returned as undefined.
+        if template_has_implicit_loop:
+            if (templatestr == templatestr_all_undef):
+                return(None)
 
         ## Now that we've replaced template variables, go ahead and replace the special commands. We need to replace
         ## the hash symbol too because that indicates a comment when placed inside a template string.
