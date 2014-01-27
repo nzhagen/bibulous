@@ -1,18 +1,21 @@
 TEMPLATES:
-article = <au>, \enquote{<title>} (<year>).
+article = [<au>|<ed>|], \enquote{<title>} (<year>).
 incollection = [<au>|<ed.if_singular(editorlist, edmsg1, edmsg2)>|], \enquote{<title>,} [in <booktitle>, ]<publisher> (<year>).[ {\makeopenbracket}In <language>.{\makeclosebracket}]
 
 
 SPECIAL-TEMPLATES:
 author = <author-en>
 authorlist = <author.to_namelist()>
+editorlist = <editor.to_namelist()>
 title = [<title-ja>|<title-en>|]
 publisher = [<publisher-ja>|<publisher-en>|]
 authorname.n = [<authorlist.n.first.initial()>. ][<authorlist.n.middle.initial()>. ][<authorlist.n.prefix> ]<authorlist.n.last>[, <authorlist.n.suffix>]
 au = <authorname.0>, ...,{ and }<authorname.6>
-author_or_editor = [[<authorlist.0.prefix>|<authorlist.0.last>]|[<editorlist.0.prefix>|<editorlist.0.last>]]
+editorname.n = [<editorlist.n.first.initial()>. ][<editorlist.n.middle.initial()>. ][<editorlist.n.prefix> ]<editorlist.n.last>[, <editorlist.n.suffix>]
+ed = <editorname.0>, ...,{ and }<editorname.6>
 citelabel = None
-sortkey = [<sortname.compress()>|<authorlist.0.last.purify().compress()>|<editorlist.0.last.purify().compress()>|][<authorlist.0.first.purify().compress()>|<editorlist.0.first.purify().compress()>][<sortyear.zfill()>|<year.zfill()>][<sorttitle.purify().compress()>|<title.purify().compress()>]
+presortkey = [<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear.zfill()>|<year.zfill()>][<sorttitle>|<title>]
+sortkey = <presortkey.purify().compress()>
 
 
 OPTIONS:
