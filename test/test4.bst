@@ -14,7 +14,7 @@ au = <authorname.0>, ...,{ and }<authorname.6>
 editorname.n = [<editorlist.n.first.initial()>. ][<editorlist.n.middle.initial()>. ][<editorlist.n.prefix> ]<editorlist.n.last>[, <editorlist.n.suffix>]
 ed = <editorname.0>, ...,{ and }<editorname.6>
 citelabel = None
-presortkey = [<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear.zfill()>|<year.zfill()>][<sorttitle>|<title>]
+presortkey = [<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear.zfill(4)>|<year.zfill(4)>][<sorttitle>|<title>]
 sortkey = <presortkey.purify().compress()>
 
 
