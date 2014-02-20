@@ -2645,12 +2645,19 @@ class Bibdata(object):
                     return(newfield)
                 else:
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
-            elif indexer.startswith('.zfill()'):
-                if str_is_integer(field) and (int(field) < 0):
-                    newfield = '-' + str(field[1:]).zfill(4)
+            elif indexer.startswith('.zfill('):
+                match = re.search(r'.zfill\(.*\)', indexer, re.UNICODE)
+                end_idx = match.end(0)
+                result = match.group(0)[7:-1]
+                if result:
+                    nzeros = int(result)
                 else:
-                    newfield = str(field).zfill(4)
-                newindexer = indexer[8:]
+                    nzeros = 0
+                if str_is_integer(field) and (int(field) < 0):
+                    newfield = '-' + str(field[1:]).zfill(nzeros)
+                else:
+                    newfield = str(field).zfill(nzeros)
+                newindexer = indexer[end_idx:]
                 if (nelements == 1) or (newindexer == ''):
                     return(newfield)
                 else:
