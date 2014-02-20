@@ -108,6 +108,15 @@ For version 1.4, the goal is to have group templates working.
 Python testing to-do
 --------------------
 
+- The following entry (using ``and others`` in the author field) did not get correctly converted to an
+  *et al.* ending to the formatted author list::
+
+    @Misc{Arp2004,
+    title = {An open letter to the scientific community},
+    year = {2004},
+    author = {Halton Arp and others}
+    }
+
 - Add a test for locale-dependent sorting? This requires a lot of work to set up for full
   BIB-AUX-BBL mapping. So it may be best to wait for a more directed test to come along.
 
