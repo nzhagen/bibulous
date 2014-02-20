@@ -11,7 +11,7 @@ au = <authorname.0>, ...,{ and }<authorname.6>
 editorname.n = [<editorlist.n.first.initial()>. ][<editorlist.n.middle.initial()>. ][<editorlist.n.prefix> ]<editorlist.n.last>[, <editorlist.n.suffix>]
 ed = <editorname.0>, ...,{ and }<editorname.2>
 citelabel = (<citealnum>)
-sortkey = <citenum>
+sortkey = <citenum.zfill(2)>
 
 
 OPTIONS:

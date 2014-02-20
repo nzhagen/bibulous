@@ -1811,15 +1811,12 @@ class Bibdata(object):
             if not entry['doi'].startswith('http://dx.doi.org/'):
                 entry['doi'] = 'http://dx.doi.org/' + entry['doi']
 
-        ## Define the variables "citekey" and "citenum". Since the number value in "citedict" is an integer type rather
-        ## than a string, which causes problems. We can use "unicode()" to convert the int-type to string, but this
-        ## won't sort properly --- "10" will get sorted between "1" and "2". So we need to pad with zeros. How many
-        ## zeros depends on how many citations there are. Hence the "zfill" command below.
+        ## Define the variables "citekey" and "citenum".
         self.bibdata[entrykey]['citekey'] = entrykey
         if self.citedict:
             ncites = len(self.citedict)
             ndigits = 1 + int(log10(ncites))
-            citenum = unicode(self.citedict[entrykey]).zfill(ndigits)
+            citenum = unicode(self.citedict[entrykey])
         else:
             citenum = '0'
 

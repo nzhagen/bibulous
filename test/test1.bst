@@ -79,7 +79,6 @@ authorname-F.n = [<authorlist.n.prefix> ]<authorlist.n.last>, <authorlist.n.firs
 au-F = <authorname-F.0>, ..., <authorname-F.N>
 authorname-G.n = <authorlist.n.first> <authorlist.n.last>
 au-G = <authorname-G.0>, ..., <authorname-G.N>
-
 editorname.n = [<editorlist.n.first.initial()>. ][<editorlist.n.middle.initial()>. ][<editorlist.n.prefix> ]<editorlist.n.last>[, <editorlist.n.suffix>]
 ed = <editorname.0>, ...,{ and }<editorname.2>
 editorname-A.n = [<editorlist.n.first> ][<editorlist.n.middle> ][<editorlist.n.prefix> ]<editorlist.n.last>[, <editorlist.n.suffix>]
@@ -88,7 +87,7 @@ editorname-B.n = [<editorlist.n.prefix> ]<editorlist.n.last>, <editorlist.n.firs
 ed-B = <editorname-B.0>
 group = [<institution>|<organization>|<corporation>|]
 citelabel = None
-sortkey = <citenum>
+sortkey = <citenum.zfill(2)>
 
 
 OPTIONS:
