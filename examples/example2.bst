@@ -14,7 +14,7 @@ editorname.n = [<editorlist.n.prefix> ]<editorlist.n.last>[, <editorlist.n.first
 ed = <editorname.0>, ...,{ and }<editorname.5>
 authorlabel = [<authorlist.0.prefix>|<authorlist.0.last>]
 editorlabel = [<editorlist.0.prefix>|<editorlist.0.last>]
-sortkey = [<authorlabel><year.zfill()>|<editorlabel><year>]
+sortkey = [<authorlabel><year.zfill(4)>|<editorlabel><year>]
 citelabel = (<citealnum>)
 
 
