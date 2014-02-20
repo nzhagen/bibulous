@@ -1815,10 +1815,10 @@ class Bibdata(object):
         self.bibdata[entrykey]['citekey'] = entrykey
         if self.citedict:
             ncites = len(self.citedict)
-            ndigits = 1 + int(log10(ncites))
-            citenum = unicode(self.citedict[entrykey])
+            #ndigits = 1 + int(log10(ncites))
+            citenum = unicode(1 + self.citedict[entrykey])
         else:
-            citenum = '0'
+            citenum = '1'
 
         self.bibdata[entrykey]['citenum'] = citenum
 
