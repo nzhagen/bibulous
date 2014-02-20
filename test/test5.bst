@@ -13,7 +13,7 @@ editor = [<editor_en>]
 authorlist = <author.to_namelist()>
 editorlist = <editor.to_namelist()>
 citelabel = None
-sortkey = <year.zfill()>[<authorlist.0.last>|<editorlist.0.last>|]<title>
+sortkey = <year.zfill(4)>[<authorlist.0.last>|<editorlist.0.last>|]<title>
 
 
 OPTIONS:
