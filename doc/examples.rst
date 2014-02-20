@@ -11,65 +11,13 @@ The following example is taken from a question posted at ``http://tex.stackexcha
 .. image:: _static/example1a.png
    :width: 50%
 
-With Bibulous, we can easily provide templates that provide the formatting that the OP asks for:::
+With Bibulous, we can easily provide templates that provide the formatting that the OP asks for:
 
-    TEMPLATES:
-    article = \textit{<au>} <title> // <journal> -- <year>. -- Vol.~<volume>. P.~[<startpage> -- <endpage>|<startpage>|<eid>|].
-    book = \textit{<au>} <title>. [Ch.~<chapter>. ]-- <address>: <publisher>, <year>.[ -- <startpage>~p.]
-    inbook = \textit{<au>} <title> // <booktitle>[ / Ed. by <ed.if_singular(editorlist, nothing, etal_message)>]. -- <address>: ...
-             <publisher>, <year>.[ -- P.~<startpage> -- <endpage>| -- P.~<startpage>| -- P.~<eid>|].
-    inproceedings = \textit{<au>} <title> // <booktitle>[ / Ed. by <ed.if_singular(editorlist, nothing, etal_message)>]. -- ...
-             <publisher>, <address>, <year>. -- P.~[<startpage> -- <endpage>|<startpage>|<eid>|].
+.. literalinclude:: ../examples/example1.bst
 
-    SPECIAL-TEMPLATES:
-    authorlist = <author.to_namelist()>
-    editorlist = <editor.to_namelist()>
-    authorname.n = [<authorlist.n.prefix> ]<authorlist.n.last>[ <authorlist.n.first.initial()>.][ <authorlist.n.middle.initial()>.][,  <authorlist.n.suffix>.]
-    au = <authorname.0>, ..., <authorname.9>
-    ed = [<editorlist.0.first.initial()>. ][ <editorlist.0.middle.initial()>. ][<editorlist.0.prefix> ]<editorlist.0.last>[,  <editorlist.0.suffix>.]
+so that if we use this template together with the following database file:
 
-    OPTIONS:
-    nothing = {}
-
-so that if we use this template together with the following database file::
-
-    @article{Holzwarth,
-      author = {G. Holzwarth and G. Eckart},
-      title = {Fluid-dynamical approximation for finite Fermi systems},
-      journal = {Nucl. Phys.},
-      year = 1979,
-      volume = {A325},
-      pages = {1-30}
-    }
-    @book{Bertsch,
-      author = {G. F. Bertsch and R. A. Broglia},
-      title = {Oscillations in finite quantum systems},
-      chapter = 6,bibulous
-      address = {Cambridge},
-      publisher = {Cambridge University},
-      year = 1994,
-      pages = 150
-    }
-    @inbook{Woude,
-      author = {A. Van der Woude},
-      title = {The electric giant resonances},
-      booktitle = {Electric and magnetic giant resonances in nuclei},
-      editor = {J. Speth},
-      address = {Singapore},
-      publisher = {World Scientific P.C.},
-      year = 1991,
-      pages = {99-232}
-    }
-    @inproceedings{Smolanzuk,
-      author = {R. Smolanzuk and J. Skalski and A. Sobiczewski},
-      title = {Masses and half-life of superheavy elements},
-      booktitle = {Proc.\ of the International Workshop 24 on Gross Properties of Nuclei and Nuclear Excitations},
-      editor = {H. Feldmeier and others},
-      address = {Darmstadt},
-      publisher = {GSI},
-      year = 1996,
-      pages = {35-42}
-    }
+.. literalinclude:: ../examples/example1.bib
 
 then we get the formatted result shown below
 
@@ -206,13 +154,34 @@ so that with the following database file::
 
 we get the following formatted result
 
+.. image:: _static/example2b.png
+   :width: 50%
+
 Example 3
 =========
 
 Example 4
 =========
 
+
+
+
+
+
 Example 5
+=========
+
+
+
+
+
+
+
+
+
+
+
+Example ?
 =========
 
 This follows an online question posted at ``http://tex.stackexchange.com/questions/961/bibtex-style-that-groups-by-author``.
