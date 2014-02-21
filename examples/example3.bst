@@ -1,7 +1,7 @@
 TEMPLATES:
-article = <au>, \enquote{[\href{<url>}{<title>}|\href{<doi>}{<title>}|<title>],} <journal> \textbf{<volume>}, ...
+article = <au>, \enquote{[\href{<url>}{<title>}|\href{<doi>}{<title>}|<title>],} <journal> \textbf{<volume>},{ }...
         [<startpage>--<endpage>|<startpage>|<eid>|] (<year>).[ <note>]
-book = [<au>|<ed>|<organization>|<institution>|], \textit{<title>}[, <edition.ordinal()>~ed.][, vol.~<volume>] ...
+book = [<au>|<ed>|<organization>|<institution>|], \textit{<title>}[, <edition.ordinal()>~ed.][, vol.~<volume>]{ }...
         (<publisher>, <year>)[ Chap.~<chapter>][, pp.~<startpage>--<endpage>|, p.~<startpage>].[ <note>]
 endnote = <note>
 inbook = incollection
@@ -27,10 +27,10 @@ sortkey = <citenum.zfill(2)>              ## order the reference list in the sam
 citelabel = <citenum>.                    ## use numeric reference labels
 
 OPTIONS:
-maxauthors = 25                           ## if more than 25 authors, then use "et al." format
-minauthors = 9                            ## if "maxauthors" is exceeded, then display only the first "minauthors" and et al.
-maxeditors = 5                            ## if more than 5 editors, then use "et al." format
-mineditors = 5                            ## if "maxeditors" is exceeded, then display only the first "mineditors" and et al.
+maxauthors = 25                           ## if more than 25 authors, then use "et al." format (only applied when using the default "<au>" variable)
+minauthors = 9                            ## if "maxauthors" is exceeded, then display only the first "minauthors" and et al. (only applied when using the default "<au>" variable)
+maxeditors = 5                            ## if more than 5 editors, then use "et al." format (only applied when using the default "<ed>" variable)
+mineditors = 5                            ## if "maxeditors" is exceeded, then display only the first "mineditors" and et al. (only applied when using the default "<ed>" variable)
 procspie_as_journal = True                ## treat SPIE conference proceedings like a journal, with journal name 'Proc. SPIE'
 sort_case = False                         ## whether to use case-sensitive citation sorting (default is False)
 use_abbrevs = True                        ## whether to use the abbreviation strings (mainly useful for debugging)
