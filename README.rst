@@ -10,7 +10,7 @@ Bibulous incorporates this template approach, and at the same time implements ma
 
 Bibulous' “style template” files allow a user to visualize the entire bibliography format structure in a concise way within a single page of text. Moreover, the template is structured with its own Python-like mini-language, intended to allow uses to create flexible formatting instructions quickly and easily. The example below illustrates the simplicity of the format.
 
-The project website, with complete documentation, can be found at `http://nzhagen.github.io/bibulous/`_.
+The project website, with complete documentation, can be found at ``http://nzhagen.github.io/bibulous/``.
 
 Installation
 ============
