@@ -1,6 +1,6 @@
 \begin{thebibliography}{1}
 \providecommand{\enquote}[1]{``#1''}
-\providecommand{\url}[1]{\verb|#1|}
+\providecommand{\url}[1]{{\tt #1}}
 \providecommand{\href}[2]{#2}
 \setlength{\itemsep}{0pt}
 
