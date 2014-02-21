@@ -45,25 +45,43 @@ we get the following formatted result
 .. image:: _static/example2b.png
    :width: 50%
 
+************************************************
+
 Example 3
 =========
 
-The next example illustrates the style used by the Optical Society of America (OSA) for their journals. Using the following template,
+The next example illustrates the style used by the Optical Society of America (OSA) for their journals. The following formatted bibliography
+
+.. image:: _static/example3.png
+   :width: 60%
+
+is obtained using the template
 
 .. literalinclude:: ../examples/example3.bst
 
-the database file
+and the database file
 
 .. literalinclude:: ../examples/example3.bib
 
-produces the resulting formatted bibliography:
-
-.. image:: _static/example3.png
-   :width: 50%
-
+************************************************
 
 Example 4
 =========
+
+The next example illustrates the style used by the society SPIE for their journals. The following formatted bibliography
+
+.. image:: _static/example4.png
+   :width: 60%
+
+is obtained using the template
+
+.. literalinclude:: ../examples/example4.bst
+
+and the database file
+
+.. literalinclude:: ../examples/example4.bib
+
+************************************************
 
 Example 5
 =========
@@ -77,6 +95,8 @@ Example 5
 
 
 
+
+************************************************
 
 Example ?
 =========
