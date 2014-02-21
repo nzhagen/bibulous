@@ -129,7 +129,6 @@ The complete list of operators available is:::
     .monthname()
     .ordinal()
     .purify()
-    .remove_leading_zeros()
     .replace(old,new)
     .sentence_case()
     .tie()
@@ -165,8 +164,6 @@ Without the ``.compress()`` operator, the name would come out as "RM A Azzam", s
 **.ordinal()** creates an "ordinal" from a numerical field. Thus, if the field operated on is "1", "2", "3", or "4", then the operator will replace the template with "1st", "2nd", "3rd" or "4th". Any number above 4 simply has "th" appended to the end of it. Currently Bibulous does not support non-English locales for this function. (Anyone having suggestions of how this may be implemented without too much fuss should contact us!)
 
 **.purify()** attempts to convert its argument into a string without LaTeX-markup for foreign characters. Thus, if the entry contains ``title = {{\AA}land}`` then a template variable of the form ``<title.purify()>`` will produce the result ``Åland``. This can be useful when having to use ``substr_replace()`` and other functions where the markup may cause matching problems.
-
-**.remove_leading_zeros()** deletes any zeros from the front of the field operated on. Thus "003" will be returned as "3".
 
 **.replace(old,new)** will replace the substring ``old`` with ``new`` wherever it finds ``old`` within the string it is applied to. For example, if a user wants to make the name "J. W. Tukey" bold everywhere it appears in a reference, then ``.replace(J. W. Tukey,\textbf{J. W. Tukey})`` will work. Note that whitespace is preserved here. Thus, ``.replace(J. W. Tukey, \textbf{J. W. Tukey})`` will add a space in front of ``\textbf{J. W. Tukey}``. Also, Bibulous will not allow the use of ``<``, ``>``, ``|``, or ``)`` characters in the two arguments of the operator.
 
