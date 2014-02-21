@@ -1,0 +1,19 @@
+\documentclass[10pt,letterpaper]{article}
+\usepackage[paper=letterpaper, text={7in,9.2in},centering]{geometry}
+%\usepackage{url}
+\pagestyle{plain}
+\date{}
+\makeatletter %
+   \renewcommand{\@biblabel}[1]{\textbf{\textsf{#1}}}    %% Redefine this to get rid of the square brackets around bibliography labels.
+\makeatother
+
+\begin{document}
+
+\cite{*}
+
+\bibliographystyle{example4}
+\bibliography{example4}
+
+\end{document}
+
+
