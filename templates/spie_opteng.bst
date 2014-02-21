@@ -1,5 +1,5 @@
 TEMPLATES:
-article = <au>, \enquote{<title>,} [\href{<url>}{\textit{<journal>}}|\href{<doi>}{\textit{<journal>}}|\textit{<journal>}] ...
+article = <au>, \enquote{<title>,} [\href{<url>}{\textit{<journal>}}|\href{<doi>}{\textit{<journal>}}|\textit{<journal>}]{ }...
         \textbf{<volume>}(<number>), [<startpage>--<endpage>|<startpage>|<eid>|] (<year>).[ <note>]
 book = [<au>|<ed>|<organization>|<institution>|], \textit{<title>}[, <edition.ordinal()>~ed.][, vol.~<volume>] ...
         <publisher>, <address> (<year>)[ Chap.~<chapter>][, pp.~<startpage>--<endpage>|, p.~<startpage>].[ <note>]
@@ -10,12 +10,14 @@ incollection = <au>, \enquote{<title>,} in \textit{<booktitle>}, [vol.~<volume>,
 inproceedings = <au>, \enquote{<title>,} in \textit{<booktitle>}[, <ed>][, in <series>][ \textbf{<volume>}]...
         [, pp.~<startpage>--<endpage>|, p.~<startpage>|, <eid>] (<year>).[ <note>]
 manual = [<au>|<ed>|<organization>|<institution>|], \textit{<title>}, [vol.~<volume>, ]...
-        [<edition.ordinal()>~ed., |ver.~\version, ][<ed>, ] (<organization>, <year>)[, Chap.~<chapter>]...
+        [<edition.ordinal()>~ed., |ver.~<version>, ][<ed>, ] (<organization>, <year>)[, Chap.~<chapter>]...
         [, pp.~<startpage>--<endpage>|, p.~<startpage>].[ <note>]
 mastersthesis = <au>, \enquote{<title>,} M.S. dissertation (<school>, <year>).[ <note>]
 misc = [<au>, ][\enquote{<title>}][ (<organization>, <year>)| (<year>)].[ <note>]
 patent = <au>, \enquote{<title>,} <nationality> patent <number> (<year>).[ <note>]
 phdthesis = <au>, \enquote{<title>,} Ph.D. dissertation (<school>, <year>).[ <note>]
+poster = <au>, \enquote{<title>}, poster [presented at <conference>]([<month> ]<year>).[ <note>]
+presentation = <au>, \enquote{<title>}, presentation [presented at <conference>]([<month> ]<year>).[ <note>]
 proceedings = <ed>, \textit{<title>}, [vol.~<volume>][, <edition.ordinal()>~ed.] (<year>).[ <note>]
 techreport = [<au>|<ed>|<organization>|<institution>|], \enquote{<title>,} <institution>, <number> (<year>).[ <note>]
 website = \href{[<url>|<doi>]}{[<url>|<doi>]}
@@ -29,7 +31,7 @@ maxauthors = 3                            ## if more than 3 authors, then use "e
 minauthors = 1                            ## if "maxauthors" is exceeded, then display only the first "minauthors" and et al. (only works for default "<au>" variable)
 maxeditors = 3                            ## if more than 3 editors, then use "et al." format (only works for default "<ed>" variable)
 mineditors = 1                            ## if "maxeditors" is exceeded, then display only the first "mineditors" and et al. (only works for default "<ed>" variable)
-procspie_as_journal = True                ## treat SPIE conference proceedings like a journal, with journal name 'Proc. SPIE'
+procspie_as_journal = False               ## treat SPIE conference proceedings like a journal, with journal name 'Proc. SPIE'
 sort_case = False                         ## whether to use case-sensitive citation sorting (default is False)
 use_abbrevs = True                        ## whether to use the abbreviation strings (mainly useful for debugging)
 bibitemsep = 0pt                          ## the extra vertical separation between each bibliography entry. Defining this option *overrides* LaTeX's existing definition for \bibitemsep.
