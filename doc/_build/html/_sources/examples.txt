@@ -4,9 +4,7 @@ Examples
 Example 1
 =========
 
-The following example is taken from a question posted at ``http://tex.stackexchange.com/questions/147675/bibtex-scientific-style-with-pages-at-the-end``. The OP asks:
-
-    Where can I find bibtex style, which looks approximately like this? Somehow all styles (even ``science.bst``), which I find use ``format.vol.num.pages`` function, which put pages right after volume number. But the order I used to see and use is ``volNum-year-pages``. I can simply move the line ``format.date "year" output.check`` into ``format.vol.num.pages``, but 1. I am not sure whether this is correct (looks strange for me), 2. I don't know how to add the ``---`` sign in front.
+The following example is taken from a question posted at ``http://tex.stackexchange.com/questions/147675/bibtex-scientific-style-with-pages-at-the-end``, where the desired bibliography format is given as:
 
 .. image:: _static/example1a.png
    :width: 50%
@@ -50,13 +48,22 @@ we get the following formatted result
 Example 3
 =========
 
+The next example illustrates the style used by the Optical Society of America (OSA) for their journals. Using the following template,
+
+.. literalinclude:: ../examples/example3.bst
+
+the database file
+
+.. literalinclude:: ../examples/example3.bib
+
+produces the resulting formatted bibliography:
+
+.. image:: _static/example3.png
+   :width: 50%
+
+
 Example 4
 =========
-
-
-
-
-
 
 Example 5
 =========

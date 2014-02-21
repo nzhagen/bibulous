@@ -104,9 +104,7 @@
 <h1>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="example-1">
 <h2>Example 1<a class="headerlink" href="#example-1" title="Permalink to this headline">¶</a></h2>
-<p>The following example is taken from a question posted at <tt class="docutils literal"><span class="pre">http://tex.stackexchange.com/questions/147675/bibtex-scientific-style-with-pages-at-the-end</span></tt>. The OP asks:</p>
-<blockquote>
-<div>Where can I find bibtex style, which looks approximately like this? Somehow all styles (even <tt class="docutils literal"><span class="pre">science.bst</span></tt>), which I find use <tt class="docutils literal"><span class="pre">format.vol.num.pages</span></tt> function, which put pages right after volume number. But the order I used to see and use is <tt class="docutils literal"><span class="pre">volNum-year-pages</span></tt>. I can simply move the line <tt class="docutils literal"><span class="pre">format.date</span> <span class="pre">&quot;year&quot;</span> <span class="pre">output.check</span></tt> into <tt class="docutils literal"><span class="pre">format.vol.num.pages</span></tt>, but 1. I am not sure whether this is correct (looks strange for me), 2. I don&#8217;t know how to add the <tt class="docutils literal"><span class="pre">---</span></tt> sign in front.</div></blockquote>
+<p>The following example is taken from a question posted at <tt class="docutils literal"><span class="pre">http://tex.stackexchange.com/questions/147675/bibtex-scientific-style-with-pages-at-the-end</span></tt>, where the desired bibliography format is given as:</p>
 <a class="reference internal image-reference" href="_images/example1a.png"><img alt="_images/example1a.png" src="_images/example1a.png" style="width: 50%;" /></a>
 <p>With Bibulous, we can easily provide templates that provide the formatting that the OP asks for:</p>
 <div class="highlight-python"><div class="highlight"><pre>TEMPLATES:
@@ -300,6 +298,186 @@ use_citeextract = True
 </div>
 <div class="section" id="example-3">
 <h2>Example 3<a class="headerlink" href="#example-3" title="Permalink to this headline">¶</a></h2>
+<p>The next example illustrates the style used by the Optical Society of America (OSA) for their journals. Using the following template,</p>
+<div class="highlight-python"><div class="highlight"><pre>TEMPLATES:
+article = &lt;au&gt;, \enquote{[\href{&lt;url&gt;}{&lt;title&gt;}|\href{&lt;doi&gt;}{&lt;title&gt;}|&lt;title&gt;],} &lt;journal&gt; \textbf{&lt;volume&gt;}, [&lt;startpage&gt;--&lt;endpage&gt;|&lt;startpage&gt;|&lt;eid&gt;|] (&lt;year&gt;).[ &lt;note&gt;]
+book = [&lt;au&gt;|&lt;ed&gt;|&lt;organization&gt;|&lt;institution&gt;|], \textit{&lt;title&gt;}[, &lt;edition.ordinal()&gt;~ed.][, vol.~&lt;volume&gt;] (&lt;publisher&gt;, &lt;year&gt;)[ Chap.~&lt;chapter&gt;][, pp.~&lt;startpage&gt;--&lt;endpage&gt;|, p.~&lt;startpage&gt;].[ &lt;note&gt;]
+endnote = &lt;note&gt;
+inbook = incollection
+incollection = &lt;au&gt;, \enquote{&lt;title&gt;,} in \textit{&lt;booktitle&gt;}, [vol.~&lt;volume&gt;, ][&lt;edition.ordinal()&gt;~ed., ][&lt;ed&gt;, ][&lt;series&gt;, ][Chap.~&lt;chapter&gt;, ][pp.~&lt;startpage&gt;--&lt;endpage&gt;|p.~&lt;startpage&gt;|&lt;eid&gt;|] (&lt;publisher&gt;, &lt;year&gt;).[ &lt;note&gt;]
+inproceedings = &lt;au&gt;, \enquote{&lt;title&gt;,} in \textit{&lt;booktitle&gt;}[, &lt;ed&gt;][, in &lt;series&gt;][ \textbf{&lt;volume&gt;}][, pp.~&lt;startpage&gt;--&lt;endpage&gt;|, p.~&lt;startpage&gt;|, &lt;eid&gt;] (&lt;year&gt;).[ &lt;note&gt;]
+manual = [&lt;au&gt;|&lt;ed&gt;|&lt;organization&gt;|&lt;institution&gt;|], \textit{&lt;title&gt;}[, vol.~&lt;volume&gt;][, &lt;edition.ordinal()&gt;~ed.|, ver.~&lt;version&gt;][, &lt;ed&gt;] (&lt;organization&gt;, &lt;year&gt;)[, Chap.~&lt;chapter&gt;][, pp.~&lt;startpage&gt;--&lt;endpage&gt;|, p.~&lt;startpage&gt;].[ &lt;note&gt;]
+mastersthesis = &lt;au&gt;, \enquote{&lt;title&gt;,} M.S. dissertation (&lt;school&gt;, &lt;year&gt;).[ &lt;note&gt;]
+misc = [&lt;au&gt;, ][\enquote{&lt;title&gt;}][ (&lt;organization&gt;, &lt;year&gt;)| (&lt;year&gt;)].[ &lt;note&gt;][ (url: \url{&lt;url&gt;})]
+patent = &lt;au&gt;, \enquote{&lt;title&gt;,} &lt;nationality&gt; patent &lt;number&gt; (&lt;year&gt;).[ &lt;note&gt;]
+phdthesis = &lt;au&gt;, \enquote{&lt;title&gt;,} Ph.D. dissertation (&lt;school&gt;, &lt;year&gt;).[ &lt;note&gt;]
+poster = &lt;au&gt;, \enquote{&lt;title&gt;}, poster [presented at &lt;conference&gt;]([&lt;month&gt; ]&lt;year&gt;).[ &lt;note&gt;]
+presentation = &lt;au&gt;, \enquote{&lt;title&gt;}, presentation [presented at &lt;conference&gt;]([&lt;month&gt; ]&lt;year&gt;).[ &lt;note&gt;]
+proceedings = &lt;ed&gt;, \textit{&lt;title&gt;}, [vol.~&lt;volume&gt;][, &lt;edition.ordinal()&gt;~ed.] (&lt;year&gt;).[ &lt;note&gt;]
+techreport = [&lt;au&gt;|&lt;ed&gt;|&lt;organization&gt;|&lt;institution&gt;|], \enquote{&lt;title&gt;,} &lt;institution&gt;, Tech. Rep. &lt;number&gt; (&lt;year&gt;).[ &lt;note&gt;]
+website = \href{[&lt;url&gt;|&lt;doi&gt;]}{[&lt;url&gt;|&lt;doi&gt;]}
+
+SPECIAL-TEMPLATES:
+sortkey = &lt;citenum.zfill(2)&gt;              ## order the reference list in the same order as the citations were given in
+citelabel = &lt;citenum&gt;.                    ## use numeric reference labels
+
+OPTIONS:
+maxauthors = 25                           ## if more than 25 authors, then use &quot;et al.&quot; format
+minauthors = 9                            ## if &quot;maxauthors&quot; is exceeded, then display only the first &quot;minauthors&quot; and et al.
+maxeditors = 5                            ## if more than 5 editors, then use &quot;et al.&quot; format
+mineditors = 5                            ## if &quot;maxeditors&quot; is exceeded, then display only the first &quot;mineditors&quot; and et al.
+procspie_as_journal = True                ## treat SPIE conference proceedings like a journal, with journal name &#39;Proc. SPIE&#39;
+sort_case = False                         ## whether to use case-sensitive citation sorting (default is False)
+use_abbrevs = True                        ## whether to use the abbreviation strings (mainly useful for debugging)
+french_initials = False                   ## whether to use French initials (i.e. Jean-Paul -&gt; J.-P. and not J., also Philippe -&gt; Ph. not P.)
+bibitemsep = 0pt                          ## the extra vertical separation between each bibliography entry. Defining this option *overrides* LaTeX&#39;s existing definition for \bibitemsep.
+etal_message = , \textit{et~al.}          ## what text to place at the end of an authorlist when there are too many
+edmsg1 = , ed.                            ## the label to use after the editor namelist when only one editor is present
+edmsg2 = , eds                            ## the label to use after the editor namelist when multiple editors are present
+
+## The remaining exceptions below are really for users rather than for the journal. Maybe put these someplace else?
+undefstr = ???                            ## what string to replace undefined required fields with
+replace_newlines = True                   ## whether to replace newline characters inside fields with spaces
+allow_scripts = False                     ## whether to allow user scripts in BST files
+case_sensitive_field_names = False        ## whether to allow field names to be case sensitive (i.e. so that &quot;BOOK&quot; will not be the same entrytype as &quot;book&quot;)
+use_citeextract = True                    ## whether to automatically perform citation extraction each time Bibulous is run
+name_separator = and                      ## the string used to separate names in a BibTeX-format field of names
+
+VARIABLES:
+
+DEFINITIONS:
+</pre></div>
+</div>
+<p>the database file</p>
+<div class="highlight-python"><div class="highlight"><pre>@String{ol       = {Opt. Lett.}}
+@String{procspie = {Proc. SPIE}}
+
+@Article{Tkaczyk2012,
+  title = {Vectorial laws of refraction and reflection using the cross product and dot product},
+  author = {Eric R. Tkaczyk},
+  journal = ol,
+  volume = {37},
+  year = {2012},
+  pages = {972--974},
+  doi = {http://dx.doi.org/10.1364/OL.37.000972}
+}
+
+@Book{Smith-1992,
+  title = {Modern Lens Design: A Resource Manual},
+  year = {1992},
+  address = {New York},
+  author = {Warren J. Smith},
+  publisher = {McGraw-Hill}
+}
+
+@Inbook{Silverman1998,
+  title = {Optical detection theory},
+  author = {Mark Silverman},
+  pages = {139--159},
+  publisher = {Princeton University Press},
+  year = {1998},
+  booktitle = {Probing the Atom: Interactions of Coupled States, Fast Beams, and Loose Electrons},
+  chapter = {6}
+}
+
+@Incollection{Feynman1987,
+  title = {Negative probability},
+  author = {Richard P. Feynman},
+  booktitle = {Quantum Implications --- Essays in Honour of {D}avid Bohm},
+  publisher = {Routledge \&amp; Kegan Paul},
+  year = {1987},
+  pages = {235--248},
+  editor = {B. J. Hiley and F. D. Peat}
+}
+
+@Inproceedings{Descour1995a,
+  title = {Nonscanning no-moving-parts imaging spectrometer},
+  author = {Michael R. Descour and Eustace L. Dereniak},
+  booktitle = {Imaging Spectrometry},
+  year = {1995},
+  pages = {48--64},
+  series = {Proceedings of SPIE},
+  volume = {2480},
+  crossref = {ProcSPIE2480}
+}
+
+@Manual{CGAL2006,
+  title = {CGAL user and reference manual},
+  year = {2006},
+  month = {July},
+  organization = {CGAL Project}
+}
+
+@Mastersthesis{RimmerDiss,
+  title = {Optical aberration coefficients},
+  author = {Matthew Peter Rimmer},
+  school = {University of Rochester},
+  year = {1963}
+}
+
+@Misc{Knuth1992,
+  title = {Convolution polynomials},
+  author = {Donald E. Knuth},
+  year = {1992},
+  url = {http://arxiv.org/pdf/math/9207221.pdf}
+}
+
+@Patent{Bayer1976,
+  title = {Color imaging array},
+  author = {Bryce E. Bayer},
+  number = {3971065},
+  year = {1976},
+  yearfiled = {1975},
+  assignee = {Eastman Kodak Company},
+  nationality = {USA}
+}
+
+@Phdthesis{BroglieDiss,
+  title = {On the theory of quanta},
+  author = {Louis-Victor de Broglie},
+  school = {University of Paris},
+  year = {1925},
+  note = {A translation by A. F. Kracklauer of the original, Recherches sur la th{\&#39;e}orie des quanta, (Ann. de Phys., 10th series, v. III, Jan-Feb 1925).}
+}
+
+@Poster{Jacquemart2012,
+  title = {The next HITRAN edition: description of new parameters and formats},
+  author = {David Jacquemart and Laurence S. Rothman},
+  address = {[location unknown]},
+  year = {2012}
+}
+
+@Presentation{Boyd2006,
+  title = {Convex optimization - class slides},
+  author = {Stephen Boyd and Lieven Vandenberghe},
+  year = {2006}
+}
+
+@Proceedings{ProcSPIE4480,
+  title = {Imaging Spectrometry VII},
+  year = {2002},
+  editor = {Michael R. Descour},
+  series = procspie,
+  volume = {4480}
+}
+
+@Techreport{Bohannon2009,
+  title = {Can people distinguish p{\^a}t{\&#39;e} from dog food?},
+  author = {John Bohannon and Robin Goldstein and Alexis Herschkowitsch},
+  institution = {American Association of Wine Economists},
+  year = {2009},
+  number = {51757},
+  month = {April}
+}
+
+@Website{Zemax,
+  url = {www.zemax.com},
+  organization = {ZEMAX Development Corp.}
+}
+</pre></div>
+</div>
+<p>produces the resulting formatted bibliography:</p>
+<a class="reference internal image-reference" href="_images/example3.png"><img alt="_images/example3.png" src="_images/example3.png" style="width: 50%;" /></a>
 </div>
 <div class="section" id="example-4">
 <h2>Example 4<a class="headerlink" href="#example-4" title="Permalink to this headline">¶</a></h2>
