@@ -1057,7 +1057,7 @@ class Bibdata(object):
             if not bibsize: bibsize = repr(len(self.citedict))
             filehandle.write('\\begin{thebibliography}{' + bibsize + '}\n'.encode('utf-8'))
             filehandle.write("\\providecommand{\\enquote}[1]{``#1''}\n".encode('utf-8'))
-            filehandle.write('\\providecommand{\\url}[1]{\\verb|#1|}\n'.encode('utf-8'))
+            filehandle.write('\\providecommand{\\url}[1]{{\\tt #1}}\n'.encode('utf-8'))
             filehandle.write('\\providecommand{\\href}[2]{#2}\n'.encode('utf-8'))
             if (self.options['bibitemsep'] != None):
                 s = '\\setlength{\\itemsep}{' + self.options['bibitemsep'] + '}\n'
@@ -2519,6 +2519,11 @@ class Bibdata(object):
                 else:
                     newindexer = '.' + '.'.join(index_elements[1:])
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
+
+        #zzz
+        #if ('ed.' in field):
+        #    print('field=', field)
+        #    pdb.set_trace()
 
         ## If the thing to the right of the dot-indexer is a *function*, then map the field to the function.
         if ('(' in index_elements[0]):
@@ -4420,9 +4425,10 @@ def format_namelist(namelist, nametype='author', options=None):
     ## Add a tag onto the end if describing an editorlist.
     if (nametype == 'editor'):
         if (npersons == 1):
-            namestr += ', ed.'
+            edmsg = ', ed.' if ('edmsg1' not in options) else options['edmsg1']
         else:
-            namestr += ', eds'
+            edmsg = ', eds' if ('edmsg2' not in options) else options['edmsg2']
+        namestr += edmsg
 
     return(namestr)
 
