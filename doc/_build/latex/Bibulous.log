@@ -1,12 +1,11 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012/Debian) (format=pdflatex 2013.8.21)  13 DEC 2013 12:32
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.1.22)  27 FEB 2014 07:23
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **Bibulous.tex
 (./Bibulous.tex
 LaTeX2e <2011/06/27>
-Babel <v3.8m> and hyphenation patterns for english, dumylang, nohyphenation, pi
-nyin, thai, loaded.
+Babel <3.9h> and hyphenation patterns for 58 languages loaded.
 (./sphinxmanual.cls
 Document Class: sphinxmanual 2009/06/02 Document class (Sphinx manual)
 (/usr/share/texlive/texmf-dist/tex/latex/base/report.cls
@@ -246,21 +245,24 @@ Now handling font encoding U ...
 ))
    defining Unicode char U+00A0 (decimal 160)
 
+(/usr/share/texlive/texmf-dist/tex/latex/cmap/cmap.sty
+Package: cmap 2008/03/06 v1.0h CMap support: searchable PDF
+)
 (/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty
 Package: fontenc 2005/09/27 v1.99g Standard LaTeX package
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/t1enc.def
 File: t1enc.def 2005/09/27 v1.99g Standard LaTeX file
 LaTeX Font Info:    Redeclaring font encoding T1 on input line 43.
-))
-(/var/lib/texmf/tex/generic/babel/babel.sty
-Package: babel 2008/07/08 v3.8m The Babel package
+)<<t1.cmap>>)
+(/usr/share/texlive/texmf-dist/tex/generic/babel/babel.sty
+Package: babel 2013/12/03 3.9h The Babel package
 
-(/usr/share/texlive/texmf-dist/tex/generic/babel/english.ldf
-Language: english 2005/03/30 v3.3o English support from the babel system
+(/usr/share/texlive/texmf-dist/tex/generic/babel-english/english.ldf
+Language: english 2012/08/20 v3.3p English support from the babel system
 
 (/usr/share/texlive/texmf-dist/tex/generic/babel/babel.def
-File: babel.def 2008/07/08 v3.8m Babel common definitions
+File: babel.def 2013/12/03 3.9h Babel common definitions
 \babel@savecnt=\count88
 \U@D=\dimen103
 )
@@ -304,6 +306,17 @@ Package: longtable 2004/02/01 v4.11 Multi-page Table package (DPC)
 ) (./sphinx.sty
 Package: sphinx 2010/01/15 LaTeX package (Sphinx markup)
 
+(/usr/share/texlive/texmf-dist/tex/latex/fancyhdr/fancyhdr.sty
+\fancy@headwidth=\skip54
+\f@ncyO@elh=\skip55
+\f@ncyO@erh=\skip56
+\f@ncyO@olh=\skip57
+\f@ncyO@orh=\skip58
+\f@ncyO@elf=\skip59
+\f@ncyO@erf=\skip60
+\f@ncyO@olf=\skip61
+\f@ncyO@orf=\skip62
+)
 (/usr/share/texlive/texmf-dist/tex/latex/base/textcomp.sty
 Package: textcomp 2005/09/27 v1.99g Standard LaTeX package
 Package textcomp Info: Sub-encoding information:
@@ -459,17 +472,6 @@ Package textcomp Info: Setting pplj sub-encoding to TS1/3 on input line 338.
 Package textcomp Info: Setting ptmx sub-encoding to TS1/4 on input line 339.
 Package textcomp Info: Setting ptmj sub-encoding to TS1/4 on input line 340.
 )
-(/usr/share/texlive/texmf-dist/tex/latex/fancyhdr/fancyhdr.sty
-\fancy@headwidth=\skip54
-\f@ncyO@elh=\skip55
-\f@ncyO@erh=\skip56
-\f@ncyO@olh=\skip57
-\f@ncyO@orh=\skip58
-\f@ncyO@elf=\skip59
-\f@ncyO@erf=\skip60
-\f@ncyO@olf=\skip61
-\f@ncyO@orf=\skip62
-)
 (/usr/share/texlive/texmf-dist/tex/latex/fancybox/fancybox.sty
 Package: fancybox 2010/05/15 1.4
 
@@ -496,7 +498,7 @@ Package: titlesec 2011/12/15 v2.10.0 Sectioning titles
 \titlewidthfirst=\dimen110
 )
 (./tabulary.sty
-Package: tabulary 2007/10/02 v0.9 tabulary package (DPC)
+Package: tabulary 2008/12/01 v0.9 tabulary package (DPC)
  (/usr/share/texlive/texmf-dist/tex/latex/tools/array.sty
 Package: array 2008/09/09 v2.4c Tabular extension package (FMi)
 \col@sep=\dimen111
@@ -512,7 +514,7 @@ Package: array 2008/09/09 v2.4c Tabular extension package (FMi)
 \TY@tablewidth=\dimen116
 )
 (/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
-Package: amsmath 2000/07/18 v2.13 AMS math features
+Package: amsmath 2013/01/14 v2.14 AMS math features
 \@mathmargin=\skip67
 
 For additional information on amsmath, use the `?' option.
@@ -532,20 +534,20 @@ Package: amsbsy 1999/11/29 v1.2d
 Package: amsopn 1999/12/14 v2.01 operator names
 )
 \inf@bad=\count97
-LaTeX Info: Redefining \frac on input line 211.
+LaTeX Info: Redefining \frac on input line 210.
 \uproot@=\count98
 \leftroot@=\count99
-LaTeX Info: Redefining \overline on input line 307.
+LaTeX Info: Redefining \overline on input line 306.
 \classnum@=\count100
 \DOTSCASE@=\count101
-LaTeX Info: Redefining \ldots on input line 379.
-LaTeX Info: Redefining \dots on input line 382.
-LaTeX Info: Redefining \cdots on input line 467.
+LaTeX Info: Redefining \ldots on input line 378.
+LaTeX Info: Redefining \dots on input line 381.
+LaTeX Info: Redefining \cdots on input line 466.
 \Mathstrutbox@=\box33
 \strutbox@=\box34
 \big@size=\dimen119
-LaTeX Font Info:    Redeclaring font encoding OML on input line 567.
-LaTeX Font Info:    Redeclaring font encoding OMS on input line 568.
+LaTeX Font Info:    Redeclaring font encoding OML on input line 566.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 567.
 \macc@depth=\count102
 \c@MaxMatrixCols=\count103
 \dotsspace@=\muskip10
@@ -566,8 +568,8 @@ LaTeX Font Info:    Redeclaring font encoding OMS on input line 568.
 \multlinegap=\skip68
 \multlinetaggap=\skip69
 \mathdisplay@stack=\toks27
-LaTeX Info: Redefining \[ on input line 2666.
-LaTeX Info: Redefining \] on input line 2667.
+LaTeX Info: Redefining \[ on input line 2665.
+LaTeX Info: Redefining \] on input line 2666.
 )
 (/usr/share/texlive/texmf-dist/tex/latex/base/makeidx.sty
 Package: makeidx 2000/03/29 v1.0m Standard LaTeX package
@@ -636,6 +638,9 @@ Package: wrapfig 2003/01/31  v 3.6
 (/usr/share/texlive/texmf-dist/tex/latex/parskip/parskip.sty
 Package: parskip 2001/04/09 non-zero parskip adjustments
 )
+(/usr/share/texlive/texmf-dist/tex/latex/base/alltt.sty
+Package: alltt 1997/06/16 v2.0g defines alltt environment
+)
 (/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
 Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
 
@@ -662,7 +667,7 @@ Package graphics Info: Driver file: pdftex.def on input line 91.
 \image@width=\dimen135
 
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
-Package: hyperref 2012/05/13 v6.82q Hypertext links for LaTeX
+Package: hyperref 2012/11/06 v6.83m Hypertext links for LaTeX
 
 (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/hobsub-hyperref.sty
 Package: hobsub-hyperref 2012/05/28 v1.13 Bundle oberdiek, subset hyperref (HO)
@@ -712,6 +717,9 @@ Package: hycolor 2011/01/30 v1.7 Color options for hyperref/bookmark (HO)
 (/usr/share/texlive/texmf-dist/tex/generic/ifxetex/ifxetex.sty
 Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
 )
+(/usr/share/texlive/texmf-dist/tex/latex/oberdiek/auxhook.sty
+Package: auxhook 2011/03/04 v1.3 Hooks for auxiliary files (HO)
+)
 (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/kvoptions.sty
 Package: kvoptions 2011/06/30 v3.11 Key value format for package options (HO)
 )
@@ -720,7 +728,7 @@ Package: kvoptions 2011/06/30 v3.11 Key value format for package options (HO)
 \Hy@pagecounter=\count115
 
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/pd1enc.def
-File: pd1enc.def 2012/05/13 v6.82q Hyperref: PDFDocEncoding definition (HO)
+File: pd1enc.def 2012/11/06 v6.83m Hyperref: PDFDocEncoding definition (HO)
 Now handling font encoding PD1 ...
 ... no UTF-8 mapping file for font encoding PD1
 )
@@ -729,34 +737,35 @@ Now handling font encoding PD1 ...
 (/usr/share/texlive/texmf-dist/tex/latex/latexconfig/hyperref.cfg
 File: hyperref.cfg 2002/06/06 v1.2 hyperref configuration of TeXLive
 )
-Package hyperref Info: Option `colorlinks' set `true' on input line 3941.
-Package hyperref Info: Option `breaklinks' set `true' on input line 3941.
-Package hyperref Info: Hyper figures OFF on input line 4062.
-Package hyperref Info: Link nesting OFF on input line 4067.
-Package hyperref Info: Hyper index ON on input line 4070.
-Package hyperref Info: Plain pages OFF on input line 4077.
-Package hyperref Info: Backreferencing OFF on input line 4082.
+Package hyperref Info: Option `colorlinks' set `true' on input line 4319.
+Package hyperref Info: Option `breaklinks' set `true' on input line 4319.
+Package hyperref Info: Hyper figures OFF on input line 4443.
+Package hyperref Info: Link nesting OFF on input line 4448.
+Package hyperref Info: Hyper index ON on input line 4451.
+Package hyperref Info: Plain pages OFF on input line 4458.
+Package hyperref Info: Backreferencing OFF on input line 4463.
 Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
-Package hyperref Info: Bookmarks ON on input line 4300.
+Package hyperref Info: Bookmarks ON on input line 4688.
 \c@Hy@tempcnt=\count117
 
 (/usr/share/texlive/texmf-dist/tex/latex/url/url.sty
 \Urlmuskip=\muskip11
 Package: url 2006/04/12  ver 3.3  Verb mode for urls, etc.
 )
-LaTeX Info: Redefining \url on input line 4653.
+LaTeX Info: Redefining \url on input line 5041.
+\XeTeXLinkMargin=\dimen137
 \Fld@menulength=\count118
-\Field@Width=\dimen137
-\Fld@charsize=\dimen138
-Package hyperref Info: Hyper figures OFF on input line 5773.
-Package hyperref Info: Link nesting OFF on input line 5778.
-Package hyperref Info: Hyper index ON on input line 5781.
-Package hyperref Info: backreferencing OFF on input line 5788.
-Package hyperref Info: Link coloring ON on input line 5791.
-Package hyperref Info: Link coloring with OCG OFF on input line 5798.
-Package hyperref Info: PDF/A mode OFF on input line 5803.
-LaTeX Info: Redefining \ref on input line 5843.
-LaTeX Info: Redefining \pageref on input line 5847.
+\Field@Width=\dimen138
+\Fld@charsize=\dimen139
+Package hyperref Info: Hyper figures OFF on input line 6295.
+Package hyperref Info: Link nesting OFF on input line 6300.
+Package hyperref Info: Hyper index ON on input line 6303.
+Package hyperref Info: backreferencing OFF on input line 6310.
+Package hyperref Info: Link coloring ON on input line 6313.
+Package hyperref Info: Link coloring with OCG OFF on input line 6320.
+Package hyperref Info: PDF/A mode OFF on input line 6325.
+LaTeX Info: Redefining \ref on input line 6365.
+LaTeX Info: Redefining \pageref on input line 6369.
 \Hy@abspage=\count119
 \c@Item=\count120
 \c@Hfootnote=\count121
@@ -765,7 +774,7 @@ LaTeX Info: Redefining \pageref on input line 5847.
 Package hyperref Message: Driver (autodetected): hpdftex.
 
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/hpdftex.def
-File: hpdftex.def 2012/05/13 v6.82q Hyperref driver for pdfTeX
+File: hpdftex.def 2012/11/06 v6.83m Hyperref driver for pdfTeX
 \Fld@listcount=\count122
 \c@bookmark@seq@number=\count123
 
@@ -782,7 +791,7 @@ Package: hypcap 2011/02/16 v1.11 Adjusting the anchors of captions (HO)
 \DUlineblockindent=\skip76
 )
 (/usr/share/texlive/texmf-dist/tex/latex/multirow/multirow.sty
-\bigstrutjot=\dimen139
+\bigstrutjot=\dimen140
 )
    defining Unicode char U+672C (decimal 26412)
 \@indexfile=\write5
@@ -793,28 +802,28 @@ Writing index file Bibulous.idx
 (./Bibulous.aux)
 \openout1 = `Bibulous.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 114.
-LaTeX Font Info:    ... okay on input line 114.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 114.
-LaTeX Font Info:    ... okay on input line 114.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 114.
-LaTeX Font Info:    ... okay on input line 114.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 114.
-LaTeX Font Info:    ... okay on input line 114.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 114.
-LaTeX Font Info:    ... okay on input line 114.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 114.
-LaTeX Font Info:    ... okay on input line 114.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 114.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 114.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 115.
+LaTeX Font Info:    ... okay on input line 115.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 115.
+LaTeX Font Info:    ... okay on input line 115.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 115.
+LaTeX Font Info:    ... okay on input line 115.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 115.
+LaTeX Font Info:    ... okay on input line 115.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 115.
+LaTeX Font Info:    ... okay on input line 115.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 115.
+LaTeX Font Info:    ... okay on input line 115.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 115.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 115.
 
  (/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 114.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 114.
-LaTeX Font Info:    ... okay on input line 114.
-LaTeX Font Info:    Try loading font information for T1+ptm on input line 114.
+LaTeX Font Info:    ... okay on input line 115.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 115.
+LaTeX Font Info:    ... okay on input line 115.
+LaTeX Font Info:    Try loading font information for T1+ptm on input line 115.
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1ptm.fd
 File: t1ptm.fd 2001/06/04 font definitions for T1/ptm.
@@ -822,13 +831,13 @@ File: t1ptm.fd 2001/06/04 font definitions for T1/ptm.
 (/usr/share/texlive/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count124
-\scratchdimen=\dimen140
+\scratchdimen=\dimen141
 \scratchbox=\box40
 \nofMPsegments=\count125
 \nofMParguments=\count126
 \everyMPshowfont=\toks30
 \MPscratchCnt=\count127
-\MPscratchDim=\dimen141
+\MPscratchDim=\dimen142
 \MPnumerator=\count128
 \makeMPintoPDFobject=\count129
 \everyMPtoPDFconversion=\toks31
@@ -848,60 +857,58 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
 \AtBeginShipoutBox=\box41
-Package hyperref Info: Link coloring ON on input line 114.
+Package hyperref Info: Link coloring ON on input line 115.
 
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
-Package: nameref 2010/04/30 v2.40 Cross-referencing by name of section
+Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
 
 (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
 Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
 \c@section@level=\count130
 )
-LaTeX Info: Redefining \ref on input line 114.
-LaTeX Info: Redefining \pageref on input line 114.
-LaTeX Info: Redefining \nameref on input line 114.
+LaTeX Info: Redefining \ref on input line 115.
+LaTeX Info: Redefining \pageref on input line 115.
+LaTeX Info: Redefining \nameref on input line 115.
 
 (./Bibulous.out) (./Bibulous.out)
 \@outlinefile=\write6
 \openout6 = `Bibulous.out'.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 117--117
+Underfull \hbox (badness 10000) in paragraph at lines 118--118
 
  []
 
-<banner.pdf, id=132, 1882.71153pt x 493.97911pt>
+<banner.pdf, id=153, 1882.71153pt x 493.97911pt>
 File: banner.pdf Graphic file (type pdf)
  <use banner.pdf>
-Package pdftex.def Info: banner.pdf used on input line 117.
+Package pdftex.def Info: banner.pdf used on input line 118.
 (pdftex.def)             Requested size: 1882.70695pt x 493.9779pt.
 File: banner.pdf Graphic file (type pdf)
 
 <use banner.pdf>
-Package pdftex.def Info: banner.pdf used on input line 117.
+Package pdftex.def Info: banner.pdf used on input line 118.
 (pdftex.def)             Requested size: 469.755pt x 123.25327pt.
-LaTeX Font Info:    Try loading font information for T1+phv on input line 117.
+LaTeX Font Info:    Try loading font information for T1+phv on input line 118.
  (/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1phv.fd
 File: t1phv.fd 2001/06/04 scalable font definitions for T1/phv.
 )
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <24.88> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 117.
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 118.
 LaTeX Font Info:    Font shape `T1/phv/m/it' in size <17.28> not available
-(Font)              Font shape `T1/phv/m/sl' tried instead on input line 117.
+(Font)              Font shape `T1/phv/m/sl' tried instead on input line 118.
 LaTeX Font Info:    Font shape `T1/phv/bx/it' in size <17.28> not available
-(Font)              Font shape `T1/phv/b/it' tried instead on input line 117.
+(Font)              Font shape `T1/phv/b/it' tried instead on input line 118.
 LaTeX Font Info:    Font shape `T1/phv/b/it' in size <17.28> not available
-(Font)              Font shape `T1/phv/b/sl' tried instead on input line 117.
+(Font)              Font shape `T1/phv/b/sl' tried instead on input line 118.
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <17.28> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 117.
-
-[1
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 118.
+<<ot1.cmap>><<oml.cmap>><<oms.cmap>><<omx.cmap>> [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./banner.pdf>] [2
 
-]
-(./Bibulous.toc
+] (./Bibulous.toc
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <10> not available
 (Font)              Font shape `T1/ptm/b/n' tried instead on input line 2.
 )
@@ -911,67 +918,61 @@ LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <10> not available
 
 Adding blank page after the table of contents.
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <10> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 117.
-pdfTeX warning (ext4): destination with the same identifier (name{page.i}) has 
-been already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.117 \tableofcontents
-                       [1
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 118.
+[1
 
-]pdfTeX warning (ext4): destination with the same identifier (name{page.ii}) ha
-s been already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.117 \tableofcontents
-                       [2] [1
+] [2] [3] [4
 
-] [2
+] [1] [2
 
 ]
 Chapter 1.
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <14.4> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 124.
-LaTeX Font Info:    Try loading font information for T1+pcr on input line 126.
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 125.
+LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <14.4> not available
+(Font)              Font shape `T1/ptm/b/n' tried instead on input line 125.
+LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <24.88> not available
+(Font)              Font shape `T1/ptm/b/n' tried instead on input line 125.
+LaTeX Font Info:    Try loading font information for T1+pcr on input line 127.
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1pcr.fd
 File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
 )
-<screenshot_for_kile_instructions.png, id=203, 765.6103pt x 552.82825pt>
+<screenshot_for_kile_instructions.png, id=244, 765.6103pt x 552.82825pt>
 File: screenshot_for_kile_instructions.png Graphic file (type png)
 
 <use screenshot_for_kile_instructions.png>
 Package pdftex.def Info: screenshot_for_kile_instructions.png used on input lin
-e 139.
+e 140.
 (pdftex.def)             Requested size: 230.18253pt x 166.20404pt.
 
-<screenshot_for_kile_instructions2.png, id=205, 765.6103pt x 552.82825pt>
+<screenshot_for_kile_instructions2.png, id=246, 765.6103pt x 552.82825pt>
 File: screenshot_for_kile_instructions2.png Graphic file (type png)
 
 <use screenshot_for_kile_instructions2.png>
 Package pdftex.def Info: screenshot_for_kile_instructions2.png used on input li
-ne 141.
+ne 142.
 (pdftex.def)             Requested size: 230.18253pt x 166.20404pt.
  [3 <./screenshot_for_kile_instructions.png>] <original_Winedt5_setup.png, id=2
-15, 708.6475pt x 558.085pt>
+55, 708.6475pt x 558.085pt>
 File: original_Winedt5_setup.png Graphic file (type png)
 
 <use original_Winedt5_setup.png>
-Package pdftex.def Info: original_Winedt5_setup.png used on input line 166.
+Package pdftex.def Info: original_Winedt5_setup.png used on input line 167.
 (pdftex.def)             Requested size: 230.18253pt x 181.27328pt.
 
-<modified_Winedt5_setup.png, id=216, 708.6475pt x 558.085pt>
+<modified_Winedt5_setup.png, id=256, 708.6475pt x 558.085pt>
 File: modified_Winedt5_setup.png Graphic file (type png)
 
 <use modified_Winedt5_setup.png>
-Package pdftex.def Info: modified_Winedt5_setup.png used on input line 168.
+Package pdftex.def Info: modified_Winedt5_setup.png used on input line 169.
 (pdftex.def)             Requested size: 230.18253pt x 181.27328pt.
  [4 <./screenshot_for_kile_instructions2.png> <./original_Winedt5_setup.png>] [
 5 <./modified_Winedt5_setup.png>] [6
 
 ]
 Chapter 2.
-[7]
-Underfull \hbox (badness 10000) in paragraph at lines 223--224
+
+Underfull \hbox (badness 10000) in paragraph at lines 224--225
 []\T1/pcr/m/n/10 <au>\T1/ptm/m/n/10 , \T1/pcr/m/n/10 <booktitle>\T1/ptm/m/n/10 
 , \T1/pcr/m/n/10 <chapter>\T1/ptm/m/n/10 , \T1/pcr/m/n/10 <edition>\T1/ptm/m/n/
 10 , \T1/pcr/m/n/10 <ed>\T1/ptm/m/n/10 , \T1/pcr/m/n/10 <eid>\T1/ptm/m/n/10 , \
@@ -979,186 +980,34 @@ T1/pcr/m/n/10 <endpage>\T1/ptm/m/n/10 ,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 223--224
+Underfull \hbox (badness 10000) in paragraph at lines 224--225
 \T1/pcr/m/n/10 <institution>\T1/ptm/m/n/10 , \T1/pcr/m/n/10 <journal>\T1/ptm/m/
 n/10 , \T1/pcr/m/n/10 <nationality>\T1/ptm/m/n/10 , \T1/pcr/m/n/10 <note>\T1/pt
 m/m/n/10 , \T1/pcr/m/n/10 <number>\T1/ptm/m/n/10 ,
  []
 
-[8]
-
-! Package inputenc Error: Unicode char \u8:著 not set up for use with LaTeX.
-
-See the inputenc package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.277 ...tless{}author-en\textgreater{}\textbar{}]
-                                                  
-? 
-
-! Package inputenc Error: Unicode char \u8:者 not set up for use with LaTeX.
-
-See the inputenc package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.277 ...tless{}author-en\textgreater{}\textbar{}]
-                                                  
-? 
-
-! Package inputenc Error: Unicode char \u8:名 not set up for use with LaTeX.
-
-See the inputenc package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.277 ...tless{}author-en\textgreater{}\textbar{}]
-                                                  
-? 
-
-! Package inputenc Error: Unicode char \u8:著 not set up for use with LaTeX.
-
-See the inputenc package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.279 ...ate the missing {}`{}`author{}`{}` field.
-                                                  
-? 
-
-! Package inputenc Error: Unicode char \u8:者 not set up for use with LaTeX.
-
-See the inputenc package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.279 ...ate the missing {}`{}`author{}`{}` field.
-                                                  
-? 
-
-! Package inputenc Error: Unicode char \u8:名 not set up for use with LaTeX.
-
-See the inputenc package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.279 ...ate the missing {}`{}`author{}`{}` field.
-                                                  
-? 
-
-! Package inputenc Error: Unicode char \u8:著 not set up for use with LaTeX.
-
-See the inputenc package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.279 ...ate the missing {}`{}`author{}`{}` field.
-                                                  
-? 
-
-! Package inputenc Error: Unicode char \u8:者 not set up for use with LaTeX.
-
-See the inputenc package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.279 ...ate the missing {}`{}`author{}`{}` field.
-                                                  
-? 
-
-! Package inputenc Error: Unicode char \u8:名 not set up for use with LaTeX.
-
-See the inputenc package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.279 ...ate the missing {}`{}`author{}`{}` field.
-                                                  
-? 
-
-! Package inputenc Error: Unicode char \u8:著 not set up for use with LaTeX.
-
-See the inputenc package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.279 ...ate the missing {}`{}`author{}`{}` field.
-                                                  
-? 
-
-! Package inputenc Error: Unicode char \u8:者 not set up for use with LaTeX.
-
-See the inputenc package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.279 ...ate the missing {}`{}`author{}`{}` field.
-                                                  
-? 
-
-! Package inputenc Error: Unicode char \u8:名 not set up for use with LaTeX.
-
-See the inputenc package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.279 ...ate the missing {}`{}`author{}`{}` field.
-                                                  
-? 
-
-! Package inputenc Error: Unicode char \u8:著 not set up for use with LaTeX.
-
-See the inputenc package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.279 ...ate the missing {}`{}`author{}`{}` field.
-                                                  
-? 
-
-! Package inputenc Error: Unicode char \u8:者 not set up for use with LaTeX.
-
-See the inputenc package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.279 ...ate the missing {}`{}`author{}`{}` field.
-                                                  
-? 
-
-! Package inputenc Error: Unicode char \u8:名 not set up for use with LaTeX.
-
-See the inputenc package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.279 ...ate the missing {}`{}`author{}`{}` field.
-                                                  
-? 
-[9]
+[7] [8] [9]
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <12> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 327.
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 336.
 
-Underfull \hbox (badness 10000) in paragraph at lines 329--330
+Underfull \hbox (badness 10000) in paragraph at lines 338--339
 \T1/pcr/m/n/10 perform any one of four functions: a explicit numerical index (t
 he ``0 \T1/ptm/m/n/10 shown
  []
 
-
-Underfull \hbox (badness 6268) in paragraph at lines 361--362
+[10]
+Underfull \hbox (badness 6268) in paragraph at lines 374--375
 \T1/ptm/m/n/10 based de-fault for-mat-ting scheme to cre-ate a for-mat-ted stri
 ng of names. The com-plete list key-
  []
 
 
-Underfull \hbox (badness 5696) in paragraph at lines 361--362
+Underfull \hbox (badness 5696) in paragraph at lines 374--375
 \T1/ptm/m/n/10 words that it work with is: \T1/pcr/m/n/10 etal_message\T1/ptm/m
 /n/10 , \T1/pcr/m/n/10 maxeditors\T1/ptm/m/n/10 , \T1/pcr/m/n/10 mineditors\T1/
 ptm/m/n/10 , \T1/pcr/m/n/10 namelist_format\T1/ptm/m/n/10 ,
  []
 
-[10]
 
 ! Package inputenc Error: Unicode char \u8:月 not set up for use with LaTeX.
 
@@ -1166,14 +1015,14 @@ See the inputenc package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.370 ...', this same operator will return ``11月
+l.385 ...', this same operator will return ``11月
                                                   ''.
 ? 
 [11] [12] [13] [14] [15] [16] [17] [18
 
 ]
 Chapter 3.
-LaTeX Font Info:    Try loading font information for TS1+ptm on input line 657.
+LaTeX Font Info:    Try loading font information for TS1+ptm on input line 678.
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
@@ -1182,7 +1031,7 @@ Chapter 4.
 [21
 
 ] [22] [23] [24]
-Underfull \hbox (badness 10000) in paragraph at lines 909--910
+Underfull \hbox (badness 10000) in paragraph at lines 930--931
 []\T1/ptm/m/n/10 A five-element comma-separated list: \T1/pcr/m/n/10 [firstname
 , middlenames, prefix, lastname,
  []
@@ -1192,71 +1041,156 @@ Underfull \hbox (badness 10000) in paragraph at lines 909--910
 ]
 Chapter 5.
 
-Overfull \hbox (304.99297pt too wide) in paragraph at lines 970--971
+Overfull \hbox (304.99297pt too wide) in paragraph at lines 991--992
 \T1/ptm/m/n/10 The fol-low-ing ex-am-ple is taken from a ques-tion posted at \T
 1/pcr/m/n/10 http://tex.stackexchange.com/questions/147675/bibtex-scientific-st
-yle-with-pages-at-the-end\T1/ptm/m/n/10 .
+yle-with-pages-at-the-end\T1/ptm/m/n/10 ,
  []
 
-<example1a.png, id=403, 501.875pt x 216.81pt>
+<example1a.png, id=443, 501.875pt x 216.81pt>
 File: example1a.png Graphic file (type png)
  <use example1a.png>
-Package pdftex.def Info: example1a.png used on input line 976.
+Package pdftex.def Info: example1a.png used on input line 993.
 (pdftex.def)             Requested size: 234.8775pt x 101.46733pt.
- [29 <./example1a.png>] <example1b.png, id=409, 1190.19656pt x 376.99608pt>
+ [29 <./example1a.png>] <example1b.png, id=449, 1190.19656pt x 376.99608pt>
 File: example1b.png Graphic file (type png)
 
 <use example1b.png>
-Package pdftex.def Info: example1b.png used on input line 1044.
+Package pdftex.def Info: example1b.png used on input line 1061.
 (pdftex.def)             Requested size: 281.85587pt x 89.27287pt.
- <example2a.png, id=410, 336.2964pt x 257.763pt>
+ <example2a.png, id=450, 336.2964pt x 257.763pt>
 File: example2a.png Graphic file (type png)
 
 <use example2a.png>
-Package pdftex.def Info: example2a.png used on input line 1055.
-(pdftex.def)             Requested size: 234.8775pt x 180.0317pt.
+Package pdftex.def Info: example2a.png used on input line 1072.
+(pdftex.def)             Requested size: 281.85587pt x 216.04353pt.
  [30 <./example1b.png>] [31 <./example2a.png (PNG copy)>]
-Underfull \vbox (badness 10000) detected at line 1176
+Underfull \vbox (badness 10000) detected at line 1195
  []
 
 
-Underfull \vbox (badness 10000) detected at line 1176
+Underfull \vbox (badness 10000) detected at line 1195
  []
 
-[32] [33] [34
+[32] <example2b.png, id=465, 1169.87062pt x 668.31123pt>
+File: example2b.png Graphic file (type png)
+ <use example2b.png>
+Package pdftex.def Info: example2b.png used on input line 1199.
+(pdftex.def)             Requested size: 281.85587pt x 161.00983pt.
+
+<example3.png, id=466, 923.11887pt x 643.72453pt>
+File: example3.png Graphic file (type png)
+ <use example3.png>
+Package pdftex.def Info: example3.png used on input line 1210.
+(pdftex.def)             Requested size: 281.85587pt x 196.54688pt.
+ [33 <./example2b.png>]
+Underfull \vbox (badness 1701) detected at line 1268
+ []
+
+[34 <./example3.png>] [35]
+Underfull \vbox (badness 10000) detected at line 1398
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 1398
+ []
+
+[36] <example4.png, id=485, 943.23526pt x 643.72453pt>
+File: example4.png Graphic file (type png)
+ <use example4.png>
+Package pdftex.def Info: example4.png used on input line 1409.
+(pdftex.def)             Requested size: 281.85587pt x 192.35269pt.
+
+[37 <./example4.png>]
+Overfull \vbox (0.85184pt too high) detected at line 1596
+ []
+
+[38]
+Underfull \vbox (badness 10000) detected at line 1596
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 1596
+ []
+
+[39]
+Underfull \vbox (badness 10000) detected at line 1596
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 1596
+ []
+
+[40]
+Overfull \hbox (388.99297pt too wide) in paragraph at lines 1605--1606
+\T1/ptm/m/n/10 The fol-low-ing ex-am-ple is taken from a ques-tion posted at \T
+1/pcr/m/n/10 http://tex.stackexchange.com/questions/160737/bold-labels-and-more
+-with-custom-bibtex-bst-and-author-year\T1/ptm/m/n/10 ,
+ []
+
+<example5a.png, id=504, 728.7225pt x 303.1325pt>
+File: example5a.png Graphic file (type png)
+ <use example5a.png>
+Package pdftex.def Info: example5a.png used on input line 1607.
+(pdftex.def)             Requested size: 281.85587pt x 117.24522pt.
+ [41 <./example5a.png (PNG copy)>] <example5b.png, id=509, 803.25093pt x 366.61
+969pt>
+File: example5b.png Graphic file (type png)
+
+<use example5b.png>
+Package pdftex.def Info: example5b.png used on input line 1697.
+(pdftex.def)             Requested size: 281.85587pt x 128.64886pt.
+ [42]
+Overfull \hbox (157.23338pt too wide) in paragraph at lines 1713--1714
+\T1/ptm/m/n/10 This fol-lows an on-line ques-tion posted at \T1/pcr/m/n/10 http
+://tex.stackexchange.com/questions/961/bibtex-style-that-groups-by-author\T1/pt
+m/m/n/10 . 
+ []
+
+[43 <./example5b.png>] [44
 
 ]
 Chapter 6.
-[35] [36] (./Bibulous.ind)
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1282.
- [37]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1282.
+
+Overfull \hbox (2.60257pt too wide) in paragraph at lines 1726--1727
+[]\T1/ptm/m/n/10 The project web-site, with com-plete doc-u-men-ta-tion, can be
+ found at \T1/pcr/m/n/10 http://nzhagen.github.io/bibulous/\T1/ptm/m/n/10 . 
+ []
+
+[45]
+Underfull \vbox (badness 10000) detected at line 1796
+ []
+
+(./Bibulous.ind)
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1803.
+ [46]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1803.
  (./Bibulous.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1282.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1282.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1803.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1803.
 
 Package rerunfilecheck Info: File `Bibulous.out' has not changed.
-(rerunfilecheck)             Checksum: B53240D28956AEC2265EC5D1AC145293;2106.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1282.
+(rerunfilecheck)             Checksum: 1BA93FCC1186E3DD9D13EBA73DB12C59;2386.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1803.
  ) 
 Here is how much of TeX's memory you used:
- 9035 strings out of 495036
- 125334 string characters out of 3180976
- 225610 words of memory out of 3000000
- 11879 multiletter control sequences out of 15000+200000
- 55056 words of font info for 61 fonts, out of 3000000 for 9000
- 15 hyphenation exceptions out of 8191
- 36i,12n,45p,1322b,458s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 9368 strings out of 493466
+ 130570 string characters out of 6145115
+ 234927 words of memory out of 5000000
+ 12354 multiletter control sequences out of 15000+600000
+ 58448 words of font info for 63 fonts, out of 8000000 for 9000
+ 914 hyphenation exceptions out of 8191
+ 36i,12n,45p,1322b,489s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
 e/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texlive/texmf-dist/
 fonts/type1/urw/helvetic/uhvb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/
 urw/helvetic/uhvbo8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/u
 tmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr
 /share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Bibulous.pdf (41 pages, 651573 bytes).
+Output written on Bibulous.pdf (52 pages, 1418178 bytes).
 PDF statistics:
- 505 PDF objects out of 1000 (max. 8388607)
- 437 compressed objects within 5 object streams
- 155 named destinations out of 1000 (max. 500000)
- 297 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 596 PDF objects out of 1000 (max. 8388607)
+ 502 compressed objects within 6 object streams
+ 173 named destinations out of 1000 (max. 500000)
+ 382 words of extra memory for PDF output out of 10000 (max. 10000000)
 
