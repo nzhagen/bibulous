@@ -305,6 +305,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s">&#39;edmsg2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;, eds&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s">&#39;replace_newlines&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s">&#39;sort_order&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;Forward&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s">&#39;wrap_nested_quotes&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
 
         <span class="c">## These options all relate to the default name formatting (the more rigid namelist formatting that does not use</span>
         <span class="c">## the implicit indexing and implicit loop structures).</span>
@@ -433,7 +434,7 @@
                 <span class="k">if</span> <span class="p">(</span><span class="s">&#39;*&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">citedict</span><span class="p">):</span>
                     <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">key</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bibdata</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
                         <span class="k">if</span> <span class="p">(</span><span class="n">key</span> <span class="o">!=</span> <span class="s">&#39;preamble&#39;</span><span class="p">):</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">citedict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">citedict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">i</span>
                     <span class="k">if</span> <span class="p">(</span><span class="s">&#39;preamble&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">citedict</span><span class="p">):</span> <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">citedict</span><span class="p">[</span><span class="s">&#39;preamble&#39;</span><span class="p">]</span>
                     <span class="k">if</span> <span class="p">(</span><span class="s">&#39;*&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">citedict</span><span class="p">):</span> <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">citedict</span><span class="p">[</span><span class="s">&#39;*&#39;</span><span class="p">]</span>
                 <span class="c">## Write out the extracted database.</span>
@@ -1344,10 +1345,11 @@
             <span class="n">itemstr</span> <span class="o">=</span> <span class="n">enwrap_nested_string</span><span class="p">(</span><span class="n">itemstr</span><span class="p">,</span> <span class="n">delims</span><span class="o">=</span><span class="p">(</span><span class="s">&#39;{&#39;</span><span class="p">,</span><span class="s">&#39;}&#39;</span><span class="p">),</span> <span class="n">odd_operator</span><span class="o">=</span><span class="s">r&#39;\textbf&#39;</span><span class="p">,</span> \
                                            <span class="n">even_operator</span><span class="o">=</span><span class="s">r&#39;\textmd&#39;</span><span class="p">)</span>
 
-        <span class="c">## If there are any nested quotation marks in the string, then we need to modify the formatting properly. If</span>
-        <span class="c">## there are any apostrophes or foreign words that use apostrophes in the string then the current code will</span>
-        <span class="c">## raise an exception.</span>
-        <span class="n">itemstr</span> <span class="o">=</span> <span class="n">enwrap_nested_quotes</span><span class="p">(</span><span class="n">itemstr</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">disable</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s">&#39;wrap_nested_quotes&#39;</span><span class="p">]:</span>
+            <span class="c">## If there are any nested quotation marks in the string, then we need to modify the formatting properly. If</span>
+            <span class="c">## there are any apostrophes or foreign words that use apostrophes in the string then the current code will</span>
+            <span class="c">## raise an exception.</span>
+            <span class="n">itemstr</span> <span class="o">=</span> <span class="n">enwrap_nested_quotes</span><span class="p">(</span><span class="n">itemstr</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">disable</span><span class="p">)</span>
 
         <span class="k">return</span><span class="p">(</span><span class="n">itemstr</span><span class="p">)</span>
 
@@ -1896,7 +1898,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">citedict</span><span class="p">:</span>
             <span class="n">ncites</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">citedict</span><span class="p">)</span>
             <span class="c">#ndigits = 1 + int(log10(ncites))</span>
-            <span class="n">citenum</span> <span class="o">=</span> <span class="nb">unicode</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">citedict</span><span class="p">[</span><span class="n">entrykey</span><span class="p">])</span>
+            <span class="n">citenum</span> <span class="o">=</span> <span class="nb">unicode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">citedict</span><span class="p">[</span><span class="n">entrykey</span><span class="p">])</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">citenum</span> <span class="o">=</span> <span class="s">&#39;1&#39;</span>
 
@@ -2599,11 +2601,6 @@
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">newindexer</span> <span class="o">=</span> <span class="s">&#39;.&#39;</span> <span class="o">+</span> <span class="s">&#39;.&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">index_elements</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
                     <span class="k">return</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_indexed_variable</span><span class="p">(</span><span class="n">newfield</span><span class="p">,</span> <span class="n">newindexer</span><span class="p">,</span> <span class="n">entrykey</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">))</span>
-
-        <span class="c">#zzz</span>
-        <span class="c">#if (&#39;ed.&#39; in field):</span>
-        <span class="c">#    print(&#39;field=&#39;, field)</span>
-        <span class="c">#    pdb.set_trace()</span>
 
         <span class="c">## If the thing to the right of the dot-indexer is a *function*, then map the field to the function.</span>
         <span class="k">if</span> <span class="p">(</span><span class="s">&#39;(&#39;</span> <span class="ow">in</span> <span class="n">index_elements</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>

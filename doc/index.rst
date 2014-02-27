@@ -23,6 +23,8 @@ Contents:
 Indices and tables
 ==================
 
+The link below provides an index to the source code for all functions contained in the Bibulous project.
+
 * :ref:`genindex`
 * :ref:`search`
 
