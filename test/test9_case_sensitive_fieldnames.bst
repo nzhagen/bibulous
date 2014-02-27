@@ -24,6 +24,7 @@ use_citeextract = False                   ## turn off cite extraction, since thi
 etal_message = , \textit{et~al.}          ## what text to place at the end of an authorlist when there are too many
 edmsg1 = , ed.                            ## the label to use after the editor namelist when only one editor is present
 edmsg2 = , eds                            ## the label to use after the editor namelist when multiple editors are present
+wrap_nested_quotes = False                ## whether to replace \enquote{} commands and adjust nested quotations
 
 
 VARIABLES:
