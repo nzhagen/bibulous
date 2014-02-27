@@ -30,7 +30,7 @@ Example 2
 The next example is taken from the bibliography style found in: Dimitri Mihalas and James Binney, _Galactic Astronomy: Structure and Kinematics_, 2nd ed. (W. H. Freeman, New York, 1981). A snapshot from the the book's bibliography looks like
 
 .. image:: _static/example2a.png
-   :width: 50%
+   :width: 60%
 
 To produce this style, we can define the following templates:
 
@@ -43,7 +43,7 @@ so that with the following database file:
 we get the following formatted result
 
 .. image:: _static/example2b.png
-   :width: 50%
+   :width: 60%
 
 ************************************************
 
@@ -86,10 +86,28 @@ and the database file
 Example 5
 =========
 
+The following example is taken from a question posted at ``http://tex.stackexchange.com/questions/160737/bold-labels-and-more-with-custom-bibtex-bst-and-author-year``, where an answer to the original poster's question is given as
 
+.. image:: _static/example5a.png
+   :width: 60%
 
+The answerer's database file 
 
+.. literalinclude:: ../examples/example5.bib
 
+makes use of separate formatting instructions for titles and subtitles, so that an appropriate style template is
+
+.. literalinclude:: ../examples/example5.bst
+
+producing the formatted result
+
+.. image:: _static/example5b.png
+   :width: 60%
+
+************************************************
+
+Example 6
+=========
 
 
 

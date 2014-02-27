@@ -1,0 +1,42 @@
+\documentclass[german]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[ngerman]{babel}
+\usepackage{csquotes}
+
+\makeatletter
+   %% Redefine '@biblabel' to get rid of the square brackets around bibliography item labels.
+   \renewcommand{\@biblabel}[1]{}
+   %% The next block of code is needed to get a hanging indent.
+   \renewenvironment{thebibliography}[1]
+      {\section*{\refname}%
+         \@mkboth{\MakeUppercase\refname}{\MakeUppercase\refname}%
+         \list{\@biblabel{\@arabic\c@enumiv}}%
+            {\settowidth\labelwidth{\@biblabel{#1}}%
+               \leftmargin\labelwidth
+               \advance\leftmargin15pt% indent is 15pt
+               \advance\leftmargin\labelsep
+               \setlength\itemindent{-15pt}% need to use same value as above but negative
+               \@openbib@code
+               \usecounter{enumiv}%
+               \let\p@enumiv\@empty
+               \renewcommand\theenumiv{\@arabic\c@enumiv}}%
+         \sloppy
+         \clubpenalty4000
+         \@clubpenalty \clubpenalty
+         \widowpenalty4000%
+         \sfcode`\.\@m}
+      {\def\@noitemerr
+         {\@latex@warning{Empty `thebibliography' environment}}%
+         \endlist}
+   \renewcommand\newblock{\hskip .11em\@plus.33em\@minus.07em}
+\makeatother
+
+\begin{document}
+
+\nocite{*}
+\bibliographystyle{example5}
+\bibliography{example5}
+
+\end{document}
