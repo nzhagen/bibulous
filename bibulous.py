@@ -225,6 +225,7 @@ class Bibdata(object):
         self.options['edmsg2'] = ', eds'
         self.options['replace_newlines'] = True
         self.options['sort_order'] = 'Forward'
+        self.options['wrap_nested_quotes'] = False
 
         ## These options all relate to the default name formatting (the more rigid namelist formatting that does not use
         ## the implicit indexing and implicit loop structures).
@@ -353,7 +354,7 @@ class Bibdata(object):
                 if ('*' in self.citedict):
                     for i,key in enumerate(self.bibdata.keys()):
                         if (key != 'preamble'):
-                            self.citedict[key] = i
+                            self.citedict[key] = 1 + i
                     if ('preamble' in self.citedict): del self.citedict['preamble']
                     if ('*' in self.citedict): del self.citedict['*']
                 ## Write out the extracted database.
@@ -1264,10 +1265,11 @@ class Bibdata(object):
             itemstr = enwrap_nested_string(itemstr, delims=('{','}'), odd_operator=r'\textbf', \
                                            even_operator=r'\textmd')
 
-        ## If there are any nested quotation marks in the string, then we need to modify the formatting properly. If
-        ## there are any apostrophes or foreign words that use apostrophes in the string then the current code will
-        ## raise an exception.
-        itemstr = enwrap_nested_quotes(itemstr, disable=self.disable)
+        if self.options['wrap_nested_quotes']:
+            ## If there are any nested quotation marks in the string, then we need to modify the formatting properly. If
+            ## there are any apostrophes or foreign words that use apostrophes in the string then the current code will
+            ## raise an exception.
+            itemstr = enwrap_nested_quotes(itemstr, disable=self.disable)
 
         return(itemstr)
 
@@ -1816,7 +1818,7 @@ class Bibdata(object):
         if self.citedict:
             ncites = len(self.citedict)
             #ndigits = 1 + int(log10(ncites))
-            citenum = unicode(1 + self.citedict[entrykey])
+            citenum = unicode(self.citedict[entrykey])
         else:
             citenum = '1'
 
@@ -2519,11 +2521,6 @@ class Bibdata(object):
                 else:
                     newindexer = '.' + '.'.join(index_elements[1:])
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
-
-        #zzz
-        #if ('ed.' in field):
-        #    print('field=', field)
-        #    pdb.set_trace()
 
         ## If the thing to the right of the dot-indexer is a *function*, then map the field to the function.
         if ('(' in index_elements[0]):
