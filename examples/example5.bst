@@ -11,7 +11,8 @@ au = <authorname.0>; ...; <authorname.9>
 editorname.n = [<editorlist.n.prefix> ]<editorlist.n.last>[, <editorlist.n.first.initial()>.][, <editorlist.n.middle.initial()>.][, <editorlist.n.suffix>]
 ed = <editorname.0>; ...; <editorname.2>
 citelabel = <citenum>
-sortkey = <authorlist.0.last>
+sortkey = <citenum>
+#sortkey = <authorlist.0.last>
 
 OPTIONS:
 sort_case = False                         ## whether to use case-sensitive citation sorting (default is False)
