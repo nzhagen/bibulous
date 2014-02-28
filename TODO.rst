@@ -4,7 +4,9 @@ Python code to-do list: (including goals for version 2.0)
 The primary goal for version 2.0 is to incorporate integration with a front-end LaTeX package.
 For version 1.4, the goal is to have group templates working.
 
-- You seem to have duplicate special variables "citekey" and "entrykey".
+- Add a test for the new ``##:##`` indexer format.
+
+- We seem to have duplicate special variables ``citekey`` and ``entrykey``. What's up with that?
 
 - Add a test using the following special template: 
   ``author_or_editor = [[[<authorlist.0.prefix>]<authorlist.0.last>]|[[<editorlist.0.prefix>]<editorlist.0.last>]]``.

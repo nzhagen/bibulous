@@ -2689,6 +2689,18 @@ class Bibdata(object):
             #    bib_warning(msg, disable=self.disable)
             #    return(None)
 
+        ## If the indexer is a numerical range...
+        if re.search(r'^.\d*:\d*', indexer, re.UNICODE):
+            indexer = indexer[1:]   ## remove the leading period
+            match = re.search(r'^.\d*:\d*', indexer, re.UNICODE)
+            (start_idx,end_idx) = match.group(0).split(':')
+            newfield = field[int(start_idx):int(end_idx)+1]
+            newindexer = indexer[int(match.end(0))+1:]
+            if (nelements == 1) or (newindexer == ''):
+                return(newfield)
+            else:
+                return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
+
         if isinstance(field, str):
             return(field)
 
