@@ -109,7 +109,18 @@ producing the formatted result
 Example 6
 =========
 
+The following example is taken from a question posted at ``http://tex.stackexchange.com/questions/147932/peerage-titles-in-the-author-field-in-bibtex``. The question's answerer responds with a Biblatex solution, in which ``nameaddon`` and ``shortauthor`` fields are added to the ``*.bib`` database file, as in
 
+.. literalinclude:: ../examples/example6.bib
+
+The formatting template makes use of these additional fields, and provides a citation label using the ``shortauthor`` field's first three characters followed by the last two characters in the ``year`` field:
+
+.. literalinclude:: ../examples/example6.bst
+
+The formatted result looks like
+
+.. image:: _static/example6.png
+   :width: 60%
 
 
 
