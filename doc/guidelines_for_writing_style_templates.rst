@@ -114,10 +114,12 @@ Also, in addition to these default fields, there are also two special variables 
 Operators
 ---------
 
-One can use the "dot" operator inside a variable name, as in ``<authorname.0.last.initial()>'' to perform any one of four functions: a explicit numerical index (the ``0`` shown here), an implicit numerical index (using ``.n`` or ``.N``, for which see section *Examples for namelist formatting* below for details), a dictionary lookup (the ``last`` used here), or the application of an operator (in this case, the ``.initial()`` operator which is used to reduce a name to its initial). A numerical index must apply to a list-type of variable, and a key index must apply to a dict-type of variable (i.e. a dictionary).
+One can use the "dot" operator inside a variable name, as in ``<authorname.0.last.initial()>'' to perform any one of five functions: a explicit numerical index (the ``0`` shown here, listed as the ``.#`` operator below), an implicit numerical index (using ``.n`` or ``.N``, for which see section *Examples for namelist formatting* below for details), a range index (listed as the ``##:##`` operator below), a dictionary lookup (the ``last`` used here), or the application of an operator (in this case, the ``.initial()`` operator which is used to reduce a name to its initial). A numerical index must apply to a list-type of variable, and a key index must apply to a dict-type of variable (i.e. a dictionary).
 
 The complete list of operators available is:::
 
+    .#
+    .##:##
     .compress()
     .format_authorlist()
     .format_editorlist()
@@ -127,6 +129,8 @@ The complete list of operators available is:::
     .lower()
     .monthabbrev()
     .monthname()
+    .n
+    .N
     .ordinal()
     .purify()
     .replace(old,new)
@@ -137,6 +141,10 @@ The complete list of operators available is:::
     .zfill(num)
 
 The function of each operator is summarized below.
+
+**.#** An explicit numerical index, i.e., select the #th element of the operand.
+
+**.##:##** A range index, i.e., select the ##th through ##th elements of the operand. For example, for a bibliography entry whose database file contains ``title = {Impossibility}``, a template variable of the form ``<title.0:2>`` will return ``Imp``, and ``<title.3:5>`` will return ``oss``. The first character of the operand thus has an index ``0``. Indexing from the end of the operand can be done using negative number indices. For example, the last character of the operand can be indexed by ``-1``, and the third to last by ``-3``, so that in the example above, ``<title.-3:-1>`` will return ``ity``.
 
 **.compress()** removes any whitespace found within the string. This is useful for generating namelists where the format requires "tight" spacing. An example would be "RMA Azzam", where the three initials are grouped together without spacing. And example template for generating this type of name would be::
 
@@ -160,6 +168,10 @@ Without the ``.compress()`` operator, the name would come out as "RM A Azzam", s
 **.monthabbrev()** assumes that the input field is a number from 1 to 12, and converts the numerical input into the abbreviated month according to the user's current locale. If the system cannot determine the user's locale, the operator will default to using the American English locale, which replaces the numerical field operated on with one of "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", or "Dec" according to the field's value. Thus, if the bibliography database entry has a field ``month = 11``, and the template has the form ``<month.monthabbrev()>``, then the template will be replaced with "Nov" for the default locale. For users with locale "Japan", this same operator will return "11月".
 
 **.monthname()** behaves much like ``.monthabbrev()`` but rather than using an abbreviated form for the month's name, it uses the full form. Thus if the bibliography database entry has a field ``month = 3``, and the template has the form ``<month.monthname()>``, then the template variable will be replaced with "March" for the default locale. For users with locale "Norway", this same operator will return "Mars".
+
+**.n** See the *Examples for namelist formatting* below
+
+**.N** [Not currently supported]
 
 **.ordinal()** creates an "ordinal" from a numerical field. Thus, if the field operated on is "1", "2", "3", or "4", then the operator will replace the template with "1st", "2nd", "3rd" or "4th". Any number above 4 simply has "th" appended to the end of it. Currently Bibulous does not support non-English locales for this function. (Anyone having suggestions of how this may be implemented without too much fuss should contact us!)
 
