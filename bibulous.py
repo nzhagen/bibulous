@@ -1978,11 +1978,11 @@ class Bibdata(object):
         lhs = templatestr[:idx]
         rhs = templatestr[idx+3:]
 
-        ## In the string to the left of the ellipsis, look for the template variable farthest to the right. Note that we
-        ## can't just set "lhs_var = lhs_variables[-1]" because we need to know the *position* of the variable and not
-        ## just the variable name. And if the name occurs more than once in the template, then we can't easily get the
-        ## position from the name. Thus, we iterate through the string until we encounter the last match, and return
-        ## that.
+        ## In the string to the left of the ellipsis, look for the template variable farthest to the right. Note that
+        ## we can't just set "lhs_var = lhs_variables[-1]" because we need to know the *position* of the variable and
+        ## not just the variable name. And if the name occurs more than once in the template, then we can't easily get
+        ## the position from the name. Thus, we iterate through the string until we encounter the last match, and
+        ## return that.
         match = re.search(r'<.*?>', lhs)
         if not match:
             msg = 'Warning 030a: the template string "' + templatestr + '" is malformed. It does not have a ' + \
@@ -2110,8 +2110,8 @@ class Bibdata(object):
         entrykey : dict
             The key of the database entry from which to get fields to substitute into the template.
         templatekey : str
-            If this template is for a special variable rather than an entrytype, then this key will tell which special \
-            variable is being operated on.
+            If this template is for a special variable rather than an entrytype, then this key will tell which \
+            special variable is being operated on.
 
         Returns
         -------
@@ -2126,7 +2126,8 @@ class Bibdata(object):
         template_has_implicit_loop = True if '...' in templatestr else False
         if template_has_implicit_loop:
             ## In order to check if all of the variables use din an implicit loop are undefined, we make a template
-            ## string in which all of the variables are replaced with "???", and check to see if the result equals that.
+            ## string in which all of the variables are replaced with "???", and check to see if the result equals
+            ## that.
             templatestr_all_undef = re.sub(r'<.*?>', self.options['undefstr'], templatestr, re.UNICODE)
 
         templatestr = self.fillout_implicit_indices(templatestr, entrykey)
@@ -2382,13 +2383,13 @@ class Bibdata(object):
 
         block_sequence = templatestr.split('|')
 
-        ## Go through the if/elseif/else train of blocks within the string one by one. In each block, see if there are any
-        ## variables defined. If no variables are present, then the block is "defined" and we return that block (i.e.
-        ## replacing the train with that block). If an argument is defined, strip its surrounding '<' and '>' and look to
-        ## see if the variable is defined in the bibdata entry. If so, the variable is defined and we return the '<var>'
-        ## version of the variable (later code will do the variable replacement). If the variable is undefined (not present
-        ## in the bibdata entry) then skip to the next block. If there is no next block, or if the block is empty (which
-        ## means undefined by definition) then set the result to be the "undefined string".
+        ## Go through the if/elseif/else train of blocks within the string one by one. In each block, see if there are
+        ## any variables defined. If no variables are present, then the block is "defined" and we return that block
+        ## (i.e. replacing the train with that block). If an argument is defined, strip its surrounding '<' and '>' and
+        ## look to see if the variable is defined in the bibdata entry. If so, the variable is defined and we return
+        ## the '<var>' version of the variable (later code will do the variable replacement). If the variable is
+        ## undefined (not present in the bibdata entry) then skip to the next block. If there is no next block, or if
+        ## the block is empty (which means undefined by definition) then set the result to be the "undefined string".
         for block in block_sequence:
             if (block == ''):
                 arg = self.options['undefstr']
@@ -2412,8 +2413,8 @@ class Bibdata(object):
                 if not foundit:
                     break
 
-            ## If after going through all of the variables in a block, we have located definitions for all of them, then the
-            ## entire block is defined, and we can return it without evaluating the next block.
+            ## If after going through all of the variables in a block, we have located definitions for all of them,
+            ## then the entire block is defined, and we can return it without evaluating the next block.
             if foundit:
                 arg = block
                 break
@@ -2452,8 +2453,9 @@ class Bibdata(object):
             else:
                return(unicode(bibentry[variable]))
 
-        ## If there *is* a dot-indexer in the variable name, then we have to do some parsing. First we check the leftmost
-        ## part (the field being indexed). If that doesn't exist then we're done --- the variable is undefined.
+        ## If there *is* a dot-indexer in the variable name, then we have to do some parsing. First we check the
+        ## leftmost part (the field being indexed). If that doesn't exist then we're done --- the variable is
+        ## undefined.
         var_parts = variable.split('.')
         if (var_parts[0] in bibentry):
             fieldname = var_parts[0]
