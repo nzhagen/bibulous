@@ -178,6 +178,7 @@ class Bibdata(object):
         self.looped_templates = ['au','ed']  ## which templates have implicit loops
         self.implicitly_indexed_vars = ['authorname','editorname'] ## which templates have implicit indexing
         self.namelists = []         ## the namelists defined within the templates
+        self.uniquify_vars = {}     ## dict containing all variables calling the "uniquify" operator
 
         if (uselocale == None):
             self.locale = locale.setlocale(locale.LC_ALL,'')    ## set the locale to the user's default
@@ -1969,9 +1970,9 @@ class Bibdata(object):
             return(templatestr)
 
         names = get_names(self.bibdata[entrykey], templatestr)
+        if not names:
+            return(templatestr)
         num_names = len(names)
-        #if (num_names == 0): num_names = 1
-        if (num_names == 0): return(templatestr)
 
         ## Split the string in two at the ellipsis (for now assume that there is only one).
         idx = templatestr.find('...')
@@ -2462,6 +2463,12 @@ class Bibdata(object):
         else:
             return(None)
 
+        ## When using the "uniquify" operator, we need to be able to tell it the variable name. Use the "options"
+        ## dictionary to get the variable's name into the "get_indexed_variable()" function, so we don't need to
+        ## add an extra input variable.
+        if ('.uniquify(num)' in variable):
+            options.update({'varname':fieldname})
+
         indexer = '.' + '.'.join(var_parts[1:])
         result = self.get_indexed_variable(bibentry[fieldname], indexer, bibentry['entrykey'], options=options)
 
@@ -2684,6 +2691,50 @@ class Bibdata(object):
                 if (nelements == 1) or (newindexer == ''):
                     return(newfield)
                 else:
+                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
+            elif (index_elements[0] == 'uniquify(1)'):
+                if (options['varname'] not in self.uniquify_vars):
+                    self.uniquify_vars[options['varname']] = []
+
+                newfield = field + '1'
+                if (field+'1' in self.uniquify_vars[options['varname']]):
+                    q = 2
+                    while True:
+                        newfield = field + str(q)
+                        q += 1
+                        if (newfield not in self.uniquify_vars[options['varname']]):
+                            break
+                self.uniquify_vars[options['varname']].append(newfield)
+                #print('varname=%s, field=%s, newfield=%s' % (options['varname'], field, newfield))
+                if (nelements == 1):
+                    return(newfield)
+                else:
+                    newindexer = '.'.join(index_elements[1:])
+                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
+            elif (index_elements[0] == 'uniquify(a)'):
+                if (options['varname'] not in self.uniquify_vars):
+                    self.uniquify_vars[options['varname']] = []
+
+                newfield = field
+                if (field in self.uniquify_vars[options['varname']]):
+                    q = 1
+                    while True:
+                        if (i < 27):
+                            newfield = field + chr(q+96)               ## 97 == 'a', 98 == 'b', etc.
+                        elif (i < 52):
+                            newfield = field + chr(q+96) + chr(q+96)   ## double up if a single append doesn't work
+                        elif (i < 78):
+                            newfield = field + chr(q+96) + chr(q+96) + chr(q+96)   ## triple up if necessary
+                        newfield += str(q)
+                        q += 1
+                        if (newfield not in self.uniquify_vars[options['varname']]):
+                            break
+                self.uniquify_vars[options['varname']].append(newfield)
+                print('varname=%s, field=%s, newfield=%s' % (options['varname'], field, newfield))
+                if (nelements == 1):
+                    return(newfield)
+                else:
+                    newindexer = '.'.join(index_elements[1:])
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
             #else:
             #    msg = 'Warning 029c: the template for entry ' + entrykey + ' has an unknown function ' + \
