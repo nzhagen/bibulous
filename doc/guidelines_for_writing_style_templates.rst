@@ -198,6 +198,7 @@ Options keywords
 A complete list of existing options keywords, together with their default definitions, is:::
 
     allow_scripts = False
+    autocomplete_doi = True
     backrefs = False
     backrefstyle = none
     bibitemsep = None
@@ -224,6 +225,8 @@ A complete list of existing options keywords, together with their default defini
 Each of the keywords is summarized below.
 
 **allow_scripts** [default value: False] tells Bibulous whether to allow the evaluation of Python code in the VARIABLES and DEFINITIONS sections of ``.bst`` files. It is important for users to realize that evaluating external code in this way is a security risk, and so they should not set ``allow_scripts = True`` when inserting code that they do not trust. However, as an additional security precaution, Bibulous prevents most security-sensitive operations from being used within its Python API.
+
+**autocomplete_doi** [default value: True] tells Bibulous whether to add ``http://dx.doi.org/`` to the front of the ``doi`` field if the front is missing. This allows the ``<doi>`` variable to be used as a complete URL, even when the prefix is missing in the database field.
 
 **backrefs** [default value: False] THIS KEYWORD IS NOT YET IMPLEMENTED
 
