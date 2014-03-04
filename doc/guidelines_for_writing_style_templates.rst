@@ -137,6 +137,7 @@ The complete list of operators available is:::
     .sentence_case()
     .tie()
     .to_namelist()
+    .uniquify(arg)
     .upper()
     .zfill(num)
 
@@ -187,6 +188,8 @@ Without the ``.compress()`` operator, the name would come out as "RM A Azzam", s
                  [<authorlist.n.prefix>~]<authorlist.n.last>[, <authorlist.n.suffix>]
 
 **.to_namelist()** parses the field (assumed to be a BibTeX-format "and"-delimited list of names) into a Bibulous-format namelist (i.e. a list of dictionaries).
+
+**.uniquify(arg)** appends a letter character (if arg=``a``) or a number (if arg=``1``) to the end of the field to make it unique relative to the same field in every other cited entry. For example, if two authors have the name "Smith" and published a paper in the year 2000, then the template ``citelabel = <authorlist.0.last><year>`` will produce the same citation label for both entries. Thus, we can rename this as ``citetemp = <authorlist.0.last><year>`` and then define ``citelabel = <citetemp.uniquify(a)>`` to generate unique labels. For this example, the first citation will have the label "Smith2000" and the second "Smith2000a". If a third citation shares the same name and year, then it will be given the unique label "Smith2000b", and so on.
 
 **.upper()** raises all letters in its argument to upper case. If any LaTeX markup letters exist in the argument, then they will be converted to Unicode equivalents first before applying the operator. Thus, if the field ``au`` contains ``{\aa}`` then the operator will first convert this to the letter å and then raise it to the upper case Å.
 
