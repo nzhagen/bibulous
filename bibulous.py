@@ -227,6 +227,7 @@ class Bibdata(object):
         self.options['replace_newlines'] = True
         self.options['sort_order'] = 'Forward'
         self.options['wrap_nested_quotes'] = False
+        self.options['autocomplete_doi'] = False
 
         ## These options all relate to the default name formatting (the more rigid namelist formatting that does not use
         ## the implicit indexing and implicit loop structures).
@@ -1810,7 +1811,7 @@ class Bibdata(object):
             entry['startpage'] = startpage
             entry['endpage'] = endpage
 
-        if ('doi' in entry):
+        if ('doi' in entry) and self.options['autocomplete_doi']:
             if not entry['doi'].startswith('http://dx.doi.org/'):
                 entry['doi'] = 'http://dx.doi.org/' + entry['doi']
 
