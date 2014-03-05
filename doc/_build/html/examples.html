@@ -735,32 +735,8 @@ book = [\textbf{&lt;au&gt;:}|\textbf{&lt;ed&gt;} (Ed.) \textbf{:}|&lt;organizati
 inbook = \textbf{&lt;au&gt;:} \enquote{&lt;title&gt;}, in: [&lt;ed.upper()&gt; (Ed.): ]\textit{&lt;booktitle&gt;}[\textit{: &lt;booksubtitle&gt;}], &lt;location&gt; u.a.: &lt;publisher&gt; &lt;year&gt;, [S.~&lt;startpage&gt;--&lt;endpage&gt;|S.~&lt;eid&gt;|].[ &lt;note&gt;]
 
 SPECIAL-TEMPLATES:
-authorlist = &lt;author.to_namelist()&gt;
-editorlist = &lt;editor.to_namelist()&gt;
-authorname.n = [&lt;authorlist.n.prefix&gt; ]&lt;authorlist.n.last&gt;[, &lt;authorlist.n.first.initial()&gt;.][, &lt;authorlist.n.middle.initial()&gt;.][, &lt;authorlist.n.suffix&gt;]
-au = &lt;authorname.0&gt;; ...; &lt;authorname.9&gt;
-editorname.n = [&lt;editorlist.n.prefix&gt; ]&lt;editorlist.n.last&gt;[, &lt;editorlist.n.first.initial()&gt;.][, &lt;editorlist.n.middle.initial()&gt;.][, &lt;editorlist.n.suffix&gt;]
-ed = &lt;editorname.0&gt;; ...; &lt;editorname.2&gt;
 citelabel = &lt;citenum&gt;
 sortkey = &lt;citenum&gt;
-#sortkey = &lt;authorlist.0.last&gt;
-
-OPTIONS:
-sort_case = False                         ## whether to use case-sensitive citation sorting (default is False)
-bibitemsep = 0pt                          ## the extra vertical separation between each bibliography entry. Defining this option *overrides* LaTeX&#39;s existing definition for \bibitemsep.
-
-## The remaining exceptions below are really for users rather than for the journal.
-undefstr = ???                            ## what string to replace undefined required fields with
-use_abbrevs = True                        ## whether to use the abbreviation strings (mainly useful for debugging)
-replace_newlines = True                   ## whether to replace newline characters inside fields with spaces
-allow_scripts = False                     ## whether to allow user scripts in BST files
-case_sensitive_field_names = False        ## whether to allow field names to be case sensitive (i.e. &quot;BOOK&quot; will not be the same entrytype as &quot;book&quot;)
-use_citeextract = True                    ## whether to automatically perform citation extraction each time Bibulous is run
-etal_message = , \textit{et~al.}          ## what text to place at the end of a namelist when there are too many names
-edmsg1 = , ed.                            ## the label to use after the editor namelist when only one editor is present
-edmsg2 = , eds                            ## the label to use after the editor namelist when multiple editors are present
-name_separator = and                      ## the string used to separate names in a BibTeX-format field of names
-wrap_nested_quotes = False                ## whether to attempt to match quotation levels within fields with a template formatting quotation marks
 </pre></div>
 </div>
 <p>producing the formatted result</p>
@@ -769,6 +745,34 @@ wrap_nested_quotes = False                ## whether to attempt to match quotati
 <hr class="docutils" />
 <div class="section" id="example-6">
 <h2>Example 6<a class="headerlink" href="#example-6" title="Permalink to this headline">¶</a></h2>
+<p>The following example is taken from a question posted at <tt class="docutils literal"><span class="pre">http://tex.stackexchange.com/questions/147932/peerage-titles-in-the-author-field-in-bibtex</span></tt>. The question&#8217;s answerer responds with a Biblatex solution, in which <tt class="docutils literal"><span class="pre">nameaddon</span></tt> and <tt class="docutils literal"><span class="pre">shortauthor</span></tt> fields are added to the <tt class="docutils literal"><span class="pre">*.bib</span></tt> database file, as in</p>
+<div class="highlight-python"><div class="highlight"><pre>@article{Rayleigh1892,
+    author = {Strutt, John William},
+    journal = {Philosophical Magazine},
+    nameaddon = {3rd Baron Rayleigh},
+    pages = {481-502},
+    shortauthor = {Rayleigh},
+    title = {On the influence of obstacles arranged in rectangular order upon the properties of a medium},
+    volume = {34},
+    year = {1892}
+}
+</pre></div>
+</div>
+<p>The formatting template makes use of these additional fields, and provides a citation label using the <tt class="docutils literal"><span class="pre">shortauthor</span></tt> field&#8217;s first three characters followed by the last two characters in the <tt class="docutils literal"><span class="pre">year</span></tt> field:</p>
+<div class="highlight-python"><div class="highlight"><pre>TEMPLATES:
+article = &lt;au&gt;[ (&lt;nameaddon&gt;)], \enquote{&lt;title&gt;}. In: \textit{&lt;journal&gt;} &lt;volume&gt; (&lt;year&gt;), [pp.~&lt;startpage&gt;--&lt;endpage&gt;|p.~&lt;startpage&gt;|&lt;eid&gt;|].[ &lt;note&gt;]
+
+SPECIAL-TEMPLATES:
+authorlist = &lt;author.to_namelist()&gt;
+editorlist = &lt;editor.to_namelist()&gt;
+authorname.n = [&lt;authorlist.n.first&gt; ][&lt;authorlist.n.middle&gt; ][&lt;authorlist.n.prefix&gt; ]&lt;authorlist.n.last&gt;[, &lt;authorlist.n.suffix&gt;]
+au = &lt;authorname.0&gt;; ...; &lt;authorname.9&gt;
+citelabel = [&lt;shortauthor.0:2&gt;&lt;year.2:3&gt;|&lt;authorlist.0.last.0:2&gt;&lt;year.2:3&gt;|]
+sortkey = &lt;authorlist.0.last&gt;
+</pre></div>
+</div>
+<p>The formatted result looks like</p>
+<a class="reference internal image-reference" href="_images/example6.png"><img alt="_images/example6.png" src="_images/example6.png" style="width: 60%;" /></a>
 </div>
 <hr class="docutils" />
 <div class="section" id="example">

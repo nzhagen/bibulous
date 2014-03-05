@@ -114,10 +114,12 @@ Also, in addition to these default fields, there are also two special variables 
 Operators
 ---------
 
-One can use the "dot" operator inside a variable name, as in ``<authorname.0.last.initial()>'' to perform any one of four functions: a explicit numerical index (the ``0`` shown here), an implicit numerical index (using ``.n`` or ``.N``, for which see section *Examples for namelist formatting* below for details), a dictionary lookup (the ``last`` used here), or the application of an operator (in this case, the ``.initial()`` operator which is used to reduce a name to its initial). A numerical index must apply to a list-type of variable, and a key index must apply to a dict-type of variable (i.e. a dictionary).
+One can use the "dot" operator inside a variable name, as in ``<authorname.0.last.initial()>'' to perform any one of five functions: a explicit numerical index (the ``0`` shown here, listed as the ``.#`` operator below), an implicit numerical index (using ``.n`` or ``.N``, for which see section *Examples for namelist formatting* below for details), a range index (listed as the ``##:##`` operator below), a dictionary lookup (the ``last`` used here), or the application of an operator (in this case, the ``.initial()`` operator which is used to reduce a name to its initial). A numerical index must apply to a list-type of variable, and a key index must apply to a dict-type of variable (i.e. a dictionary).
 
 The complete list of operators available is:::
 
+    .#
+    .##:##
     .compress()
     .format_authorlist()
     .format_editorlist()
@@ -127,16 +129,23 @@ The complete list of operators available is:::
     .lower()
     .monthabbrev()
     .monthname()
+    .n
+    .N
     .ordinal()
     .purify()
     .replace(old,new)
     .sentence_case()
     .tie()
     .to_namelist()
+    .uniquify(arg)
     .upper()
     .zfill(num)
 
 The function of each operator is summarized below.
+
+**.#** An explicit numerical index, i.e., select the #th element of the operand.
+
+**.##:##** A range index, i.e., select the ##th through ##th elements of the operand. For example, for a bibliography entry whose database file contains ``title = {Impossibility}``, a template variable of the form ``<title.0:2>`` will return ``Imp``, and ``<title.3:5>`` will return ``oss``. The first character of the operand thus has an index ``0``. Indexing from the end of the operand can be done using negative number indices. For example, the last character of the operand can be indexed by ``-1``, and the third to last by ``-3``, so that in the example above, ``<title.-3:-1>`` will return ``ity``.
 
 **.compress()** removes any whitespace found within the string. This is useful for generating namelists where the format requires "tight" spacing. An example would be "RMA Azzam", where the three initials are grouped together without spacing. And example template for generating this type of name would be::
 
@@ -144,9 +153,9 @@ The function of each operator is summarized below.
 
 Without the ``.compress()`` operator, the name would come out as "RM A Azzam", since the two middle name initials "M" and "A" are spaced apart from one another by default.
 
-**.format_authorlist()** operates on a list of dictionaries type of variable (a namelist), and uses the keyword-based default formatting scheme to create a formatted string of names. The complete list keywords that it work with is: ``etal_message``, ``maxauthors``, ``minauthors``, ``namelist_format``, ``period_after_initial``, ``terse_inits``, ``use_firstname_initials``, ``use_name_ties``. The default formatter, while fast, is not very flexible, so that users looking for more customizability will want to make use of Bibulous' implicit-index and implicit-loop based definitions. See the *Example definitions for namelist formatting* section below.
+**.format_authorlist()** operates on a list of dictionaries type of variable (a namelist), and uses the keyword-based default formatting scheme to create a formatted string of names. The complete list keywords that it looks for is: ``etal_message``, ``maxauthors``, ``minauthors``, ``namelist_format``, ``period_after_initial``, ``terse_inits``, ``use_firstname_initials``, ``use_name_ties``. The default formatter, while fast, is not very flexible, so that users looking for more customizability will want to make use of Bibulous' implicit-index and implicit-loop based definitions. See the *Example definitions for namelist formatting* section below.
 
-**.format_editorlist()** operates on a list of dictionaries type of variable (a namelist), and uses the keyword-based default formatting scheme to create a formatted string of names.  The complete list keywords that it work with is: ``etal_message``, ``maxeditors``, ``mineditors``, ``namelist_format``, ``period_after_initial``, ``terse_inits``, ``use_firstname_initials``, ``use_name_ties``. (The difference with the ``.format_authorlist()`` operator is that it uses ``maxeditors`` and ``mineditors`` rather than ``maxauthors`` and ``minauthors``) The default formatter, while fast, is not very flexible, so that users looking for more customizability will want to make use of Bibulous' implicit-index and implicit-loop based definitions. See the *Example definitions for namelist formatting* section below.
+**.format_editorlist()** operates on a list of dictionaries type of variable (a namelist), and uses the keyword-based default formatting scheme to create a formatted string of names.  The complete list keywords that looks for is: ``etal_message``, ``maxeditors``, ``mineditors``, ``namelist_format``, ``period_after_initial``, ``terse_inits``, ``use_firstname_initials``, ``use_name_ties``. (The difference with the ``.format_authorlist()`` operator is that it uses ``maxeditors`` and ``mineditors`` rather than ``maxauthors`` and ``minauthors``) The default formatter, while fast, is not very flexible, so that users looking for more customizability will want to make use of Bibulous' implicit-index and implicit-loop based definitions. See the *Example definitions for namelist formatting* section below.
 
 **.frenchinitial()** is an alternative form of the ``.initial()`` operator that has slightly different behavior. If a name begins with one of the digraphs
 "Ch", "Gn", "Ll", "Ph", "Ss", or "Th", then the initial will truncate the name after the digraph instead of after the first letter.
@@ -160,6 +169,10 @@ Without the ``.compress()`` operator, the name would come out as "RM A Azzam", s
 **.monthabbrev()** assumes that the input field is a number from 1 to 12, and converts the numerical input into the abbreviated month according to the user's current locale. If the system cannot determine the user's locale, the operator will default to using the American English locale, which replaces the numerical field operated on with one of "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", or "Dec" according to the field's value. Thus, if the bibliography database entry has a field ``month = 11``, and the template has the form ``<month.monthabbrev()>``, then the template will be replaced with "Nov" for the default locale. For users with locale "Japan", this same operator will return "11月".
 
 **.monthname()** behaves much like ``.monthabbrev()`` but rather than using an abbreviated form for the month's name, it uses the full form. Thus if the bibliography database entry has a field ``month = 3``, and the template has the form ``<month.monthname()>``, then the template variable will be replaced with "March" for the default locale. For users with locale "Norway", this same operator will return "Mars".
+
+**.n** See the *Examples for namelist formatting* below
+
+**.N** [Not currently supported]
 
 **.ordinal()** creates an "ordinal" from a numerical field. Thus, if the field operated on is "1", "2", "3", or "4", then the operator will replace the template with "1st", "2nd", "3rd" or "4th". Any number above 4 simply has "th" appended to the end of it. Currently Bibulous does not support non-English locales for this function. (Anyone having suggestions of how this may be implemented without too much fuss should contact us!)
 
@@ -176,6 +189,8 @@ Without the ``.compress()`` operator, the name would come out as "RM A Azzam", s
 
 **.to_namelist()** parses the field (assumed to be a BibTeX-format "and"-delimited list of names) into a Bibulous-format namelist (i.e. a list of dictionaries).
 
+**.uniquify(arg)** appends a letter character (if arg=``a``) or a number (if arg=``1``) to the end of the field to make it unique relative to the same field in every other cited entry. For example, if two authors have the name "Smith" and published a paper in the year 2000, then the template ``citelabel = <authorlist.0.last><year>`` will produce the same citation label for both entries. Thus, we can rename this as ``citetemp = <authorlist.0.last><year>`` and then define ``citelabel = <citetemp.uniquify(a)>`` to generate unique labels. For this example, the first citation will have the label "Smith2000" and the second "Smith2000a". If a third citation shares the same name and year, then it will be given the unique label "Smith2000b", and so on.
+
 **.upper()** raises all letters in its argument to upper case. If any LaTeX markup letters exist in the argument, then they will be converted to Unicode equivalents first before applying the operator. Thus, if the field ``au`` contains ``{\aa}`` then the operator will first convert this to the letter å and then raise it to the upper case Å.
 
 **.zfill(num)** appends zeros to the front of its argument, where ``num`` indicates the desired final length of the string. For example, if the field ``vol`` contains the number ``11``, then calling ``<vol.zfill(3)>`` produces the result ``011``.
@@ -186,6 +201,7 @@ Options keywords
 A complete list of existing options keywords, together with their default definitions, is:::
 
     allow_scripts = False
+    autocomplete_doi = True
     backrefs = False
     backrefstyle = none
     bibitemsep = None
@@ -212,6 +228,8 @@ A complete list of existing options keywords, together with their default defini
 Each of the keywords is summarized below.
 
 **allow_scripts** [default value: False] tells Bibulous whether to allow the evaluation of Python code in the VARIABLES and DEFINITIONS sections of ``.bst`` files. It is important for users to realize that evaluating external code in this way is a security risk, and so they should not set ``allow_scripts = True`` when inserting code that they do not trust. However, as an additional security precaution, Bibulous prevents most security-sensitive operations from being used within its Python API.
+
+**autocomplete_doi** [default value: True] tells Bibulous whether to add ``http://dx.doi.org/`` to the front of the ``doi`` field if the front is missing. This allows the ``<doi>`` variable to be used as a complete URL, even when the prefix is missing in the database field.
 
 **backrefs** [default value: False] THIS KEYWORD IS NOT YET IMPLEMENTED
 
