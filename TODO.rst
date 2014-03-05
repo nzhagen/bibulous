@@ -22,8 +22,6 @@ For version 1.4, the goal is to have group templates working.
   and expanding write_bblfile()'s ability (or removing it to the higher level) of turning on/off writing
   of preamble and postambles.
 
-- Add the operator .uniquify(arg) to the documentation?
-
 - Is there a way to implement the ``<citealpha>`` variable with templates rather than using an internal 
   special-case function?
 
@@ -36,13 +34,14 @@ For version 1.4, the goal is to have group templates working.
   Doe, John, David Dane, and Marry Dewy (2000). "This and that". In: Journal of Deep Understanding of Things.
 
   That is, the first author is given as ``lastname, firstname'' whereas the other authors are given as 
-  ``firstname lastname``.
+  ``firstname lastname``. Probably the answer to this is that the first name in the list should be done outside
+  of an implicit loop, while the remaining names should be formatted within the implicit loop.
 
 - In the get_names() function, you've hard-coded the "authorname" and "editorname" variables. Users should be
-  able to whatever names they like. Fixing this is harder than it looks at first glance! How to inform a given
+  able to use whatever names they like. Fixing this is harder than it looks at first glance! How to inform a given
   template which namelist to query, when all it knows locally is the template string and not the actual field?
 
-- Simplify the ``get_indexed_variable()`` function inside ``bibulous.py``!
+- Simplify the ``get_indexed_variable()`` function inside ``bibulous.py``.
 
 - You no longer have functionality using the ``.N`` index (for maximum index). Put that back in.
 
