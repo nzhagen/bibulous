@@ -4,17 +4,18 @@ Python code to-do list: (including goals for version 2.0)
 The primary goal for version 2.0 is to incorporate integration with a front-end LaTeX package.
 For version 1.4, the goal is to have group templates working.
 
-- Add a test for the new ``##:##`` indexer format.
+- Consider replacing the ``.if_singular()`` operator with a more general ``.if_length_is()`` operator. Or,
+  probably better, since the former is already enshrined in print, just add the latter to the existing list.
+  This would provide an additional means of implementing optional formatting depending on the number of
+  entries in a list.
 
 - We seem to have duplicate special variables ``citekey`` and ``entrykey``. What's up with that?
-
-- Add a test using the following special template: 
-  ``author_or_editor = [[[<authorlist.0.prefix>]<authorlist.0.last>]|[[<editorlist.0.prefix>]<editorlist.0.last>]]``.
-  This is a good test for allowing nested templates.
 
 - Note that while the special-template ``au = <authorname.0>, ...,{ and }<authorname.6>`` works fine, the
   special-template ``au = [<authorname.0>, ...,{ and }<authorname.6>]`` does *not*. The code treats the final
   square bracket as part of the implicit loop, and not as a signature of an optional template block. Fix that!
+  This is one convenient way of defining the start and end of an implicit loop, something that otherwise requires
+  creating an auxiliary variable definition, which is annoying.
 
 - Implement the GROUP-TEMPLATES section idea. This is a big enough change to bump the version
   number of the codebase, as it would allow bibliographic sections and a much more flexible way
