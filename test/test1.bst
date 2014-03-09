@@ -57,6 +57,10 @@ lowerupper = <au>, <title.upper()> (<publisher.sentence_case()>, <address.lower(
 substr_replace = <au.replace(J. W. Tukey,\textbf{J. W. Tukey})>, \enquote{<title.replace(Sunset,\color{red}Sunset\color{black})>,} <journal.replace(American,\textit{American})> \textbf{<volume>} (<year>).
 japanese_name_separator = <au-G>, <title> (<year>).
 zfill = <au.zfill()>, <title> (<year.zfill(4)>).
+rangeindex = <au>, \enquote{<title.5:8>} (<year>).
+author_or_editor1 = [[[<authorlist.0.first> ][<authorlist.0.prefix> ]<authorlist.0.last>]|[[<editorlist.0.first> ][<editorlist.0.prefix> ]<editorlist.0.last>]|No authors], \enquote{<title>} (<year>).
+author_or_editor2 = [[[<authorlist.0.first> ][<authorlist.0.prefix> ]<authorlist.0.last>]|[[<editorlist.0.first> ][<editorlist.0.prefix> ]<editorlist.0.last>]|No editors], \enquote{<title>} (<year>).
+author_or_editor3 = [[[<authorlist.0.first> ][<authorlist.0.prefix> ]<authorlist.0.last>]|[[<editorlist.0.first> ][<editorlist.0.prefix> ]<editorlist.0.last>]|No editors], \enquote{<title>} (<year>).
 
 
 SPECIAL-TEMPLATES:
@@ -106,6 +110,7 @@ edmsg1 = , ed.                            ## the label to use after the editor n
 edmsg2 = , eds                            ## the label to use after the editor namelist when multiple editors are present
 nothing = {}                              ## the "if_singular()" operator need to print something, so here's an empty something
 wrap_nested_quotes = True                 ## whether to replace \enquote{} commands and adjust nested quotations
+autocomplete_doi = True                   ## whether to add "http://dx.doi.org/" to the front of the "doi" field if the front is missing.
 
 VARIABLES:
 

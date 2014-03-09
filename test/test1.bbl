@@ -112,6 +112,14 @@ M. C. A. Name, TITLE WAS IN LOWER CASE (Sentencecase, lowercase, 1985).
 舩冨卓哉 美濃導彦, 動物体三次元形状計測システム (2013).
 \bibitem{zfill}
 N. Guy, Nothing special (0005).
+\bibitem{rangeindex}
+N. Special, ``5678'' (4321).
+\bibitem{author_or_editor1}
+Author One, ``Blah blah'' (4321).
+\bibitem{author_or_editor2}
+Editor One, ``Blah blah'' (4321).
+\bibitem{author_or_editor3}
+No editors, ``Blah blah'' (4321).
 \bibitem[key_not_in_database]{key_not_in_database}
 \textit{Warning: citation key "key_not_in_database" is not in the bibliography database}.
 

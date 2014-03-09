@@ -303,6 +303,7 @@
   pages = {93--95}
 }
 
+%% Test creation of hyperlinks. Along the way, this also checks the "autocomplete_doi" option keyword.
 @HYPERLINKED_TITLE{hyperlinked_title,
   title = {Minesweeper is NP-complete},
   author = {Richard Kaye},
@@ -514,4 +515,31 @@
   author = {New Guy},
   title = {Nothing special},
   year = {5}
+}
+
+%% Test using the range index (##.##) operator.
+@RANGEINDEX{rangeindex,
+  author = {Nobody Special},
+  title = {0123456789},
+  year = {4321}
+}
+
+%% Test use of nested templates.
+@AUTHOR_OR_EDITOR1{author_or_editor1,
+  author = {Author One and Author Two and Author Three},
+  title = {Blah blah},
+  year = {4321}
+}
+
+%% Test use of nested templates.
+@AUTHOR_OR_EDITOR2{author_or_editor2,
+  editor = {Editor One and Editor Two and Editor Three},
+  title = {Blah blah},
+  year = {4321}
+}
+
+%% Test use of nested templates.
+@AUTHOR_OR_EDITOR3{author_or_editor3,
+  title = {Blah blah},
+  year = {4321}
 }
