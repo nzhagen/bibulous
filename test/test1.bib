@@ -452,10 +452,18 @@
   pages = {989--999}
 }
 
-@OTHERS_BECOMES_ETAL{others_becomes_etal,
+%% Test that "and others" in the author field becomes an "et al." in the formatted reference.
+@OTHERS_BECOMES_ETAL1{others_becomes_etal1,
   title = {Some title},
   author = {Mr. A and Mr. B and Mr. C and others},
   year = {2000}
+}
+
+%% Test that "and others" in the author field becomes an "et al." in the formatted reference.
+@OTHERS_BECOMES_ETAL2{others_becomes_etal2,
+  title = {An open letter to the scientific community},
+  year = {2004},
+  author = {Halton Arp and others}
 }
 
 %% Test that the code responds properly to a malformed template.

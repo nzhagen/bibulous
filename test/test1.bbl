@@ -86,8 +86,10 @@ Error: malformed template.
 Error: malformed template.
 \bibitem{malformed_template4}
 Error: malformed template.
-\bibitem{others_becomes_etal}
+\bibitem{others_becomes_etal1}
 M. A, M. B, M. C, \textit{et~al.} ``Some title'' (2000).
+\bibitem{others_becomes_etal2}
+H. Arp, \textit{et~al.} ``An open letter to the scientific community'' (2004).
 \bibitem{implicit_index}
 David Hestenes
 \bibitem{french_initials}

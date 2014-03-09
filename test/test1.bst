@@ -16,8 +16,6 @@ name_parsing5 = <au>, \textit{<title>} (<year>).
 many_authors = <au>, \enquote{<title>} (<year>).
 #many_editors = <ed.eds_message()>, \enquote{<title>} (<year>).
 many_editors = <ed.if_singular(editorlist, edmsg1, edmsg2)>, \enquote{<title>} (<year>).
-#name_abbrev1 = <au>, \enquote{<title>} (<year>).
-#name_abbrev2 = <au>, \enquote{<title>} (<year>).
 brace_delimited_quotes = <au>, \enquote{<title>} (<year>).
 inproceedings = <au>, \enquote{<title>,} \textit{<journal>} \textbf{<volume>}: <eid> (<year>).
 article = <au>, \enquote{<title>,} \textit{<journal>} \textbf{<volume>}: <eid> (<year>).
@@ -44,7 +42,8 @@ malformed_template1 = <au> \enquote{<title.anycase()>} (<year>).
 malformed_template2 = <au> \enquote{<title>} (<month|<year>).
 malformed_template3 = <au> \enquote{<title>} (<month<year>).
 malformed_template4 = <[<authorlist.0.first> ][<authorlist.0.middle.initial()>. ][<authorlist.0.prefix> ]<authorlist.0.last>[, <authorlist.0.suffix>]>
-others_becomes_etal = <au> \enquote{<title>} (<year>).
+others_becomes_etal1 = <au> \enquote{<title>} (<year>).
+others_becomes_etal2 = <au> \enquote{<title>} (<year>).
 implicit_index = [<authorlist.0.first> ][<authorlist.0.middle.initial()>. ][<authorlist.0.prefix> ]<authorlist.0.last>[, <authorlist.0.suffix>]
 french_initials = <au-A>, \enquote{<title>} (<year>).
 use_name_ties = <au-B>, \enquote{<title>} (<year>).
@@ -61,6 +60,8 @@ rangeindex = <au>, \enquote{<title.5:8>} (<year>).
 author_or_editor1 = [[[<authorlist.0.first> ][<authorlist.0.prefix> ]<authorlist.0.last>]|[[<editorlist.0.first> ][<editorlist.0.prefix> ]<editorlist.0.last>]|No authors], \enquote{<title>} (<year>).
 author_or_editor2 = [[[<authorlist.0.first> ][<authorlist.0.prefix> ]<authorlist.0.last>]|[[<editorlist.0.first> ][<editorlist.0.prefix> ]<editorlist.0.last>]|No editors], \enquote{<title>} (<year>).
 author_or_editor3 = [[[<authorlist.0.first> ][<authorlist.0.prefix> ]<authorlist.0.last>]|[[<editorlist.0.first> ][<editorlist.0.prefix> ]<editorlist.0.last>]|No editors], \enquote{<title>} (<year>).
+#name_abbrev1 = <au>, \enquote{<title>} (<year>).
+#name_abbrev2 = <au>, \enquote{<title>} (<year>).
 
 
 SPECIAL-TEMPLATES:
