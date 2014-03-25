@@ -4,6 +4,9 @@ Python code to-do list: (including goals for version 2.0)
 The primary goal for version 2.0 is to incorporate integration with a front-end LaTeX package.
 For version 1.4, the goal is to have group templates working.
 
+- The Bibulous docs say that installation instruction are given in the
+  ``INSTALL.rst`` file, but there is no such file!
+
 - Consider replacing the ``.if_singular()`` operator with a more general ``.if_length_is()`` operator. Or,
   probably better, since the former is already enshrined in print, just add the latter to the existing list.
   This would provide an additional means of implementing optional formatting depending on the number of
