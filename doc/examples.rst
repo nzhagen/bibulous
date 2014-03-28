@@ -122,6 +122,34 @@ The formatted result looks like
 .. image:: _static/example6.png
    :width: 60%
 
+************************************************
+
+Example 7
+=========
+
+The following example is taken from a question posted at ``http://tex.stackexchange.com/questions/145038/some-citation-numbers-in-bold-others-not/168233#168233``, where the OP asks if there is a way to have some citations given in **bold** font. This can be achieved with a user-defined script, as shown below. With tha database file
+
+.. literalinclude:: ../examples/example7.bib
+
+and the style template file
+
+.. literalinclude:: ../examples/example7.bst
+
+we can make use of a simple main `.tex` file
+
+.. literalinclude:: ../examples/example7.tex
+
+to produce a formatted result
+
+.. image:: _static/example7.png
+   :width: 60%
+
+
+
+
+
+
+
 
 
 
