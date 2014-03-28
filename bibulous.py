@@ -1197,30 +1197,15 @@ class Bibdata(object):
         if (c == 'preamble'):
             return('')
 
-        if (c in self.bibdata):
-            bibitem_label = self.bibdata[c]['citelabel']
-        else:
-            bibitem_label = c
-
-        if (unicode(bibitem_label) == 'None'):
-            itemstr = r'\bibitem{' + c + '}\n'
-        else:
-            itemstr = r'\bibitem[' + bibitem_label + ']{' + c + '}\n'
-
         ## If the citation key is not in the database, replace the format string with a message to the fact.
         if (c not in self.bibdata):
             msg = 'citation key "' + c + '" is not in the bibliography database'
             bib_warning('Warning 010a: ' + msg, self.disable)
-            return(itemstr + '\\textit{Warning: ' + msg + '}.')
+            return(r'\bibitem[' + c + ']{' + c + '}\n' + r'\textit{Warning: ' + msg + '}.')
         else:
             entry = self.bibdata[c]
 
         entrytype = entry['entrytype']
-
-        if debug:
-            print('Formatting entry "' + citekey + '"')
-            print('Template: "' + self.bstdict[entrytype] + '"')
-            print('Field data: ' + repr(entry))
 
         ## If the journal format uses ProcSPIE like a journal, then you need to change the entrytype from
         ## "inproceedings" to "article", and add a "journal" field.
@@ -1249,6 +1234,20 @@ class Bibdata(object):
                 user_var_value = eval(self.user_variables[user_var_name])
                 entry[user_var_name] = user_var_value
 
+        if (c in self.bibdata):
+            bibitem_label = self.bibdata[c]['citelabel']
+        else:
+            bibitem_label = c
+
+        if (unicode(bibitem_label) == 'None'):
+            itemstr = r'\bibitem{' + c + '}\n'
+        else:
+            itemstr = r'\bibitem[' + bibitem_label + ']{' + c + '}\n'
+
+        if debug:
+            print('Formatting entry "' + citekey + '"')
+            print('Template: "' + self.bstdict[entrytype] + '"')
+            print('Field data: ' + repr(entry))
         try:
             ## Substitute the template variables with fields from the bibliography entry.
             templatestr = self.template_substitution(templatestr, citekey)
@@ -2402,8 +2401,8 @@ class Bibdata(object):
                 arg = block
                 break
 
-            ## Count how many variables there are in the block.
-            block_variables = [v for v in variables if v in block]
+            ## Construct a list of the unique variables in the block.
+            block_variables = list(set([v for v in variables if v in block]))
 
             ## Loop through the list of variables and find which ones are defined within the bibliography entry. If any
             ## variables within the block are undefined, then return an empty string.
