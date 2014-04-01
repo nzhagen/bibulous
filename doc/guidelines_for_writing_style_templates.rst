@@ -276,8 +276,8 @@ Each of the keywords is summarized below.
 **use_name_ties** [default value: False] Whether or not to replace spaces with unbreakable spaces (i.e. "R. M. A. Azzam" or "R.~M.~A. Azzam") inside names in the name list. (This keyword is only used within the ``.format_namelist()`` operator.)
 
 
-Examples for namelist formatting
-================================
+Implicit loops and examples for namelist formatting
+===================================================
 
 The following code provides an example usage of implicit indexing within an implicit loop structure:::
 
@@ -326,6 +326,8 @@ That is, the implicit index ``.n`` is everywhere replaced with the explicit inde
     [<editorlist.1.prefix> ]<editorlist.1.last>[, <editorlist.1.suffix>]
 
 With this template now complete, the code begins to evaluate the entry and replace the individual variables with their corresponding database fields.
+
+Note that implicit loop structures only work when they comprise the *entire* template. That is, a template such as ``au = <authorname.0>, ...,{ and }<authorname.6>`` works fine, whereas the template ``au = [<authorname.0>, ...,{ and }<authorname.6>]`` uses the ``[`` as part of each entry in the loop, and the ``]`` as part of the final entry, so that the final result is a malformed template. (The left and right square brackets are no longer matched.)
 
 Python API
 ==========
