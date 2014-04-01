@@ -12,14 +12,6 @@ For version 1.4, the goal is to have group templates working.
   This would provide an additional means of implementing optional formatting depending on the number of
   entries in a list.
 
-- We seem to have duplicate special variables ``citekey`` and ``entrykey``. What's up with that?
-
-- Note that while the special-template ``au = <authorname.0>, ...,{ and }<authorname.6>`` works fine, the
-  special-template ``au = [<authorname.0>, ...,{ and }<authorname.6>]`` does *not*. The code treats the final
-  square bracket as part of the implicit loop, and not as a signature of an optional template block. Fix that!
-  This is one convenient way of defining the start and end of an implicit loop, something that otherwise requires
-  creating an auxiliary variable definition, which is annoying.
-
 - Implement the GROUP-TEMPLATES section idea. This is a big enough change to bump the version
   number of the codebase, as it would allow bibliographic sections and a much more flexible way
   of manipulating reference lists. The first step here would be to write a wrapper around write_bblfile(),
