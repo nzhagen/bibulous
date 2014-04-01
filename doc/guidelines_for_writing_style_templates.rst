@@ -34,7 +34,7 @@ Syntax
 
 #. Nesting of ``[]`` brackets is allowed, but the syntax becomes computationally expensive to parse, so that these structures should be used sparingly::
 
-#. Users that need to use ``[``, ``]``, ``#``, ``<``, ``>``, or ``|`` symbols as formatting elements within the reference list can implement them using some custom LaTeX-markup commands: ``{\makeopenbracket}``, ``{\makehashsign}``, ``{\makeclosebracket}``, ``{\makegreaterthan}``, ``{\makelessthan}``, or ``{\makeverticalbar}``. Note that the curly brackets used in each case are required.
+#. Users that need to use ``[``, ``]``, ``#``, ``<``, ``>``, or ``|`` symbols as formatting elements within the reference list can implement them using some custom LaTeX-markup commands: ``{\makeopenbracket}``, ``{\makeclosebracket}``, ``{\makehashsign}``, ``{\makelessthan}``, ``{\makegreaterthan}``, or ``{\makeverticalbar}``. Note that the curly brackets used in each case are required.
 
 #. In the ``TEMPLATES`` section of the file, if an entrytype format definition contains only another entrytype name on the right hand side of the ``=``, i.e.::
 
