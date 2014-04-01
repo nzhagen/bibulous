@@ -7,6 +7,11 @@ For version 1.4, the goal is to have group templates working.
 - The Bibulous docs say that installation instruction are given in the
   ``INSTALL.rst`` file, but there is no such file!
 
+- Add templates for: Nature (``naturemag.bst``), Science (``science.bst``), Elsevier journals with numerical 
+  citations (``elsarticle-num.bst``), Springer journals (``springer.bst``), MNRAS (``mn2e.bst``). Actually, since
+  the file ending cannot be used to distinguish Bibulous-format from BibTeX-format style files, maybe we should
+  append ``-bibulous`` to each filename?
+
 - Consider replacing the ``.if_singular()`` operator with a more general ``.if_length_is()`` operator. Or,
   probably better, since the former is already enshrined in print, just add the latter to the existing list.
   This would provide an additional means of implementing optional formatting depending on the number of
@@ -17,9 +22,6 @@ For version 1.4, the goal is to have group templates working.
   of manipulating reference lists. The first step here would be to write a wrapper around write_bblfile(),
   and expanding write_bblfile()'s ability (or removing it to the higher level) of turning on/off writing
   of preamble and postambles.
-
-- Is there a way to implement the ``<citealpha>`` variable with templates rather than using an internal 
-  special-case function?
 
 - For every style file you have in the ``templates/`` folder, you should construct an example to put into the
   documentation. Use a standard bibliography database for each, format it with LaTeX, take a screenshot of the
@@ -80,8 +82,8 @@ For version 1.4, the goal is to have group templates working.
 
 - Re-implement the "nameabbrev" field inside ``initialize_name()``. Note that in order to do 
   this you will have to re-expand the name into a string first, perform abbrev replacement, and 
-  then re-convert the result back into the namelist, in order for this to work here. Here were
-  two items in the testing suite that I used to use to test this::
+  then re-convert the result back into the namelist. Here were two items in the testing suite 
+  that I previously used to use to test this::
 
     %% Test sorting with an entry using a "nameabbrev" field.
     @ARTICLE{Fontaine1234,
