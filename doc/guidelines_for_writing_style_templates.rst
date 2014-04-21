@@ -56,15 +56,15 @@ Syntax
 
 #. The ``SPECIAL-TEMPLATES`` section is where users can define their own fields that get generated for every database entry evaluated. For example, the variable definition::
 
-    group = [<organization>|<institution>|<corporation>|]
+      group = [<organization>|<institution>|<corporation>|]
 
-    in the ``SPECIAL-TEMPLATES`` section will create a ``group`` field that can be used as the variable ``<group>`` within the regular ``TEMPLATES`` section of the file. This effectively allows users to create a shortcut. Where they could write out ``[<organization>|<institution>|<corporation>|]`` inside each template that needs this structure, the special template definition allows them to replace each instance with a simple ``<group>``.
+   in the ``SPECIAL-TEMPLATES`` section will create a ``group`` field that can be used as the variable ``<group>`` within the regular ``TEMPLATES`` section of the file. This effectively allows users to create a shortcut. Where they could write out ``[<organization>|<institution>|<corporation>|]`` inside each template that needs this structure, the special template definition allows them to replace each instance with a simple ``<group>``.
 
-    Another example usage would be the following:::
+   Another example usage would be the following:::
 
-    author = [<author-en>|<author-jp>|]
+      author = [<author-en>|<author-jp>|]
 
-    where the ``author`` field is actually redefined to include not only the *existing* author field, but also the fields ``author-en`` or ``author-jp``. That is, if the ``author`` field is missing in the database entry (the field matching the thing on the left hand side), the code next searches for the ``author-en`` field. If it finds it, then it will create an ``author`` field that contains a copy of the ``author-en``'s field's contents. If the ``author-en`` is also missing, the code next searches for ``author-jp`` and uses that fields contents to create the missing ``author`` field. This is a convenient way of grouping different variable names in order to simplify templates.
+   where the ``author`` field is actually redefined to include not only the *existing* author field, but also the fields ``author-en`` or ``author-jp``. That is, if the ``author`` field is missing in the database entry (the field matching the thing on the left hand side), the code next searches for the ``author-en`` field. If it finds it, then it will create an ``author`` field that contains a copy of the ``author-en``'s field's contents. If the ``author-en`` is also missing, the code next searches for ``author-jp`` and uses that fields contents to create the missing ``author`` field. This is a convenient way of grouping different variable names in order to simplify templates.
 
 #. The order in which any definitions are placed within the special templates is important. For example, if a user has ``au = <authorlist.format_authorlist()>`` and then below that defines ``authorlist = <author.to_namelist()>``, then the code will issue an error stating that ``authorlist`` is not defined when attempting to create the ``au`` variable. Since the definition for ``au`` assumes the presence of the ``authorlist`` variable, the latter definition must be placed above it.
 
@@ -125,6 +125,9 @@ The complete list of operators available is:::
     .format_editorlist()
     .frenchinitial()
     .if_singular(var1,var2,var3)
+    .if_length_equals(var1,number,var2,var3)
+    .if_length_less_than(var1,number,var2,var3)
+    .if_length_more_than(var1,number,var2,var3)
     .initial()
     .lower()
     .monthabbrev()
@@ -161,6 +164,12 @@ Without the ``.compress()`` operator, the name would come out as "RM A Azzam", s
 "Ch", "Gn", "Ll", "Ph", "Ss", or "Th", then the initial will truncate the name after the digraph instead of after the first letter.
 
 **.if_singular(var1,var2,var3)** is an operator which inserts ``var2`` if ``var1`` has only one element, but ``var3`` if ``var1`` has more than one element. Here ``var1`` is assumed to be a list-type of variable, and ``var2`` and ``var3`` are assumed to be either fields present within the database entry or variables defined in the ``SPECIAL-TEMPLATES`` section of the file.
+
+**.if_length_equals(var1,number,var2,var3)**
+
+**.if_length_less_than(var1,number,var2,var3)**
+
+**.if_length_more_than(var1,number,var2,var3)**
 
 **.initial()** will truncate the string to its first letter. Note that if a name begins with a LaTeX markup character, such as ``{\'E}``, then the operator will convert the input string to its best attempt at a Unicode-equivalent (without character markup) prior to performing the truncation. Thus, applying the ``.initial()`` operator to the name ``{\v{Z}}ukauskas`` will produce the initialized form "Ž". 
 
