@@ -228,6 +228,7 @@ class Bibdata(object):
         self.options['sort_order'] = 'Forward'
         self.options['wrap_nested_quotes'] = False
         self.options['autocomplete_doi'] = False
+        self.options['name_separator'] = 'and'
 
         ## These options all relate to the default name formatting (the more rigid namelist formatting that does not use
         ## the implicit indexing and implicit loop structures).
@@ -239,9 +240,8 @@ class Bibdata(object):
         self.options['mineditors'] = 5
         self.options['use_name_ties'] = False
         self.options['terse_inits'] = False
-        self.options['french_intials'] = False
+        self.options['french_initials'] = False
         self.options['period_after_initial'] = True
-        self.options['name_separator'] = 'and'
 
         ## Compile some patterns for use in regex searches. Note that "[\-\+\*\#\$\w]" matches any alphanumeric character plus any of [~@%&-+*#$^?!=:]
         pat = r'[~@%&\-\+\*\#\$\^\?\!\=\:\w]+?'
