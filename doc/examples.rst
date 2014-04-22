@@ -144,6 +144,27 @@ to produce a formatted result
 .. image:: _static/example7.png
    :width: 60%
 
+************************************************
+
+Example 8
+=========
+
+The following example is taken from a question posted at ``http://tex.stackexchange.com/questions/169300/modify-plain-bst-file/172828#172828``, where the OP asks for a way to customize the formatted reference list so that the first line contains the author names and date, while the second and subsequent lines are given a hanging indent. This can be achieved with the following setup. With tha database file
+
+.. literalinclude:: ../examples/example8.bib
+
+and the style template file
+
+.. literalinclude:: ../examples/example8.bst
+
+we can make use of a simple main `.tex` file
+
+.. literalinclude:: ../examples/example8.tex
+
+to produce a formatted result
+
+.. image:: _static/example8.png
+   :width: 60%
 
 
 
