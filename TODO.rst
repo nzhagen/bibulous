@@ -4,18 +4,35 @@ Python code to-do list: (including goals for version 2.0)
 The primary goal for version 2.0 is to incorporate integration with a front-end LaTeX package.
 For version 1.4, the goal is to have group templates working.
 
+- !!! Found a way to get different citation labels in the text than in the reference list: use::
+
+    \makeatletter
+      \renewcommand{\@biblabel}[1]{}
+      \renewcommand{\@biblabel}[1]{}
+    \makeatother
+
+  at the top of the ``.tex`` file, then, at the beginning of the text part of::
+    
+    \bibitem[citelabel]{citekey} Text
+
+  we put in the reference list label that we want. That way, the reference list label and the text citation label
+  can be treated completely separately.
+
+- Add functionality for, and fill out the doc stubs for ``.if_length_equals``, ``.if_length_less_than``, and 
+  ``.if_length_more_than`` operators. Consider adding a 4-arg operator ``.if_has_substr(input,sub,iftrue,iffalse)``.
+
+- Try installing some of the other popular TeX editors, change their back ends to Bibulous, and provide instructions
+  on how to do this for: TeXmaker,  LyX (Windows and Linux), TeXStudio, TeXworks, and TeXnicCenter (Windows).
+
 - The Bibulous docs say that installation instruction are given in the
   ``INSTALL.rst`` file, but there is no such file!
 
-- Add templates for: Nature (``naturemag.bst``), Science (``science.bst``), Elsevier journals with numerical 
+- Add stuff from ``jpnbook`` and ``bibtex_items`` in ``/LabNotes/Bibulous/stuff to add to code/``.
+
+- Add templates for: Elsevier journals with numerical 
   citations (``elsarticle-num.bst``), Springer journals (``springer.bst``), MNRAS (``mn2e.bst``). Actually, since
   the file ending cannot be used to distinguish Bibulous-format from BibTeX-format style files, maybe we should
   append ``-bibulous`` to each filename?
-
-- Consider replacing the ``.if_singular()`` operator with a more general ``.if_length_is()`` operator. Or,
-  probably better, since the former is already enshrined in print, just add the latter to the existing list.
-  This would provide an additional means of implementing optional formatting depending on the number of
-  entries in a list.
 
 - Implement the GROUP-TEMPLATES section idea. This is a big enough change to bump the version
   number of the codebase, as it would allow bibliographic sections and a much more flexible way
@@ -29,7 +46,7 @@ For version 1.4, the goal is to have group templates working.
 
 - Figure out how to get an formatting list of authors like in the following to work::
 
-  Doe, John, David Dane, and Marry Dewy (2000). "This and that". In: Journal of Deep Understanding of Things.
+    Doe, John, David Dane, and Marry Dewy (2000). "This and that". In: Journal of Deep Understanding of Things.
 
   That is, the first author is given as ``lastname, firstname'' whereas the other authors are given as 
   ``firstname lastname``. Probably the answer to this is that the first name in the list should be done outside
@@ -117,3 +134,8 @@ Python testing to-do
   That is, the first and last elements of the loop must have the same variable structure. Currently 
   the code simply truncates the RHS of the last element and ignores it, but it really should return
   a warning message.
+
+- The following template produced an unhandled exception due to mismatched braces. Provide a better error-handling!::
+
+    authorname.n = [<authorlist.n.prefix> ]<authorlist.n.last>, <authorlist.n.first.initial()>.][ <authorlist.n.middle.initial()>.][, <authorlist.n.suffix>.]
+
