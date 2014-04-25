@@ -1,0 +1,18 @@
+\documentclass{article}
+\usepackage[paper=letterpaper, text={6.2in,8.5in},centering]{geometry}
+\usepackage[colorlinks=True,urlcolor=blue,citecolor=black,breaklinks=true]{hyperref}
+
+\makeatletter
+   \renewcommand{\@biblabel}[1]{}
+   \renewcommand{\@cite}[2]{{#1\if@tempswa , #2\fi}}
+\makeatother
+
+\begin{document}
+
+Lorem \cite{test1} ipsum \cite{test2}.
+
+\bibliography{example9}
+\bibliographystyle{example9}
+
+\end{document}
+
