@@ -3,12 +3,13 @@ Getting started
 
 For general users, all that is needed is place the main ``bibulous.py`` file into the Python path and to tell LaTeX to use Bibulous rather than BibTeX as their bibliography engine. For users interested in using the auxiliary command ``bibulous_authorextract.py``, this file must also be in the Python path, and must be in the same directory as the main file. It is also possible to tell any LaTeX front-end to use Bibulous in place of BibTeX. For Kile (on Linux) and WinEdt (on Windows), instructions for doing this are given below.
 
+Once you bibliography engine is set to Bibulous, remember that the filename within the ``\bibliography{...}`` command in your ``*.tex`` files must point to a Bibulous-format bibliography style template (``.bst`` file) and not a BibTeX one.
+
+
 Kile: replacing BibTeX with Bibulous
 ------------------------------------
 
-1. In your ``.tex`` file, change the filename of the ``\bibliography{...}`` command to the filename for the appropriate Bibulous-format bibliography style template (``.bst`` file).
-
-2. In Kile, go to the menu bar and select ``Settings`` > ``Configure Kile``. Select ``Tools`` > ``Build`` and choose ``BibTeX`` from the ``Select a tool`` menu (see the figure). To the right of the menu, after you select ``BibTeX`` you should see "Choose a configuration for the tool BibTeX". Below the drop-down menu, select the button "New" and type in the name ``Bibulous`` (or whatever you prefer to call your new tool). Below, in the ``General`` tab, type in the location of the ``bibulous.py`` file. And in the ``Options`` field, type ``%dir_base/%S.aux``.
+1. In Kile, go to the menu bar and select ``Settings`` > ``Configure Kile``. Select ``Tools`` > ``Build`` and choose ``BibTeX`` from the ``Select a tool`` menu (see the figure). To the right of the menu, after you select ``BibTeX`` you should see "Choose a configuration for the tool BibTeX". Below the drop-down menu, select the button "New" and type in the name ``Bibulous`` (or whatever you prefer to call your new tool). Below, in the ``General`` tab, type in the location of the ``bibulous.py`` file. And in the ``Options`` field, type ``%dir_base/%S.aux``.
 
 .. image:: _static/screenshot_for_kile_instructions.png
    :width: 49%
@@ -18,7 +19,7 @@ Kile: replacing BibTeX with Bibulous
 
 That should be it. In case your default setup is different, you can also check the ``Advanced`` tab settings and verify that they are as shown in the second figure. (That is, ``Source extension`` is set to ``aux``, and ``Target extension`` is set to ``bbl``.)
 
-3. Note that the following variables are accessible in Kile's ``Options`` field::
+2. Note that the following variables are accessible in Kile's ``Options`` field::
 
     %source = filename (i.e. filename with suffix but not path)
     %S = filename without suffix (and without path)
@@ -47,4 +48,16 @@ Modifying WinEdt5 to replace BibTeX with Bibulous
    %b = WinEdt's local working directory (not the tex file directory)
    %B = path to the WinEdt executable file
 
+Modifying Texmaker to replace BibTeX with Bibulous
+--------------------------------------------------
+
+1. On the main menu bar, select ``Options`` then ``Configure Texmaker``. In the ``Bib(la)tex`` field, replace ``bibtex %.aux`` with the location of your ``bibulous.py`` file, followed by ``%.aux``. The following figures show the configuration window before and after the change:
+
+.. image:: _static/original_texmaker_setup.png
+   :width: 49%
+
+.. image:: _static/modified_texmaker_setup.png
+   :width: 49%
+
+   (The example shows the location of the ``bibulous.py`` file as ``/home/repos/bibulous/bibulous.py``, but you need to replace it with the appropriate location on your own system.)
 
