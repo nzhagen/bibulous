@@ -2606,14 +2606,14 @@ class Bibdata(object):
                 else:
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
             elif indexer.startswith('.format_authorlist()'):
-                newfield = format_namelist(field, nametype='author')
+                newfield = format_namelist(field, nametype='author', options=self.options)
                 newindexer = indexer[20:]
                 if (nelements == 1) or (newindexer == ''):
                     return(newfield)
                 else:
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
             elif indexer.startswith('.format_editorlist()'):
-                newfield = format_namelist(field, nametype='editor')
+                newfield = format_namelist(field, nametype='editor', options=self.options)
                 newindexer = indexer[20:]
                 if (nelements == 1) or (newindexer == ''):
                     return(newfield)

@@ -8,21 +8,19 @@ For version 1.4, the goal is to have group templates working.
 
     \makeatletter
       \renewcommand{\@biblabel}[1]{}
-      \renewcommand{\@biblabel}[1]{}
+      \renewcommand{\@cite}[2]{{#1\if@tempswa , #2\fi}}
     \makeatother
 
-  at the top of the ``.tex`` file, then, at the beginning of the text part of::
-    
-    \bibitem[citelabel]{citekey} Text
-
-  we put in the reference list label that we want. That way, the reference list label and the text citation label
-  can be treated completely separately.
+  at the top of the ``.tex`` file. Then, in the *text*, LaTeX will use ``citelabel`` while, in the *reference list*,
+  it will now ignore the citelabel and use simply the main template without any item label. If we *want* an item label
+  for entries in the reference list, then we can simply make them part of the main entrytype template. That way, the 
+  reference list item label and the text citation label can be treated completely separately.
 
 - Add functionality for, and fill out the doc stubs for ``.if_length_equals``, ``.if_length_less_than``, and 
   ``.if_length_more_than`` operators. Consider adding a 4-arg operator ``.if_has_substr(input,sub,iftrue,iffalse)``.
 
 - Try installing some of the other popular TeX editors, change their back ends to Bibulous, and provide instructions
-  on how to do this for: TeXmaker,  LyX (Windows and Linux), TeXStudio, TeXworks, and TeXnicCenter (Windows).
+  on how to do this for: LyX (Windows and Linux), TeXStudio, TeXworks, and TeXnicCenter (Windows).
 
 - The Bibulous docs say that installation instruction are given in the
   ``INSTALL.rst`` file, but there is no such file!
@@ -139,3 +137,9 @@ Python testing to-do
 
     authorname.n = [<authorlist.n.prefix> ]<authorlist.n.last>, <authorlist.n.first.initial()>.][ <authorlist.n.middle.initial()>.][, <authorlist.n.suffix>.]
 
+- The following line in a BIB file gave an unhelpful error message::
+
+    @book{Silverman2002},
+      author = {...
+
+  That is, the key had an extra "}". Fix the error handling for that.
