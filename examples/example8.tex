@@ -1,32 +1,32 @@
-   \documentclass{article}
-   \usepackage[T1]{fontenc}
-   \usepackage[utf8]{inputenc}
-   \usepackage[paper=letterpaper, text={5.8in,8.5in},centering]{geometry}
-   \usepackage[colorlinks=True,urlcolor=blue,citecolor=black,breaklinks=true]{hyperref}
-   \usepackage{enumitem}
-   \makeatletter
-      \renewcommand{\@biblabel}[1]{}
-      \renewenvironment{thebibliography}[1]
-         {\section*{\refname}%
-            \@mkboth{\MakeUppercase\refname}{\MakeUppercase\refname}%
-            \begin{enumerate}[label={},itemindent=*,leftmargin=3em]
-            \@openbib@code
-            \sloppy
-            \clubpenalty4000
-            \@clubpenalty \clubpenalty
-            \widowpenalty4000
-            \sfcode`\.\@m}
-            {\def\@noitemerr
-               {\@latex@warning{Empty `thebibliography' environment}}%
-         \end{enumerate}}
-   \makeatother
+\documentclass{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[paper=letterpaper, text={5.8in,8.5in},centering]{geometry}
+\usepackage[colorlinks=True,urlcolor=blue,citecolor=black,breaklinks=true]{hyperref}
+\usepackage{enumitem}
+\makeatletter
+   \renewcommand{\@biblabel}[1]{}
+   \renewenvironment{thebibliography}[1]
+      {\section*{\refname}%
+         \@mkboth{\MakeUppercase\refname}{\MakeUppercase\refname}%
+         \begin{enumerate}[label={},itemindent=*,leftmargin=3em]
+         \@openbib@code
+         \sloppy
+         \clubpenalty4000
+         \@clubpenalty \clubpenalty
+         \widowpenalty4000
+         \sfcode`\.\@m}
+         {\def\@noitemerr
+            {\@latex@warning{Empty `thebibliography' environment}}%
+      \end{enumerate}}
+\makeatother
 
-   \begin{document}
+\begin{document}
 
-   {\noindent}Citations: \cite{Abrahams1986,Nakayama2003,Chalker1988,Chalker1990,Pook1991}
+{\noindent}Citations: \cite{Abrahams1986,Nakayama2003,Chalker1988,Chalker1990,Pook1991}
 
-   \bibliography{example8}
-   \bibliographystyle{example8}
+\bibliography{example8}
+\bibliographystyle{example8}
 
-   \end{document}
+\end{document}
 

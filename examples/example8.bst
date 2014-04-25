@@ -11,10 +11,3 @@ editorname.n = [<authorlist.n.prefix> ]<authorlist.n.last>, <authorlist.n.first.
 ed = <editorname.0>, ...{ \& }<editorname.5>
 citelabel = <authorlist.0.last>-<year>
 sortkey = <citelabel>
-
-OPTIONS:
-autocomplete_doi = True                   ## whether to add "http://dx.doi.org/" to the front of the "doi" field if the front is missing.
-namelist_format = last_name_first
-period_after_initial = True
-use_firstname_initials = True
-use_name_ties = False
