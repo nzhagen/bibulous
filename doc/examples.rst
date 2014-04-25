@@ -135,7 +135,7 @@ and the style template file
 
 .. literalinclude:: ../examples/example7.bst
 
-we can make use of a simple main `.tex` file
+we can make use of a simple main ``.tex`` file
 
 .. literalinclude:: ../examples/example7.tex
 
@@ -149,7 +149,7 @@ to produce a formatted result
 Example 8
 =========
 
-The following example is taken from a question posted at ``http://tex.stackexchange.com/questions/169300/modify-plain-bst-file/172828#172828``, where the OP asks for a way to customize the formatted reference list so that the first line contains the author names and date, while the second and subsequent lines are given a hanging indent. This can be achieved with the following setup. With tha database file
+The following example is taken from a question posted at ``http://tex.stackexchange.com/questions/169300/modify-plain-bst-file/172828#172828``, where the OP asks for a way to customize the formatted reference list so that the first line contains the author names and date, while the second and subsequent lines are given a hanging indent. This can be achieved with the following setup. With the database file
 
 .. literalinclude:: ../examples/example8.bib
 
@@ -157,7 +157,7 @@ and the style template file
 
 .. literalinclude:: ../examples/example8.bst
 
-we can make use of a simple main `.tex` file
+we can make use of a simple main ``.tex`` file
 
 .. literalinclude:: ../examples/example8.tex
 
@@ -165,6 +165,33 @@ to produce a formatted result
 
 .. image:: _static/example8.png
    :width: 60%
+
+************************************************
+
+Example 9
+=========
+
+The following example is taken from a question posted at ``http://tex.stackexchange.com/questions/172444/suppress-month-and-day-for-journal-articles-and-maintain-for-a-newspaper-article``, where the OP asks for a way to create a reference list in which newspaper articles have the month and day of publication shown while journal articles do not. The cleanest way of implementing this in Bibulous is simply to use a different entrytype for newspaper articles and journal articles, as shown below. For this example, we have a database file
+
+.. literalinclude:: ../examples/example9.bib
+
+and a style template file
+
+.. literalinclude:: ../examples/example9.bst
+
+that when comiled by the main ``.tex`` file
+
+.. literalinclude:: ../examples/example9.tex
+
+produces the formatted result
+
+.. image:: _static/example9.png
+   :width: 60%
+
+
+
+
+
 
 
 
