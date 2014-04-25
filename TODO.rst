@@ -20,7 +20,7 @@ For version 1.4, the goal is to have group templates working.
   ``.if_length_more_than`` operators. Consider adding a 4-arg operator ``.if_has_substr(input,sub,iftrue,iffalse)``.
 
 - Try installing some of the other popular TeX editors, change their back ends to Bibulous, and provide instructions
-  on how to do this for: LyX (Windows and Linux), TeXStudio, TeXworks, and TeXnicCenter (Windows).
+  on how to do this for: LyX (Windows and Linux) and TeXnicCenter (Windows).
 
 - The Bibulous docs say that installation instruction are given in the
   ``INSTALL.rst`` file, but there is no such file!

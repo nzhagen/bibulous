@@ -29,7 +29,7 @@ That should be it. In case your default setup is different, you can also check t
 Modifying WinEdt5 to replace BibTeX with Bibulous
 -------------------------------------------------
 
-1. Go to the menu ``Options`` > ``Execution Modes``. In the ``Console Applications`` menu on the left hand side, select ``BibTeX``. Then replace the three ``Command Line`` fields with the ones shown in the figure, replacing the files paths with the ones correct for your installation of Python and ``bibulous.py``.
+1. Go to the menu ``Options`` > ``Execution Modes``. In the ``Console Applications`` menu on the left hand side, select ``BibTeX``. Then replace the three ``Command Line`` fields with the ones shown in the figure, replacing the example file paths with the ones correct for your installation of Python and ``bibulous.py``.
 
 
 .. image:: _static/original_Winedt5_setup.png
@@ -51,7 +51,7 @@ Modifying WinEdt5 to replace BibTeX with Bibulous
 Modifying Texmaker to replace BibTeX with Bibulous
 --------------------------------------------------
 
-1. On the main menu bar, select ``Options`` then ``Configure Texmaker``. In the ``Bib(la)tex`` field, replace ``bibtex %.aux`` with the location of your ``bibulous.py`` file, followed by ``%.aux``. The following figures show the configuration window before and after the change:
+On the main menu bar, select ``Options`` then ``Configure Texmaker``. In the ``Bib(la)tex`` field, replace ``bibtex %.aux`` with the location of your ``bibulous.py`` file, followed by ``%.aux``. The following figures show the configuration window before and after the change:
 
 .. image:: _static/original_texmaker_setup.png
    :width: 49%
@@ -64,7 +64,7 @@ Modifying Texmaker to replace BibTeX with Bibulous
 Modifying TeXStudio to replace BibTeX with Bibulous
 --------------------------------------------------
 
-1. On the main menu bar, select ``Options`` then ``Configure TeXStudio``, and then the ``Commands`` tab. In the ``BibTeX`` field, replace ``bibtex %.aux`` with the location of your ``bibulous.py`` file, followed by ``%.aux``. The following figures show the configuration window before and after the change:
+On the main menu bar, select ``Options`` then ``Configure TeXStudio``, and then the ``Commands`` tab. In the ``BibTeX`` field, replace ``bibtex %.aux`` with the location of your ``bibulous.py`` file, followed by ``%.aux``. The following figures show the configuration window before and after the change:
 
 .. image:: _static/original_texstudio_setup.png
    :width: 49%
@@ -74,3 +74,15 @@ Modifying TeXStudio to replace BibTeX with Bibulous
 
    (The example shows the location of the ``bibulous.py`` file as ``/home/repos/bibulous/bibulous.py``, but you need to replace it with the appropriate location on your own system.)
 
+Modifying TeXworks to replace BibTeX with Bibulous
+--------------------------------------------------
+
+On the main menu bar, select ``Edit`` then ``Preferences...``, and then the ``Typesetting`` tab. In the ``Paths for TeX and related programs`` list, insert a new entry to give the path to your ``bibulous.py`` program. (This is the highlighted entry in the figure shown below.) In the ``Processing tools`` list, double-click on ``BibTeX``. This brings up a new dialog window. In that window, remove ``bibtex`` from the ``Program`` field and replace it with ``bibulous.py``. The following figures show the configuration windows before and after the change:
+
+.. image:: _static/original_texworks_setup.png
+   :width: 49%
+
+.. image:: _static/modified_texworks_setup.png
+   :width: 49%
+
+   (The example shows the location of the ``bibulous.py`` file as ``/home/repos/bibulous/bibulous.py``, but you need to replace it with the appropriate location on your own system.) 
