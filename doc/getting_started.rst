@@ -61,3 +61,16 @@ Modifying Texmaker to replace BibTeX with Bibulous
 
    (The example shows the location of the ``bibulous.py`` file as ``/home/repos/bibulous/bibulous.py``, but you need to replace it with the appropriate location on your own system.)
 
+Modifying TeXStudio to replace BibTeX with Bibulous
+--------------------------------------------------
+
+1. On the main menu bar, select ``Options`` then ``Configure TeXStudio``, and then the ``Commands`` tab. In the ``BibTeX`` field, replace ``bibtex %.aux`` with the location of your ``bibulous.py`` file, followed by ``%.aux``. The following figures show the configuration window before and after the change:
+
+.. image:: _static/original_texstudio_setup.png
+   :width: 49%
+
+.. image:: _static/modified_texstudio_setup.png
+   :width: 49%
+
+   (The example shows the location of the ``bibulous.py`` file as ``/home/repos/bibulous/bibulous.py``, but you need to replace it with the appropriate location on your own system.)
+
