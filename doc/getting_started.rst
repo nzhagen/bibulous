@@ -62,7 +62,7 @@ On the main menu bar, select ``Options`` then ``Configure Texmaker``. In the ``B
    (The example shows the location of the ``bibulous.py`` file as ``/home/repos/bibulous/bibulous.py``, but you need to replace it with the appropriate location on your own system.)
 
 Modifying TeXStudio to replace BibTeX with Bibulous
---------------------------------------------------
+---------------------------------------------------
 
 On the main menu bar, select ``Options`` then ``Configure TeXStudio``, and then the ``Commands`` tab. In the ``BibTeX`` field, replace ``bibtex %.aux`` with the location of your ``bibulous.py`` file, followed by ``%.aux``. The following figures show the configuration window before and after the change:
 
@@ -83,6 +83,19 @@ On the main menu bar, select ``Edit`` then ``Preferences...``, and then the ``Ty
    :width: 49%
 
 .. image:: _static/modified_texworks_setup.png
+   :width: 49%
+
+   (The example shows the location of the ``bibulous.py`` file as ``/home/repos/bibulous/bibulous.py``, but you need to replace it with the appropriate location on your own system.) 
+
+Modifying LyX to replace BibTeX with Bibulous
+---------------------------------------------
+
+On the main menu bar, select ``Tools`` then ``Preferences``, and then expand the ``Output`` dropdown list and click on the ``LaTeX`` field. In the ``Bibliography generation`` section of the resulting dialog, change ``Processor`` to ``Custom`` and in the ``Command`` field insert the full path to your ``bibulous.py`` program. The following figures show the configuration windows before and after the change:
+
+.. image:: _static/original_lyx_setup.png
+   :width: 49%
+
+.. image:: _static/modified_lyx_setup.png
    :width: 49%
 
    (The example shows the location of the ``bibulous.py`` file as ``/home/repos/bibulous/bibulous.py``, but you need to replace it with the appropriate location on your own system.) 
