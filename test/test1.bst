@@ -63,6 +63,7 @@ author_or_editor3 = [[[<authorlist.0.first> ][<authorlist.0.prefix> ]<authorlist
 #name_abbrev1 = <au>, \enquote{<title>} (<year>).
 #name_abbrev2 = <au>, \enquote{<title>} (<year>).
 badkey = <au>
+badtemplate = <badauthorname.0>
 
 
 SPECIAL-TEMPLATES:
@@ -85,6 +86,7 @@ authorname-F.n = [<authorlist.n.prefix> ]<authorlist.n.last>, <authorlist.n.firs
 au-F = <authorname-F.0>, ..., <authorname-F.N>
 authorname-G.n = <authorlist.n.first> <authorlist.n.last>
 au-G = <authorname-G.0>, ..., <authorname-G.N>
+badauthorname.n = [<authorlist.n.prefix> ]<authorlist.n.last>, <authorlist.n.first.initial()>.][ <authorlist.n.middle.initial()>.][, <authorlist.n.suffix>.]
 editorname.n = [<editorlist.n.first.initial()>. ][<editorlist.n.middle.initial()>. ][<editorlist.n.prefix> ]<editorlist.n.last>[, <editorlist.n.suffix>]
 ed = <editorname.0>, ...,{ and }<editorname.2>
 editorname-A.n = [<editorlist.n.first> ][<editorlist.n.middle> ][<editorlist.n.prefix> ]<editorlist.n.last>[, <editorlist.n.suffix>]
