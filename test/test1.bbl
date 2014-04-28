@@ -122,6 +122,8 @@ Author One, ``Blah blah'' (4321).
 Editor One, ``Blah blah'' (4321).
 \bibitem{author_or_editor3}
 No editors, ``Blah blah'' (4321).
+\bibitem[badkey]{badkey}
+\textit{Warning: citation key "badkey" is not in the bibliography database}.
 \bibitem[key_not_in_database]{key_not_in_database}
 \textit{Warning: citation key "key_not_in_database" is not in the bibliography database}.
 

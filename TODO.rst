@@ -20,7 +20,7 @@ For version 1.4, the goal is to have group templates working.
   ``.if_length_more_than`` operators. Consider adding a 4-arg operator ``.if_has_substr(input,sub,iftrue,iffalse)``.
 
 - Try installing some of the other popular TeX editors, change their back ends to Bibulous, and provide instructions
-  on how to do this for: LyX (Windows and Linux) and TeXnicCenter (Windows).
+  on how to do this for: TeXnicCenter (Windows).
 
 - The Bibulous docs say that installation instruction are given in the
   ``INSTALL.rst`` file, but there is no such file!
@@ -122,9 +122,6 @@ For version 1.4, the goal is to have group templates working.
 Python testing to-do
 --------------------
 
-- Add a test for locale-dependent sorting? This requires a lot of work to set up for full
-  BIB-AUX-BBL mapping. So it may be best to wait for a more directed test to come along.
-
 - The following should create a malformed implicit loop error but doesn't::
 
     au = <name.0>, ..., and <name.N.last>
@@ -137,9 +134,6 @@ Python testing to-do
 
     authorname.n = [<authorlist.n.prefix> ]<authorlist.n.last>, <authorlist.n.first.initial()>.][ <authorlist.n.middle.initial()>.][, <authorlist.n.suffix>.]
 
-- The following line in a BIB file gave an unhelpful error message::
+- Add a test for locale-dependent sorting? This requires a lot of work to set up for full
+  BIB-AUX-BBL mapping. So it may be best to wait for a more directed test to come along.
 
-    @book{Silverman2002},
-      author = {...
-
-  That is, the key had an extra "}". Fix the error handling for that.

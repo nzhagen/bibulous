@@ -62,6 +62,7 @@ author_or_editor2 = [[[<authorlist.0.first> ][<authorlist.0.prefix> ]<authorlist
 author_or_editor3 = [[[<authorlist.0.first> ][<authorlist.0.prefix> ]<authorlist.0.last>]|[[<editorlist.0.first> ][<editorlist.0.prefix> ]<editorlist.0.last>]|No editors], \enquote{<title>} (<year>).
 #name_abbrev1 = <au>, \enquote{<title>} (<year>).
 #name_abbrev2 = <au>, \enquote{<title>} (<year>).
+badkey = <au>
 
 
 SPECIAL-TEMPLATES:
