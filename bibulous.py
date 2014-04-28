@@ -432,7 +432,7 @@ class Bibdata(object):
                 line = line[brace_idx+1:]
                 entry_brace_level = 1
 
-            ## If we are not current inside an active entry, then skip the line and wait until the the next entry.
+            ## If we are not currently inside an active entry, then skip the line and wait until the the next entry.
             if (entry_brace_level == 0):
                 if (line.strip() != ''):
                     bib_warning('Warning 001b: line#' + unicode(self.i) + ' of "' + self.filename + '" has data ' + \
@@ -458,6 +458,8 @@ class Bibdata(object):
                     endpos = match.end()
                     break
 
+            ## If we have returned to brace level 0, then finish appending the contents and send the entire set to the
+            ## parser.
             if (entry_brace_level == 0):
                 entrystr += line[:endpos-1]      ## the "-1" here to remove the final closing brace
                 self.parse_bibentry(entrystr, entrytype)
@@ -523,7 +525,11 @@ class Bibdata(object):
         else:
             ## First get the entry key. Then send the remainder of the entry string to the parser.
             idx = entrystr.find(',')
-            if (idx == -1):
+            if (idx == -1) and ('\n' not in entrystr):
+                bib_warning('Warning 035: the entry starting on line #' + unicode(self.i) + ' of file "' + \
+                     self.filename + '" provides only an entry key ("' + entrystr + '" and no item contents.', \
+                     self.disable)
+            elif (idx == -1):
                 bib_warning('Warning 003: the entry ending on line #' + unicode(self.i) + ' of file "' + \
                      self.filename + '" is does not have an "," for defining the entry key. '
                      'Skipping ...', self.disable)
@@ -1219,8 +1225,8 @@ class Bibdata(object):
             templatestr = self.bstdict[entrytype]
         else:
             msg = 'entrytype "' + entrytype + '" does not have a template defined in the .bst file'
-            bib_warning('Warning 011: ' + msg, self.disable)
-            return(itemstr + '\\textit{Warning: ' + msg + '}.')
+            bib_warning('Warning 011: ' + msg + '. Skipping ...', self.disable)
+            return('')
 
         ## Before checking which variables are defined and which not, we first need to evaluate the user-defined
         ## variables or else they will always be "undefined". To make this work, we also need to provide the user
