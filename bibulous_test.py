@@ -339,7 +339,7 @@ def run_test8():
 ## =================================================================================================
 def run_test9():
     '''
-    Test #9 is a pltform for running conditions in which the entire database needs to be re-read with each test.
+    Test #9 is a platform for running conditions in which the entire database needs to be re-read with each test.
     '''
 
     auxfiles = ['./test/test9_case_sensitive_fieldnames.aux',
@@ -361,7 +361,7 @@ def run_test9():
     return(bblfile, target_bblfile)
 
 
-## =============================
+## =================================================================================================
 def check_file_match(testnum, outputfile, targetfile):
     if not isinstance(outputfile, list):
       outputfile = [outputfile]
@@ -402,6 +402,7 @@ def check_file_match(testnum, outputfile, targetfile):
     return(test_passes)
 
 
+## =================================================================================================
 ## ==================================================================================================
 if (__name__ == '__main__'):
     suite_pass = True
