@@ -67,6 +67,10 @@
 <li><a class="reference internal" href="#">Getting started</a><ul>
 <li><a class="reference internal" href="#kile-replacing-bibtex-with-bibulous">Kile: replacing BibTeX with Bibulous</a></li>
 <li><a class="reference internal" href="#modifying-winedt5-to-replace-bibtex-with-bibulous">Modifying WinEdt5 to replace BibTeX with Bibulous</a></li>
+<li><a class="reference internal" href="#modifying-texmaker-to-replace-bibtex-with-bibulous">Modifying Texmaker to replace BibTeX with Bibulous</a></li>
+<li><a class="reference internal" href="#modifying-texstudio-to-replace-bibtex-with-bibulous">Modifying TeXStudio to replace BibTeX with Bibulous</a></li>
+<li><a class="reference internal" href="#modifying-texworks-to-replace-bibtex-with-bibulous">Modifying TeXworks to replace BibTeX with Bibulous</a></li>
+<li><a class="reference internal" href="#modifying-lyx-to-replace-bibtex-with-bibulous">Modifying LyX to replace BibTeX with Bibulous</a></li>
 </ul>
 </li>
 </ul>
@@ -106,16 +110,16 @@
   <div class="section" id="getting-started">
 <h1>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
 <p>For general users, all that is needed is place the main <tt class="docutils literal"><span class="pre">bibulous.py</span></tt> file into the Python path and to tell LaTeX to use Bibulous rather than BibTeX as their bibliography engine. For users interested in using the auxiliary command <tt class="docutils literal"><span class="pre">bibulous_authorextract.py</span></tt>, this file must also be in the Python path, and must be in the same directory as the main file. It is also possible to tell any LaTeX front-end to use Bibulous in place of BibTeX. For Kile (on Linux) and WinEdt (on Windows), instructions for doing this are given below.</p>
+<p>Once you bibliography engine is set to Bibulous, remember that the filename within the <tt class="docutils literal"><span class="pre">\bibliography{...}</span></tt> command in your <tt class="docutils literal"><span class="pre">*.tex</span></tt> files must point to a Bibulous-format bibliography style template (<tt class="docutils literal"><span class="pre">.bst</span></tt> file) and not a BibTeX one.</p>
 <div class="section" id="kile-replacing-bibtex-with-bibulous">
 <h2>Kile: replacing BibTeX with Bibulous<a class="headerlink" href="#kile-replacing-bibtex-with-bibulous" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic simple">
-<li>In your <tt class="docutils literal"><span class="pre">.tex</span></tt> file, change the filename of the <tt class="docutils literal"><span class="pre">\bibliography{...}</span></tt> command to the filename for the appropriate Bibulous-format bibliography style template (<tt class="docutils literal"><span class="pre">.bst</span></tt> file).</li>
 <li>In Kile, go to the menu bar and select <tt class="docutils literal"><span class="pre">Settings</span></tt> &gt; <tt class="docutils literal"><span class="pre">Configure</span> <span class="pre">Kile</span></tt>. Select <tt class="docutils literal"><span class="pre">Tools</span></tt> &gt; <tt class="docutils literal"><span class="pre">Build</span></tt> and choose <tt class="docutils literal"><span class="pre">BibTeX</span></tt> from the <tt class="docutils literal"><span class="pre">Select</span> <span class="pre">a</span> <span class="pre">tool</span></tt> menu (see the figure). To the right of the menu, after you select <tt class="docutils literal"><span class="pre">BibTeX</span></tt> you should see &#8220;Choose a configuration for the tool BibTeX&#8221;. Below the drop-down menu, select the button &#8220;New&#8221; and type in the name <tt class="docutils literal"><span class="pre">Bibulous</span></tt> (or whatever you prefer to call your new tool). Below, in the <tt class="docutils literal"><span class="pre">General</span></tt> tab, type in the location of the <tt class="docutils literal"><span class="pre">bibulous.py</span></tt> file. And in the <tt class="docutils literal"><span class="pre">Options</span></tt> field, type <tt class="docutils literal"><span class="pre">%dir_base/%S.aux</span></tt>.</li>
 </ol>
 <a class="reference internal image-reference" href="_images/screenshot_for_kile_instructions.png"><img alt="_images/screenshot_for_kile_instructions.png" src="_images/screenshot_for_kile_instructions.png" style="width: 49%;" /></a>
 <a class="reference internal image-reference" href="_images/screenshot_for_kile_instructions2.png"><img alt="_images/screenshot_for_kile_instructions2.png" src="_images/screenshot_for_kile_instructions2.png" style="width: 49%;" /></a>
 <p>That should be it. In case your default setup is different, you can also check the <tt class="docutils literal"><span class="pre">Advanced</span></tt> tab settings and verify that they are as shown in the second figure. (That is, <tt class="docutils literal"><span class="pre">Source</span> <span class="pre">extension</span></tt> is set to <tt class="docutils literal"><span class="pre">aux</span></tt>, and <tt class="docutils literal"><span class="pre">Target</span> <span class="pre">extension</span></tt> is set to <tt class="docutils literal"><span class="pre">bbl</span></tt>.)</p>
-<ol class="arabic" start="3">
+<ol class="arabic" start="2">
 <li><p class="first">Note that the following variables are accessible in Kile&#8217;s <tt class="docutils literal"><span class="pre">Options</span></tt> field:</p>
 <div class="highlight-python"><div class="highlight"><pre>%source = filename (i.e. filename with suffix but not path)
 %S = filename without suffix (and without path)
@@ -129,7 +133,7 @@
 <div class="section" id="modifying-winedt5-to-replace-bibtex-with-bibulous">
 <h2>Modifying WinEdt5 to replace BibTeX with Bibulous<a class="headerlink" href="#modifying-winedt5-to-replace-bibtex-with-bibulous" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic simple">
-<li>Go to the menu <tt class="docutils literal"><span class="pre">Options</span></tt> &gt; <tt class="docutils literal"><span class="pre">Execution</span> <span class="pre">Modes</span></tt>. In the <tt class="docutils literal"><span class="pre">Console</span> <span class="pre">Applications</span></tt> menu on the left hand side, select <tt class="docutils literal"><span class="pre">BibTeX</span></tt>. Then replace the three <tt class="docutils literal"><span class="pre">Command</span> <span class="pre">Line</span></tt> fields with the ones shown in the figure, replacing the files paths with the ones correct for your installation of Python and <tt class="docutils literal"><span class="pre">bibulous.py</span></tt>.</li>
+<li>Go to the menu <tt class="docutils literal"><span class="pre">Options</span></tt> &gt; <tt class="docutils literal"><span class="pre">Execution</span> <span class="pre">Modes</span></tt>. In the <tt class="docutils literal"><span class="pre">Console</span> <span class="pre">Applications</span></tt> menu on the left hand side, select <tt class="docutils literal"><span class="pre">BibTeX</span></tt>. Then replace the three <tt class="docutils literal"><span class="pre">Command</span> <span class="pre">Line</span></tt> fields with the ones shown in the figure, replacing the example file paths with the ones correct for your installation of Python and <tt class="docutils literal"><span class="pre">bibulous.py</span></tt>.</li>
 </ol>
 <a class="reference internal image-reference" href="_images/original_Winedt5_setup.png"><img alt="_images/original_Winedt5_setup.png" src="_images/original_Winedt5_setup.png" style="width: 49%;" /></a>
 <a class="reference internal image-reference" href="_images/modified_Winedt5_setup.png"><img alt="_images/modified_Winedt5_setup.png" src="_images/modified_Winedt5_setup.png" style="width: 49%;" /></a>
@@ -146,6 +150,26 @@
 </div>
 </li>
 </ol>
+</div>
+<div class="section" id="modifying-texmaker-to-replace-bibtex-with-bibulous">
+<h2>Modifying Texmaker to replace BibTeX with Bibulous<a class="headerlink" href="#modifying-texmaker-to-replace-bibtex-with-bibulous" title="Permalink to this headline">¶</a></h2>
+<p>On the main menu bar, select <tt class="docutils literal"><span class="pre">Options</span></tt> then <tt class="docutils literal"><span class="pre">Configure</span> <span class="pre">Texmaker</span></tt>. In the <tt class="docutils literal"><span class="pre">Bib(la)tex</span></tt> field, replace <tt class="docutils literal"><span class="pre">bibtex</span> <span class="pre">%.aux</span></tt> with the location of your <tt class="docutils literal"><span class="pre">bibulous.py</span></tt> file, followed by <tt class="docutils literal"><span class="pre">%.aux</span></tt>. The following figures show the configuration window before and after the change:</p>
+<a class="reference internal image-reference" href="_images/original_texmaker_setup.png"><img alt="_images/original_texmaker_setup.png" src="_images/original_texmaker_setup.png" style="width: 49%;" /></a>
+</div>
+<div class="section" id="modifying-texstudio-to-replace-bibtex-with-bibulous">
+<h2>Modifying TeXStudio to replace BibTeX with Bibulous<a class="headerlink" href="#modifying-texstudio-to-replace-bibtex-with-bibulous" title="Permalink to this headline">¶</a></h2>
+<p>On the main menu bar, select <tt class="docutils literal"><span class="pre">Options</span></tt> then <tt class="docutils literal"><span class="pre">Configure</span> <span class="pre">TeXStudio</span></tt>, and then the <tt class="docutils literal"><span class="pre">Commands</span></tt> tab. In the <tt class="docutils literal"><span class="pre">BibTeX</span></tt> field, replace <tt class="docutils literal"><span class="pre">bibtex</span> <span class="pre">%.aux</span></tt> with the location of your <tt class="docutils literal"><span class="pre">bibulous.py</span></tt> file, followed by <tt class="docutils literal"><span class="pre">%.aux</span></tt>. The following figures show the configuration window before and after the change:</p>
+<a class="reference internal image-reference" href="_images/original_texstudio_setup.png"><img alt="_images/original_texstudio_setup.png" src="_images/original_texstudio_setup.png" style="width: 49%;" /></a>
+</div>
+<div class="section" id="modifying-texworks-to-replace-bibtex-with-bibulous">
+<h2>Modifying TeXworks to replace BibTeX with Bibulous<a class="headerlink" href="#modifying-texworks-to-replace-bibtex-with-bibulous" title="Permalink to this headline">¶</a></h2>
+<p>On the main menu bar, select <tt class="docutils literal"><span class="pre">Edit</span></tt> then <tt class="docutils literal"><span class="pre">Preferences...</span></tt>, and then the <tt class="docutils literal"><span class="pre">Typesetting</span></tt> tab. In the <tt class="docutils literal"><span class="pre">Paths</span> <span class="pre">for</span> <span class="pre">TeX</span> <span class="pre">and</span> <span class="pre">related</span> <span class="pre">programs</span></tt> list, insert a new entry to give the path to your <tt class="docutils literal"><span class="pre">bibulous.py</span></tt> program. (This is the highlighted entry in the figure shown below.) In the <tt class="docutils literal"><span class="pre">Processing</span> <span class="pre">tools</span></tt> list, double-click on <tt class="docutils literal"><span class="pre">BibTeX</span></tt>. This brings up a new dialog window. In that window, remove <tt class="docutils literal"><span class="pre">bibtex</span></tt> from the <tt class="docutils literal"><span class="pre">Program</span></tt> field and replace it with <tt class="docutils literal"><span class="pre">bibulous.py</span></tt>. The following figures show the configuration windows before and after the change:</p>
+<a class="reference internal image-reference" href="_images/original_texworks_setup.png"><img alt="_images/original_texworks_setup.png" src="_images/original_texworks_setup.png" style="width: 49%;" /></a>
+</div>
+<div class="section" id="modifying-lyx-to-replace-bibtex-with-bibulous">
+<h2>Modifying LyX to replace BibTeX with Bibulous<a class="headerlink" href="#modifying-lyx-to-replace-bibtex-with-bibulous" title="Permalink to this headline">¶</a></h2>
+<p>On the main menu bar, select <tt class="docutils literal"><span class="pre">Tools</span></tt> then <tt class="docutils literal"><span class="pre">Preferences</span></tt>, and then expand the <tt class="docutils literal"><span class="pre">Output</span></tt> dropdown list and click on the <tt class="docutils literal"><span class="pre">LaTeX</span></tt> field. In the <tt class="docutils literal"><span class="pre">Bibliography</span> <span class="pre">generation</span></tt> section of the resulting dialog, change <tt class="docutils literal"><span class="pre">Processor</span></tt> to <tt class="docutils literal"><span class="pre">Custom</span></tt> and in the <tt class="docutils literal"><span class="pre">Command</span></tt> field insert the full path to your <tt class="docutils literal"><span class="pre">bibulous.py</span></tt> program. The following figures show the configuration windows before and after the change:</p>
+<a class="reference internal image-reference" href="_images/original_lyx_setup.png"><img alt="_images/original_lyx_setup.png" src="_images/original_lyx_setup.png" style="width: 49%;" /></a>
 </div>
 </div>
 
@@ -180,7 +204,7 @@
     </div>
     <div class="footer">
         &copy; Copyright 2013, Bibulous developers.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.1.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>

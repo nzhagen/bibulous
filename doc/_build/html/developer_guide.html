@@ -84,6 +84,7 @@
 <li><a class="reference internal" href="#generating-sortkeys">Generating sortkeys</a></li>
 <li><a class="reference internal" href="#testing">Testing</a></li>
 <li><a class="reference internal" href="#generating-the-documentation">Generating the documentation</a></li>
+<li><a class="reference internal" href="#miscellaneous-notes">Miscellaneous notes</a></li>
 </ul>
 </li>
 </ul>
@@ -306,6 +307,10 @@
 <h2>Generating the documentation<a class="headerlink" href="#generating-the-documentation" title="Permalink to this headline">¶</a></h2>
 <p>From the bibulous repository <tt class="docutils literal"><span class="pre">doc/</span></tt> subfolder, run <tt class="docutils literal"><span class="pre">make</span> <span class="pre">html</span></tt> to generate the HTML documentation. The result can be found in <tt class="docutils literal"><span class="pre">doc/_build/html/</span></tt>, with <tt class="docutils literal"><span class="pre">index.html</span></tt> as the main file. To generate the PDF documentation, run <tt class="docutils literal"><span class="pre">make</span> <span class="pre">latexpdf</span></tt> from the <tt class="docutils literal"><span class="pre">doc/</span></tt> subfolder, with the result found at <tt class="docutils literal"><span class="pre">doc/_build/latex/Bibulous.pdf</span></tt>.</p>
 </div>
+<div class="section" id="miscellaneous-notes">
+<h2>Miscellaneous notes<a class="headerlink" href="#miscellaneous-notes" title="Permalink to this headline">¶</a></h2>
+<p>The code includes two different variables, <tt class="docutils literal"><span class="pre">citekey</span></tt> and <tt class="docutils literal"><span class="pre">entrykey</span></tt> which for any given entry are always identical. So it would appear that they are redundant. But the keys in the <tt class="docutils literal"><span class="pre">citedict</span></tt> dictionary, and the keys specifying each entry in the database, belong to different sets. That is, the list of entry keys can be from every entry in the database, even entries that were not cited. The list of citation keys, however, contains only those keys that were cited, and so can be a much smaller list.</p>
+</div>
 </div>
 
 
@@ -339,7 +344,7 @@
     </div>
     <div class="footer">
         &copy; Copyright 2013, Bibulous developers.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.1.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>

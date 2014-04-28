@@ -71,7 +71,7 @@
 </ul>
 </li>
 <li><a class="reference internal" href="#options-keywords">Options keywords</a></li>
-<li><a class="reference internal" href="#examples-for-namelist-formatting">Examples for namelist formatting</a></li>
+<li><a class="reference internal" href="#implicit-loops-and-examples-for-namelist-formatting">Implicit loops and examples for namelist formatting</a></li>
 <li><a class="reference internal" href="#python-api">Python API</a></li>
 </ul>
 </li>
@@ -144,7 +144,7 @@
 </li>
 <li><p class="first">Nesting of <tt class="docutils literal"><span class="pre">[]</span></tt> brackets is allowed, but the syntax becomes computationally expensive to parse, so that these structures should be used sparingly:</p>
 </li>
-<li><p class="first">Users that need to use <tt class="docutils literal"><span class="pre">[</span></tt>, <tt class="docutils literal"><span class="pre">]</span></tt>, <tt class="docutils literal"><span class="pre">#</span></tt>, <tt class="docutils literal"><span class="pre">&lt;</span></tt>, <tt class="docutils literal"><span class="pre">&gt;</span></tt>, or <tt class="docutils literal"><span class="pre">|</span></tt> symbols as formatting elements within the reference list can implement them using some custom LaTeX-markup commands: <tt class="docutils literal"><span class="pre">{\makeopenbracket}</span></tt>, <tt class="docutils literal"><span class="pre">{\makehashsign}</span></tt>, <tt class="docutils literal"><span class="pre">{\makeclosebracket}</span></tt>, <tt class="docutils literal"><span class="pre">{\makegreaterthan}</span></tt>, <tt class="docutils literal"><span class="pre">{\makelessthan}</span></tt>, or <tt class="docutils literal"><span class="pre">{\makeverticalbar}</span></tt>. Note that the curly brackets used in each case are required.</p>
+<li><p class="first">Users that need to use <tt class="docutils literal"><span class="pre">[</span></tt>, <tt class="docutils literal"><span class="pre">]</span></tt>, <tt class="docutils literal"><span class="pre">#</span></tt>, <tt class="docutils literal"><span class="pre">&lt;</span></tt>, <tt class="docutils literal"><span class="pre">&gt;</span></tt>, or <tt class="docutils literal"><span class="pre">|</span></tt> symbols as formatting elements within the reference list can implement them using some custom LaTeX-markup commands: <tt class="docutils literal"><span class="pre">{\makeopenbracket}</span></tt>, <tt class="docutils literal"><span class="pre">{\makeclosebracket}</span></tt>, <tt class="docutils literal"><span class="pre">{\makehashsign}</span></tt>, <tt class="docutils literal"><span class="pre">{\makelessthan}</span></tt>, <tt class="docutils literal"><span class="pre">{\makegreaterthan}</span></tt>, or <tt class="docutils literal"><span class="pre">{\makeverticalbar}</span></tt>. Note that the curly brackets used in each case are required.</p>
 </li>
 <li><p class="first">In the <tt class="docutils literal"><span class="pre">TEMPLATES</span></tt> section of the file, if an entrytype format definition contains only another entrytype name on the right hand side of the <tt class="docutils literal"><span class="pre">=</span></tt>, i.e.:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">inbook</span> <span class="o">=</span> <span class="n">incollection</span>
@@ -166,16 +166,14 @@
 </li>
 <li><p class="first">The <tt class="docutils literal"><span class="pre">SPECIAL-TEMPLATES</span></tt> section is where users can define their own fields that get generated for every database entry evaluated. For example, the variable definition:</p>
 <div class="highlight-python"><div class="highlight"><pre>group = [&lt;organization&gt;|&lt;institution&gt;|&lt;corporation&gt;|]
-
-in the ``SPECIAL-TEMPLATES`` section will create a ``group`` field that can be used as the variable ``&lt;group&gt;`` within the regular ``TEMPLATES`` section of the file. This effectively allows users to create a shortcut. Where they could write out ``[&lt;organization&gt;|&lt;institution&gt;|&lt;corporation&gt;|]`` inside each template that needs this structure, the special template definition allows them to replace each instance with a simple ``&lt;group&gt;``.
-
-Another example usage would be the following:::
-
-author = [&lt;author-en&gt;|&lt;author-jp&gt;|]
-
-where the ``author`` field is actually redefined to include not only the *existing* author field, but also the fields ``author-en`` or ``author-jp``. That is, if the ``author`` field is missing in the database entry (the field matching the thing on the left hand side), the code next searches for the ``author-en`` field. If it finds it, then it will create an ``author`` field that contains a copy of the ``author-en``&#39;s field&#39;s contents. If the ``author-en`` is also missing, the code next searches for ``author-jp`` and uses that fields contents to create the missing ``author`` field. This is a convenient way of grouping different variable names in order to simplify templates.
 </pre></div>
 </div>
+<p>in the <tt class="docutils literal"><span class="pre">SPECIAL-TEMPLATES</span></tt> section will create a <tt class="docutils literal"><span class="pre">group</span></tt> field that can be used as the variable <tt class="docutils literal"><span class="pre">&lt;group&gt;</span></tt> within the regular <tt class="docutils literal"><span class="pre">TEMPLATES</span></tt> section of the file. This effectively allows users to create a shortcut. Where they could write out <tt class="docutils literal"><span class="pre">[&lt;organization&gt;|&lt;institution&gt;|&lt;corporation&gt;|]</span></tt> inside each template that needs this structure, the special template definition allows them to replace each instance with a simple <tt class="docutils literal"><span class="pre">&lt;group&gt;</span></tt>.</p>
+<p>Another example usage would be the following::</p>
+<div class="highlight-python"><div class="highlight"><pre>author = [&lt;author-en&gt;|&lt;author-jp&gt;|]
+</pre></div>
+</div>
+<p>where the <tt class="docutils literal"><span class="pre">author</span></tt> field is actually redefined to include not only the <em>existing</em> author field, but also the fields <tt class="docutils literal"><span class="pre">author-en</span></tt> or <tt class="docutils literal"><span class="pre">author-jp</span></tt>. That is, if the <tt class="docutils literal"><span class="pre">author</span></tt> field is missing in the database entry (the field matching the thing on the left hand side), the code next searches for the <tt class="docutils literal"><span class="pre">author-en</span></tt> field. If it finds it, then it will create an <tt class="docutils literal"><span class="pre">author</span></tt> field that contains a copy of the <tt class="docutils literal"><span class="pre">author-en</span></tt>&#8216;s field&#8217;s contents. If the <tt class="docutils literal"><span class="pre">author-en</span></tt> is also missing, the code next searches for <tt class="docutils literal"><span class="pre">author-jp</span></tt> and uses that fields contents to create the missing <tt class="docutils literal"><span class="pre">author</span></tt> field. This is a convenient way of grouping different variable names in order to simplify templates.</p>
 </li>
 <li><p class="first">The order in which any definitions are placed within the special templates is important. For example, if a user has <tt class="docutils literal"><span class="pre">au</span> <span class="pre">=</span> <span class="pre">&lt;authorlist.format_authorlist()&gt;</span></tt> and then below that defines <tt class="docutils literal"><span class="pre">authorlist</span> <span class="pre">=</span> <span class="pre">&lt;author.to_namelist()&gt;</span></tt>, then the code will issue an error stating that <tt class="docutils literal"><span class="pre">authorlist</span></tt> is not defined when attempting to create the <tt class="docutils literal"><span class="pre">au</span></tt> variable. Since the definition for <tt class="docutils literal"><span class="pre">au</span></tt> assumes the presence of the <tt class="docutils literal"><span class="pre">authorlist</span></tt> variable, the latter definition must be placed above it.</p>
 </li>
@@ -224,6 +222,9 @@ ed = &lt;editorlist.format_editorlist()&gt;
 .format_editorlist()
 .frenchinitial()
 .if_singular(var1,var2,var3)
+.if_length_equals(var1,number,var2,var3)
+.if_length_less_than(var1,number,var2,var3)
+.if_length_more_than(var1,number,var2,var3)
 .initial()
 .lower()
 .monthabbrev()
@@ -254,6 +255,9 @@ ed = &lt;editorlist.format_editorlist()&gt;
 <p><strong>.frenchinitial()</strong> is an alternative form of the <tt class="docutils literal"><span class="pre">.initial()</span></tt> operator that has slightly different behavior. If a name begins with one of the digraphs
 &#8220;Ch&#8221;, &#8220;Gn&#8221;, &#8220;Ll&#8221;, &#8220;Ph&#8221;, &#8220;Ss&#8221;, or &#8220;Th&#8221;, then the initial will truncate the name after the digraph instead of after the first letter.</p>
 <p><strong>.if_singular(var1,var2,var3)</strong> is an operator which inserts <tt class="docutils literal"><span class="pre">var2</span></tt> if <tt class="docutils literal"><span class="pre">var1</span></tt> has only one element, but <tt class="docutils literal"><span class="pre">var3</span></tt> if <tt class="docutils literal"><span class="pre">var1</span></tt> has more than one element. Here <tt class="docutils literal"><span class="pre">var1</span></tt> is assumed to be a list-type of variable, and <tt class="docutils literal"><span class="pre">var2</span></tt> and <tt class="docutils literal"><span class="pre">var3</span></tt> are assumed to be either fields present within the database entry or variables defined in the <tt class="docutils literal"><span class="pre">SPECIAL-TEMPLATES</span></tt> section of the file.</p>
+<p><strong>.if_length_equals(var1,number,var2,var3)</strong></p>
+<p><strong>.if_length_less_than(var1,number,var2,var3)</strong></p>
+<p><strong>.if_length_more_than(var1,number,var2,var3)</strong></p>
 <p><strong>.initial()</strong> will truncate the string to its first letter. Note that if a name begins with a LaTeX markup character, such as <tt class="docutils literal"><span class="pre">{\'E}</span></tt>, then the operator will convert the input string to its best attempt at a Unicode-equivalent (without character markup) prior to performing the truncation. Thus, applying the <tt class="docutils literal"><span class="pre">.initial()</span></tt> operator to the name <tt class="docutils literal"><span class="pre">{\v{Z}}ukauskas</span></tt> will produce the initialized form &#8220;Ž&#8221;.</p>
 <p><strong>.lower()</strong> reduces all letters in its argument to lower case. If any LaTeX markup letters exist in the argument, then they will be converted to Unicode equivalents first before applying the operator. Thus, if the field <tt class="docutils literal"><span class="pre">au</span></tt> contains <tt class="docutils literal"><span class="pre">{\AA}</span></tt> then the operator will first convert this to the letter Å and then reduce it to the lower case å.</p>
 <p><strong>.monthabbrev()</strong> assumes that the input field is a number from 1 to 12, and converts the numerical input into the abbreviated month according to the user&#8217;s current locale. If the system cannot determine the user&#8217;s locale, the operator will default to using the American English locale, which replaces the numerical field operated on with one of &#8220;Jan&#8221;, &#8220;Feb&#8221;, &#8220;Mar&#8221;, &#8220;Apr&#8221;, &#8220;May&#8221;, &#8220;Jun&#8221;, &#8220;Jul&#8221;, &#8220;Aug&#8221;, &#8220;Sep&#8221;, &#8220;Oct&#8221;, &#8220;Nov&#8221;, or &#8220;Dec&#8221; according to the field&#8217;s value. Thus, if the bibliography database entry has a field <tt class="docutils literal"><span class="pre">month</span> <span class="pre">=</span> <span class="pre">11</span></tt>, and the template has the form <tt class="docutils literal"><span class="pre">&lt;month.monthabbrev()&gt;</span></tt>, then the template will be replaced with &#8220;Nov&#8221; for the default locale. For users with locale &#8220;Japan&#8221;, this same operator will return &#8220;11月&#8221;.</p>
@@ -330,8 +334,8 @@ use_name_ties = False
 <p><strong>use_firstname_initials</strong> [default value: True] Whether or not to initialize the first names of authors in the formatted authors list. (This keyword is only used within the <tt class="docutils literal"><span class="pre">.format_namelist()</span></tt> operator.)</p>
 <p><strong>use_name_ties</strong> [default value: False] Whether or not to replace spaces with unbreakable spaces (i.e. &#8220;R. M. A. Azzam&#8221; or &#8220;R.~M.~A. Azzam&#8221;) inside names in the name list. (This keyword is only used within the <tt class="docutils literal"><span class="pre">.format_namelist()</span></tt> operator.)</p>
 </div>
-<div class="section" id="examples-for-namelist-formatting">
-<h2>Examples for namelist formatting<a class="headerlink" href="#examples-for-namelist-formatting" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="implicit-loops-and-examples-for-namelist-formatting">
+<h2>Implicit loops and examples for namelist formatting<a class="headerlink" href="#implicit-loops-and-examples-for-namelist-formatting" title="Permalink to this headline">¶</a></h2>
 <p>The following code provides an example usage of implicit indexing within an implicit loop structure::</p>
 <div class="highlight-python"><div class="highlight"><pre>authorlist = &lt;author.to_namelist()&gt;
 editorlist = &lt;editor.to_namelist()&gt;
@@ -378,6 +382,7 @@ ed = &lt;editorname.0&gt;, ...,{ and }&lt;editorname.2&gt;
 </pre></div>
 </div>
 <p>With this template now complete, the code begins to evaluate the entry and replace the individual variables with their corresponding database fields.</p>
+<p>Note that implicit loop structures only work when they comprise the <em>entire</em> template. That is, a template such as <tt class="docutils literal"><span class="pre">au</span> <span class="pre">=</span> <span class="pre">&lt;authorname.0&gt;,</span> <span class="pre">...,{</span> <span class="pre">and</span> <span class="pre">}&lt;authorname.6&gt;</span></tt> works fine, whereas the template <tt class="docutils literal"><span class="pre">au</span> <span class="pre">=</span> <span class="pre">[&lt;authorname.0&gt;,</span> <span class="pre">...,{</span> <span class="pre">and</span> <span class="pre">}&lt;authorname.6&gt;]</span></tt> uses the <tt class="docutils literal"><span class="pre">[</span></tt> as part of each entry in the loop, and the <tt class="docutils literal"><span class="pre">]</span></tt> as part of the final entry, so that the final result is a malformed template. (The left and right square brackets are no longer matched.)</p>
 </div>
 <div class="section" id="python-api">
 <h2>Python API<a class="headerlink" href="#python-api" title="Permalink to this headline">¶</a></h2>
@@ -503,7 +508,7 @@ def format_pagerange(entry, options):
     </div>
     <div class="footer">
         &copy; Copyright 2013, Bibulous developers.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.1.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>

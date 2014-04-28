@@ -67,6 +67,9 @@
 <li><a class="reference internal" href="#example-4">Example 4</a></li>
 <li><a class="reference internal" href="#example-5">Example 5</a></li>
 <li><a class="reference internal" href="#example-6">Example 6</a></li>
+<li><a class="reference internal" href="#example-7">Example 7</a></li>
+<li><a class="reference internal" href="#example-8">Example 8</a></li>
+<li><a class="reference internal" href="#example-9">Example 9</a></li>
 <li><a class="reference internal" href="#example">Example ?</a></li>
 </ul>
 </li>
@@ -775,6 +778,299 @@ sortkey = &lt;authorlist.0.last&gt;
 <a class="reference internal image-reference" href="_images/example6.png"><img alt="_images/example6.png" src="_images/example6.png" style="width: 60%;" /></a>
 </div>
 <hr class="docutils" />
+<div class="section" id="example-7">
+<h2>Example 7<a class="headerlink" href="#example-7" title="Permalink to this headline">¶</a></h2>
+<p>The following example is taken from a question posted at <tt class="docutils literal"><span class="pre">http://tex.stackexchange.com/questions/145038/some-citation-numbers-in-bold-others-not/168233#168233</span></tt>, where the OP asks if there is a way to have some citations given in <strong>bold</strong> font. This can be achieved with a user-defined script, as shown below. With tha database file</p>
+<div class="highlight-python"><div class="highlight"><pre>@Article{refA,
+  title = {Can quantum-mechanical description of physical reality be considered complete?},
+  author = {A. Einstein and B. Podolsky and N. Rosen},
+  journal = {Phys.\ Rev.},
+  volume = {47},
+  year = {1935},
+  pages = {777--780}
+}
+
+@Book{refB,
+  title = {Probability Theory: The Logic of Science},
+  year = {2003},
+  author = {E. T. Jaynes},
+  publisher = {Cambridge University Press}
+}
+
+@Incollection{refC,
+  title = {On the present status of the radiation problem},
+  author = {Albert Einstein},
+  booktitle = {The Collected Papers of Albert Einstein},
+  publisher = {Princeton University Press},
+  year = {1989},
+  pages = {357--375},
+  volume = {2}
+}
+
+@Mastersthesis{refD,
+  title = {Optical aberration coefficients},
+  author = {Matthew Peter Rimmer},
+  school = {University of Rochester},
+  year = {1963}
+}
+
+@Phdthesis{refBOLD,
+  title = {On the theory of quanta},
+  author = {Louis-Victor de Broglie},
+  school = {University of Paris},
+  year = {1925}
+}
+</pre></div>
+</div>
+<p>and the style template file</p>
+<div class="highlight-python"><div class="highlight"><pre>TEMPLATES:
+article = &lt;au&gt;, \enquote{&lt;title&gt;,} \textit{&lt;journal&gt;} \textbf{&lt;volume&gt;},{ }...
+          [&lt;startpage&gt;--&lt;endpage&gt;|&lt;startpage&gt;|&lt;eid&gt;|] (&lt;year&gt;).
+book = &lt;au&gt;, \textit{&lt;title&gt;} (&lt;publisher&gt;, &lt;year&gt;).
+incollection = &lt;au&gt;, \enquote{&lt;title&gt;,} in \textit{&lt;booktitle&gt;}, [Chap.~&lt;chapter&gt;, ]...
+        [pp.~&lt;startpage&gt;--&lt;endpage&gt;|p.~&lt;startpage&gt;|&lt;eid&gt;|] (&lt;publisher&gt;, &lt;year&gt;).
+mastersthesis = &lt;au&gt;, \enquote{&lt;title&gt;,} M.S. dissertation (&lt;school&gt;, &lt;year&gt;).
+phdthesis = &lt;au&gt;, \enquote{&lt;title&gt;,} Ph.D. dissertation (&lt;school&gt;, &lt;year&gt;).
+
+SPECIAL-TEMPLATES:
+authorlist = &lt;author.to_namelist()&gt;
+editorlist = &lt;editor.to_namelist()&gt;
+au = &lt;authorlist.format_authorlist()&gt;
+ed = &lt;editorlist.format_editorlist()&gt;
+
+OPTIONS:
+allow_scripts = True         ## whether to allow user scripts in BST files
+
+VARIABLES:
+citelabel = create_citelabel(entry, options)
+
+DEFINITIONS:
+def create_citelabel(entry, options):
+    numnames = len(entry[&#39;authorlist&#39;])
+    if (numnames == 0): return(entry[&#39;citenum&#39;])
+    foundit = False
+    for name in entry[&#39;authorlist&#39;]:
+        if (name[&#39;last&#39;] == &#39;Broglie&#39;) and (name[&#39;prefix&#39;] == &#39;de&#39;):
+            foundit = True
+            break
+    if foundit:
+        return(r&#39;\textbf{&#39; + entry[&#39;citenum&#39;] + &#39;}&#39;)
+    else:
+        return(entry[&#39;citenum&#39;])
+</pre></div>
+</div>
+<p>we can make use of a simple main <tt class="docutils literal"><span class="pre">.tex</span></tt> file</p>
+<div class="highlight-python"><div class="highlight"><pre>\documentclass{article}
+\usepackage{cite}
+%\makeatletter
+%   \renewcommand{\@biblabel}[1]{#1.}
+%\makeatother
+\begin{document}
+
+Some text where I cite papers, where I want to highlight all publications by de Broglie~\cite{refA, refB, refC, refBOLD, refD}. 
+It would be nice for the citations to to appear sorted like [1-3,{\textbf 4},5].
+
+\bibliography{example7}
+\bibliographystyle{example7}
+
+\end{document}
+</pre></div>
+</div>
+<p>to produce a formatted result</p>
+<a class="reference internal image-reference" href="_images/example7.png"><img alt="_images/example7.png" src="_images/example7.png" style="width: 60%;" /></a>
+</div>
+<hr class="docutils" />
+<div class="section" id="example-8">
+<h2>Example 8<a class="headerlink" href="#example-8" title="Permalink to this headline">¶</a></h2>
+<p>The following example is taken from a question posted at <tt class="docutils literal"><span class="pre">http://tex.stackexchange.com/questions/169300/modify-plain-bst-file/172828#172828</span></tt>, where the OP asks for a way to customize the formatted reference list so that the first line contains the author names and date, while the second and subsequent lines are given a hanging indent. This can be achieved with the following setup. With the database file</p>
+<div class="highlight-python"><div class="highlight"><pre>@article{Abrahams1986,
+  title = {Scaling description of the dielectric function near the mobility edge},
+  author = {Abrahams, Elihu and Lee, P. A.},
+  journal = {Phys. Rev. B},
+  volume = {33},
+  issue = {2},
+  pages = {683--689},
+  year = {1986},
+  month = {1},
+  publisher = {American Physical Society},
+  url = {http://link.aps.org/doi/10.1103/PhysRevB.33.683}
+}
+
+@book{Nakayama2003,
+  title = {Fractal Concepts in Condensed Matter Physics},
+  series = {Springer Series in Solid-State Sciences},
+  volume = {140},
+  author = {Nakayama, Tsuneyoshi and Yakubo, Kousuke},
+  address = {New York},
+  publisher = {Springer},
+  issn = {0171-1873},
+  year = {2003}
+}
+
+@article{Chalker1988,
+  title = {Scaling, diffusion, and the integer quantized Hall effect},
+  author = {Chalker, J. T. and Daniell, G. J.},
+  journal = {Phys. Rev. Lett.},
+  volume = {61},
+  issue = {5},
+  pages = {593--596},
+  year = {1988},
+  month = {8},
+  publisher = {American Physical Society},
+  url = {http://link.aps.org/doi/10.1103/PhysRevLett.61.593}
+}
+
+@article{Chalker1990,
+  journal = {Physica A: Statistical Mechanics and its Applications},
+  volume = {167}, 
+  issue = {1},
+  month = {8},
+  year = {1990},
+  day = {1},
+  pages = {253-258},
+  title = {Scaling and eigenfunction correlations near a mobility edge},
+  author = {J. T. Chalker}
+}
+
+@article{Pook1991,
+  year = {1991},
+  issn = {0722-3277},
+  journal = {Zeitschrift für Physik B Condensed Matter},
+  volume = {82},
+  number = {2},
+  title = {Multifractality and scaling in disordered mesoscopic systems},
+  url = {http://dx.doi.org/10.1007/BF01324339},
+  publisher = {Springer-Verlag},
+  author = {Pook, Werner and Janßen, Martin},
+  pages = {295-298}
+}
+</pre></div>
+</div>
+<p>and the style template file</p>
+<div class="highlight-python"><div class="highlight"><pre>TEMPLATES:
+article = \textbf{&lt;au&gt;, (&lt;year&gt;[-&lt;month.monthabbrev()&gt;[-&lt;day&gt;]]):}\\ [\href{&lt;url&gt;}{&lt;title&gt;}|\href{&lt;doi&gt;}{&lt;title&gt;}|&lt;title&gt;|], \textit{&lt;journal&gt;} \textit{&lt;volume&gt;}([&lt;number&gt;|&lt;issue&gt;|]), [&lt;startpage&gt;--&lt;endpage&gt;|&lt;startpage&gt;|&lt;eid&gt;|].
+book = \textbf{[&lt;au&gt;|&lt;ed&gt;|], (&lt;year&gt;[-&lt;month.monthabbrev()&gt;[-&lt;day&gt;]]):}\\ \textit{&lt;title&gt;}[, &lt;edition_ordinal&gt;~ed.][, &lt;series&gt;][ &lt;issn&gt;], &lt;address&gt;: &lt;publisher&gt;.
+
+SPECIAL-TEMPLATES:
+authorlist = &lt;author.to_namelist()&gt;
+editorlist = &lt;editor.to_namelist()&gt;
+authorname.n = [&lt;authorlist.n.prefix&gt; ]&lt;authorlist.n.last&gt;, &lt;authorlist.n.first.initial()&gt;.[ &lt;authorlist.n.middle.initial()&gt;.][, &lt;authorlist.n.suffix&gt;.]
+au = &lt;authorname.0&gt;, ...{ \&amp; }&lt;authorname.9&gt;
+editorname.n = [&lt;authorlist.n.prefix&gt; ]&lt;authorlist.n.last&gt;, &lt;authorlist.n.first.initial()&gt;.[ &lt;authorlist.n.middle.initial()&gt;.][, &lt;authorlist.n.suffix&gt;.]
+ed = &lt;editorname.0&gt;, ...{ \&amp; }&lt;editorname.5&gt;
+citelabel = &lt;authorlist.0.last&gt;-&lt;year&gt;
+sortkey = &lt;citelabel&gt;
+</pre></div>
+</div>
+<p>we can make use of a simple main <tt class="docutils literal"><span class="pre">.tex</span></tt> file</p>
+<div class="highlight-python"><div class="highlight"><pre>\documentclass{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[paper=letterpaper, text={5.8in,8.5in},centering]{geometry}
+\usepackage[colorlinks=True,urlcolor=blue,citecolor=black,breaklinks=true]{hyperref}
+\usepackage{enumitem}
+\makeatletter
+   \renewcommand{\@biblabel}[1]{}
+   \renewenvironment{thebibliography}[1]
+      {\section*{\refname}%
+         \@mkboth{\MakeUppercase\refname}{\MakeUppercase\refname}%
+         \begin{enumerate}[label={},itemindent=*,leftmargin=3em]
+         \@openbib@code
+         \sloppy
+         \clubpenalty4000
+         \@clubpenalty \clubpenalty
+         \widowpenalty4000
+         \sfcode`\.\@m}
+         {\def\@noitemerr
+            {\@latex@warning{Empty `thebibliography&#39; environment}}%
+      \end{enumerate}}
+\makeatother
+
+\begin{document}
+
+{\noindent}Citations: \cite{Abrahams1986,Nakayama2003,Chalker1988,Chalker1990,Pook1991}
+
+\bibliography{example8}
+\bibliographystyle{example8}
+
+\end{document}
+</pre></div>
+</div>
+<p>to produce a formatted result</p>
+<a class="reference internal image-reference" href="_images/example8.png"><img alt="_images/example8.png" src="_images/example8.png" style="width: 60%;" /></a>
+</div>
+<hr class="docutils" />
+<div class="section" id="example-9">
+<h2>Example 9<a class="headerlink" href="#example-9" title="Permalink to this headline">¶</a></h2>
+<p>The following example is taken from a question posted at <tt class="docutils literal"><span class="pre">http://tex.stackexchange.com/questions/172444/suppress-month-and-day-for-journal-articles-and-maintain-for-a-newspaper-article</span></tt>, where the OP asks for a way to create a reference list in which newspaper articles have the month and day of publication shown while journal articles do not. The cleanest way of implementing this in Bibulous is simply to use a different entrytype for newspaper articles and journal articles, as shown below. For this example, we have a database file</p>
+<div class="highlight-python"><div class="highlight"><pre>@newsarticle{test1,
+  title = {Ideas \&amp; trends; politics of the web: {Meet}, greet, segregate, meet again},
+  url = {http://www.nytimes.com/2004/01/25/weekinreview/ideas-trends-politics-of-the-web-meet-greet-segregate-meet-again.html},
+  urldate = {2014-01-14},
+  journal = {New York Times},
+  author = {Harmon, Amy},
+  day = {1},
+  month = jan,
+  year = {2004}
+}
+
+@article{test2,
+  title = {Social movement networks virtual and real},
+  volume = {3},
+  issn = {1369-118X},
+  url = {http://www.tandfonline.com/doi/abs/10.1080/13691180051033333},
+  doi = {10.1080/13691180051033333},
+  number = {3},
+  urldate = {2013-05-31},
+  journal = {Information, Communication \&amp; Society},
+  author = {Diani, Mario},
+  month = jan,
+  year = {2000},
+  pages = {386--401}
+}
+</pre></div>
+</div>
+<p>and a style template file</p>
+<div class="highlight-python"><div class="highlight"><pre>TEMPLATES:
+article = &lt;au&gt; (&lt;year&gt;). &lt;title&gt;. \textit{&lt;journal&gt;} \textit{&lt;volume&gt;}(&lt;number&gt;),{ }...
+          [&lt;startpage&gt;--&lt;endpage&gt;|&lt;startpage&gt;|&lt;eid&gt;|].[ doi:\url{&lt;doi&gt;}| url:\url{&lt;url&gt;}]
+newsarticle = &lt;au&gt; (&lt;year&gt;[, &lt;month.monthname()&gt;[ &lt;day&gt;]]). &lt;title&gt;. \textit{&lt;journal&gt;}. Retrieved &lt;urldate&gt;, from \url{&lt;url&gt;}.
+
+SPECIAL-TEMPLATES:
+authorlist = &lt;author.to_namelist()&gt;
+editorlist = &lt;editor.to_namelist()&gt;
+au = &lt;authorlist.format_authorlist()&gt;
+ed = &lt;editorlist.format_editorlist()&gt;
+citelabel = (&lt;authorlist.0.last&gt;, &lt;year&gt;)
+
+OPTIONS:
+namelist_format = last_name_first
+</pre></div>
+</div>
+<p>that when comiled by the main <tt class="docutils literal"><span class="pre">.tex</span></tt> file</p>
+<div class="highlight-python"><div class="highlight"><pre>\documentclass{article}
+\usepackage[paper=letterpaper, text={6.2in,8.5in},centering]{geometry}
+\usepackage[colorlinks=True,urlcolor=blue,citecolor=black,breaklinks=true]{hyperref}
+
+\makeatletter
+   \renewcommand{\@biblabel}[1]{}
+   \renewcommand{\@cite}[2]{{#1\if@tempswa , #2\fi}}
+\makeatother
+
+\begin{document}
+
+Lorem \cite{test1} ipsum \cite{test2}.
+
+\bibliography{example9}
+\bibliographystyle{example9}
+
+\end{document}
+</pre></div>
+</div>
+<p>produces the formatted result</p>
+<a class="reference internal image-reference" href="_images/example9.png"><img alt="_images/example9.png" src="_images/example9.png" style="width: 60%;" /></a>
+</div>
+<hr class="docutils" />
 <div class="section" id="example">
 <h2>Example ?<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
 <p>This follows an online question posted at <tt class="docutils literal"><span class="pre">http://tex.stackexchange.com/questions/961/bibtex-style-that-groups-by-author</span></tt>.</p>
@@ -809,7 +1105,7 @@ sortkey = &lt;authorlist.0.last&gt;
     </div>
     <div class="footer">
         &copy; Copyright 2013, Bibulous developers.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.1.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>

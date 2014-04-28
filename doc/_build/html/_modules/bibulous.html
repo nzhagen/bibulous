@@ -308,6 +308,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s">&#39;sort_order&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;Forward&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s">&#39;wrap_nested_quotes&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s">&#39;autocomplete_doi&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s">&#39;name_separator&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;and&#39;</span>
 
         <span class="c">## These options all relate to the default name formatting (the more rigid namelist formatting that does not use</span>
         <span class="c">## the implicit indexing and implicit loop structures).</span>
@@ -319,9 +320,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s">&#39;mineditors&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">5</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s">&#39;use_name_ties&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s">&#39;terse_inits&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s">&#39;french_intials&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s">&#39;french_initials&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s">&#39;period_after_initial&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s">&#39;name_separator&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;and&#39;</span>
 
         <span class="c">## Compile some patterns for use in regex searches. Note that &quot;[\-\+\*\#\$\w]&quot; matches any alphanumeric character plus any of [~@%&amp;-+*#$^?!=:]</span>
         <span class="n">pat</span> <span class="o">=</span> <span class="s">r&#39;[~@%&amp;\-\+\*\#\$\^\?\!\=\:\w]+?&#39;</span>
@@ -1277,30 +1277,15 @@
         <span class="k">if</span> <span class="p">(</span><span class="n">c</span> <span class="o">==</span> <span class="s">&#39;preamble&#39;</span><span class="p">):</span>
             <span class="k">return</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="p">(</span><span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">bibdata</span><span class="p">):</span>
-            <span class="n">bibitem_label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bibdata</span><span class="p">[</span><span class="n">c</span><span class="p">][</span><span class="s">&#39;citelabel&#39;</span><span class="p">]</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">bibitem_label</span> <span class="o">=</span> <span class="n">c</span>
-
-        <span class="k">if</span> <span class="p">(</span><span class="nb">unicode</span><span class="p">(</span><span class="n">bibitem_label</span><span class="p">)</span> <span class="o">==</span> <span class="s">&#39;None&#39;</span><span class="p">):</span>
-            <span class="n">itemstr</span> <span class="o">=</span> <span class="s">r&#39;\bibitem{&#39;</span> <span class="o">+</span> <span class="n">c</span> <span class="o">+</span> <span class="s">&#39;}</span><span class="se">\n</span><span class="s">&#39;</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">itemstr</span> <span class="o">=</span> <span class="s">r&#39;\bibitem[&#39;</span> <span class="o">+</span> <span class="n">bibitem_label</span> <span class="o">+</span> <span class="s">&#39;]{&#39;</span> <span class="o">+</span> <span class="n">c</span> <span class="o">+</span> <span class="s">&#39;}</span><span class="se">\n</span><span class="s">&#39;</span>
-
         <span class="c">## If the citation key is not in the database, replace the format string with a message to the fact.</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">c</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">bibdata</span><span class="p">):</span>
             <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;citation key &quot;&#39;</span> <span class="o">+</span> <span class="n">c</span> <span class="o">+</span> <span class="s">&#39;&quot; is not in the bibliography database&#39;</span>
             <span class="n">bib_warning</span><span class="p">(</span><span class="s">&#39;Warning 010a: &#39;</span> <span class="o">+</span> <span class="n">msg</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">disable</span><span class="p">)</span>
-            <span class="k">return</span><span class="p">(</span><span class="n">itemstr</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\\</span><span class="s">textit{Warning: &#39;</span> <span class="o">+</span> <span class="n">msg</span> <span class="o">+</span> <span class="s">&#39;}.&#39;</span><span class="p">)</span>
+            <span class="k">return</span><span class="p">(</span><span class="s">r&#39;\bibitem[&#39;</span> <span class="o">+</span> <span class="n">c</span> <span class="o">+</span> <span class="s">&#39;]{&#39;</span> <span class="o">+</span> <span class="n">c</span> <span class="o">+</span> <span class="s">&#39;}</span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">+</span> <span class="s">r&#39;\textit{Warning: &#39;</span> <span class="o">+</span> <span class="n">msg</span> <span class="o">+</span> <span class="s">&#39;}.&#39;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">entry</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bibdata</span><span class="p">[</span><span class="n">c</span><span class="p">]</span>
 
         <span class="n">entrytype</span> <span class="o">=</span> <span class="n">entry</span><span class="p">[</span><span class="s">&#39;entrytype&#39;</span><span class="p">]</span>
-
-        <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
-            <span class="k">print</span><span class="p">(</span><span class="s">&#39;Formatting entry &quot;&#39;</span> <span class="o">+</span> <span class="n">citekey</span> <span class="o">+</span> <span class="s">&#39;&quot;&#39;</span><span class="p">)</span>
-            <span class="k">print</span><span class="p">(</span><span class="s">&#39;Template: &quot;&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">bstdict</span><span class="p">[</span><span class="n">entrytype</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#39;&quot;&#39;</span><span class="p">)</span>
-            <span class="k">print</span><span class="p">(</span><span class="s">&#39;Field data: &#39;</span> <span class="o">+</span> <span class="nb">repr</span><span class="p">(</span><span class="n">entry</span><span class="p">))</span>
 
         <span class="c">## If the journal format uses ProcSPIE like a journal, then you need to change the entrytype from</span>
         <span class="c">## &quot;inproceedings&quot; to &quot;article&quot;, and add a &quot;journal&quot; field.</span>
@@ -1329,6 +1314,20 @@
                 <span class="n">user_var_value</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">user_variables</span><span class="p">[</span><span class="n">user_var_name</span><span class="p">])</span>
                 <span class="n">entry</span><span class="p">[</span><span class="n">user_var_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">user_var_value</span>
 
+        <span class="k">if</span> <span class="p">(</span><span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">bibdata</span><span class="p">):</span>
+            <span class="n">bibitem_label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bibdata</span><span class="p">[</span><span class="n">c</span><span class="p">][</span><span class="s">&#39;citelabel&#39;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">bibitem_label</span> <span class="o">=</span> <span class="n">c</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nb">unicode</span><span class="p">(</span><span class="n">bibitem_label</span><span class="p">)</span> <span class="o">==</span> <span class="s">&#39;None&#39;</span><span class="p">):</span>
+            <span class="n">itemstr</span> <span class="o">=</span> <span class="s">r&#39;\bibitem{&#39;</span> <span class="o">+</span> <span class="n">c</span> <span class="o">+</span> <span class="s">&#39;}</span><span class="se">\n</span><span class="s">&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">itemstr</span> <span class="o">=</span> <span class="s">r&#39;\bibitem[&#39;</span> <span class="o">+</span> <span class="n">bibitem_label</span> <span class="o">+</span> <span class="s">&#39;]{&#39;</span> <span class="o">+</span> <span class="n">c</span> <span class="o">+</span> <span class="s">&#39;}</span><span class="se">\n</span><span class="s">&#39;</span>
+
+        <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&#39;Formatting entry &quot;&#39;</span> <span class="o">+</span> <span class="n">citekey</span> <span class="o">+</span> <span class="s">&#39;&quot;&#39;</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&#39;Template: &quot;&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">bstdict</span><span class="p">[</span><span class="n">entrytype</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#39;&quot;&#39;</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&#39;Field data: &#39;</span> <span class="o">+</span> <span class="nb">repr</span><span class="p">(</span><span class="n">entry</span><span class="p">))</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="c">## Substitute the template variables with fields from the bibliography entry.</span>
             <span class="n">templatestr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">template_substitution</span><span class="p">(</span><span class="n">templatestr</span><span class="p">,</span> <span class="n">citekey</span><span class="p">)</span>
@@ -2482,8 +2481,8 @@
                 <span class="n">arg</span> <span class="o">=</span> <span class="n">block</span>
                 <span class="k">break</span>
 
-            <span class="c">## Count how many variables there are in the block.</span>
-            <span class="n">block_variables</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">variables</span> <span class="k">if</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">block</span><span class="p">]</span>
+            <span class="c">## Construct a list of the unique variables in the block.</span>
+            <span class="n">block_variables</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">([</span><span class="n">v</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">variables</span> <span class="k">if</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">block</span><span class="p">]))</span>
 
             <span class="c">## Loop through the list of variables and find which ones are defined within the bibliography entry. If any</span>
             <span class="c">## variables within the block are undefined, then return an empty string.</span>
@@ -2687,14 +2686,14 @@
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">return</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_indexed_variable</span><span class="p">(</span><span class="n">newfield</span><span class="p">,</span> <span class="n">newindexer</span><span class="p">,</span> <span class="n">entrykey</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">))</span>
             <span class="k">elif</span> <span class="n">indexer</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;.format_authorlist()&#39;</span><span class="p">):</span>
-                <span class="n">newfield</span> <span class="o">=</span> <span class="n">format_namelist</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">nametype</span><span class="o">=</span><span class="s">&#39;author&#39;</span><span class="p">)</span>
+                <span class="n">newfield</span> <span class="o">=</span> <span class="n">format_namelist</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">nametype</span><span class="o">=</span><span class="s">&#39;author&#39;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">)</span>
                 <span class="n">newindexer</span> <span class="o">=</span> <span class="n">indexer</span><span class="p">[</span><span class="mi">20</span><span class="p">:]</span>
                 <span class="k">if</span> <span class="p">(</span><span class="n">nelements</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">newindexer</span> <span class="o">==</span> <span class="s">&#39;&#39;</span><span class="p">):</span>
                     <span class="k">return</span><span class="p">(</span><span class="n">newfield</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">return</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_indexed_variable</span><span class="p">(</span><span class="n">newfield</span><span class="p">,</span> <span class="n">newindexer</span><span class="p">,</span> <span class="n">entrykey</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">))</span>
             <span class="k">elif</span> <span class="n">indexer</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;.format_editorlist()&#39;</span><span class="p">):</span>
-                <span class="n">newfield</span> <span class="o">=</span> <span class="n">format_namelist</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">nametype</span><span class="o">=</span><span class="s">&#39;editor&#39;</span><span class="p">)</span>
+                <span class="n">newfield</span> <span class="o">=</span> <span class="n">format_namelist</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">nametype</span><span class="o">=</span><span class="s">&#39;editor&#39;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">)</span>
                 <span class="n">newindexer</span> <span class="o">=</span> <span class="n">indexer</span><span class="p">[</span><span class="mi">20</span><span class="p">:]</span>
                 <span class="k">if</span> <span class="p">(</span><span class="n">nelements</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">newindexer</span> <span class="o">==</span> <span class="s">&#39;&#39;</span><span class="p">):</span>
                     <span class="k">return</span><span class="p">(</span><span class="n">newfield</span><span class="p">)</span>
@@ -4786,7 +4785,7 @@
     </div>
     <div class="footer">
         &copy; Copyright 2013, Bibulous developers.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.1.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>

@@ -171,3 +171,8 @@ Generating the documentation
 ============================
 
 From the bibulous repository ``doc/`` subfolder, run ``make html`` to generate the HTML documentation. The result can be found in ``doc/_build/html/``, with ``index.html`` as the main file. To generate the PDF documentation, run ``make latexpdf`` from the ``doc/`` subfolder, with the result found at ``doc/_build/latex/Bibulous.pdf``.
+
+Miscellaneous notes
+===================
+
+The code includes two different variables, ``citekey`` and ``entrykey`` which for any given entry are always identical. So it would appear that they are redundant. But the keys in the ``citedict`` dictionary, and the keys specifying each entry in the database, belong to different sets. That is, the list of entry keys can be from every entry in the database, even entries that were not cited. The list of citation keys, however, contains only those keys that were cited, and so can be a much smaller list.

@@ -34,7 +34,7 @@ Syntax
 
 #. Nesting of ``[]`` brackets is allowed, but the syntax becomes computationally expensive to parse, so that these structures should be used sparingly::
 
-#. Users that need to use ``[``, ``]``, ``#``, ``<``, ``>``, or ``|`` symbols as formatting elements within the reference list can implement them using some custom LaTeX-markup commands: ``{\makeopenbracket}``, ``{\makehashsign}``, ``{\makeclosebracket}``, ``{\makegreaterthan}``, ``{\makelessthan}``, or ``{\makeverticalbar}``. Note that the curly brackets used in each case are required.
+#. Users that need to use ``[``, ``]``, ``#``, ``<``, ``>``, or ``|`` symbols as formatting elements within the reference list can implement them using some custom LaTeX-markup commands: ``{\makeopenbracket}``, ``{\makeclosebracket}``, ``{\makehashsign}``, ``{\makelessthan}``, ``{\makegreaterthan}``, or ``{\makeverticalbar}``. Note that the curly brackets used in each case are required.
 
 #. In the ``TEMPLATES`` section of the file, if an entrytype format definition contains only another entrytype name on the right hand side of the ``=``, i.e.::
 
@@ -56,15 +56,15 @@ Syntax
 
 #. The ``SPECIAL-TEMPLATES`` section is where users can define their own fields that get generated for every database entry evaluated. For example, the variable definition::
 
-    group = [<organization>|<institution>|<corporation>|]
+      group = [<organization>|<institution>|<corporation>|]
 
-    in the ``SPECIAL-TEMPLATES`` section will create a ``group`` field that can be used as the variable ``<group>`` within the regular ``TEMPLATES`` section of the file. This effectively allows users to create a shortcut. Where they could write out ``[<organization>|<institution>|<corporation>|]`` inside each template that needs this structure, the special template definition allows them to replace each instance with a simple ``<group>``.
+   in the ``SPECIAL-TEMPLATES`` section will create a ``group`` field that can be used as the variable ``<group>`` within the regular ``TEMPLATES`` section of the file. This effectively allows users to create a shortcut. Where they could write out ``[<organization>|<institution>|<corporation>|]`` inside each template that needs this structure, the special template definition allows them to replace each instance with a simple ``<group>``.
 
-    Another example usage would be the following:::
+   Another example usage would be the following:::
 
-    author = [<author-en>|<author-jp>|]
+      author = [<author-en>|<author-jp>|]
 
-    where the ``author`` field is actually redefined to include not only the *existing* author field, but also the fields ``author-en`` or ``author-jp``. That is, if the ``author`` field is missing in the database entry (the field matching the thing on the left hand side), the code next searches for the ``author-en`` field. If it finds it, then it will create an ``author`` field that contains a copy of the ``author-en``'s field's contents. If the ``author-en`` is also missing, the code next searches for ``author-jp`` and uses that fields contents to create the missing ``author`` field. This is a convenient way of grouping different variable names in order to simplify templates.
+   where the ``author`` field is actually redefined to include not only the *existing* author field, but also the fields ``author-en`` or ``author-jp``. That is, if the ``author`` field is missing in the database entry (the field matching the thing on the left hand side), the code next searches for the ``author-en`` field. If it finds it, then it will create an ``author`` field that contains a copy of the ``author-en``'s field's contents. If the ``author-en`` is also missing, the code next searches for ``author-jp`` and uses that fields contents to create the missing ``author`` field. This is a convenient way of grouping different variable names in order to simplify templates.
 
 #. The order in which any definitions are placed within the special templates is important. For example, if a user has ``au = <authorlist.format_authorlist()>`` and then below that defines ``authorlist = <author.to_namelist()>``, then the code will issue an error stating that ``authorlist`` is not defined when attempting to create the ``au`` variable. Since the definition for ``au`` assumes the presence of the ``authorlist`` variable, the latter definition must be placed above it.
 
@@ -125,6 +125,9 @@ The complete list of operators available is:::
     .format_editorlist()
     .frenchinitial()
     .if_singular(var1,var2,var3)
+    .if_length_equals(var1,number,var2,var3)
+    .if_length_less_than(var1,number,var2,var3)
+    .if_length_more_than(var1,number,var2,var3)
     .initial()
     .lower()
     .monthabbrev()
@@ -161,6 +164,12 @@ Without the ``.compress()`` operator, the name would come out as "RM A Azzam", s
 "Ch", "Gn", "Ll", "Ph", "Ss", or "Th", then the initial will truncate the name after the digraph instead of after the first letter.
 
 **.if_singular(var1,var2,var3)** is an operator which inserts ``var2`` if ``var1`` has only one element, but ``var3`` if ``var1`` has more than one element. Here ``var1`` is assumed to be a list-type of variable, and ``var2`` and ``var3`` are assumed to be either fields present within the database entry or variables defined in the ``SPECIAL-TEMPLATES`` section of the file.
+
+**.if_length_equals(var1,number,var2,var3)**
+
+**.if_length_less_than(var1,number,var2,var3)**
+
+**.if_length_more_than(var1,number,var2,var3)**
 
 **.initial()** will truncate the string to its first letter. Note that if a name begins with a LaTeX markup character, such as ``{\'E}``, then the operator will convert the input string to its best attempt at a Unicode-equivalent (without character markup) prior to performing the truncation. Thus, applying the ``.initial()`` operator to the name ``{\v{Z}}ukauskas`` will produce the initialized form "Ž". 
 
@@ -276,8 +285,8 @@ Each of the keywords is summarized below.
 **use_name_ties** [default value: False] Whether or not to replace spaces with unbreakable spaces (i.e. "R. M. A. Azzam" or "R.~M.~A. Azzam") inside names in the name list. (This keyword is only used within the ``.format_namelist()`` operator.)
 
 
-Examples for namelist formatting
-================================
+Implicit loops and examples for namelist formatting
+===================================================
 
 The following code provides an example usage of implicit indexing within an implicit loop structure:::
 
@@ -326,6 +335,8 @@ That is, the implicit index ``.n`` is everywhere replaced with the explicit inde
     [<editorlist.1.prefix> ]<editorlist.1.last>[, <editorlist.1.suffix>]
 
 With this template now complete, the code begins to evaluate the entry and replace the individual variables with their corresponding database fields.
+
+Note that implicit loop structures only work when they comprise the *entire* template. That is, a template such as ``au = <authorname.0>, ...,{ and }<authorname.6>`` works fine, whereas the template ``au = [<authorname.0>, ...,{ and }<authorname.6>]`` uses the ``[`` as part of each entry in the loop, and the ``]`` as part of the final entry, so that the final result is a malformed template. (The left and right square brackets are no longer matched.)
 
 Python API
 ==========
