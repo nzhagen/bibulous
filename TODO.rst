@@ -16,6 +16,8 @@ For version 1.4, the goal is to have group templates working.
   for entries in the reference list, then we can simply make them part of the main entrytype template. That way, the 
   reference list item label and the text citation label can be treated completely separately.
 
+  Compare this with natbib's author-year style.
+
 - Add functionality for, and fill out the doc stubs for ``.if_length_equals``, ``.if_length_less_than``, and 
   ``.if_length_more_than`` operators. Consider adding a 4-arg operator ``.if_has_substr(input,sub,iftrue,iffalse)``.
 
@@ -129,10 +131,6 @@ Python testing to-do
   That is, the first and last elements of the loop must have the same variable structure. Currently 
   the code simply truncates the RHS of the last element and ignores it, but it really should return
   a warning message.
-
-- The following template produced an unhandled exception due to mismatched braces. Provide a better error-handling!::
-
-    authorname.n = [<authorlist.n.prefix> ]<authorlist.n.last>, <authorlist.n.first.initial()>.][ <authorlist.n.middle.initial()>.][, <authorlist.n.suffix>.]
 
 - Add a test for locale-dependent sorting? This requires a lot of work to set up for full
   BIB-AUX-BBL mapping. So it may be best to wait for a more directed test to come along.

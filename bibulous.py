@@ -961,6 +961,11 @@ class Bibdata(object):
                     ## Find out if the template has nested option blocks. If so, then add it to
                     ## the list of nested templates.
                     levels = get_delim_levels(value, ('[',']'))
+                    if not levels:
+                        bib_warning('Warning 036: the style template for entrytype "' + var + '" has unbalanced ' + \
+                                    'square brackets. Skipping ...', self.disable)
+                        self.specials[var] = ''
+
                     if (2 in levels) and (var not in self.nested_templates):
                         self.nested_templates.append(var)
 
@@ -3103,6 +3108,8 @@ def get_delim_levels(s, delims=('{','}'), operator=None):
             else:
                 stack.append('b')       ## add a "brace level" marker to the stack
         elif (c == delims[1]):
+            ## If the stack is empty but the delimiter level isn't resolved, then the braces are unbalanced.
+            if not stack: return([])
             stack.pop()
 
         if (operator != None): oplevels[j] = stack.count('o')
