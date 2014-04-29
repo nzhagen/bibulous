@@ -1,0 +1,566 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>bibulous_test &mdash; Bibulous 1.2 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Bibulous 1.2 documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+
+<div style="background-color: white; text-align: left; padding: 10px 10px 15px 15px">
+<a href="../index.html"><img src="../_static/banner.svg" border="0" height=300 alt="py4sci"/></a>
+</div>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">home</a>|&nbsp;</li>
+        <li><a href="../search.html">search</a>|&nbsp;</li>
+
+          <li><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo_small.svg" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for bibulous_test</h1><div class="highlight"><pre>
+<span class="c">#!/usr/bin/env python</span>
+<span class="c"># -*- coding: UTF-8 -*-</span>
+<span class="c"># See the LICENSE.rst file for licensing information.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Bibulous_test.py is a script which runs through the entire Bibulous regression testing suite.</span>
+
+<span class="sd">    The basic approach of the tests is as follows:</span>
+<span class="sd">    (1) Once a change is made to the code (to fix a bug or add functionality), the writer should add an entry to the</span>
+<span class="sd">        /test/test1.bib file, where the &quot;entrytype&quot; gives an indication of what the test is for. For example, the entry</span>
+<span class="sd">        in the BIB file may start with</span>
+<span class="sd">                @test_initialize1{...</span>
+<span class="sd">        and provide an &quot;author&quot; field where one or more authors have names which the code for generating initials can</span>
+<span class="sd">        potentially break is not written carefully. Include a 1-line comment about the purpose of the entry as well.</span>
+<span class="sd">    (2) If this is something which can be checked with normal options settings, then add a corresponding line in the BST</span>
+<span class="sd">        file defining how that new entrytype (&quot;test_initialize1&quot;) should be formatted. If different options settings are</span>
+<span class="sd">        needed, then a new BST file is needed. To make this, copy the &quot;test1.bst&quot; file, remove the entrytype definitions</span>
+<span class="sd">        (you can keep them, but they would be redundant), and change the options to the needed settings. Then add a line</span>
+<span class="sd">        in this file to define the entrytype template.</span>
+<span class="sd">    (3) Add a line &quot;\citation{key}&quot; to the AUX file where &quot;key&quot; is the key given in the new entry of the BIB file you</span>
+<span class="sd">        just put in (e.g. &quot;test_initialize1&quot;)</span>
+<span class="sd">    (4) Add two lines to the test1_target.bbl file (one for the &quot;bibentry&quot; function call, and one for the entry</span>
+<span class="sd">        contents) to say what the formatted result should look like.</span>
+<span class="sd">    (5) Finally, run this script to check the result. This script will load the modified BIB and BST files and will</span>
+<span class="sd">        write out a formatted BBL file &quot;test1.bbl&quot;. It will then try to run a &quot;diff&quot; program on these two files to see</span>
+<span class="sd">        if there are any differences between the target and actual output BBL files.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">unicode_literals</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">division</span>     <span class="c">## for Python3 compatibility</span>
+<span class="kn">import</span> <span class="nn">string</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">locale</span>
+<span class="kn">import</span> <span class="nn">traceback</span>    <span class="c">## for getting full traceback info in exceptions</span>
+<span class="kn">import</span> <span class="nn">pdb</span>          <span class="c">## put &quot;pdb.set_trace()&quot; at any place you want to interact with pdb</span>
+<span class="kn">import</span> <span class="nn">difflib</span>      <span class="c">## for comparing one string sequence with another</span>
+<span class="kn">import</span> <span class="nn">getopt</span>
+<span class="kn">from</span> <span class="nn">bibulous</span> <span class="kn">import</span> <span class="n">Bibdata</span>
+
+
+<span class="c">## =================================================================================================</span>
+<div class="viewcode-block" id="run_test1"><a class="viewcode-back" href="../bibulous_test.html#bibulous_test.run_test1">[docs]</a><span class="k">def</span> <span class="nf">run_test1</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Test #1 consists of a suite of single tests of options and features that are valid with the default template file.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">bblfile</span> <span class="o">=</span> <span class="s">&#39;./test/test1.bbl&#39;</span>
+    <span class="n">auxfile</span> <span class="o">=</span> <span class="s">&#39;./test/test1.aux&#39;</span>
+    <span class="n">target_bblfile</span> <span class="o">=</span> <span class="s">&#39;./test/test1_target.bbl&#39;</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">+</span> <span class="s">&#39;=&#39;</span><span class="o">*</span><span class="mi">75</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;Running Bibulous Test #1&#39;</span><span class="p">)</span>
+
+    <span class="n">bibobj</span> <span class="o">=</span> <span class="n">Bibdata</span><span class="p">(</span><span class="n">auxfile</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="p">[</span><span class="mi">9</span><span class="p">,</span><span class="mi">17</span><span class="p">,</span><span class="mi">28</span><span class="p">,</span><span class="mi">29</span><span class="p">])</span>
+    <span class="n">bibobj</span><span class="o">.</span><span class="n">write_bblfile</span><span class="p">(</span><span class="n">write_preamble</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">write_postamble</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">bibsize</span><span class="o">=</span><span class="s">&#39;ZZ&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span><span class="p">(</span><span class="n">bblfile</span><span class="p">,</span> <span class="n">target_bblfile</span><span class="p">)</span>
+
+<span class="c">## =================================================================================================</span></div>
+<div class="viewcode-block" id="run_test2"><a class="viewcode-back" href="../bibulous_test.html#bibulous_test.run_test2">[docs]</a><span class="k">def</span> <span class="nf">run_test2</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Test #2 loads a number of large .bib database files to put the BibTeX parser and the BBL file writer through a</span>
+<span class="sd">    comprehensive set of conditions. Every entry in the BIB files is written to the output BBL file to test as much</span>
+<span class="sd">    of the processing chain as possible.</span>
+
+<span class="sd">    Rather than checking the output against a target file, this test really just makes sure that no exceptions are</span>
+<span class="sd">    emitted when processing the entire database through the full chain of functions.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">bibfiles</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;./test/master.bib&#39;</span><span class="p">,</span>    <span class="s">&#39;./test/journal.bib&#39;</span><span class="p">,</span>    <span class="s">&#39;./test/amstat.bib&#39;</span><span class="p">,</span>   <span class="s">&#39;./test/cccuj2000.bib&#39;</span><span class="p">,</span>
+                <span class="s">&#39;./test/gutenberg.bib&#39;</span><span class="p">,</span> <span class="s">&#39;./test/onlinealgs.bib&#39;</span><span class="p">,</span> <span class="s">&#39;./test/python.bib&#39;</span><span class="p">,</span>   <span class="s">&#39;./test/random.bib&#39;</span><span class="p">,</span>
+                <span class="s">&#39;./test/sciam2000.bib&#39;</span><span class="p">,</span> <span class="s">&#39;./test/template.bib&#39;</span><span class="p">,</span>   <span class="s">&#39;./test/thiruv.bib&#39;</span><span class="p">,</span>   <span class="s">&#39;./test/benfords-law.bib&#39;</span><span class="p">,</span>
+                <span class="s">&#39;./test/texstuff.bib&#39;</span><span class="p">,</span>  <span class="s">&#39;./test/karger.bib&#39;</span><span class="p">]</span>
+    <span class="n">bblfile</span> <span class="o">=</span> <span class="s">&#39;./test/test2.bbl&#39;</span>
+    <span class="n">auxfile</span> <span class="o">=</span> <span class="s">&#39;./test/test2.aux&#39;</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">+</span> <span class="s">&#39;=&#39;</span><span class="o">*</span><span class="mi">75</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;Running Bibulous Test #2&#39;</span><span class="p">)</span>
+
+    <span class="c">## If no excepts are raised when reading the BIB file or writing the BBL file, then the test passes.</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">bibobj</span> <span class="o">=</span> <span class="n">Bibdata</span><span class="p">(</span><span class="n">auxfile</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">18</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">21</span><span class="p">,</span><span class="mi">25</span><span class="p">,</span><span class="mi">32</span><span class="p">,</span><span class="mi">33</span><span class="p">])</span>
+        <span class="n">bibobj</span><span class="o">.</span><span class="n">write_bblfile</span><span class="p">()</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;TEST #2 PASSED&#39;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">getopt</span><span class="o">.</span><span class="n">GetoptError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;Error encountered: &#39;</span> <span class="o">+</span> <span class="n">err</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;TEST #2 FAILED.&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+<span class="c">## =================================================================================================</span></div>
+<div class="viewcode-block" id="run_test3"><a class="viewcode-back" href="../bibulous_test.html#bibulous_test.run_test3">[docs]</a><span class="k">def</span> <span class="nf">run_test3</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Test #3 tests that the &quot;authorextract&quot; method functions correctly.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">auxfile</span> <span class="o">=</span> <span class="s">&#39;./test/test2.aux&#39;</span>        <span class="c">## re-use the huge database</span>
+    <span class="n">authorstr</span> <span class="o">=</span> <span class="s">&#39;John W. Tukey&#39;</span>
+    <span class="n">outputfile</span> <span class="o">=</span> <span class="s">&#39;./test/test3_authorextract.bib&#39;</span>
+    <span class="n">targetfile</span> <span class="o">=</span> <span class="s">&#39;./test/test3_authorextract_target.bib&#39;</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">+</span> <span class="s">&#39;=&#39;</span><span class="o">*</span><span class="mi">75</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;Running Bibulous Test #3 for author &quot;&#39;</span> <span class="o">+</span> <span class="n">authorstr</span> <span class="o">+</span> <span class="s">&#39;&quot;&#39;</span><span class="p">)</span>
+
+    <span class="n">bibobj</span> <span class="o">=</span> <span class="n">Bibdata</span><span class="p">(</span><span class="n">auxfile</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">21</span><span class="p">,</span><span class="mi">32</span><span class="p">,</span><span class="mi">33</span><span class="p">])</span>
+    <span class="c">#bibobj.debug = True</span>
+    <span class="n">bibobj</span><span class="o">.</span><span class="n">write_authorextract</span><span class="p">(</span><span class="n">authorstr</span><span class="p">,</span> <span class="n">outputfile</span><span class="p">)</span>
+
+    <span class="k">return</span><span class="p">(</span><span class="n">outputfile</span><span class="p">,</span> <span class="n">targetfile</span><span class="p">)</span>
+
+<span class="c">## =================================================================================================</span></div>
+<div class="viewcode-block" id="run_test4"><a class="viewcode-back" href="../bibulous_test.html#bibulous_test.run_test4">[docs]</a><span class="k">def</span> <span class="nf">run_test4</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Test #4 checks the operation of generating citation keys.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="c">## Although three of these files were copied from &quot;test1&quot;, it is a bad idea to use the &quot;test1.*&quot; files here because</span>
+    <span class="c">## any changes to test1 would then require changes to the test4_target.bbl as well.</span>
+    <span class="n">bblfile</span> <span class="o">=</span> <span class="s">&#39;./test/test4.bbl&#39;</span>
+    <span class="n">bstfile</span> <span class="o">=</span> <span class="s">&#39;./test/test4.bst&#39;</span>
+    <span class="n">auxfile</span> <span class="o">=</span> <span class="s">&#39;./test/test4.aux&#39;</span>
+    <span class="n">target_bblfile</span> <span class="o">=</span> <span class="s">&#39;./test/test4_target.bbl&#39;</span>
+
+    <span class="c">## The default locale will be US english. Ironically, the locale argument needs to use an ASCII string, and since</span>
+    <span class="c">## the default string encoding here is Unicode, we have to re-encode it manually. Later below, we will try some</span>
+    <span class="c">## other locale settings.</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s">&#39;posix&#39;</span><span class="p">):</span>
+        <span class="n">thislocale</span> <span class="o">=</span> <span class="n">locale</span><span class="o">.</span><span class="n">setlocale</span><span class="p">(</span><span class="n">locale</span><span class="o">.</span><span class="n">LC_ALL</span><span class="p">,</span><span class="s">&#39;en_US.UTF8&#39;</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;ascii&#39;</span><span class="p">,</span><span class="s">&#39;replace&#39;</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s">&#39;nt&#39;</span><span class="p">):</span>
+        <span class="n">thislocale</span> <span class="o">=</span> <span class="n">locale</span><span class="o">.</span><span class="n">setlocale</span><span class="p">(</span><span class="n">locale</span><span class="o">.</span><span class="n">LC_ALL</span><span class="p">,</span><span class="s">&#39;usa_usa&#39;</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;ascii&#39;</span><span class="p">,</span><span class="s">&#39;replace&#39;</span><span class="p">))</span>
+
+    <span class="c">## Need to make a list of all the citation sort options we want to try. Skip &quot;citenum&quot; since that is the default,</span>
+    <span class="c">## and so has been tested already. Note: In the &quot;uniquify&quot; example below, the .upper() operator is needed to force the</span>
+    <span class="c">## code to see &#39;b&#39; and &#39;B&#39; as being the same (and thus need a unique ending) when case-indep. sorting is being used.</span>
+    <span class="n">presortkeys</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;&lt;citekey&gt;&#39;</span><span class="p">,</span>
+                   <span class="s">&#39;[&lt;sortname&gt;|&lt;authorlist.0.last&gt;|&lt;editorlist.0.last&gt;|][&lt;authorlist.0.first&gt;|&lt;editorlist.0.first&gt;][&lt;sortyear.zfill(4)&gt;|&lt;year.zfill(4)&gt;|][&lt;sorttitle&gt;|&lt;title&gt;]&#39;</span><span class="p">,</span>
+                   <span class="s">&#39;[&lt;sortname&gt;|&lt;authorlist.0.last&gt;|&lt;editorlist.0.last&gt;|][&lt;authorlist.0.first&gt;|&lt;editorlist.0.first&gt;][&lt;sorttitle&gt;|&lt;title&gt;][&lt;sortyear.zfill(4)&gt;|&lt;year.zfill(4)&gt;|]&#39;</span><span class="p">,</span>
+                   <span class="s">&#39;[&lt;sortname&gt;|&lt;authorlist.0.last&gt;|&lt;editorlist.0.last&gt;|][&lt;authorlist.0.first&gt;|&lt;editorlist.0.first&gt;][&lt;sortyear.zfill(4)&gt;|&lt;year.zfill(4)&gt;|]&lt;volume&gt;[&lt;sorttitle&gt;|&lt;title&gt;]&#39;</span><span class="p">,</span>
+                   <span class="s">&#39;[&lt;alphalabel&gt;][&lt;sortname&gt;|&lt;authorlist.0.last&gt;|&lt;editorlist.0.last&gt;|][&lt;authorlist.0.first&gt;|&lt;editorlist.0.first&gt;][&lt;sortyear.zfill(4)&gt;|&lt;year.zfill(4)&gt;|][&lt;sorttitle&gt;|&lt;title&gt;]&#39;</span><span class="p">,</span>
+                   <span class="s">&#39;[&lt;alphalabel&gt;][&lt;sortname&gt;|&lt;authorlist.0.last&gt;|&lt;editorlist.0.last&gt;|][&lt;authorlist.0.first&gt;|&lt;editorlist.0.first&gt;][&lt;sortyear.zfill(4)&gt;|&lt;year.zfill(4)&gt;|]&lt;volume&gt;[&lt;sorttitle&gt;|&lt;title&gt;]&#39;</span><span class="p">,</span>
+                   <span class="s">&#39;[&lt;sortyear.zfill(4)&gt;|&lt;year.zfill(4)&gt;][&lt;sortname&gt;|&lt;authorlist.0.last&gt;|&lt;editorlist.0.last&gt;|][&lt;authorlist.0.first&gt;|&lt;editorlist.0.first&gt;][&lt;sorttitle&gt;|&lt;title&gt;]&#39;</span><span class="p">,</span>
+                   <span class="s">&#39;[&lt;sortyear.zfill(4)&gt;|&lt;year.zfill(4)&gt;][&lt;sortname&gt;|&lt;authorlist.0.last&gt;|&lt;editorlist.0.last&gt;|][&lt;authorlist.0.first&gt;|&lt;editorlist.0.first&gt;][&lt;sorttitle&gt;|&lt;title&gt;]&#39;</span><span class="p">,</span>
+                   <span class="c">#&#39;&lt;author_or_editor.initial().upper().uniquify(num)&gt;&#39;,</span>
+                   <span class="s">&#39;[&lt;sortname&gt;|&lt;authorlist.0.last&gt;|&lt;editorlist.0.last&gt;|][&lt;authorlist.0.first&gt;|&lt;editorlist.0.first&gt;][&lt;sortyear.zfill(4)&gt;|&lt;year.zfill(4)&gt;][&lt;sorttitle&gt;|&lt;title&gt;]&#39;</span><span class="p">]</span>
+    <span class="n">sortkeys</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;&lt;presortkey.purify().lower().compress()&gt;&#39;</span><span class="p">,</span>
+                <span class="s">&#39;&lt;presortkey.purify().lower().compress()&gt;&#39;</span><span class="p">,</span>
+                <span class="s">&#39;&lt;presortkey.purify().lower().compress()&gt;&#39;</span><span class="p">,</span>
+                <span class="s">&#39;&lt;presortkey.purify().lower().compress()&gt;&#39;</span><span class="p">,</span>
+                <span class="s">&#39;&lt;presortkey.purify().lower().compress()&gt;&#39;</span><span class="p">,</span>
+                <span class="s">&#39;&lt;presortkey.purify().lower().compress()&gt;&#39;</span><span class="p">,</span>
+                <span class="s">&#39;&lt;presortkey.purify().lower().compress()&gt;&#39;</span><span class="p">,</span>
+                <span class="s">&#39;&lt;presortkey.purify().lower().compress()&gt;&#39;</span><span class="p">,</span>
+                <span class="c">#&#39;&lt;presortkey.purify().lower().compress()&gt;&#39;,</span>
+                <span class="s">&#39;&lt;presortkey.purify().compress()&gt;&#39;</span><span class="p">]</span>              <span class="c">## do not use .lower() here, in order to test sorting *with* case sensitivity</span>
+
+    <span class="n">sort_case_options</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;False&#39;</span><span class="p">,</span> <span class="s">&#39;False&#39;</span><span class="p">,</span> <span class="s">&#39;False&#39;</span><span class="p">,</span> <span class="s">&#39;False&#39;</span><span class="p">,</span> <span class="s">&#39;False&#39;</span><span class="p">,</span> <span class="s">&#39;False&#39;</span><span class="p">,</span> <span class="s">&#39;False&#39;</span><span class="p">,</span> <span class="s">&#39;False&#39;</span><span class="p">,</span> <span class="s">&#39;True&#39;</span><span class="p">]</span>
+    <span class="c">#sort_case_options = [&#39;True&#39;, &#39;True&#39;, &#39;True&#39;, &#39;True&#39;, &#39;True&#39;, &#39;True&#39;, &#39;True&#39;, &#39;True&#39;, &#39;True&#39;]</span>
+    <span class="n">sort_order_options</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;Forward&#39;</span><span class="p">,</span> <span class="s">&#39;Forward&#39;</span><span class="p">,</span> <span class="s">&#39;Forward&#39;</span><span class="p">,</span> <span class="s">&#39;Forward&#39;</span><span class="p">,</span> <span class="s">&#39;Forward&#39;</span><span class="p">,</span> <span class="s">&#39;Forward&#39;</span><span class="p">,</span> <span class="s">&#39;Forward&#39;</span><span class="p">,</span> <span class="s">&#39;Reverse&#39;</span><span class="p">,</span> <span class="s">&#39;Forward&#39;</span><span class="p">]</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">+</span> <span class="s">&#39;=&#39;</span><span class="o">*</span><span class="mi">75</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;Running Bibulous Test #4&#39;</span><span class="p">)</span>
+
+    <span class="n">filehandle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">bstfile</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">)</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="n">filehandle</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+    <span class="n">filehandle</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sortkeys</span><span class="p">)):</span>
+        <span class="n">presortkey</span> <span class="o">=</span> <span class="n">presortkeys</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">sortkey</span> <span class="o">=</span> <span class="n">sortkeys</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">sort_case_option</span> <span class="o">=</span> <span class="n">sort_case_options</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">sort_order_option</span> <span class="o">=</span> <span class="n">sort_order_options</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+        <span class="c">## First go into the BST file and rewrite the &quot;sortkey&quot; line to be the current sortkey template.</span>
+        <span class="n">filehandle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">bstfile</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;presortkey = &#39;</span><span class="p">):</span>
+                <span class="n">filehandle</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;presortkey = &#39;</span> <span class="o">+</span> <span class="n">presortkey</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;sortkey = &#39;</span><span class="p">):</span>
+                <span class="n">filehandle</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;sortkey = &#39;</span> <span class="o">+</span> <span class="n">sortkey</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;sort_case = &#39;</span><span class="p">):</span>
+                <span class="n">filehandle</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;sort_case = &#39;</span> <span class="o">+</span> <span class="n">sort_case_option</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;sort_order = &#39;</span><span class="p">):</span>
+                <span class="n">filehandle</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;sort_order = &#39;</span> <span class="o">+</span> <span class="n">sort_order_option</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">filehandle</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+        <span class="n">filehandle</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="n">bibobj</span> <span class="o">=</span> <span class="n">Bibdata</span><span class="p">(</span><span class="n">auxfile</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="p">[</span><span class="mi">9</span><span class="p">],</span> <span class="n">silent</span><span class="o">=</span><span class="p">(</span><span class="n">i</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">))</span>
+        <span class="n">bibobj</span><span class="o">.</span><span class="n">locale</span> <span class="o">=</span> <span class="n">thislocale</span>
+        <span class="n">bibobj</span><span class="o">.</span><span class="n">bibdata</span><span class="p">[</span><span class="s">&#39;preamble&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;</span><span class="se">\n\n</span><span class="si">%%</span><span class="s"> SETTING PRESORTKEY = &#39;</span> <span class="o">+</span> <span class="n">presortkey</span>
+        <span class="n">bibobj</span><span class="o">.</span><span class="n">bibdata</span><span class="p">[</span><span class="s">&#39;preamble&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="s">&#39;</span><span class="se">\n</span><span class="si">%%</span><span class="s"> SETTING SORTKEY = &#39;</span> <span class="o">+</span> <span class="n">sortkey</span>
+        <span class="c">#bibobj.debug = True     ## turn on debugging for citekey printing</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;Setting PRESORTKEY = &#39;</span> <span class="o">+</span> <span class="n">presortkey</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;Setting SORTKEY = &#39;</span> <span class="o">+</span> <span class="n">sortkey</span><span class="p">)</span>
+
+        <span class="n">write_preamble</span> <span class="o">=</span> <span class="p">(</span><span class="n">presortkey</span> <span class="o">==</span> <span class="n">presortkeys</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">write_postamble</span> <span class="o">=</span> <span class="p">(</span><span class="n">presortkey</span> <span class="o">==</span> <span class="n">presortkeys</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">write_preamble</span><span class="p">:</span>
+            <span class="n">filehandle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">bblfile</span><span class="p">,</span> <span class="s">&#39;a&#39;</span><span class="p">)</span>
+            <span class="n">filehandle</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n\n</span><span class="si">%%</span><span class="s"> SETTING PRESORTKEY = &#39;</span> <span class="o">+</span> <span class="n">presortkey</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+            <span class="n">filehandle</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;</span><span class="si">%%</span><span class="s"> SETTING SORTKEY = &#39;</span> <span class="o">+</span> <span class="n">sortkey</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+            <span class="c">#if (sort_case_option == &#39;True&#39;): filehandle.write(&#39;%% SETTING SORT_CASE = True\n&#39;)</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">sort_order_option</span> <span class="o">==</span> <span class="s">&#39;Reverse&#39;</span><span class="p">):</span> <span class="n">filehandle</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;</span><span class="si">%%</span><span class="s"> SETTING SORT_ORDER = Reverse</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+            <span class="n">filehandle</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="n">bibobj</span><span class="o">.</span><span class="n">write_bblfile</span><span class="p">(</span><span class="n">write_preamble</span><span class="o">=</span><span class="n">write_preamble</span><span class="p">,</span> <span class="n">write_postamble</span><span class="o">=</span><span class="n">write_postamble</span><span class="p">,</span> <span class="n">bibsize</span><span class="o">=</span><span class="s">&#39;ZZZ&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span><span class="p">(</span><span class="n">bblfile</span><span class="p">,</span> <span class="n">target_bblfile</span><span class="p">)</span>
+
+<span class="c">## =================================================================================================</span></div>
+<div class="viewcode-block" id="run_test5"><a class="viewcode-back" href="../bibulous_test.html#bibulous_test.run_test5">[docs]</a><span class="k">def</span> <span class="nf">run_test5</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Test #5 flexes the Python API.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">auxfile</span> <span class="o">=</span> <span class="s">&#39;./test/test5.aux&#39;</span>
+    <span class="n">bblfile</span> <span class="o">=</span> <span class="s">&#39;./test/test5.bbl&#39;</span>
+    <span class="n">targetfile</span> <span class="o">=</span> <span class="s">&#39;./test/test5_target.bbl&#39;</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">+</span> <span class="s">&#39;=&#39;</span><span class="o">*</span><span class="mi">75</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;Running Bibulous Test #5&#39;</span><span class="p">)</span>
+
+    <span class="n">bibobj</span> <span class="o">=</span> <span class="n">Bibdata</span><span class="p">(</span><span class="n">auxfile</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="p">[</span><span class="mi">9</span><span class="p">],</span> <span class="n">debug</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">bibobj</span><span class="o">.</span><span class="n">write_bblfile</span><span class="p">(</span><span class="n">write_preamble</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">write_postamble</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="k">return</span><span class="p">(</span><span class="n">bblfile</span><span class="p">,</span> <span class="n">targetfile</span><span class="p">)</span>
+
+<span class="c">## =================================================================================================</span></div>
+<div class="viewcode-block" id="run_test6"><a class="viewcode-back" href="../bibulous_test.html#bibulous_test.run_test6">[docs]</a><span class="k">def</span> <span class="nf">run_test6</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Test #6 makes sure to raise an exception when attempting to load a BibTeX-format BST file.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">auxfile</span> <span class="o">=</span> <span class="s">&#39;./test/test6.aux&#39;</span>
+    <span class="n">bstfile</span> <span class="o">=</span> <span class="s">&#39;./test/test6.bst&#39;</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">+</span> <span class="s">&#39;=&#39;</span><span class="o">*</span><span class="mi">75</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;Running Bibulous Test #6&#39;</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">bibobj</span> <span class="o">=</span> <span class="n">Bibdata</span><span class="p">([</span><span class="n">auxfile</span><span class="p">,</span> <span class="n">bstfile</span><span class="p">],</span> <span class="n">debug</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="p">[</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">])</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;TEST #6 FAILED&#39;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">,</span> <span class="n">arg</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;TEST #6 PASSED.&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+<span class="c">## =================================================================================================</span></div>
+<div class="viewcode-block" id="run_test7"><a class="viewcode-back" href="../bibulous_test.html#bibulous_test.run_test7">[docs]</a><span class="k">def</span> <span class="nf">run_test7</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Test #7 checks the operation of generating reference list labels.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="c">## Although three of these files were copied from &quot;test1&quot;, it is a bad idea to use the &quot;test1.*&quot; files here because</span>
+    <span class="c">## any changes to test1 would then require changes to the test7_target.bbl as well.</span>
+    <span class="n">bblfile</span> <span class="o">=</span> <span class="s">&#39;./test/test7.bbl&#39;</span>
+    <span class="n">bstfile</span> <span class="o">=</span> <span class="s">&#39;./test/test7.bst&#39;</span>
+    <span class="n">auxfile</span> <span class="o">=</span> <span class="s">&#39;./test/test7.aux&#39;</span>
+    <span class="n">target_bblfile</span> <span class="o">=</span> <span class="s">&#39;./test/test7_target.bbl&#39;</span>
+
+    <span class="c">## The default locale will be US english. Ironically, the locale argument needs to use an ASCII string, and since</span>
+    <span class="c">## the default string encoding here is Unicode, we have to re-encode it manually. Later below, we will try some</span>
+    <span class="c">## other locale settings.</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s">&#39;posix&#39;</span><span class="p">):</span>
+        <span class="n">thislocale</span> <span class="o">=</span> <span class="n">locale</span><span class="o">.</span><span class="n">setlocale</span><span class="p">(</span><span class="n">locale</span><span class="o">.</span><span class="n">LC_ALL</span><span class="p">,</span><span class="s">&#39;en_US.UTF8&#39;</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;ascii&#39;</span><span class="p">,</span><span class="s">&#39;replace&#39;</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s">&#39;nt&#39;</span><span class="p">):</span>
+        <span class="n">thislocale</span> <span class="o">=</span> <span class="n">locale</span><span class="o">.</span><span class="n">setlocale</span><span class="p">(</span><span class="n">locale</span><span class="o">.</span><span class="n">LC_ALL</span><span class="p">,</span><span class="s">&#39;usa_usa&#39;</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;ascii&#39;</span><span class="p">,</span><span class="s">&#39;replace&#39;</span><span class="p">))</span>
+
+    <span class="c">## Need to make a list of all the citation label options we want to try. Skip &quot;citenum&quot; since that is the default,</span>
+    <span class="c">## and so has been tested already.</span>
+    <span class="n">citelabels</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;&lt;citekey&gt;&#39;</span><span class="p">,</span>
+                  <span class="s">&#39;[&lt;authorlist.0.last&gt;|&lt;editorlist.0.last&gt;|]-&lt;year&gt;&#39;</span><span class="p">,</span>
+                  <span class="s">&#39;&lt;citealpha&gt;&#39;</span><span class="p">,</span>
+                  <span class="s">&#39;[&lt;authorlist.0.last&gt;|&lt;editorlist.0.last&gt;|], &lt;year&gt;&#39;</span><span class="p">,</span>
+                  <span class="s">&#39;[&lt;authorlist.0.last&gt;|&lt;editorlist.0.last&gt;|] (&lt;year&gt;)&#39;</span><span class="p">,</span>
+                  <span class="s">&#39;(&lt;citealnum&gt;)&#39;</span><span class="p">]</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">+</span> <span class="s">&#39;=&#39;</span><span class="o">*</span><span class="mi">75</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;Running Bibulous Test #7&#39;</span><span class="p">)</span>
+
+    <span class="n">filehandle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">bstfile</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">)</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="n">filehandle</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+    <span class="n">filehandle</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">citelabels</span><span class="p">)):</span>
+        <span class="n">citelabel</span> <span class="o">=</span> <span class="n">citelabels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+        <span class="c">## First go into the BST file and rewrite the &quot;citelabel&quot; line to be the current sortkey template.</span>
+        <span class="n">filehandle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">bstfile</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;citelabel = &#39;</span><span class="p">):</span>
+                <span class="n">filehandle</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;citelabel = &#39;</span> <span class="o">+</span> <span class="n">citelabel</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">filehandle</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+        <span class="n">filehandle</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="n">bibobj</span> <span class="o">=</span> <span class="n">Bibdata</span><span class="p">(</span><span class="n">auxfile</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="p">[</span><span class="mi">9</span><span class="p">],</span> <span class="n">silent</span><span class="o">=</span><span class="p">(</span><span class="n">i</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">))</span>
+        <span class="n">bibobj</span><span class="o">.</span><span class="n">locale</span> <span class="o">=</span> <span class="n">thislocale</span>
+        <span class="n">bibobj</span><span class="o">.</span><span class="n">bibdata</span><span class="p">[</span><span class="s">&#39;preamble&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;</span><span class="se">\n\n</span><span class="si">%%</span><span class="s"> SETTING CITELABEL = &#39;</span> <span class="o">+</span> <span class="n">citelabel</span>
+        <span class="c">#bibobj.debug = True     ## turn on debugging for citekey printing</span>
+
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;Setting citation_label = &#39;</span> <span class="o">+</span> <span class="n">citelabel</span><span class="p">)</span>
+        <span class="n">write_preamble</span> <span class="o">=</span> <span class="p">(</span><span class="n">citelabel</span> <span class="o">==</span> <span class="n">citelabels</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">write_postamble</span> <span class="o">=</span> <span class="p">(</span><span class="n">citelabel</span> <span class="o">==</span> <span class="n">citelabels</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">write_preamble</span><span class="p">:</span>
+            <span class="n">filehandle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">bblfile</span><span class="p">,</span> <span class="s">&#39;a&#39;</span><span class="p">)</span>
+            <span class="n">filehandle</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n\n</span><span class="si">%%</span><span class="s"> SETTING SETTING CITELABEL = &#39;</span> <span class="o">+</span> <span class="n">citelabel</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+            <span class="n">filehandle</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="n">bibobj</span><span class="o">.</span><span class="n">write_bblfile</span><span class="p">(</span><span class="n">write_preamble</span><span class="o">=</span><span class="n">write_preamble</span><span class="p">,</span> <span class="n">write_postamble</span><span class="o">=</span><span class="n">write_postamble</span><span class="p">)</span>
+
+    <span class="k">return</span><span class="p">(</span><span class="n">bblfile</span><span class="p">,</span> <span class="n">target_bblfile</span><span class="p">)</span>
+
+<span class="c">## =================================================================================================</span></div>
+<div class="viewcode-block" id="run_test8"><a class="viewcode-back" href="../bibulous_test.html#bibulous_test.run_test8">[docs]</a><span class="k">def</span> <span class="nf">run_test8</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Test #8 tests Bibulous&#39; ability to generate glossaries, symbol lists, and acronym lists.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">texfile</span> <span class="o">=</span> <span class="s">&#39;./test/test8.tex&#39;</span>
+    <span class="n">bstfile</span> <span class="o">=</span> <span class="s">&#39;./test/test8.bst&#39;</span>
+    <span class="n">bibfile</span> <span class="o">=</span> <span class="s">&#39;./test/test8.bib&#39;</span>
+    <span class="n">bblfile</span> <span class="o">=</span> <span class="s">&#39;./test/test8.bbl&#39;</span>
+    <span class="n">auxfile</span> <span class="o">=</span> <span class="s">&#39;./test/test8.aux&#39;</span>
+    <span class="n">target_bblfile</span> <span class="o">=</span> <span class="s">&#39;./test/test8_target.bbl&#39;</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">+</span> <span class="s">&#39;=&#39;</span><span class="o">*</span><span class="mi">75</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;Running Bibulous Test #8&#39;</span><span class="p">)</span>
+
+    <span class="n">bibobj</span> <span class="o">=</span> <span class="n">Bibdata</span><span class="p">(</span><span class="n">auxfile</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">bibobj</span><span class="o">.</span><span class="n">write_bblfile</span><span class="p">()</span>
+
+    <span class="k">return</span><span class="p">(</span><span class="n">bblfile</span><span class="p">,</span> <span class="n">target_bblfile</span><span class="p">)</span>
+
+<span class="c">## =================================================================================================</span></div>
+<div class="viewcode-block" id="run_test9"><a class="viewcode-back" href="../bibulous_test.html#bibulous_test.run_test9">[docs]</a><span class="k">def</span> <span class="nf">run_test9</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Test #9 is a pltform for running conditions in which the entire database needs to be re-read with each test.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">auxfiles</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;./test/test9_case_sensitive_fieldnames.aux&#39;</span><span class="p">,</span>
+                <span class="s">&#39;./test/test9_italian_name_separator.aux&#39;</span><span class="p">]</span>
+    <span class="n">bblfile</span> <span class="o">=</span> <span class="s">&#39;./test/test9.bbl&#39;</span>
+    <span class="n">target_bblfile</span> <span class="o">=</span> <span class="s">&#39;./test/test9_target.bbl&#39;</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">+</span> <span class="s">&#39;=&#39;</span><span class="o">*</span><span class="mi">75</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;Running Bibulous Test #9&#39;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">auxfile</span> <span class="ow">in</span> <span class="n">auxfiles</span><span class="p">:</span>
+        <span class="n">bibobj</span> <span class="o">=</span> <span class="n">Bibdata</span><span class="p">(</span><span class="n">auxfile</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="p">[</span><span class="mi">9</span><span class="p">],</span> <span class="n">silent</span><span class="o">=</span><span class="p">(</span><span class="n">auxfile</span> <span class="o">!=</span> <span class="n">auxfiles</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="n">bibobj</span><span class="o">.</span><span class="n">filedict</span><span class="p">[</span><span class="s">&#39;bbl&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bblfile</span>
+        <span class="n">write_preamble</span> <span class="o">=</span> <span class="p">(</span><span class="n">auxfile</span> <span class="o">==</span> <span class="n">auxfiles</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">write_postamble</span> <span class="o">=</span> <span class="p">(</span><span class="n">auxfile</span> <span class="o">==</span> <span class="n">auxfiles</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">bibobj</span><span class="o">.</span><span class="n">write_bblfile</span><span class="p">(</span><span class="n">write_preamble</span><span class="o">=</span><span class="n">write_preamble</span><span class="p">,</span> <span class="n">write_postamble</span><span class="o">=</span><span class="n">write_postamble</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span><span class="p">(</span><span class="n">bblfile</span><span class="p">,</span> <span class="n">target_bblfile</span><span class="p">)</span>
+
+
+<span class="c">## =============================</span></div>
+<div class="viewcode-block" id="check_file_match"><a class="viewcode-back" href="../bibulous_test.html#bibulous_test.check_file_match">[docs]</a><span class="k">def</span> <span class="nf">check_file_match</span><span class="p">(</span><span class="n">testnum</span><span class="p">,</span> <span class="n">outputfile</span><span class="p">,</span> <span class="n">targetfile</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">outputfile</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+      <span class="n">outputfile</span> <span class="o">=</span> <span class="p">[</span><span class="n">outputfile</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">targetfile</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">targetfile</span> <span class="o">=</span> <span class="p">[</span><span class="n">targetfile</span><span class="p">]</span>
+
+    <span class="n">alldiffs</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">outputfile</span><span class="p">)):</span>
+        <span class="n">file1</span> <span class="o">=</span> <span class="n">outputfile</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">file2</span> <span class="o">=</span> <span class="n">targetfile</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;COMPARING FILES &quot;&#39;</span> <span class="o">+</span> <span class="n">file1</span> <span class="o">+</span> <span class="s">&#39;&quot; and &quot;&#39;</span> <span class="o">+</span> <span class="n">file2</span> <span class="o">+</span> <span class="s">&#39;&quot; ...&#39;</span><span class="p">)</span>
+
+        <span class="c">## Load the actual output BBL file and the target BBL file (the former says what we got; the latter says what</span>
+        <span class="c">## we *should* get). Load each into strings and calculate their difference.</span>
+        <span class="n">foutput</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">file1</span><span class="p">,</span> <span class="s">&#39;rU&#39;</span><span class="p">)</span>
+        <span class="n">ftarget</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">file2</span><span class="p">,</span> <span class="s">&#39;rU&#39;</span><span class="p">)</span>
+
+        <span class="n">outputlines</span> <span class="o">=</span> <span class="n">foutput</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+        <span class="n">targetlines</span> <span class="o">=</span> <span class="n">ftarget</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+
+        <span class="n">foutput</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">ftarget</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="c">#diffobj = difflib.ndiff(outputlines, targetlines, lineterm=&#39;&#39;)</span>
+        <span class="n">diffobj</span> <span class="o">=</span> <span class="n">difflib</span><span class="o">.</span><span class="n">unified_diff</span><span class="p">(</span><span class="n">outputlines</span><span class="p">,</span> <span class="n">targetlines</span><span class="p">,</span> <span class="n">lineterm</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">difflist</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">diffobj</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">difflist</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">alldiffs</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">difflist</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">alldiffs</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">):</span>
+        <span class="n">test_passes</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;TEST #</span><span class="si">%i</span><span class="s"> PASSED&#39;</span> <span class="o">%</span> <span class="n">testnum</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">test_passes</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;TEST #</span><span class="si">%i</span><span class="s"> FAILED. FILE DIFFERENCES:&#39;</span> <span class="o">%</span> <span class="n">testnum</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">alldiffs</span><span class="p">:</span> <span class="k">print</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span><span class="p">(</span><span class="n">test_passes</span><span class="p">)</span>
+
+
+<span class="c">## ==================================================================================================</span></div>
+<span class="k">if</span> <span class="p">(</span><span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">):</span>
+    <span class="n">suite_pass</span> <span class="o">=</span> <span class="bp">True</span>
+
+    <span class="c">## Run test #1.</span>
+    <span class="p">(</span><span class="n">outputfile</span><span class="p">,</span> <span class="n">targetfile</span><span class="p">)</span> <span class="o">=</span> <span class="n">run_test1</span><span class="p">()</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">check_file_match</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">outputfile</span><span class="p">,</span> <span class="n">targetfile</span><span class="p">)</span>
+    <span class="n">suite_pass</span> <span class="o">*=</span> <span class="n">result</span>
+
+    <span class="c">## Run test #2.</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">run_test2</span><span class="p">()</span>
+    <span class="n">suite_pass</span> <span class="o">*=</span> <span class="n">result</span>
+
+    <span class="c">## Run test #3.</span>
+    <span class="p">(</span><span class="n">outputfile</span><span class="p">,</span> <span class="n">targetfile</span><span class="p">)</span> <span class="o">=</span> <span class="n">run_test3</span><span class="p">()</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">check_file_match</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">outputfile</span><span class="p">,</span> <span class="n">targetfile</span><span class="p">)</span>
+    <span class="n">suite_pass</span> <span class="o">*=</span> <span class="n">result</span>
+
+    <span class="c">## Run test #4.</span>
+    <span class="p">(</span><span class="n">outputfile</span><span class="p">,</span> <span class="n">targetfile</span><span class="p">)</span> <span class="o">=</span> <span class="n">run_test4</span><span class="p">()</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">check_file_match</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">outputfile</span><span class="p">,</span> <span class="n">targetfile</span><span class="p">)</span>
+    <span class="n">suite_pass</span> <span class="o">*=</span> <span class="n">result</span>
+
+    <span class="c">## Run test #5.</span>
+    <span class="p">(</span><span class="n">outputfile</span><span class="p">,</span> <span class="n">targetfile</span><span class="p">)</span> <span class="o">=</span> <span class="n">run_test5</span><span class="p">()</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">check_file_match</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">outputfile</span><span class="p">,</span> <span class="n">targetfile</span><span class="p">)</span>
+    <span class="n">suite_pass</span> <span class="o">*=</span> <span class="n">result</span>
+
+    <span class="c">## Run test #6.</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">run_test6</span><span class="p">()</span>
+    <span class="n">suite_pass</span> <span class="o">*=</span> <span class="n">result</span>
+
+    <span class="c">## Run test #7.</span>
+    <span class="p">(</span><span class="n">outputfile</span><span class="p">,</span> <span class="n">targetfile</span><span class="p">)</span> <span class="o">=</span> <span class="n">run_test7</span><span class="p">()</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">check_file_match</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="n">outputfile</span><span class="p">,</span> <span class="n">targetfile</span><span class="p">)</span>
+    <span class="n">suite_pass</span> <span class="o">*=</span> <span class="n">result</span>
+
+    <span class="c">## Run test #8.</span>
+    <span class="p">(</span><span class="n">outputfile</span><span class="p">,</span> <span class="n">targetfile</span><span class="p">)</span> <span class="o">=</span> <span class="n">run_test8</span><span class="p">()</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">check_file_match</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="n">outputfile</span><span class="p">,</span> <span class="n">targetfile</span><span class="p">)</span>
+    <span class="n">suite_pass</span> <span class="o">*=</span> <span class="n">result</span>
+
+    <span class="c">## Run test #9.</span>
+    <span class="p">(</span><span class="n">outputfile</span><span class="p">,</span> <span class="n">targetfile</span><span class="p">)</span> <span class="o">=</span> <span class="n">run_test9</span><span class="p">()</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">check_file_match</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="n">outputfile</span><span class="p">,</span> <span class="n">targetfile</span><span class="p">)</span>
+    <span class="n">suite_pass</span> <span class="o">*=</span> <span class="n">result</span>
+
+    <span class="k">if</span> <span class="n">suite_pass</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">***** THE CODE PASSES ALL TESTS IN THE TESTING SUITE. *****&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">===== FAILED THE TESTING SUITE! =====&#39;</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">home</a>|&nbsp;</li>
+        <li><a href="../search.html">search</a>|&nbsp;</li>
+
+          <li><a href="index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Bibulous developers.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>
