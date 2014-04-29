@@ -12,7 +12,7 @@ For version 1.4, the goal is to have group templates working.
     \makeatother
 
   at the top of the ``.tex`` file. Then, in the *text*, LaTeX will use ``citelabel`` while, in the *reference list*,
-  it will now ignore the citelabel and use simply the main template without any item label. If we *want* an item label
+  it will now ignore the citelabel and simply use the main template without any item label. If we *want* an item label
   for entries in the reference list, then we can simply make them part of the main entrytype template. That way, the 
   reference list item label and the text citation label can be treated completely separately.
 
@@ -21,7 +21,7 @@ For version 1.4, the goal is to have group templates working.
 - Add functionality for, and fill out the doc stubs for ``.if_length_equals``, ``.if_length_less_than``, and 
   ``.if_length_more_than`` operators. Consider adding a 4-arg operator ``.if_has_substr(input,sub,iftrue,iffalse)``.
 
-- Try installing some of the other popular TeX editors, change their back ends to Bibulous, and provide instructions
+- Try installing some of the other popular TeX editors, change their backends to Bibulous, and provide instructions
   on how to do this for: TeXnicCenter (Windows).
 
 - The Bibulous docs say that installation instruction are given in the
