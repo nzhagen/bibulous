@@ -13,8 +13,9 @@ For version 1.4, the goal is to have group templates working.
 
   at the top of the ``.tex`` file. Then, in the *text*, LaTeX will use ``citelabel`` while, in the *reference list*,
   it will now ignore the citelabel and simply use the main template without any item label. If we *want* an item label
-  for entries in the reference list, then we can simply make them part of the main entrytype template. That way, the 
-  reference list item label and the text citation label can be treated completely separately.
+  for entries in the reference list, then we can simply make them part of the main entrytype template. Will that work
+  the way we want? But if we do it with a template, then the reference list item label and the text citation label can 
+  be treated completely separately.
 
   Compare this with natbib's author-year style.
 
@@ -27,12 +28,16 @@ For version 1.4, the goal is to have group templates working.
 - The Bibulous docs say that installation instruction are given in the
   ``INSTALL.rst`` file, but there is no such file!
 
+- The ``developer_guide.rst`` file has a section "Parsing BST files", but the section has nothing to say about implicit 
+  loops. It probably should. (At the minimum, point to the location in the docs where implicit loops are discussed.)
+
 - Add stuff from ``jpnbook`` and ``bibtex_items`` in ``/LabNotes/Bibulous/stuff to add to code/``.
 
 - Add templates for: Elsevier journals with numerical 
   citations (``elsarticle-num.bst``), Springer journals (``springer.bst``), MNRAS (``mn2e.bst``). Actually, since
   the file ending cannot be used to distinguish Bibulous-format from BibTeX-format style files, maybe we should
-  append ``-bibulous`` to each filename?
+  append ``-bibulous`` to each filename? Also, since it's now clear how to define non-numeric citation styles, we
+  can start incorporating those as well.
 
 - Implement the GROUP-TEMPLATES section idea. This is a big enough change to bump the version
   number of the codebase, as it would allow bibliographic sections and a much more flexible way

@@ -1845,14 +1845,6 @@ class Bibdata(object):
             if (key in entry):
                 continue
 
-            ## The "sortkey" special requires a special function to operate correctly.
-            #zzz
-            #if (key == 'sortkey'):
-            #    res = self.generate_sortkey(entrykey)
-            #    self.bibdata[entrykey][key] = res
-            #    print('generating sortkey for "' + entrykey + '": ' + res)
-            #    continue
-
             templatestr = self.specials[key]
 
             ## If this special template is an implicitly indexed one, then it can only be used after explicit index
