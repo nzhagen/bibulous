@@ -1,7 +1,7 @@
 Getting started
 ===============
 
-For general users, all that is needed is place the main ``bibulous.py`` file into the Python path and to tell LaTeX to use Bibulous rather than BibTeX as their bibliography engine. For users interested in using the auxiliary command ``bibulous_authorextract.py``, this file must also be in the Python path, and must be in the same directory as the main file. It is also possible to tell any LaTeX front-end to use Bibulous in place of BibTeX. For Kile (on Linux) and WinEdt (on Windows), instructions for doing this are given below.
+For general users, all that is needed is place the main ``bibulous.py`` file into the Python path and to tell LaTeX to use Bibulous rather than BibTeX as their bibliography engine. For users interested in using the auxiliary command ``bibulous_authorextract.py``, this file must also be in the Python path, and must be in the same directory as the main file. It is also possible to tell any LaTeX front-end to use Bibulous in place of BibTeX. For Kile, Texmaker, TeXStudio, TeXworks, and Lyx (on Linux) and WinEdt (on Windows), instructions for doing this are given below.
 
 Once you bibliography engine is set to Bibulous, remember that the filename within the ``\bibliography{...}`` command in your ``*.tex`` files must point to a Bibulous-format bibliography style template (``.bst`` file) and not a BibTeX one.
 
