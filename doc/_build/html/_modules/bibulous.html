@@ -512,7 +512,7 @@
                 <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="n">brace_idx</span><span class="o">+</span><span class="mi">1</span><span class="p">:]</span>
                 <span class="n">entry_brace_level</span> <span class="o">=</span> <span class="mi">1</span>
 
-            <span class="c">## If we are not current inside an active entry, then skip the line and wait until the the next entry.</span>
+            <span class="c">## If we are not currently inside an active entry, then skip the line and wait until the the next entry.</span>
             <span class="k">if</span> <span class="p">(</span><span class="n">entry_brace_level</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
                 <span class="k">if</span> <span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">!=</span> <span class="s">&#39;&#39;</span><span class="p">):</span>
                     <span class="n">bib_warning</span><span class="p">(</span><span class="s">&#39;Warning 001b: line#&#39;</span> <span class="o">+</span> <span class="nb">unicode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="s">&#39; of &quot;&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">+</span> <span class="s">&#39;&quot; has data &#39;</span> <span class="o">+</span> \
@@ -538,6 +538,8 @@
                     <span class="n">endpos</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
                     <span class="k">break</span>
 
+            <span class="c">## If we have returned to brace level 0, then finish appending the contents and send the entire set to the</span>
+            <span class="c">## parser.</span>
             <span class="k">if</span> <span class="p">(</span><span class="n">entry_brace_level</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
                 <span class="n">entrystr</span> <span class="o">+=</span> <span class="n">line</span><span class="p">[:</span><span class="n">endpos</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>      <span class="c">## the &quot;-1&quot; here to remove the final closing brace</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">parse_bibentry</span><span class="p">(</span><span class="n">entrystr</span><span class="p">,</span> <span class="n">entrytype</span><span class="p">)</span>
@@ -603,7 +605,11 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="c">## First get the entry key. Then send the remainder of the entry string to the parser.</span>
             <span class="n">idx</span> <span class="o">=</span> <span class="n">entrystr</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">idx</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">idx</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">entrystr</span><span class="p">):</span>
+                <span class="n">bib_warning</span><span class="p">(</span><span class="s">&#39;Warning 035: the entry starting on line #&#39;</span> <span class="o">+</span> <span class="nb">unicode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="s">&#39; of file &quot;&#39;</span> <span class="o">+</span> \
+                     <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">+</span> <span class="s">&#39;&quot; provides only an entry key (&quot;&#39;</span> <span class="o">+</span> <span class="n">entrystr</span> <span class="o">+</span> <span class="s">&#39;&quot; and no item contents.&#39;</span><span class="p">,</span> \
+                     <span class="bp">self</span><span class="o">.</span><span class="n">disable</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="p">(</span><span class="n">idx</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
                 <span class="n">bib_warning</span><span class="p">(</span><span class="s">&#39;Warning 003: the entry ending on line #&#39;</span> <span class="o">+</span> <span class="nb">unicode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="s">&#39; of file &quot;&#39;</span> <span class="o">+</span> \
                      <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">+</span> <span class="s">&#39;&quot; is does not have an &quot;,&quot; for defining the entry key. &#39;</span>
                      <span class="s">&#39;Skipping ...&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">disable</span><span class="p">)</span>
@@ -1035,6 +1041,11 @@
                     <span class="c">## Find out if the template has nested option blocks. If so, then add it to</span>
                     <span class="c">## the list of nested templates.</span>
                     <span class="n">levels</span> <span class="o">=</span> <span class="n">get_delim_levels</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="s">&#39;[&#39;</span><span class="p">,</span><span class="s">&#39;]&#39;</span><span class="p">))</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">levels</span><span class="p">:</span>
+                        <span class="n">bib_warning</span><span class="p">(</span><span class="s">&#39;Warning 036: the style template for entrytype &quot;&#39;</span> <span class="o">+</span> <span class="n">var</span> <span class="o">+</span> <span class="s">&#39;&quot; has unbalanced &#39;</span> <span class="o">+</span> \
+                                    <span class="s">&#39;square brackets. Skipping ...&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">disable</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">specials</span><span class="p">[</span><span class="n">var</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+
                     <span class="k">if</span> <span class="p">(</span><span class="mi">2</span> <span class="ow">in</span> <span class="n">levels</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">var</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nested_templates</span><span class="p">):</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">nested_templates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">var</span><span class="p">)</span>
 
@@ -1299,8 +1310,8 @@
             <span class="n">templatestr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bstdict</span><span class="p">[</span><span class="n">entrytype</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;entrytype &quot;&#39;</span> <span class="o">+</span> <span class="n">entrytype</span> <span class="o">+</span> <span class="s">&#39;&quot; does not have a template defined in the .bst file&#39;</span>
-            <span class="n">bib_warning</span><span class="p">(</span><span class="s">&#39;Warning 011: &#39;</span> <span class="o">+</span> <span class="n">msg</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">disable</span><span class="p">)</span>
-            <span class="k">return</span><span class="p">(</span><span class="n">itemstr</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\\</span><span class="s">textit{Warning: &#39;</span> <span class="o">+</span> <span class="n">msg</span> <span class="o">+</span> <span class="s">&#39;}.&#39;</span><span class="p">)</span>
+            <span class="n">bib_warning</span><span class="p">(</span><span class="s">&#39;Warning 011: &#39;</span> <span class="o">+</span> <span class="n">msg</span> <span class="o">+</span> <span class="s">&#39;. Skipping ...&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">disable</span><span class="p">)</span>
+            <span class="k">return</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">)</span>
 
         <span class="c">## Before checking which variables are defined and which not, we first need to evaluate the user-defined</span>
         <span class="c">## variables or else they will always be &quot;undefined&quot;. To make this work, we also need to provide the user</span>
@@ -1913,14 +1924,6 @@
             <span class="c">## Only insert the user-defined special field if the field is missing.</span>
             <span class="k">if</span> <span class="p">(</span><span class="n">key</span> <span class="ow">in</span> <span class="n">entry</span><span class="p">):</span>
                 <span class="k">continue</span>
-
-            <span class="c">## The &quot;sortkey&quot; special requires a special function to operate correctly.</span>
-            <span class="c">#zzz</span>
-            <span class="c">#if (key == &#39;sortkey&#39;):</span>
-            <span class="c">#    res = self.generate_sortkey(entrykey)</span>
-            <span class="c">#    self.bibdata[entrykey][key] = res</span>
-            <span class="c">#    print(&#39;generating sortkey for &quot;&#39; + entrykey + &#39;&quot;: &#39; + res)</span>
-            <span class="c">#    continue</span>
 
             <span class="n">templatestr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">specials</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
 
@@ -3177,6 +3180,8 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;b&#39;</span><span class="p">)</span>       <span class="c">## add a &quot;brace level&quot; marker to the stack</span>
         <span class="k">elif</span> <span class="p">(</span><span class="n">c</span> <span class="o">==</span> <span class="n">delims</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="c">## If the stack is empty but the delimiter level isn&#39;t resolved, then the braces are unbalanced.</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">stack</span><span class="p">:</span> <span class="k">return</span><span class="p">([])</span>
             <span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="p">(</span><span class="n">operator</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">):</span> <span class="n">oplevels</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">stack</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s">&#39;o&#39;</span><span class="p">)</span>

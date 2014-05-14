@@ -59,7 +59,7 @@ On the main menu bar, select ``Options`` then ``Configure Texmaker``. In the ``B
 .. image:: _static/modified_texmaker_setup.png
    :width: 49%
 
-   (The example shows the location of the ``bibulous.py`` file as ``/home/repos/bibulous/bibulous.py``, but you need to replace it with the appropriate location on your own system.)
+(The example shows the location of the ``bibulous.py`` file as ``/home/repos/bibulous/bibulous.py``, but you need to replace it with the appropriate location on your own system.)
 
 Modifying TeXStudio to replace BibTeX with Bibulous
 ---------------------------------------------------
@@ -72,7 +72,7 @@ On the main menu bar, select ``Options`` then ``Configure TeXStudio``, and then 
 .. image:: _static/modified_texstudio_setup.png
    :width: 49%
 
-   (The example shows the location of the ``bibulous.py`` file as ``/home/repos/bibulous/bibulous.py``, but you need to replace it with the appropriate location on your own system.)
+(The example shows the location of the ``bibulous.py`` file as ``/home/repos/bibulous/bibulous.py``, but you need to replace it with the appropriate location on your own system.)
 
 Modifying TeXworks to replace BibTeX with Bibulous
 --------------------------------------------------
@@ -85,7 +85,7 @@ On the main menu bar, select ``Edit`` then ``Preferences...``, and then the ``Ty
 .. image:: _static/modified_texworks_setup.png
    :width: 49%
 
-   (The example shows the location of the ``bibulous.py`` file as ``/home/repos/bibulous/bibulous.py``, but you need to replace it with the appropriate location on your own system.) 
+(The example shows the location of the ``bibulous.py`` file as ``/home/repos/bibulous/bibulous.py``, but you need to replace it with the appropriate location on your own system.) 
 
 Modifying LyX to replace BibTeX with Bibulous
 ---------------------------------------------
@@ -98,4 +98,4 @@ On the main menu bar, select ``Tools`` then ``Preferences``, and then expand the
 .. image:: _static/modified_lyx_setup.png
    :width: 49%
 
-   (The example shows the location of the ``bibulous.py`` file as ``/home/repos/bibulous/bibulous.py``, but you need to replace it with the appropriate location on your own system.) 
+(The example shows the location of the ``bibulous.py`` file as ``/home/repos/bibulous/bibulous.py``, but you need to replace it with the appropriate location on your own system.) 

@@ -684,7 +684,7 @@ DEFINITIONS:
 <h2>Example 5<a class="headerlink" href="#example-5" title="Permalink to this headline">¶</a></h2>
 <p>The following example is taken from a question posted at <tt class="docutils literal"><span class="pre">http://tex.stackexchange.com/questions/160737/bold-labels-and-more-with-custom-bibtex-bst-and-author-year</span></tt>, where an answer to the original poster&#8217;s question is given as</p>
 <a class="reference internal image-reference" href="_images/example5a.png"><img alt="_images/example5a.png" src="_images/example5a.png" style="width: 60%;" /></a>
-<p>The answerer&#8217;s database file</p>
+<p>That is the reference list entries should have the author list in bold, journal articles should have their title quoted using German-style quotation marks, and editor lists should be given in small caps. The first answerer to the OP&#8217;s question gives an example database file</p>
 <div class="highlight-python"><div class="highlight"><pre>@BOOK{ko,
    title = {Wissenschaftlich schreiben leicht gemacht},
    publisher = {Haupt},
@@ -731,7 +731,7 @@ DEFINITIONS:
 }
 </pre></div>
 </div>
-<p>makes use of separate formatting instructions for titles and subtitles, so that an appropriate style template is</p>
+<p>that makes use of separate formatting instructions for titles and subtitles, so that an appropriate style template is</p>
 <div class="highlight-python"><div class="highlight"><pre>TEMPLATES:
 article = \textbf{&lt;au&gt;:} \enquote{&lt;title&gt;}, in: \textit{&lt;journal&gt;} \textbf{&lt;volume&gt;} (&lt;year&gt;), &lt;issue&gt; [S.~&lt;startpage&gt;--&lt;endpage&gt;|S.~&lt;startpage&gt;|&lt;eid&gt;|] (&lt;year&gt;).[ &lt;note&gt;]
 book = [\textbf{&lt;au&gt;:}|\textbf{&lt;ed&gt;} (Ed.) \textbf{:}|&lt;organization&gt;|&lt;institution&gt;|], \textit{&lt;title&gt;}[, &lt;edition&gt;~Aufl.][, (&lt;series&gt;; &lt;number&gt;)][, &lt;address&gt;] u.a.: &lt;publisher&gt; &lt;year&gt;.[ &lt;note&gt;]

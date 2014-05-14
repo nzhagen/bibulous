@@ -1,11 +1,11 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.1.22)  27 FEB 2014 07:23
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.4.9)  14 MAY 2014 07:42
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **Bibulous.tex
 (./Bibulous.tex
 LaTeX2e <2011/06/27>
-Babel <3.9h> and hyphenation patterns for 58 languages loaded.
+Babel <3.9h> and hyphenation patterns for 62 languages loaded.
 (./sphinxmanual.cls
 Document Class: sphinxmanual 2009/06/02 Document class (Sphinx manual)
 (/usr/share/texlive/texmf-dist/tex/latex/base/report.cls
@@ -266,8 +266,6 @@ File: babel.def 2013/12/03 3.9h Babel common definitions
 \babel@savecnt=\count88
 \U@D=\dimen103
 )
-\l@british = a dialect from \language\l@english 
-\l@UKenglish = a dialect from \language\l@english 
 \l@canadian = a dialect from \language\l@american 
 \l@australian = a dialect from \language\l@british 
 \l@newzealand = a dialect from \language\l@british 
@@ -880,7 +878,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 118--118
 
  []
 
-<banner.pdf, id=153, 1882.71153pt x 493.97911pt>
+<banner.pdf, id=185, 1882.71153pt x 493.97911pt>
 File: banner.pdf Graphic file (type pdf)
  <use banner.pdf>
 Package pdftex.def Info: banner.pdf used on input line 118.
@@ -911,19 +909,17 @@ LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <17.28> not available
 ] (./Bibulous.toc
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <10> not available
 (Font)              Font shape `T1/ptm/b/n' tried instead on input line 2.
-)
+LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <10> not available
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 46.
+ [1
+
+])
 \tf@toc=\write7
 \openout7 = `Bibulous.toc'.
 
+ [2] [1
 
-Adding blank page after the table of contents.
-LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <10> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 118.
-[1
-
-] [2] [3] [4
-
-] [1] [2
+] [2
 
 ]
 Chapter 1.
@@ -937,42 +933,97 @@ LaTeX Font Info:    Try loading font information for T1+pcr on input line 127.
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1pcr.fd
 File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
 )
-<screenshot_for_kile_instructions.png, id=244, 765.6103pt x 552.82825pt>
+<screenshot_for_kile_instructions.png, id=275, 765.6103pt x 552.82825pt>
 File: screenshot_for_kile_instructions.png Graphic file (type png)
 
 <use screenshot_for_kile_instructions.png>
 Package pdftex.def Info: screenshot_for_kile_instructions.png used on input lin
-e 140.
+e 139.
 (pdftex.def)             Requested size: 230.18253pt x 166.20404pt.
 
-<screenshot_for_kile_instructions2.png, id=246, 765.6103pt x 552.82825pt>
+<screenshot_for_kile_instructions2.png, id=277, 765.6103pt x 552.82825pt>
 File: screenshot_for_kile_instructions2.png Graphic file (type png)
 
 <use screenshot_for_kile_instructions2.png>
 Package pdftex.def Info: screenshot_for_kile_instructions2.png used on input li
-ne 142.
+ne 141.
 (pdftex.def)             Requested size: 230.18253pt x 166.20404pt.
  [3 <./screenshot_for_kile_instructions.png>] <original_Winedt5_setup.png, id=2
-55, 708.6475pt x 558.085pt>
+86, 708.6475pt x 558.085pt>
 File: original_Winedt5_setup.png Graphic file (type png)
 
 <use original_Winedt5_setup.png>
-Package pdftex.def Info: original_Winedt5_setup.png used on input line 167.
+Package pdftex.def Info: original_Winedt5_setup.png used on input line 166.
 (pdftex.def)             Requested size: 230.18253pt x 181.27328pt.
 
-<modified_Winedt5_setup.png, id=256, 708.6475pt x 558.085pt>
+<modified_Winedt5_setup.png, id=287, 708.6475pt x 558.085pt>
 File: modified_Winedt5_setup.png Graphic file (type png)
 
 <use modified_Winedt5_setup.png>
-Package pdftex.def Info: modified_Winedt5_setup.png used on input line 169.
+Package pdftex.def Info: modified_Winedt5_setup.png used on input line 168.
 (pdftex.def)             Requested size: 230.18253pt x 181.27328pt.
- [4 <./screenshot_for_kile_instructions2.png> <./original_Winedt5_setup.png>] [
-5 <./modified_Winedt5_setup.png>] [6
+ [4 <./screenshot_for_kile_instructions2.png> <./original_Winedt5_setup.png>]
+<original_texmaker_setup.png, id=295, 750.55406pt x 512.66531pt>
+File: original_texmaker_setup.png Graphic file (type png)
 
-]
+<use original_texmaker_setup.png>
+Package pdftex.def Info: original_texmaker_setup.png used on input line 191.
+(pdftex.def)             Requested size: 230.18253pt x 157.22708pt.
+
+<modified_texmaker_setup.png, id=296, 750.55406pt x 512.66531pt>
+File: modified_texmaker_setup.png Graphic file (type png)
+
+<use modified_texmaker_setup.png>
+Package pdftex.def Info: modified_texmaker_setup.png used on input line 193.
+(pdftex.def)             Requested size: 230.18253pt x 157.22708pt.
+ [5 <./modified_Winedt5_setup.png> <./original_texmaker_setup.png>]
+<original_texstudio_setup.png, id=303, 844.65562pt x 527.72156pt>
+File: original_texstudio_setup.png Graphic file (type png)
+
+<use original_texstudio_setup.png>
+Package pdftex.def Info: original_texstudio_setup.png used on input line 202.
+(pdftex.def)             Requested size: 230.18253pt x 143.80731pt.
+
+<modified_texstudio_setup.png, id=304, 844.65562pt x 527.72156pt>
+File: modified_texstudio_setup.png Graphic file (type png)
+
+<use modified_texstudio_setup.png>
+Package pdftex.def Info: modified_texstudio_setup.png used on input line 204.
+(pdftex.def)             Requested size: 230.18253pt x 143.80731pt.
+ [6 <./modified_texmaker_setup.png> <./original_texstudio_setup.png> <./modifie
+d_texstudio_setup.png>]
+<original_texworks_setup.png, id=312, 901.11656pt x 636.87938pt>
+File: original_texworks_setup.png Graphic file (type png)
+
+<use original_texworks_setup.png>
+Package pdftex.def Info: original_texworks_setup.png used on input line 213.
+(pdftex.def)             Requested size: 230.18253pt x 162.67905pt.
+
+<modified_texworks_setup.png, id=313, 901.11656pt x 636.87938pt>
+File: modified_texworks_setup.png Graphic file (type png)
+
+<use modified_texworks_setup.png>
+Package pdftex.def Info: modified_texworks_setup.png used on input line 215.
+(pdftex.def)             Requested size: 230.18253pt x 162.67905pt.
+
+<original_lyx_setup.png, id=314, 579.66562pt x 408.02437pt>
+File: original_lyx_setup.png Graphic file (type png)
+
+<use original_lyx_setup.png>
+Package pdftex.def Info: original_lyx_setup.png used on input line 224.
+(pdftex.def)             Requested size: 230.18253pt x 162.02393pt.
+
+<modified_lyx_setup.png, id=315, 716.6775pt x 408.02437pt> [7 <./original_texwo
+rks_setup.png> <./modified_texworks_setup.png>]
+File: modified_lyx_setup.png Graphic file (type png)
+ <use modified_lyx_setup.png>
+Package pdftex.def Info: modified_lyx_setup.png used on input line 226.
+(pdftex.def)             Requested size: 230.18253pt x 131.04987pt.
+
+[8 <./original_lyx_setup.png> <./modified_lyx_setup.png>]
 Chapter 2.
 
-Underfull \hbox (badness 10000) in paragraph at lines 224--225
+Underfull \hbox (badness 10000) in paragraph at lines 267--268
 []\T1/pcr/m/n/10 <au>\T1/ptm/m/n/10 , \T1/pcr/m/n/10 <booktitle>\T1/ptm/m/n/10 
 , \T1/pcr/m/n/10 <chapter>\T1/ptm/m/n/10 , \T1/pcr/m/n/10 <edition>\T1/ptm/m/n/
 10 , \T1/pcr/m/n/10 <ed>\T1/ptm/m/n/10 , \T1/pcr/m/n/10 <eid>\T1/ptm/m/n/10 , \
@@ -980,34 +1031,37 @@ T1/pcr/m/n/10 <endpage>\T1/ptm/m/n/10 ,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 224--225
+Underfull \hbox (badness 10000) in paragraph at lines 267--268
 \T1/pcr/m/n/10 <institution>\T1/ptm/m/n/10 , \T1/pcr/m/n/10 <journal>\T1/ptm/m/
 n/10 , \T1/pcr/m/n/10 <nationality>\T1/ptm/m/n/10 , \T1/pcr/m/n/10 <note>\T1/pt
 m/m/n/10 , \T1/pcr/m/n/10 <number>\T1/ptm/m/n/10 ,
  []
 
-[7] [8] [9]
-LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <12> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 336.
+[9
 
-Underfull \hbox (badness 10000) in paragraph at lines 338--339
-\T1/pcr/m/n/10 perform any one of four functions: a explicit numerical index (t
+] [10] [11]
+LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <12> not available
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 381.
+
+Underfull \hbox (badness 10000) in paragraph at lines 383--384
+\T1/pcr/m/n/10 perform any one of five functions: a explicit numerical index (t
 he ``0 \T1/ptm/m/n/10 shown
  []
 
-[10]
-Underfull \hbox (badness 6268) in paragraph at lines 374--375
-\T1/ptm/m/n/10 based de-fault for-mat-ting scheme to cre-ate a for-mat-ted stri
-ng of names. The com-plete list key-
+[12]
+Underfull \hbox (badness 7256) in paragraph at lines 431--432
+[]\T1/ptm/b/n/10 .format_editorlist() \T1/ptm/m/n/10 op-er-ates on a list of di
+c-tio-nar-ies type of vari-able (a namelist), and uses the
  []
 
 
-Underfull \hbox (badness 5696) in paragraph at lines 374--375
-\T1/ptm/m/n/10 words that it work with is: \T1/pcr/m/n/10 etal_message\T1/ptm/m
-/n/10 , \T1/pcr/m/n/10 maxeditors\T1/ptm/m/n/10 , \T1/pcr/m/n/10 mineditors\T1/
-ptm/m/n/10 , \T1/pcr/m/n/10 namelist_format\T1/ptm/m/n/10 ,
+Underfull \hbox (badness 7186) in paragraph at lines 431--432
+\T1/ptm/m/n/10 key-words that looks for is: \T1/pcr/m/n/10 etal_message\T1/ptm/
+m/n/10 , \T1/pcr/m/n/10 maxeditors\T1/ptm/m/n/10 , \T1/pcr/m/n/10 mineditors\T1
+/ptm/m/n/10 , \T1/pcr/m/n/10 namelist_format\T1/ptm/m/n/10 ,
  []
 
+[13]
 
 ! Package inputenc Error: Unicode char \u8:月 not set up for use with LaTeX.
 
@@ -1015,182 +1069,230 @@ See the inputenc package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.385 ...', this same operator will return ``11月
+l.448 ...', this same operator will return ``11月
                                                   ''.
 ? 
-[11] [12] [13] [14] [15] [16] [17] [18
-
-]
+[14] [15] [16] [17] [18] [19] [20]
 Chapter 3.
-LaTeX Font Info:    Try loading font information for TS1+ptm on input line 678.
+LaTeX Font Info:    Try loading font information for TS1+ptm on input line 752.
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
-) [19] [20]
-Chapter 4.
-[21
+) [21
 
-] [22] [23] [24]
-Underfull \hbox (badness 10000) in paragraph at lines 930--931
+] [22]
+Chapter 4.
+[23
+
+] [24] [25] [26]
+Underfull \hbox (badness 10000) in paragraph at lines 1004--1005
 []\T1/ptm/m/n/10 A five-element comma-separated list: \T1/pcr/m/n/10 [firstname
 , middlenames, prefix, lastname,
  []
 
-[25] [26] [27] [28
+[27] [28] [29] [30
 
 ]
 Chapter 5.
 
-Overfull \hbox (304.99297pt too wide) in paragraph at lines 991--992
+Overfull \hbox (304.99297pt too wide) in paragraph at lines 1074--1075
 \T1/ptm/m/n/10 The fol-low-ing ex-am-ple is taken from a ques-tion posted at \T
 1/pcr/m/n/10 http://tex.stackexchange.com/questions/147675/bibtex-scientific-st
 yle-with-pages-at-the-end\T1/ptm/m/n/10 ,
  []
 
-<example1a.png, id=443, 501.875pt x 216.81pt>
+<example1a.png, id=498, 501.875pt x 216.81pt>
 File: example1a.png Graphic file (type png)
  <use example1a.png>
-Package pdftex.def Info: example1a.png used on input line 993.
+Package pdftex.def Info: example1a.png used on input line 1076.
 (pdftex.def)             Requested size: 234.8775pt x 101.46733pt.
- [29 <./example1a.png>] <example1b.png, id=449, 1190.19656pt x 376.99608pt>
+ [31 <./example1a.png>] <example1b.png, id=504, 1190.19656pt x 376.99608pt>
 File: example1b.png Graphic file (type png)
 
 <use example1b.png>
-Package pdftex.def Info: example1b.png used on input line 1061.
+Package pdftex.def Info: example1b.png used on input line 1144.
 (pdftex.def)             Requested size: 281.85587pt x 89.27287pt.
- <example2a.png, id=450, 336.2964pt x 257.763pt>
+ <example2a.png, id=505, 336.2964pt x 257.763pt>
 File: example2a.png Graphic file (type png)
 
 <use example2a.png>
-Package pdftex.def Info: example2a.png used on input line 1072.
+Package pdftex.def Info: example2a.png used on input line 1155.
 (pdftex.def)             Requested size: 281.85587pt x 216.04353pt.
- [30 <./example1b.png>] [31 <./example2a.png (PNG copy)>]
-Underfull \vbox (badness 10000) detected at line 1195
+ [32 <./example1b.png>] [33 <./example2a.png (PNG copy)>]
+Underfull \vbox (badness 10000) detected at line 1278
  []
 
 
-Underfull \vbox (badness 10000) detected at line 1195
+Underfull \vbox (badness 10000) detected at line 1278
  []
 
-[32] <example2b.png, id=465, 1169.87062pt x 668.31123pt>
+[34] <example2b.png, id=520, 1169.87062pt x 668.31123pt>
 File: example2b.png Graphic file (type png)
  <use example2b.png>
-Package pdftex.def Info: example2b.png used on input line 1199.
+Package pdftex.def Info: example2b.png used on input line 1282.
 (pdftex.def)             Requested size: 281.85587pt x 161.00983pt.
 
-<example3.png, id=466, 923.11887pt x 643.72453pt>
+<example3.png, id=521, 923.11887pt x 643.72453pt>
 File: example3.png Graphic file (type png)
  <use example3.png>
-Package pdftex.def Info: example3.png used on input line 1210.
+Package pdftex.def Info: example3.png used on input line 1293.
 (pdftex.def)             Requested size: 281.85587pt x 196.54688pt.
- [33 <./example2b.png>]
-Underfull \vbox (badness 1701) detected at line 1268
+ [35 <./example2b.png>]
+Underfull \vbox (badness 1701) detected at line 1351
  []
 
-[34 <./example3.png>] [35]
-Underfull \vbox (badness 10000) detected at line 1398
+[36 <./example3.png>] [37]
+Underfull \vbox (badness 10000) detected at line 1481
  []
 
 
-Underfull \vbox (badness 10000) detected at line 1398
+Underfull \vbox (badness 10000) detected at line 1481
  []
 
-[36] <example4.png, id=485, 943.23526pt x 643.72453pt>
+[38] <example4.png, id=540, 943.23526pt x 643.72453pt>
 File: example4.png Graphic file (type png)
  <use example4.png>
-Package pdftex.def Info: example4.png used on input line 1409.
+Package pdftex.def Info: example4.png used on input line 1492.
 (pdftex.def)             Requested size: 281.85587pt x 192.35269pt.
 
-[37 <./example4.png>]
-Overfull \vbox (0.85184pt too high) detected at line 1596
- []
-
-[38]
-Underfull \vbox (badness 10000) detected at line 1596
- []
-
-
-Underfull \vbox (badness 10000) detected at line 1596
- []
-
-[39]
-Underfull \vbox (badness 10000) detected at line 1596
- []
-
-
-Underfull \vbox (badness 10000) detected at line 1596
+[39 <./example4.png>]
+Overfull \vbox (0.85184pt too high) detected at line 1679
  []
 
 [40]
-Overfull \hbox (388.99297pt too wide) in paragraph at lines 1605--1606
+Underfull \vbox (badness 10000) detected at line 1679
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 1679
+ []
+
+[41]
+Underfull \vbox (badness 10000) detected at line 1679
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 1679
+ []
+
+[42]
+Overfull \hbox (388.99297pt too wide) in paragraph at lines 1688--1689
 \T1/ptm/m/n/10 The fol-low-ing ex-am-ple is taken from a ques-tion posted at \T
 1/pcr/m/n/10 http://tex.stackexchange.com/questions/160737/bold-labels-and-more
 -with-custom-bibtex-bst-and-author-year\T1/ptm/m/n/10 ,
  []
 
-<example5a.png, id=504, 728.7225pt x 303.1325pt>
+<example5a.png, id=559, 728.7225pt x 303.1325pt>
 File: example5a.png Graphic file (type png)
  <use example5a.png>
-Package pdftex.def Info: example5a.png used on input line 1607.
+Package pdftex.def Info: example5a.png used on input line 1690.
 (pdftex.def)             Requested size: 281.85587pt x 117.24522pt.
- [41 <./example5a.png (PNG copy)>] <example5b.png, id=509, 803.25093pt x 366.61
+ [43 <./example5a.png (PNG copy)>] <example5b.png, id=564, 803.25093pt x 366.61
 969pt>
 File: example5b.png Graphic file (type png)
 
 <use example5b.png>
-Package pdftex.def Info: example5b.png used on input line 1697.
+Package pdftex.def Info: example5b.png used on input line 1756.
 (pdftex.def)             Requested size: 281.85587pt x 128.64886pt.
- [42]
-Overfull \hbox (157.23338pt too wide) in paragraph at lines 1713--1714
+
+Overfull \hbox (298.99297pt too wide) in paragraph at lines 1765--1766
+\T1/ptm/m/n/10 The fol-low-ing ex-am-ple is taken from a ques-tion posted at \T
+1/pcr/m/n/10 http://tex.stackexchange.com/questions/147932/peerage-titles-in-th
+e-author-field-in-bibtex\T1/ptm/m/n/10 .
+ []
+
+[44 <./example5b.png>] <example6.png, id=571, 800.9925pt x 156.585pt>
+File: example6.png Graphic file (type png)
+
+<use example6.png>
+Package pdftex.def Info: example6.png used on input line 1797.
+(pdftex.def)             Requested size: 281.85587pt x 55.09944pt.
+
+Overfull \hbox (358.99297pt too wide) in paragraph at lines 1806--1807
+\T1/ptm/m/n/10 The fol-low-ing ex-am-ple is taken from a ques-tion posted at \T
+1/pcr/m/n/10 http://tex.stackexchange.com/questions/145038/some-citation-number
+s-in-bold-others-not/168233#168233\T1/ptm/m/n/10 ,
+ []
+
+[45 <./example6.png>] [46] <example7.png, id=582, 819.8128pt x 603.0028pt>
+File: example7.png Graphic file (type png)
+
+<use example7.png>
+Package pdftex.def Info: example7.png used on input line 1910.
+(pdftex.def)             Requested size: 281.85587pt x 207.3185pt.
+
+Overfull \hbox (244.99297pt too wide) in paragraph at lines 1919--1920
+\T1/ptm/m/n/10 The fol-low-ing ex-am-ple is taken from a ques-tion posted at \T
+1/pcr/m/n/10 http://tex.stackexchange.com/questions/169300/modify-plain-bst-fil
+e/172828#172828\T1/ptm/m/n/10 ,
+ []
+
+[47 <./example7.png (PNG copy)>] [48]
+<example8.png, id=591, 980.91469pt x 593.96906pt>
+File: example8.png Graphic file (type png)
+ <use example8.png>
+Package pdftex.def Info: example8.png used on input line 2041.
+(pdftex.def)             Requested size: 281.85587pt x 170.6696pt.
+
+Overfull \hbox (514.99297pt too wide) in paragraph at lines 2050--2051
+\T1/ptm/m/n/10 The fol-low-ing ex-am-ple is taken from a ques-tion posted at \T
+1/pcr/m/n/10 http://tex.stackexchange.com/questions/172444/suppress-month-and-d
+ay-for-journal-articles-and-maintain-for-a-newspaper-article\T1/ptm/m/n/10 ,
+ []
+
+[49 <./example8.png>] [50] <example9.png, id=601, 1061.46562pt x 325.96782pt>
+File: example9.png Graphic file (type png)
+
+<use example9.png>
+Package pdftex.def Info: example9.png used on input line 2123.
+(pdftex.def)             Requested size: 281.85587pt x 86.55513pt.
+
+Overfull \hbox (157.23338pt too wide) in paragraph at lines 2132--2133
 \T1/ptm/m/n/10 This fol-lows an on-line ques-tion posted at \T1/pcr/m/n/10 http
 ://tex.stackexchange.com/questions/961/bibtex-style-that-groups-by-author\T1/pt
 m/m/n/10 . 
  []
 
-[43 <./example5b.png>] [44
+[51 <./example9.png>] [52
 
 ]
 Chapter 6.
 
-Overfull \hbox (2.60257pt too wide) in paragraph at lines 1726--1727
+Overfull \hbox (2.60257pt too wide) in paragraph at lines 2145--2146
 []\T1/ptm/m/n/10 The project web-site, with com-plete doc-u-men-ta-tion, can be
- found at \T1/pcr/m/n/10 http://nzhagen.github.io/bibulous/\T1/ptm/m/n/10 . 
+ found at \T1/pcr/m/n/10 http://nzhagen.github.io/bibulous/\T1/ptm/m/n/10 .
  []
 
-[45]
-Underfull \vbox (badness 10000) detected at line 1796
- []
-
-(./Bibulous.ind)
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1803.
- [46]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1803.
+[53] (./Bibulous.ind)
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 2222.
+ [54]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 2222.
  (./Bibulous.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1803.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1803.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 2222.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 2222.
 
 Package rerunfilecheck Info: File `Bibulous.out' has not changed.
-(rerunfilecheck)             Checksum: 1BA93FCC1186E3DD9D13EBA73DB12C59;2386.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1803.
+(rerunfilecheck)             Checksum: 3C9A10B99C19B4FD48F57F00DF6FDE51;3025.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 2222.
  ) 
 Here is how much of TeX's memory you used:
- 9368 strings out of 493466
- 130570 string characters out of 6145115
- 234927 words of memory out of 5000000
- 12354 multiletter control sequences out of 15000+600000
+ 9455 strings out of 493416
+ 132672 string characters out of 6143801
+ 235636 words of memory out of 5000000
+ 12428 multiletter control sequences out of 15000+600000
  58448 words of font info for 63 fonts, out of 8000000 for 9000
- 914 hyphenation exceptions out of 8191
- 36i,12n,45p,1322b,489s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 936 hyphenation exceptions out of 8191
+ 38i,12n,51p,1322b,499s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
 e/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texlive/texmf-dist/
 fonts/type1/urw/helvetic/uhvb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/
 urw/helvetic/uhvbo8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/u
 tmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr
 /share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Bibulous.pdf (52 pages, 1418178 bytes).
+Output written on Bibulous.pdf (58 pages, 2535268 bytes).
 PDF statistics:
- 596 PDF objects out of 1000 (max. 8388607)
- 502 compressed objects within 6 object streams
- 173 named destinations out of 1000 (max. 500000)
- 382 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 686 PDF objects out of 1000 (max. 8388607)
+ 563 compressed objects within 6 object streams
+ 186 named destinations out of 1000 (max. 500000)
+ 506 words of extra memory for PDF output out of 10000 (max. 10000000)
 
