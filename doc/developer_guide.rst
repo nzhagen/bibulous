@@ -170,6 +170,8 @@ The suite of regression tests for Bibulous consist of various template definitio
 Generating the documentation
 ============================
 
+The documentation is written in reStructuredText (RST) and converted to HTML using Sphinx. Sphinx can also use LaTeX to convert the HTML files into a PDF.
+
 From the bibulous repository ``doc/`` subfolder, run ``make html`` to generate the HTML documentation. The result can be found in ``doc/_build/html/``, with ``index.html`` as the main file. To generate the PDF documentation, run ``make latexpdf`` from the ``doc/`` subfolder, with the result found at ``doc/_build/latex/Bibulous.pdf``.
 
 While the documentation is saved in the ``doc/`` folder on the main branch, this is not automatically converted into viewable, linked HTML on GitHub. To achieve that requires pushing the updated docs into the ``gh-pages`` branch. One way of doing this is the following. Make a local copy of the main branch's ``doc/`` folder. Switch to the ``gh-pages`` branch (i.e. ``git checkout gh-pages``) and replace everything there with the locally-copied ``doc/`` folder contents. Then update: ``git add -A`` and ``git push origin gh-pages``. And switch back to the main branch, ``git checkout master``.
