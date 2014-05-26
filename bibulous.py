@@ -4485,7 +4485,10 @@ def format_namelist(namelist, nametype='author', options=None):
     elif (npersons > maxnames):
         ## If the number of names in the list exceeds the maximum, then truncate the list to the first "minnames" only,
         ## and add "et al." to the end of the string giving all the names.
-        namestr = ', '.join(new_namelist[:minnames]) + r', ' + options['etal_message']
+        if (minnames == 1):
+            namestr = new_namelist[0] + options['etal_message']
+        else:
+            namestr = ', '.join(new_namelist[:minnames]) + options['etal_message']
     else:
         raise ValueError('How did you get here?')
 
