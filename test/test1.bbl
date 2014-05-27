@@ -122,6 +122,10 @@ Author One, ``Blah blah'' (4321).
 Editor One, ``Blah blah'' (4321).
 \bibitem{author_or_editor3}
 No editors, ``Blah blah'' (4321).
+\bibitem{if_length_equals1}
+{}Three \textbf{Blah blah} (4321).
+\bibitem{if_length_equals2}
+{}Three \textbf{Blah blah} (4321).
 \bibitem{badtemplate}
 
 \bibitem[badkey]{badkey}

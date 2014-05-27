@@ -62,6 +62,8 @@ author_or_editor2 = [[[<authorlist.0.first> ][<authorlist.0.prefix> ]<authorlist
 author_or_editor3 = [[[<authorlist.0.first> ][<authorlist.0.prefix> ]<authorlist.0.last>]|[[<editorlist.0.first> ][<editorlist.0.prefix> ]<editorlist.0.last>]|No editors], \enquote{<title>} (<year>).
 #name_abbrev1 = <au>, \enquote{<title>} (<year>).
 #name_abbrev2 = <au>, \enquote{<title>} (<year>).
+if_length_equals1 = <emptystr.if_length_equals(authorlist,3,au_three,au_two)> \textbf{<title>} (<year>).
+if_length_equals2 = <emptystr.if_length_equals(authorlist,2,au_two,au_three)> \textbf{<title>} (<year>).
 badkey = <au>
 badtemplate = <badauthorname.0>
 
@@ -96,6 +98,7 @@ ed-B = <editorname-B.0>
 group = [<institution>|<organization>|<corporation>|]
 citelabel = None
 sortkey = <citenum.zfill(2)>
+emptystr = {}
 
 
 OPTIONS:
@@ -115,6 +118,9 @@ edmsg2 = , eds                            ## the label to use after the editor n
 nothing = {}                              ## the "if_singular()" operator need to print something, so here's an empty something
 wrap_nested_quotes = True                 ## whether to replace \enquote{} commands and adjust nested quotations
 autocomplete_doi = True                   ## whether to add "http://dx.doi.org/" to the front of the "doi" field if the front is missing.
+
+au_two = Two                              ## defined for use with the .if_length_equals() operator
+au_three = Three                          ## defined for use with the .if_length_equals() operator
 
 VARIABLES:
 
