@@ -4,7 +4,7 @@ from distutils.core import setup
 setup(
     name = "bibulous",
     py_modules = ["bibulous, bibulous_test, bibulous_authorextract"],
-    version = "1.3",
+    version = "1.3.1",
     description = "Replacement for BibTeX and BibTeX file parser",
     author = "Nathan Hagen",
     author_email = "nhagen@optics.arizona.edu",

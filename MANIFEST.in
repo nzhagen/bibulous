@@ -9,3 +9,4 @@ include FAQ.rst
 graft test
 graft templates
 graft doc
+graft examples
