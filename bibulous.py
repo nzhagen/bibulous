@@ -2469,7 +2469,7 @@ class Bibdata(object):
         ## When using the "uniquify" operator, we need to be able to tell it the variable name. Use the "options"
         ## dictionary to get the variable's name into the "get_indexed_variable()" function, so we don't need to
         ## add an extra input variable.
-        if ('.uniquify(num)' in variable):
+        if ('.uniquify(' in variable):
             options.update({'varname':fieldname})
 
         indexer = '.' + '.'.join(var_parts[1:])
@@ -2622,26 +2622,6 @@ class Bibdata(object):
                     return(newfield)
                 else:
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
-            elif indexer.startswith('.if_singular('):
-                match = re.search(r'.if_singular\(.*\)', indexer, re.UNICODE)
-                end_idx = match.end(0)
-                result = match.group(0)[13:-1]
-                (variable_to_eval, singular_form, plural_form) = result.split(',')
-
-                if (variable_to_eval not in self.bibdata[entrykey]):
-                    newfield = ''
-                elif (len(self.bibdata[entrykey][variable_to_eval]) == 1):
-                    suffix = self.options[singular_form.strip()]
-                    newfield = field + suffix
-                else:
-                    suffix = self.options[plural_form.strip()]
-                    newfield = field + suffix
-
-                newindexer = indexer[end_idx:]
-                if (nelements == 1) or (newindexer == ''):
-                    return(newfield)
-                else:
-                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
             elif indexer.startswith('.lower()'):
                 newfield = purify_string(field).lower()
                 newindexer = indexer[8:]
@@ -2738,6 +2718,87 @@ class Bibdata(object):
                     return(newfield)
                 else:
                     newindexer = '.'.join(index_elements[1:])
+                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
+            elif indexer.startswith('.if_singular('):
+                match = re.search(r'.if_singular\(.*\)', indexer, re.UNICODE)
+                end_idx = match.end(0)
+                result = match.group(0)[13:-1]      ## remove function name and parentheses
+                (variable_to_eval, singular_form, plural_form) = result.split(',')
+
+                if (variable_to_eval not in self.bibdata[entrykey]):
+                    newfield = ''
+                elif (len(self.bibdata[entrykey][variable_to_eval]) == 1):
+                    suffix = self.options[singular_form.strip()]
+                    newfield = field + suffix
+                else:
+                    suffix = self.options[plural_form.strip()]
+                    newfield = field + suffix
+
+                newindexer = indexer[end_idx:]
+                if (nelements == 1) or (newindexer == ''):
+                    return(newfield)
+                else:
+                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
+            elif indexer.startswith('.if_length_equals('):
+                match = re.search(r'.if_length_equals\(.*\)', indexer, re.UNICODE)
+                end_idx = match.end(0)
+                result = match.group(0)[18:-1]      ## remove function name and parentheses
+                (variable_to_eval, test_length, var_if_equals, var_if_notequals) = result.split(',')
+                #pdb.set_trace()
+
+                if (variable_to_eval not in self.bibdata[entrykey]):
+                    newfield = ''
+                elif (len(self.bibdata[entrykey][variable_to_eval]) == int(test_length)):
+                    suffix = self.options[var_if_equals.strip()]
+                    newfield = field + suffix
+                else:
+                    suffix = self.options[var_if_notequals.strip()]
+                    newfield = field + suffix
+
+                newindexer = indexer[end_idx:]
+                if (nelements == 1) or (newindexer == ''):
+                    return(newfield)
+                else:
+                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
+            elif indexer.startswith('.if_length_less_than('):
+                match = re.search(r'.if_length_less_than\(.*\)', indexer, re.UNICODE)
+                end_idx = match.end(0)
+                result = match.group(0)[21:-1]      ## remove function name and parentheses
+                (variable_to_eval, test_length, var_if_lessthan, var_if_notlessthan) = result.split(',')
+
+                if (variable_to_eval not in self.bibdata[entrykey]):
+                    newfield = ''
+                elif (len(self.bibdata[entrykey][variable_to_eval]) == int(test_length)):
+                    suffix = self.options[var_if_lessthan.strip()]
+                    newfield = field + suffix
+                else:
+                    suffix = self.options[var_if_notlessthan.strip()]
+                    newfield = field + suffix
+
+                newindexer = indexer[end_idx:]
+                if (nelements == 1) or (newindexer == ''):
+                    return(newfield)
+                else:
+                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
+            elif indexer.startswith('.if_length_more_than('):
+                match = re.search(r'.if_length_more_than\(.*\)', indexer, re.UNICODE)
+                end_idx = match.end(0)
+                result = match.group(0)[21:-1]      ## remove function name and parentheses
+                (variable_to_eval, test_length, var_if_morethan, var_if_notmorethan) = result.split(',')
+
+                if (variable_to_eval not in self.bibdata[entrykey]):
+                    newfield = ''
+                elif (len(self.bibdata[entrykey][variable_to_eval]) == int(test_length)):
+                    suffix = self.options[var_if_morethan.strip()]
+                    newfield = field + suffix
+                else:
+                    suffix = self.options[var_if_notmorethan.strip()]
+                    newfield = field + suffix
+
+                newindexer = indexer[end_idx:]
+                if (nelements == 1) or (newindexer == ''):
+                    return(newfield)
+                else:
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
             #else:
             #    msg = 'Warning 029c: the template for entry ' + entrykey + ' has an unknown function ' + \

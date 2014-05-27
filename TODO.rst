@@ -19,8 +19,7 @@ For version 1.4, the goal is to have group templates working.
 
   Compare this with natbib's author-year style.
 
-- Add functionality for, and fill out the doc stubs for ``.if_length_equals``, ``.if_length_less_than``, and 
-  ``.if_length_more_than`` operators. Consider adding a 4-arg operator ``.if_has_substr(input,sub,iftrue,iffalse)``.
+- Consider adding a 4-arg operator ``.if_has_substr(input,sub,iftrue,iffalse)``.
 
 - Try installing some of the other popular TeX editors, change their backends to Bibulous, and provide instructions
   on how to do this for: TeXnicCenter (Windows).
@@ -140,3 +139,6 @@ Python testing to-do
 - Add a test for locale-dependent sorting? This requires a lot of work to set up for full
   BIB-AUX-BBL mapping. So it may be best to wait for a more directed test to come along.
 
+- Add tests for ``.if_length_less_than``, and ``.if_length_more_than`` operators. 
+
+- Add a test for ``.uniquify(1)`` and ``.uniquify(a)``.

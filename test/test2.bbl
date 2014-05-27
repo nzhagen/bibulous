@@ -707,7 +707,7 @@ W. T. Rhee and M. Talagrand, ``On line bin packing with items of random sizes --
 \bibitem[10314]{RheTal93A}
 W. T. Rhee and M. Talagrand, ``On line bin packing with items of random size,'' \textit{Math. Oper. Res.} \textbf{18}: 438--445 (1993).
 \bibitem[10315]{Ma:2005:CBL}
-Y. G. Ma, J. B. Natowitz, R. Wada, K. Hagel, J. Wang, T. Keutgen, Z. Majka, M. Murray, L. Qin, , \textit{et~al.}, ``\href{http://link.aps.org/doi/10.1103/PhysRevC.71.054606}{Critical behavior in light nuclear systems: Experimental aspects},'' \textit{Physical Review C (Nuclear Physics)} \textbf{71}: 054606 (2005).
+Y. G. Ma, J. B. Natowitz, R. Wada, K. Hagel, J. Wang, T. Keutgen, Z. Majka, M. Murray, L. Qin, \textit{et~al.}, ``\href{http://link.aps.org/doi/10.1103/PhysRevC.71.054606}{Critical behavior in light nuclear systems: Experimental aspects},'' \textit{Physical Review C (Nuclear Physics)} \textbf{71}: 054606 (2005).
 \bibitem[10316]{Shermer:2002:SHC}
 M. Shermer, ``Skeptic: Hermits and Cranks: Fifty years ago, {Martin Gardner} launched the modern skeptical movement. Unfortunately, much of what he wrote about is still current today,'' \textit{Scientific American} \textbf{286}: 36--37 (2002).
 \bibitem[10317]{CopRag89}
@@ -3275,7 +3275,7 @@ S. R. {La Paglia}, \textit{Introductory Quantum Chemistry} (Harper \& Row, 1971)
 \bibitem[11496]{Arianrhod:2005:EHI}
 R. Arianrhod, \textit{{Einstein}'s heroes: imagining the world through the language of mathematics} (Oxford University Press, 2005).
 \bibitem[11497]{Chabert:1999:HAH}
-J.-L. Chabert, É. Barbin, J. Borowczyk, M. Guillemot, A. Michel-Pajus, , \textit{et~al.}, eds, \textit{A history of algorithms: from the pebble to the microchip} (Spring{\-}er-Ver{\-}lag, 1999).
+J.-L. Chabert, É. Barbin, J. Borowczyk, M. Guillemot, A. Michel-Pajus, \textit{et~al.}, eds, \textit{A history of algorithms: from the pebble to the microchip} (Spring{\-}er-Ver{\-}lag, 1999).
 \bibitem[11498]{Gibson:1998:DCM}
 J. D. Gibson, T. Berger, T. Lookabaugh, D. Lindbergh, and R. L. Baker, \textit{Digital compression for multimedia: principles and standards} (Morgan Kaufmann Publishers, 1998).
 \bibitem[11499]{Hill:1974:RFF}
@@ -3477,7 +3477,7 @@ H. M. Levy and R. H. {Eckhouse, Jr.}, \textit{Computer Programming and Architect
 \bibitem[1159]{Webb:2010:PIA}
 R. Y. Webb, P. J. Smith, and A. Firag, ``On the Probability of Improved Accuracy With Increased Sample Size,'' \textit{The American Statistician} \textbf{64}: 257--262 (2010).
 \bibitem[11590]{rRUK01a}
-A. Rukhin, J. Soto, J. Nechvatal, M. Smid, E. Barker, S. Leigh, M. Levenson, M. Vangel, D. Banks, , \textit{et~al.}, ``A Statistical Test Suite for Random and Pseudorandom Number Generators for Cryptographic Applications,'' National Institute of Standards and Technology ({NIST}), Tech.\ Report ??? (2001). See \url{http://csrc.nist.gov/rng/}
+A. Rukhin, J. Soto, J. Nechvatal, M. Smid, E. Barker, S. Leigh, M. Levenson, M. Vangel, D. Banks, \textit{et~al.}, ``A Statistical Test Suite for Random and Pseudorandom Number Generators for Cryptographic Applications,'' National Institute of Standards and Technology ({NIST}), Tech.\ Report ??? (2001). See \url{http://csrc.nist.gov/rng/}
 \bibitem[11591]{rRUK01b}
 A. L. Rukhin, ``Testing Randomness: {A} Suite of Statistical Procedures,'' \textit{Theory of Probability and Its Applications} \textbf{45}: 111--132 (2001).
 \bibitem[11592]{rWU06a}
@@ -3751,7 +3751,7 @@ I. Tattersall, ``How We Came to Be Human: book excerpt,'' \textit{Scientific Ame
 \bibitem[11713]{Gontmakher:2000:EDL}
 S. Gontmakher, ``Easy Dynamic Loading in {C++},'' \textit{C/C++ Users Journal} \textbf{18}: ?? (2000).
 \bibitem[11714]{Achtzehnter:1998:ILU}
-J. Achtzehnter, J. Anderson, A. Courtney, D. Cutting, M. Davidson, J. Figueroa, K. Fishkin, S. Hassan, R. Head, , \textit{et~al.}, ``Inter-Language Unification,'' Xerox Palo Alto Research Center, Tech.\ Report ?? (1998). The ILU system can be used from C++, Common Lisp, Guile, Java, Modula-3, Perl, Python, Scheme, and Standard C.
+J. Achtzehnter, J. Anderson, A. Courtney, D. Cutting, M. Davidson, J. Figueroa, K. Fishkin, S. Hassan, R. Head, \textit{et~al.}, ``Inter-Language Unification,'' Xerox Palo Alto Research Center, Tech.\ Report ?? (1998). The ILU system can be used from C++, Common Lisp, Guile, Java, Modula-3, Perl, Python, Scheme, and Standard C.
 \bibitem[11715]{Malacarne:2001:QED}
 L. C. Malacarne, R. S. Mendes, and E. K. Lenzi, ``\href{http://link.aps.org/doi/10.1103/PhysRevE.65.017106}{$q$-exponential distribution in urban agglomeration},'' \textit{Physical Review E (Statistical physics, plasmas, fluids, and related interdisciplinary topics)} \textbf{65}: 017106 (2001).
 \bibitem[11716]{esa94}
@@ -3837,7 +3837,7 @@ E. Koutsoupias and C. Papadimitriou, ``Worst-case equilibria,'' in \textit{Proc.
 \bibitem[11754]{Giles:2007:BLN}
 D. E. Giles, ``\href{http://www.tandfonline.com/toc/rael20/current}{{Benford's Law} and naturally occurring prices in certain {eBay} auctions},'' \textit{Applied Economics Letters} \textbf{14}: 157--161 (2007).
 \bibitem[11755]{rUCH08a}
-A. Uchida, K. Amano, M. Inoue, K. Hirano, S. Naito, H. Someya, I. Oowada, T. Kurashige, M. Shiki, , \textit{et~al.}, ``Fast Physical Random Bit Generation with Chaotic Semiconductor Lasers,'' \textit{Nature Photonics} \textbf{2}: 728--732 (2008).
+A. Uchida, K. Amano, M. Inoue, K. Hirano, S. Naito, H. Someya, I. Oowada, T. Kurashige, M. Shiki, \textit{et~al.}, ``Fast Physical Random Bit Generation with Chaotic Semiconductor Lasers,'' \textit{Nature Photonics} \textbf{2}: 728--732 (2008).
 \bibitem[11756]{Freedman:2006:CHS}
 D. A. Freedman, ``On The So-Called {``Huber Sandwich Estimator''} and {``Robust Standard Errors''},'' \textit{The American Statistician} \textbf{60}: 299--302 (2006).
 \bibitem[11757]{Morin:1993:TT}
@@ -4339,7 +4339,7 @@ J. Feldman, D. R. Karger, and M. J. Wainwright, ``LP Decoding,'' in \textit{Proc
 \bibitem[11983]{Davis:1997:LI}
 R. H. Davis, \textit{Life in the Iron-Mills}, vol.~876 (Project Gutenberg, 1997).
 \bibitem[11984]{Anderson:1995:LUG}
-E. Anderson, Z. Bai, C. Bischof, J. Demmel, J. Dongarra, J. D. Croz, A. Greenbaum, S. Hammarling, A. McKenney, , \textit{et~al.}, \textit{{LAPACK} Users' Guide} (Society for Industrial and Applied Mathematics, 1995).
+E. Anderson, Z. Bai, C. Bischof, J. Demmel, J. Dongarra, J. D. Croz, A. Greenbaum, S. Hammarling, A. McKenney, \textit{et~al.}, \textit{{LAPACK} Users' Guide} (Society for Industrial and Applied Mathematics, 1995).
 \bibitem[11985]{Suzuki:1997:P}
 J. Suzuki, ``{Python},'' \textit{Japanese Dr Dobbs} \textbf{??}: ?? (1997). A series of seven articles on Python.
 \bibitem[11986]{LuSiSt03}
@@ -4843,7 +4843,7 @@ P. F. Dietz, J. I. Seiferas, and J. Zhang., ``A tight lower found for on-line mo
 \bibitem[1414]{Tanimoto:2006:IPA}
 S. L. Tanimoto, \textit{Introduction to {Python} for Artificial Intelligence} (IEEE Computer Society Press, 2006).
 \bibitem[1415]{Anderson:LUG92}
-E. Anderson, Z. Bai, C. Bischof, J. Demmel, J. Dongarra, J. {Du Croz}, A. Greenbaum, S. Hammarling, A. McKenney, , \textit{et~al.}, \textit{{LAPACK} Users' Guide} (Society for Industrial and Applied Mathematics, 1992).
+E. Anderson, Z. Bai, C. Bischof, J. Demmel, J. Dongarra, J. {Du Croz}, A. Greenbaum, S. Hammarling, A. McKenney, \textit{et~al.}, \textit{{LAPACK} Users' Guide} (Society for Industrial and Applied Mathematics, 1992).
 \bibitem[1416]{Anonymous:2011:LEd}
 . Anonymous, ``Letters to the {Editors},'' \textit{The American Statistician} \textbf{65}: 209--211 (2011).
 \bibitem[1417]{xpath1999}
@@ -5999,7 +5999,7 @@ K. D. S. Wiggin, \textit{The Village Watch-Tower}, vol.~936 (Project Gutenberg, 
 \bibitem[1921]{Duncan:1969:NID}
 R. L. Duncan, ``\href{http://www.fq.math.ca/Scanned/7-5/duncan.pdf}{Note on the Initial Digit Problem},'' \textit{Fibonacci Quarterly} \textbf{7}: 474--475 (1969).
 \bibitem[1922]{Anderson:1999:LUG}
-E. Anderson, Z. Bai, C. Bischof, S. Blackford, J. Demmel, J. Dongarra, J. D. Croz, A. Greenbaum, S. Hammarling, , \textit{et~al.}, \textit{{LAPACK} Users' Guide} (Society for Industrial and Applied Mathematics, 1999).
+E. Anderson, Z. Bai, C. Bischof, S. Blackford, J. Demmel, J. Dongarra, J. D. Croz, A. Greenbaum, S. Hammarling, \textit{et~al.}, \textit{{LAPACK} Users' Guide} (Society for Industrial and Applied Mathematics, 1999).
 \bibitem[1923]{Nakov:2001:AEM}
 K. Nakov, ``An Asynchronous Execution Macro,'' \textit{C/C++ Users Journal} \textbf{19}: ?? (2001).
 \bibitem[1924]{UIEZeroResults}
@@ -6177,7 +6177,7 @@ J. Devore, ``Reviews of Books and Teaching Materials --- Stat Labs: Mathematical
 \bibitem[2]{Lang:1996:PDL}
 A. Lang, \textit{The Puzzle of Dickens's Last Plot}, vol.~738 (Project Gutenberg, 1996).
 \bibitem[20]{lore}
-R. Goldman and J. Widom, ``DataGuides: Enabling Query Formulation and Optimization in Semistructured Databases,'' in \textit{{VLDB}'97, Proceedings of 23rd International Conference on Very Large Data Bases}, M. Jarke, M. J. Carey, K. R. Dittrich, F. H. Lochovsky, P. Loucopoulos, , \textit{et~al.}, eds, pp.~436--445 (1997). 
+R. Goldman and J. Widom, ``DataGuides: Enabling Query Formulation and Optimization in Semistructured Databases,'' in \textit{{VLDB}'97, Proceedings of 23rd International Conference on Very Large Data Bases}, M. Jarke, M. J. Carey, K. R. Dittrich, F. H. Lochovsky, P. Loucopoulos, \textit{et~al.}, eds, pp.~436--445 (1997). 
 \bibitem[200]{Anonymous:1998:SEN}
 . Anonymous, ``{Section Editor}'s Notes,'' \textit{The American Statistician} \textbf{52}: 266--?? (1998).
 \bibitem[2000]{rENG92a}
@@ -6679,7 +6679,7 @@ P. Berman, H. Karloff, and G. Tardos, ``A competitive algorithm for three server
 \bibitem[2221]{Jovanovic:1997:LRT}
 B. D. Jovanovic and P. S. Levy, ``A Look at the Rule of Three,'' \textit{The American Statistician} \textbf{51}: 137--?? (1997).
 \bibitem[2222]{Perez:2004:BCS}
-J. A. P{\'e}rez, J. L{\'a}zaro, and J. M. Aguirregabiria, ``{Basque}: a Case Study in Generalizing Language Support,'' in \textit{{\TeX}, {XML}, and Digital Typography: International Conference on {\TeX}, XML, and Digital Typography, held jointly with the 25th Annual Meeting of the TeX Users Group, TUG 2004, Xanthi, Greece, August 30--September 3, 2004: Proceedings}, A. Syropoulos, K. Berry, Y. Haralambous, B. Hughes, S. Peter, , \textit{et~al.}, eds, in Lecture Notes in Computer Science \textbf{3130}, pp.~27--33 (2004). 
+J. A. P{\'e}rez, J. L{\'a}zaro, and J. M. Aguirregabiria, ``{Basque}: a Case Study in Generalizing Language Support,'' in \textit{{\TeX}, {XML}, and Digital Typography: International Conference on {\TeX}, XML, and Digital Typography, held jointly with the 25th Annual Meeting of the TeX Users Group, TUG 2004, Xanthi, Greece, August 30--September 3, 2004: Proceedings}, A. Syropoulos, K. Berry, Y. Haralambous, B. Hughes, S. Peter, \textit{et~al.}, eds, in Lecture Notes in Computer Science \textbf{3130}, pp.~27--33 (2004). 
 \bibitem[2223]{Krugman:1996:SOE}
 P. R. Krugman, \textit{The Self-Organizing Economy} (Blackwell Publishers, 1996).
 \bibitem[2224]{Mirman71}
@@ -7703,7 +7703,7 @@ D. J. Saville, ``Multiple Comparison Procedures: The Practical Solution,'' \text
 \bibitem[2685]{Imrey:1994:R}
 P. B. Imrey, ``Reply,'' \textit{The American Statistician} \textbf{48}: 82--?? (1994).
 \bibitem[2686]{Michel:2011:QAC}
-J.-B. Michel, Y. K. Shen, A. P. Aiden, A. Veres, M. K. Gray, . {The Google Books Team}, J. P. Pickett, D. Hoiberg, D. Clancy, , \textit{et~al.}, ``\href{http://www.sciencemag.org/content/331/6014/176.abstract}{Quantitative Analysis of Culture Using Millions of Digitized Books},'' \textit{Science} \textbf{331}: 176--182 (2011).
+J.-B. Michel, Y. K. Shen, A. P. Aiden, A. Veres, M. K. Gray, . {The Google Books Team}, J. P. Pickett, D. Hoiberg, D. Clancy, \textit{et~al.}, ``\href{http://www.sciencemag.org/content/331/6014/176.abstract}{Quantitative Analysis of Culture Using Millions of Digitized Books},'' \textit{Science} \textbf{331}: 176--182 (2011).
 \bibitem[2687]{Chen:1989:ZLT}
 Y.-S. Chen, ``\href{http://dx.doi.org/10.1080/03081078908935048}{{Zipf}'s laws in text modeling},'' \textit{International Journal of General Systems. Methodology, Applications, Education} \textbf{15}: 233--252 (1989).
 \bibitem[2688]{Wagon:2010:BLD}
@@ -7985,7 +7985,7 @@ G. van Rossum and F. L. {Drake, Jr.}, \textit{The {Python} Tutorial --- An Intro
 \bibitem[2811]{McCullagh:1994:DMG}
 P. McCullagh, ``Does the Moment-Generating Function Characterize a Distribution?'' \textit{The American Statistician} \textbf{48}: 208 (1994).
 \bibitem[2812]{Rathbun:1972:RPC}
-D. B. Rathbun, W. A. Wallis, F. Mosteller, A. J. Coale, P. M. Densen, S. Fabricant, R. D. Fisher, W. B. Hickman, W. Kruskal, , \textit{et~al.}, ``The Report of the {President's Commission on Federal Statistics},'' \textit{The American Statistician} \textbf{26}: 15--18 (1972).
+D. B. Rathbun, W. A. Wallis, F. Mosteller, A. J. Coale, P. M. Densen, S. Fabricant, R. D. Fisher, W. B. Hickman, W. Kruskal, \textit{et~al.}, ``The Report of the {President's Commission on Federal Statistics},'' \textit{The American Statistician} \textbf{26}: 15--18 (1972).
 \bibitem[2813]{Godwin:1996:TMH}
 W. Godwin, \textit{Thoughts on Man, His Nature, etc.}, vol.~743 (Project Gutenberg, 1996).
 \bibitem[2814]{Cacciola:2000:IVT}
@@ -8077,7 +8077,7 @@ B. Stroustrup, ``{C} and {C++}: {A} Case for Compatibility,'' \textit{C/C++ User
 \bibitem[2857]{Barrow:1998:ILS}
 J. D. Barrow, \textit{Impossibility: the limits of science and the science of limits} (Oxford University Press, 1998).
 \bibitem[2858]{Koziol:1997:GTD}
-J. A. Koziol, J. E. Alexander, L. O. Bauer, S. Kuperman, S. Morzorati, S. J. O'Connor, J. Rohrbaugh, B. Porjesz, H. Begleiter, , \textit{et~al.}, ``A Graphical Technique for Displaying Correlation Matrices,'' \textit{The American Statistician} \textbf{51}: 301--?? (1997).
+J. A. Koziol, J. E. Alexander, L. O. Bauer, S. Kuperman, S. Morzorati, S. J. O'Connor, J. Rohrbaugh, B. Porjesz, H. Begleiter, \textit{et~al.}, ``A Graphical Technique for Displaying Correlation Matrices,'' \textit{The American Statistician} \textbf{51}: 301--?? (1997).
 \bibitem[2859]{Serang:2012:FMS}
 O. Serang and W. S. Noble, ``Faster Mass Spectrometry-Based Protein Inference: Junction Trees Are More Efficient than Sampling and Marginalization by Enumeration,'' \textit{IEEE/ACM Transactions on Computational Biology and Bioinformatics} \textbf{9}: 809--817 (2012).
 \bibitem[286]{Myers:2007:PEC}
@@ -9005,7 +9005,7 @@ B. Stroustrup, ``{C} and {C++}: Siblings,'' \textit{C/C++ Users Journal} \textbf
 \bibitem[3274]{Fujima04}
 J. Fujima, A. Lunzer, K. Hornb\&\#230;k, and Y. Tanaka, ``Clip, connect, clone: combining application elements to build custom interfaces for information access,'' in \textit{UIST '04: Proceedings of the 17th annual ACM symposium on User interface software and technology}, pp.~175--184 (2004). 
 \bibitem[3275]{Padovani:2004:IEM}
-L. Padovani, ``Interactive Editing of {MathML} Markup Using {\TeX} Syntax,'' in \textit{{\TeX}, {XML}, and Digital Typography: International Conference on {\TeX}, XML, and Digital Typography, held jointly with the 25th Annual Meeting of the TeX Users Group, TUG 2004, Xanthi, Greece, August 30--September 3, 2004: Proceedings}, A. Syropoulos, K. Berry, Y. Haralambous, B. Hughes, S. Peter, , \textit{et~al.}, eds, in Lecture Notes in Computer Science \textbf{3130}, pp.~125--138 (2004). 
+L. Padovani, ``Interactive Editing of {MathML} Markup Using {\TeX} Syntax,'' in \textit{{\TeX}, {XML}, and Digital Typography: International Conference on {\TeX}, XML, and Digital Typography, held jointly with the 25th Annual Meeting of the TeX Users Group, TUG 2004, Xanthi, Greece, August 30--September 3, 2004: Proceedings}, A. Syropoulos, K. Berry, Y. Haralambous, B. Hughes, S. Peter, \textit{et~al.}, eds, in Lecture Notes in Computer Science \textbf{3130}, pp.~125--138 (2004). 
 \bibitem[3276]{Schreiner:1998:D}
 O. Schreiner, \textit{Dreams}, vol.~1439 (Project Gutenberg, 1998).
 \bibitem[3277]{Pakin:2005:CLS}
@@ -9547,7 +9547,7 @@ C. Dickens, \textit{Pictures From Italy}, vol.~650 (Project Gutenberg, 1996).
 \bibitem[3519]{MC:68020}
 . Motorola, \textit{{MC}68020 32-Bit Microprocessor User's Manual} (Motorola Corporation, 1985).
 \bibitem[352]{Karger:Release}
-F. Afrati, E. Bampis, C. Chekuri, D. Karger, C. Kenyon, S. Khanna, I. Milis, M. Queyranne, M. Skutella, , \textit{et~al.}, ``Approximation Schemes for Minimizing Average Weighted Completion Time with Release Dates,'' in \textit{Proceedings of the  {$32^{nd}$} Annual Symposium on the Foundations of Computer Science}, pp.~32--43 (1999). 
+F. Afrati, E. Bampis, C. Chekuri, D. Karger, C. Kenyon, S. Khanna, I. Milis, M. Queyranne, M. Skutella, \textit{et~al.}, ``Approximation Schemes for Minimizing Average Weighted Completion Time with Release Dates,'' in \textit{Proceedings of the  {$32^{nd}$} Annual Symposium on the Foundations of Computer Science}, pp.~32--43 (1999). 
 \bibitem[3520]{Vanhonacker:1996:MAR}
 W. R. Vanhonacker, ``Meta-Analysis and Response Surface Extrapolation: {A} Least Squares Approach,'' \textit{The American Statistician} \textbf{50}: 294--?? (1996).
 \bibitem[3521]{Musser:2000:DNS}
@@ -10111,7 +10111,7 @@ R. L. Stevenson, \textit{Underwoods}, vol.~438 (Project Gutenberg, 1996).
 \bibitem[3770]{Stevenson:1996:TDC}
 R. L. Stevenson, \textit{Travels with a Donkey in the Cevennes}, vol.~535 (Project Gutenberg, 1996).
 \bibitem[3771]{Carter:2001:LEW}
-J. Carter, T. Stevens, F. Murkowski, D. Young, A. B. Lovins, R. Redford, L. Merlo, D. Barnett, S. O. Lilienfeld, , \textit{et~al.}, ``Letters to the Editors: Writes Former {President Jimmy Carter}; Your Oil or Your Wildlife?; All About Inkblots; Semantic {Web}: Not Fuzzy; {{\em E. Coli\/}}-Free Cookouts; Supercavitation, Swimmingly,'' \textit{Scientific American} \textbf{285}: 12--13 (2001).
+J. Carter, T. Stevens, F. Murkowski, D. Young, A. B. Lovins, R. Redford, L. Merlo, D. Barnett, S. O. Lilienfeld, \textit{et~al.}, ``Letters to the Editors: Writes Former {President Jimmy Carter}; Your Oil or Your Wildlife?; All About Inkblots; Semantic {Web}: Not Fuzzy; {{\em E. Coli\/}}-Free Cookouts; Supercavitation, Swimmingly,'' \textit{Scientific American} \textbf{285}: 12--13 (2001).
 \bibitem[3772]{FOCS88}
 ???, \textit{Proceedings of the  {$29^{th}$} Annual Symposium on the Foundations of Computer Science},  (1988).
 \bibitem[3773]{ChDJKK06}
@@ -10613,7 +10613,7 @@ F. Bravo-Marquez, G. L'Huillier, S. A. R{\'\i}os, and J. D. Vel{\'a}squez, ``\hr
 \bibitem[3986]{Epstei05}
 L. Epstein, ``Online Bin Packing with Cardinality Constraints,'' in \textit{Proc. 13thEuropean Symp. on Algorithms (ESA)}, in Lecture Notes in Comput. Sci. \textbf{3669}, pp.~604--615 (2005). 
 \bibitem[3987]{Bailey:IJSA-5-3-63}
-D. H. Bailey, E. Barszcz, J. T. Barton, D. S. Browning, R. L. Carter, L. Dagum, R. A. Fatoohi, P. O. Frederickson, T. A. Lasinski, , \textit{et~al.}, ``The {NAS} Parallel Benchmarks,'' \textit{International Journal of Supercomputer Applications and High Performance Computing} \textbf{5}: 63--73 (1991).
+D. H. Bailey, E. Barszcz, J. T. Barton, D. S. Browning, R. L. Carter, L. Dagum, R. A. Fatoohi, P. O. Frederickson, T. A. Lasinski, \textit{et~al.}, ``The {NAS} Parallel Benchmarks,'' \textit{International Journal of Supercomputer Applications and High Performance Computing} \textbf{5}: 63--73 (1991).
 \bibitem[3988]{Epstei00}
 L. Epstein, ``A note on on-line scheduling with precedence constraints on identical machines,'' \textit{Inform. Process. Lett.} \textbf{76}: 149--153 (2000).
 \bibitem[3989]{LarSch90}
@@ -11241,7 +11241,7 @@ L. J. Murphy, ``\href{http://dx.doi.org/10.1002/asi.4630240607}{<title>},'' \tex
 \bibitem[4270]{Floyd}
 R. W. Floyd, ``Algorithm 97: Shortest path,'' \textit{Communications of the ACM} \textbf{5}: 345 (1962).
 \bibitem[4271]{Saroff:2001:LEY}
-D. Saroff, S. J. Olshansky, B. A. Carnes, R. N. Butler, F. Godwin, J. D. Sachs, A. D. Mellinger, J. L. Gallup, H. A. McAlister, , \textit{et~al.}, ``Letters to the {Editors}: You, Only with a Better Brain; Institutional Poverty, Institutional Wealth?; Starring {CHARA}; {Africa} Rising,'' \textit{Scientific American} \textbf{285}: 10--12 (2001).
+D. Saroff, S. J. Olshansky, B. A. Carnes, R. N. Butler, F. Godwin, J. D. Sachs, A. D. Mellinger, J. L. Gallup, H. A. McAlister, \textit{et~al.}, ``Letters to the {Editors}: You, Only with a Better Brain; Institutional Poverty, Institutional Wealth?; Starring {CHARA}; {Africa} Rising,'' \textit{Scientific American} \textbf{285}: 10--12 (2001).
 \bibitem[4272]{Rycko:1993:CNA}
 M. Ry{\'c}ko, \textit{Co nieco o akapicie},  (???, 1993). In Polish.
 \bibitem[4273]{Klemens:2006:MYC}
@@ -11581,7 +11581,7 @@ G. Cybenko, ``Supercomputer Performance Trends and the {Perfect Benchmarks},'' \
 \bibitem[4422]{Chekhov:1999:S}
 A. P. Chekhov, \textit{The Sea-Gull}, vol.~1754 (Project Gutenberg, 1999).
 \bibitem[4423]{Karger:InteractomeFlow}
-E. Yeger-Lotem, L. Riva, L. Su, A. Gitler, A. Cashikar, O. King, P. Auluck, M. Geddie, J. Valastyan, , \textit{et~al.}, ``\href{http://www.ncbi.nlm.nih.gov/pubmed/19234470}{Bridging High-Throughput Genetic and Transcriptional Data Reveals Cellular Responses to Alpha-Synuclein Toxicity},'' \textit{Nature Genetics} \textbf{41}: 316--23 (2009).
+E. Yeger-Lotem, L. Riva, L. Su, A. Gitler, A. Cashikar, O. King, P. Auluck, M. Geddie, J. Valastyan, \textit{et~al.}, ``\href{http://www.ncbi.nlm.nih.gov/pubmed/19234470}{Bridging High-Throughput Genetic and Transcriptional Data Reveals Cellular Responses to Alpha-Synuclein Toxicity},'' \textit{Nature Genetics} \textbf{41}: 316--23 (2009).
 \bibitem[4424]{Naik:1996:ROT}
 D. N. Naik and R. Khattree, ``Revisiting {Olympic} Track Records: Some Practical Considerations in the Principal Component Analysis,'' \textit{The American Statistician} \textbf{50}: 140--?? (1996).
 \bibitem[4425]{Gwangs94}
@@ -11817,7 +11817,7 @@ J. Saarinen, K. Kankaala, T. Ala-Nissila, and I. Vattulainen, ``On Random Number
 \bibitem[4527]{Lutz:2006:PP}
 M. Lutz, \textit{Programming {Python}} (O'Reilly \& {Associates, Inc.}, 2006).
 \bibitem[4528]{Hufflen:2004:MBL}
-J.-M. Hufflen, ``Ml{\BibTeX}: Beyond {\LaTeX},'' in \textit{{\TeX}, {XML}, and Digital Typography: International Conference on {\TeX}, XML, and Digital Typography, held jointly with the 25th Annual Meeting of the TeX Users Group, TUG 2004, Xanthi, Greece, August 30--September 3, 2004: Proceedings}, A. Syropoulos, K. Berry, Y. Haralambous, B. Hughes, S. Peter, , \textit{et~al.}, eds, in Lecture Notes in Computer Science \textbf{3130}, pp.~203--215 (2004). 
+J.-M. Hufflen, ``Ml{\BibTeX}: Beyond {\LaTeX},'' in \textit{{\TeX}, {XML}, and Digital Typography: International Conference on {\TeX}, XML, and Digital Typography, held jointly with the 25th Annual Meeting of the TeX Users Group, TUG 2004, Xanthi, Greece, August 30--September 3, 2004: Proceedings}, A. Syropoulos, K. Berry, Y. Haralambous, B. Hughes, S. Peter, \textit{et~al.}, eds, in Lecture Notes in Computer Science \textbf{3130}, pp.~203--215 (2004). 
 \bibitem[4529]{Kunii:ACG86}
 T. L. Kunii, ed., \textit{Advanced Computer Graphics} (Spring{\-}er-Ver{\-}lag, 1986). Proceedings of Computer Graphics Tokyo '86.
 \bibitem[453]{Pruhs94}
@@ -12937,7 +12937,7 @@ G. {Ugrin-Sparac}, ``Stochastic Investigations of Pseudo-Random Number Generator
 \bibitem[5030]{rJAM90a}
 F. James, ``A Review of Pseudorandom Number Generators,'' \textit{Computer Physics Communications} \textbf{60}: 329--344 (1990).
 \bibitem[5031]{Williams:2004:BGA}
-G. Williams, ``Beyond Glyphs, Advanced Typographic Features of Fonts,'' in \textit{{\TeX}, {XML}, and Digital Typography: International Conference on {\TeX}, XML, and Digital Typography, held jointly with the 25th Annual Meeting of the TeX Users Group, TUG 2004, Xanthi, Greece, August 30--September 3, 2004: Proceedings}, A. Syropoulos, K. Berry, Y. Haralambous, B. Hughes, S. Peter, , \textit{et~al.}, eds, in Lecture Notes in Computer Science \textbf{3130}, pp.~257--263 (2004). 
+G. Williams, ``Beyond Glyphs, Advanced Typographic Features of Fonts,'' in \textit{{\TeX}, {XML}, and Digital Typography: International Conference on {\TeX}, XML, and Digital Typography, held jointly with the 25th Annual Meeting of the TeX Users Group, TUG 2004, Xanthi, Greece, August 30--September 3, 2004: Proceedings}, A. Syropoulos, K. Berry, Y. Haralambous, B. Hughes, S. Peter, \textit{et~al.}, eds, in Lecture Notes in Computer Science \textbf{3130}, pp.~257--263 (2004). 
 \bibitem[5032]{WarwickFramework}
 C. Lagoze, ``The Warwick MetaData Workshop,'' \textit{???} \textbf{???}: ??? (1996). {\tt http://www.dlib.org/dlib/july96/lagoze/07lagoze.html}
 \bibitem[5033]{Lund:2002:BRU}
@@ -12989,7 +12989,7 @@ D. E. Knuth, ``The Errors of {\TeX},'' \textit{Soft{\-}ware\emdash Prac{\-}tice 
 \bibitem[5054]{Carlson:2000:ASF}
 S. Carlson, ``The Amateur Scientist: {A} furnace in a thermos,'' \textit{Scientific American} \textbf{282}: 110--?? (2000).
 \bibitem[5055]{Hamada:2001:SPF}
-M. Hamada, H. F. Martz, C. S. Reese, , \textit{et~al.}, ``Statistical Practice --- Finding Near-Optimal {Bayesian} Experimental Designs via Genetic Algorithms,'' \textit{The American Statistician} \textbf{55}: 175--181 (2001).
+M. Hamada, H. F. Martz, C. S. Reese, \textit{et~al.}, ``Statistical Practice --- Finding Near-Optimal {Bayesian} Experimental Designs via Genetic Algorithms,'' \textit{The American Statistician} \textbf{55}: 175--181 (2001).
 \bibitem[5056]{Naidu:1996:GT}
 S. Naidu, \textit{The Golden Threshold}, vol.~680 (Project Gutenberg, 1996).
 \bibitem[5057]{Mitchell:1996:AQ}
@@ -13071,7 +13071,7 @@ L. F. Baum, \textit{The Master Key}, vol.~436 (Project Gutenberg, 1996).
 \bibitem[5092]{Kuchling:1998:CFP}
 A. M. Kuchling, ``A {CGI} framework in {Python},'' \textit{Web Techniques} \textbf{3}: 43--46 (1998).
 \bibitem[5093]{Hennessy:2006:CAQ}
-J. L. Hennessy, D. A. Patterson, A. C. Arpaci-Dusseau, , \textit{et~al.}, \textit{Computer Architecture: {A} Quantitative Approach} (Morgan Kaufmann Publishers, 2006).
+J. L. Hennessy, D. A. Patterson, A. C. Arpaci-Dusseau, \textit{et~al.}, \textit{Computer Architecture: {A} Quantitative Approach} (Morgan Kaufmann Publishers, 2006).
 \bibitem[5094]{Baum:1996:MO}
 L. F. Baum, \textit{The Magic of Oz}, vol.~419 (Project Gutenberg, 1996).
 \bibitem[5095]{Ishizaki:2012:ADT}
@@ -13625,7 +13625,7 @@ J. F. Palmer and S. P. Morse, \textit{The 8087 Primer} (Wiley, 1984). Excellent 
 \bibitem[5342]{Ellis:ACR90}
 M. A. Ellis and B. Stroustrup, \textit{The Annotated {C++} Reference Manual} (Ad{\-d}i{\-s}on-Wes{\-l}ey, 1990).
 \bibitem[5343]{Katz:2007:MEM}
-V. J. Katz, A. Imhausen, E. Robson, J. W. Dauben, K. Plofker, , \textit{et~al.}, eds, \textit{The mathematics of {Egypt}, {Mesopotamia}, {China}, {India}, and {Islam}: a sourcebook} (Princeton University Press, 2007).
+V. J. Katz, A. Imhausen, E. Robson, J. W. Dauben, K. Plofker, \textit{et~al.}, eds, \textit{The mathematics of {Egypt}, {Mesopotamia}, {China}, {India}, and {Islam}: a sourcebook} (Princeton University Press, 2007).
 \bibitem[5344]{Bull:2005:ES}
 B. Bull, ``Exemplar Sampling,'' \textit{The American Statistician} \textbf{59}: 166--172 (2005).
 \bibitem[5345]{Preece:1981:DFD}
@@ -14199,7 +14199,7 @@ J. {Eichenauer-Herrmann}, H. Grothe, and J. Lehn, ``On the Period Length of Pseu
 \bibitem[5603]{Graham:CM89}
 R. L. Graham, D. E. Knuth, and O. Patashnik, \textit{Concrete Mathematics} (Ad{\-d}i{\-s}on-Wes{\-l}ey, 1989).
 \bibitem[5604]{Hanley:2001:TCV}
-J. A. Hanley, L. Joseph, . {Platt, Robert}, , \textit{et~al.}, ``Teacher's Corner --- Visualizing the Median as the Minimum-Deviation Location,'' \textit{The American Statistician} \textbf{55}: 150--152 (2001).
+J. A. Hanley, L. Joseph, . {Platt, Robert}, \textit{et~al.}, ``Teacher's Corner --- Visualizing the Median as the Minimum-Deviation Location,'' \textit{The American Statistician} \textbf{55}: 150--152 (2001).
 \bibitem[5605]{Hinsen:2007:PSP}
 K. Hinsen, ``Parallel Scripting with {Python},'' \textit{Computing in Science and Engineering} \textbf{9}: 82--89 (2007).
 \bibitem[5606]{Schrijver:LP}
@@ -14215,7 +14215,7 @@ A. Compagner and A. Hoogland, ``Maximum Length Sequences, Cellular Automata, and
 \bibitem[5610]{Pharr:2005:GGP}
 M. Pharr and R. Fernando, eds, \textit{{GPU} gems 2: programming techniques for high-performance graphics and general-purpose computation} (Ad{\-d}i{\-s}on-Wes{\-l}ey, 2005).
 \bibitem[5611]{Nagasaka:2005:BLD}
-K. Nagasaka, ``{Benford}'s law with different basis,'' in \textit{{Journ{\'e}es Arithm{\'e}tiques XXIV, Marseilles, July 4--8, 2005, Universit{\'e} de Provence and Universit{\'e} de la M{\'e}diterran{\'e}e and CNRS Marseilles, France}}, G. Barat, H. Daud{\'e}, M. Laurent, P. Liardet, S. Louboutin, , \textit{et~al.}, eds, pp.~1--2 (2005). 
+K. Nagasaka, ``{Benford}'s law with different basis,'' in \textit{{Journ{\'e}es Arithm{\'e}tiques XXIV, Marseilles, July 4--8, 2005, Universit{\'e} de Provence and Universit{\'e} de la M{\'e}diterran{\'e}e and CNRS Marseilles, France}}, G. Barat, H. Daud{\'e}, M. Laurent, P. Liardet, S. Louboutin, \textit{et~al.}, eds, pp.~1--2 (2005). 
 \bibitem[5612]{Escobar:1993:NUR}
 L. A. Escobar and E. B. Moser, ``A Note on the Updating of Regression Estimates,'' \textit{The American Statistician} \textbf{47}: 192--194 (1993).
 \bibitem[5613]{USENIX:PUC94}
@@ -14347,7 +14347,7 @@ J. A. Garay and I. S. Gopal, ``Call preemption in communications networks,'' in 
 \bibitem[5670]{Jerome:1997:CK}
 J. K. {Jerome, (Jerome Klapka)}, \textit{The Cost of Kindness}, vol.~866 (Project Gutenberg, 1997).
 \bibitem[5671]{Eddahibi:2004:DAM}
-M. Eddahibi, A. Lazrek, and K. Sami, ``Dynamic {Arabic} Mathematical Fonts,'' in \textit{{\TeX}, {XML}, and Digital Typography: International Conference on {\TeX}, XML, and Digital Typography, held jointly with the 25th Annual Meeting of the TeX Users Group, TUG 2004, Xanthi, Greece, August 30--September 3, 2004: Proceedings}, A. Syropoulos, K. Berry, Y. Haralambous, B. Hughes, S. Peter, , \textit{et~al.}, eds, in Lecture Notes in Computer Science \textbf{3130}, pp.~149--157 (2004). 
+M. Eddahibi, A. Lazrek, and K. Sami, ``Dynamic {Arabic} Mathematical Fonts,'' in \textit{{\TeX}, {XML}, and Digital Typography: International Conference on {\TeX}, XML, and Digital Typography, held jointly with the 25th Annual Meeting of the TeX Users Group, TUG 2004, Xanthi, Greece, August 30--September 3, 2004: Proceedings}, A. Syropoulos, K. Berry, Y. Haralambous, B. Hughes, S. Peter, \textit{et~al.}, eds, in Lecture Notes in Computer Science \textbf{3130}, pp.~149--157 (2004). 
 \bibitem[5672]{Deitel:2002:PHP}
 H. M. Deitel, P. Deitel, J. Liperi, and B. Wiedermann, \textit{{Python} How To Program} (P T R Pren{\-}tice-Hall, 2002).
 \bibitem[5673]{Geyer:2004:DFD}
@@ -14365,7 +14365,7 @@ G. J. Chaitin, ``On the Length of Programs for Computing Finite Binary Sequences
 \bibitem[5679]{Bessant:2002:GTO}
 K. C. Bessant and E. D. MacPherson, ``General --- Thoughts on the Origins, Concepts, and Pedagogy of Statistics as a ``Separate Discipline'','' \textit{The American Statistician} \textbf{56}: 22--28 (2002).
 \bibitem[568]{Przechlewski:2004:MTR}
-T. Przechlewski, ``Managing {\TeX} Resources with {XML} Topic Maps,'' in \textit{{\TeX}, {XML}, and Digital Typography: International Conference on {\TeX}, XML, and Digital Typography, held jointly with the 25th Annual Meeting of the TeX Users Group, TUG 2004, Xanthi, Greece, August 30--September 3, 2004: Proceedings}, A. Syropoulos, K. Berry, Y. Haralambous, B. Hughes, S. Peter, , \textit{et~al.}, eds, in Lecture Notes in Computer Science \textbf{3130}, pp.~216--228 (2004). 
+T. Przechlewski, ``Managing {\TeX} Resources with {XML} Topic Maps,'' in \textit{{\TeX}, {XML}, and Digital Typography: International Conference on {\TeX}, XML, and Digital Typography, held jointly with the 25th Annual Meeting of the TeX Users Group, TUG 2004, Xanthi, Greece, August 30--September 3, 2004: Proceedings}, A. Syropoulos, K. Berry, Y. Haralambous, B. Hughes, S. Peter, \textit{et~al.}, eds, in Lecture Notes in Computer Science \textbf{3130}, pp.~216--228 (2004). 
 \bibitem[5680]{Myhill:1990:PTI}
 M. Myhill, ``Publishing {\TeX}nical {INFORMATION}: typesetting by database,'' \textit{Program} \textbf{24}: 281--289 (1990).
 \bibitem[5681]{Lovasz:SetCover}
@@ -14911,7 +14911,7 @@ C. Beccari, \textit{{\LaTeX}\emdash{}Guida a un sistema di editoria elettronica}
 \bibitem[5925]{Stockton:1996:MEO}
 F. R. Stockton, \textit{The Magic Egg and Other Stories}, vol.~429 (Project Gutenberg, 1996).
 \bibitem[5927]{Harris:2001:LEC}
-D. T. Harris, R. M. Kline, P. Rose, R. M. Hazen, S. C. Carvajal, A. J. Romero, J. Ficek, V. Collin, E. Manley, , \textit{et~al.}, ``Letters to the Editors: Cord Blood: Stat; Amino Acids Through the Looking Glass; Pride and Praise; What Price ``Purer'' Agriculture; No {GM} Risks? Hmm, Sounds Familiar; Restricted Abortion, Deadly Consequences; {Ursula LeGuin}, Where Are You?; Not a Lifestyle Disease,'' \textit{Scientific American} \textbf{285}: 8--10 (2001).
+D. T. Harris, R. M. Kline, P. Rose, R. M. Hazen, S. C. Carvajal, A. J. Romero, J. Ficek, V. Collin, E. Manley, \textit{et~al.}, ``Letters to the Editors: Cord Blood: Stat; Amino Acids Through the Looking Glass; Pride and Praise; What Price ``Purer'' Agriculture; No {GM} Risks? Hmm, Sounds Familiar; Restricted Abortion, Deadly Consequences; {Ursula LeGuin}, Where Are You?; Not a Lifestyle Disease,'' \textit{Scientific American} \textbf{285}: 8--10 (2001).
 \bibitem[5928]{Dickens:1997:MC}
 C. Dickens, \textit{Martin Chuzzlewit}, vol.~968 (Project Gutenberg, 1997).
 \bibitem[5929]{Anonymous:2002:NPc}
@@ -14965,9 +14965,9 @@ J. D. Barrow, \textit{Pi in the sky: counting, thinking, and being} (Clarendon P
 \bibitem[5950]{Stewart:2001:MRGa}
 I. Stewart, ``Mathematical Recreations: Game Theory: Strategies: Dots-and-Boxes for Experts,'' \textit{Scientific American} \textbf{284}: 102--103 (2001).
 \bibitem[5951]{Heath:1997:PES}
-M. Heath, V. Torczon, G. Astfalk, P. E. Bj{\o}rstad, A. H. Karp, , \textit{et~al.}, eds, \textit{Proceedings of the Eighth {SIAM} Conference on Parallel Processing for Scientific Computing. Held in Minneapolis, {MN}, March 14--17, 1997},  (1997). CD-ROM for Windows, Macintosh and UNIX; no paper form published.
+M. Heath, V. Torczon, G. Astfalk, P. E. Bj{\o}rstad, A. H. Karp, \textit{et~al.}, eds, \textit{Proceedings of the Eighth {SIAM} Conference on Parallel Processing for Scientific Computing. Held in Minneapolis, {MN}, March 14--17, 1997},  (1997). CD-ROM for Windows, Macintosh and UNIX; no paper form published.
 \bibitem[5951]{Beazley:1997:BFL}
-D. M. Beazley and P. S. Lomdahl, ``Building flexible large-scale scientific computing applications with scripting languages,'' in \textit{Proceedings of the Eighth SIAM Conference on Parallel Processing for Scientific Computing. Held in Minneapolis, MN, March 14--17, 1997}, M. Heath, V. Torczon, G. Astfalk, P. E. Bj{\o}rstad, A. H. Karp, , \textit{et~al.}, eds (1997). CD-ROM for Windows, Macintosh and UNIX; no paper form published.
+D. M. Beazley and P. S. Lomdahl, ``Building flexible large-scale scientific computing applications with scripting languages,'' in \textit{Proceedings of the Eighth SIAM Conference on Parallel Processing for Scientific Computing. Held in Minneapolis, MN, March 14--17, 1997}, M. Heath, V. Torczon, G. Astfalk, P. E. Bj{\o}rstad, A. H. Karp, \textit{et~al.}, eds (1997). CD-ROM for Windows, Macintosh and UNIX; no paper form published.
 \bibitem[5952]{rHEL93c}
 P. Hellekalek, ``General Discrepancy Estimates {III}: the {E}rd{\"o}s-{T}ur{\'a}n-{K}oksma Inequality for the {H}aar Function System,'' \textit{Monatsh. Math.} \textbf{120}: 25--45 (1995).
 \bibitem[5953]{rTSO03a}
@@ -15579,7 +15579,7 @@ D. McMullin, ``News scan: {Lockerbie} Insurance: Hardened Luggage Containers Can
 \bibitem[6229]{KinLan88}
 N. G. Kinnersley and M. A. Langston, ``Online variable-sized bin packing,'' \textit{Discrete Appl. Math.} \textbf{22}: 143--148 (1988).
 \bibitem[623]{Bzyl:2004:MXC}
-W. Bzyl and T. Przechlewski, ``Migrating to {XML}: The Case of the {GUST Bulletin} Archive,'' in \textit{{\TeX}, {XML}, and Digital Typography: International Conference on {\TeX}, XML, and Digital Typography, held jointly with the 25th Annual Meeting of the TeX Users Group, TUG 2004, Xanthi, Greece, August 30--September 3, 2004: Proceedings}, A. Syropoulos, K. Berry, Y. Haralambous, B. Hughes, S. Peter, , \textit{et~al.}, eds, in Lecture Notes in Computer Science \textbf{3130}, pp.~169--178 (2004). 
+W. Bzyl and T. Przechlewski, ``Migrating to {XML}: The Case of the {GUST Bulletin} Archive,'' in \textit{{\TeX}, {XML}, and Digital Typography: International Conference on {\TeX}, XML, and Digital Typography, held jointly with the 25th Annual Meeting of the TeX Users Group, TUG 2004, Xanthi, Greece, August 30--September 3, 2004: Proceedings}, A. Syropoulos, K. Berry, Y. Haralambous, B. Hughes, S. Peter, \textit{et~al.}, eds, in Lecture Notes in Computer Science \textbf{3130}, pp.~169--178 (2004). 
 \bibitem[6230]{Yao80A}
 A. C. C. Yao, ``New algorithms for bin packing,'' \textit{J. ACM} \textbf{27}: 207--227 (1980).
 \bibitem[6231]{Karger:Workspace}
@@ -15683,7 +15683,7 @@ H. de Balzac, \textit{Catherine de Medici}, vol.~1854 (Project Gutenberg, 1999).
 \bibitem[6251]{Menduno:2000:NW}
 M. Menduno, ``No Way Up,'' \textit{Scientific American} \textbf{283}: 58--?? (2000).
 \bibitem[6252]{Dodd:1997:ASG}
-J. S. Dodd, M. Coyner, M. Jacobs, B. F. Polansky, K. B. Schowen, , \textit{et~al.}, eds, \textit{The {ACS} Style Guide: {A} Manual for Authors and Editors} (American Chemical Society, 1997).
+J. S. Dodd, M. Coyner, M. Jacobs, B. F. Polansky, K. B. Schowen, \textit{et~al.}, eds, \textit{The {ACS} Style Guide: {A} Manual for Authors and Editors} (American Chemical Society, 1997).
 \bibitem[6253]{Balzac:1999:CB}
 H. de Balzac, \textit{Cousin Betty}, vol.~1749 (Project Gutenberg, 1999).
 \bibitem[6254]{CouWeb90}
@@ -16361,31 +16361,31 @@ H. G. Wells, \textit{Ann Veronica}, vol.~524 (Project Gutenberg, 1996).
 \bibitem[6555]{Ehlinger:2000:CTM}
 E. Ehlinger, ``Creating Truly Maintainable Class Factories,'' \textit{C/C++ Users Journal} \textbf{18}: 22--?? (2000).
 \bibitem[6556]{Syropoulos:2004:TXD}
-A. Syropoulos, K. Berry, Y. Haralambous, B. Hughes, S. Peter, , \textit{et~al.}, eds, \textit{{\TeX}, {XML}, and Digital Typography: International Conference on {\TeX}, {XML}, and Digital Typography, held jointly with the 25th Annual Meeting of the Te{X} Users Group, {TUG 2004}, Xanthi, Greece, August 30--September 3, 2004: Proceedings}, vol.~3130 (2004).
+A. Syropoulos, K. Berry, Y. Haralambous, B. Hughes, S. Peter, \textit{et~al.}, eds, \textit{{\TeX}, {XML}, and Digital Typography: International Conference on {\TeX}, {XML}, and Digital Typography, held jointly with the 25th Annual Meeting of the Te{X} Users Group, {TUG 2004}, Xanthi, Greece, August 30--September 3, 2004: Proceedings}, vol.~3130 (2004).
 \bibitem[6556]{Loverdos:2004:DTN}
-C. K. K. Loverdos and A. Syropoulos, ``Digital Typography in the New Millennium: Flexible Documents by a Flexible Engine,'' in \textit{{\TeX}, {XML}, and Digital Typography: International Conference on {\TeX}, XML, and Digital Typography, held jointly with the 25th Annual Meeting of the TeX Users Group, TUG 2004, Xanthi, Greece, August 30--September 3, 2004: Proceedings}, A. Syropoulos, K. Berry, Y. Haralambous, B. Hughes, S. Peter, , \textit{et~al.}, eds, in Lecture Notes in Computer Science \textbf{3130}, pp.~1--16 (2004). 
+C. K. K. Loverdos and A. Syropoulos, ``Digital Typography in the New Millennium: Flexible Documents by a Flexible Engine,'' in \textit{{\TeX}, {XML}, and Digital Typography: International Conference on {\TeX}, XML, and Digital Typography, held jointly with the 25th Annual Meeting of the TeX Users Group, TUG 2004, Xanthi, Greece, August 30--September 3, 2004: Proceedings}, A. Syropoulos, K. Berry, Y. Haralambous, B. Hughes, S. Peter, \textit{et~al.}, eds, in Lecture Notes in Computer Science \textbf{3130}, pp.~1--16 (2004). 
 \bibitem[6556]{Goncalves:2004:FRM}
-L. N. Gon{\c{c}}alves, ``{\FEATPOST} and a Review of $3${D} {\MP} Packages,'' in \textit{{\TeX}, {XML}, and Digital Typography: International Conference on {\TeX}, XML, and Digital Typography, held jointly with the 25th Annual Meeting of the TeX Users Group, TUG 2004, Xanthi, Greece, August 30--September 3, 2004: Proceedings}, A. Syropoulos, K. Berry, Y. Haralambous, B. Hughes, S. Peter, , \textit{et~al.}, eds, in Lecture Notes in Computer Science \textbf{3130}, pp.~112--124 (2004). 
+L. N. Gon{\c{c}}alves, ``{\FEATPOST} and a Review of $3${D} {\MP} Packages,'' in \textit{{\TeX}, {XML}, and Digital Typography: International Conference on {\TeX}, XML, and Digital Typography, held jointly with the 25th Annual Meeting of the TeX Users Group, TUG 2004, Xanthi, Greece, August 30--September 3, 2004: Proceedings}, A. Syropoulos, K. Berry, Y. Haralambous, B. Hughes, S. Peter, \textit{et~al.}, eds, in Lecture Notes in Computer Science \textbf{3130}, pp.~112--124 (2004). 
 \bibitem[6556]{Piska:2004:CTF}
-K. P{\'\i}{\v{s}}ka, ``Creating {Type 1} Fonts from {\MF} Sources: Comparison of Tools, Techniques and Results,'' in \textit{{\TeX}, {XML}, and Digital Typography: International Conference on {\TeX}, XML, and Digital Typography, held jointly with the 25th Annual Meeting of the TeX Users Group, TUG 2004, Xanthi, Greece, August 30--September 3, 2004: Proceedings}, A. Syropoulos, K. Berry, Y. Haralambous, B. Hughes, S. Peter, , \textit{et~al.}, eds, in Lecture Notes in Computer Science \textbf{3130}, pp.~240--256 (2004). 
+K. P{\'\i}{\v{s}}ka, ``Creating {Type 1} Fonts from {\MF} Sources: Comparison of Tools, Techniques and Results,'' in \textit{{\TeX}, {XML}, and Digital Typography: International Conference on {\TeX}, XML, and Digital Typography, held jointly with the 25th Annual Meeting of the TeX Users Group, TUG 2004, Xanthi, Greece, August 30--September 3, 2004: Proceedings}, A. Syropoulos, K. Berry, Y. Haralambous, B. Hughes, S. Peter, \textit{et~al.}, eds, in Lecture Notes in Computer Science \textbf{3130}, pp.~240--256 (2004). 
 \bibitem[6556]{Likos:2004:JBC}
-J. Likos, ``{$\mu o \nu o 2 \pi o \lambda \upsilon$}: {Java}-Based Conversion of Monotonic to Polytonic {Greek},'' in \textit{{\TeX}, {XML}, and Digital Typography: International Conference on {\TeX}, XML, and Digital Typography, held jointly with the 25th Annual Meeting of the TeX Users Group, TUG 2004, Xanthi, Greece, August 30--September 3, 2004: Proceedings}, A. Syropoulos, K. Berry, Y. Haralambous, B. Hughes, S. Peter, , \textit{et~al.}, eds, in Lecture Notes in Computer Science \textbf{3130}, pp.~34--54 (2004). 
+J. Likos, ``{$\mu o \nu o 2 \pi o \lambda \upsilon$}: {Java}-Based Conversion of Monotonic to Polytonic {Greek},'' in \textit{{\TeX}, {XML}, and Digital Typography: International Conference on {\TeX}, XML, and Digital Typography, held jointly with the 25th Annual Meeting of the TeX Users Group, TUG 2004, Xanthi, Greece, August 30--September 3, 2004: Proceedings}, A. Syropoulos, K. Berry, Y. Haralambous, B. Hughes, S. Peter, \textit{et~al.}, eds, in Lecture Notes in Computer Science \textbf{3130}, pp.~34--54 (2004). 
 \bibitem[6556]{Cho:2004:TCL}
-J.-H. Cho and H. Okumura, ``Typesetting {CJK} Languages with {$\Omega$},'' in \textit{{\TeX}, {XML}, and Digital Typography: International Conference on {\TeX}, XML, and Digital Typography, held jointly with the 25th Annual Meeting of the TeX Users Group, TUG 2004, Xanthi, Greece, August 30--September 3, 2004: Proceedings}, A. Syropoulos, K. Berry, Y. Haralambous, B. Hughes, S. Peter, , \textit{et~al.}, eds, in Lecture Notes in Computer Science \textbf{3130}, pp.~139--148 (2004). 
+J.-H. Cho and H. Okumura, ``Typesetting {CJK} Languages with {$\Omega$},'' in \textit{{\TeX}, {XML}, and Digital Typography: International Conference on {\TeX}, XML, and Digital Typography, held jointly with the 25th Annual Meeting of the TeX Users Group, TUG 2004, Xanthi, Greece, August 30--September 3, 2004: Proceedings}, A. Syropoulos, K. Berry, Y. Haralambous, B. Hughes, S. Peter, \textit{et~al.}, eds, in Lecture Notes in Computer Science \textbf{3130}, pp.~139--148 (2004). 
 \bibitem[6556]{Laurens:2004:IIT}
-J. Laurens, ``i{\TeX}Mac: An Integrated {\TeX} Environment for {Mac OS X},'' in \textit{{\TeX}, {XML}, and Digital Typography: International Conference on {\TeX}, XML, and Digital Typography, held jointly with the 25th Annual Meeting of the TeX Users Group, TUG 2004, Xanthi, Greece, August 30--September 3, 2004: Proceedings}, A. Syropoulos, K. Berry, Y. Haralambous, B. Hughes, S. Peter, , \textit{et~al.}, eds, in Lecture Notes in Computer Science \textbf{3130}, pp.~192--202 (2004). 
+J. Laurens, ``i{\TeX}Mac: An Integrated {\TeX} Environment for {Mac OS X},'' in \textit{{\TeX}, {XML}, and Digital Typography: International Conference on {\TeX}, XML, and Digital Typography, held jointly with the 25th Annual Meeting of the TeX Users Group, TUG 2004, Xanthi, Greece, August 30--September 3, 2004: Proceedings}, A. Syropoulos, K. Berry, Y. Haralambous, B. Hughes, S. Peter, \textit{et~al.}, eds, in Lecture Notes in Computer Science \textbf{3130}, pp.~192--202 (2004). 
 \bibitem[6556]{Holecek:2004:APG}
-J. Hole{\v{c}}ek and P. Sojka, ``Animations in {\pdfTeX}-Generated {PDF}: a New Method for Directly Embedding Animation into {PDF},'' in \textit{{\TeX}, {XML}, and Digital Typography: International Conference on {\TeX}, XML, and Digital Typography, held jointly with the 25th Annual Meeting of the TeX Users Group, TUG 2004, Xanthi, Greece, August 30--September 3, 2004: Proceedings}, A. Syropoulos, K. Berry, Y. Haralambous, B. Hughes, S. Peter, , \textit{et~al.}, eds, in Lecture Notes in Computer Science \textbf{3130}, pp.~179--191 (2004). 
+J. Hole{\v{c}}ek and P. Sojka, ``Animations in {\pdfTeX}-Generated {PDF}: a New Method for Directly Embedding Animation into {PDF},'' in \textit{{\TeX}, {XML}, and Digital Typography: International Conference on {\TeX}, XML, and Digital Typography, held jointly with the 25th Annual Meeting of the TeX Users Group, TUG 2004, Xanthi, Greece, August 30--September 3, 2004: Proceedings}, A. Syropoulos, K. Berry, Y. Haralambous, B. Hughes, S. Peter, \textit{et~al.}, eds, in Lecture Notes in Computer Science \textbf{3130}, pp.~179--191 (2004). 
 \bibitem[6556]{Schaefer:2004:SSC}
-F.-R. Schaefer, ``{\c{S}}{\"a}fer{\TeX}: Source Code Esthetics for Automated Typesetting,'' in \textit{{\TeX}, {XML}, and Digital Typography: International Conference on {\TeX}, XML, and Digital Typography, held jointly with the 25th Annual Meeting of the TeX Users Group, TUG 2004, Xanthi, Greece, August 30--September 3, 2004: Proceedings}, A. Syropoulos, K. Berry, Y. Haralambous, B. Hughes, S. Peter, , \textit{et~al.}, eds, in Lecture Notes in Computer Science \textbf{3130}, pp.~229--239 (2004). 
+F.-R. Schaefer, ``{\c{S}}{\"a}fer{\TeX}: Source Code Esthetics for Automated Typesetting,'' in \textit{{\TeX}, {XML}, and Digital Typography: International Conference on {\TeX}, XML, and Digital Typography, held jointly with the 25th Annual Meeting of the TeX Users Group, TUG 2004, Xanthi, Greece, August 30--September 3, 2004: Proceedings}, A. Syropoulos, K. Berry, Y. Haralambous, B. Hughes, S. Peter, \textit{et~al.}, eds, in Lecture Notes in Computer Science \textbf{3130}, pp.~229--239 (2004). 
 \bibitem[6556]{Filippou:2004:HPA}
-D. Filippou, ``Hyphenation Patterns for Ancient and Modern {Greek},'' in \textit{{\TeX}, {XML}, and Digital Typography: International Conference on {\TeX}, XML, and Digital Typography, held jointly with the 25th Annual Meeting of the TeX Users Group, TUG 2004, Xanthi, Greece, August 30--September 3, 2004: Proceedings}, A. Syropoulos, K. Berry, Y. Haralambous, B. Hughes, S. Peter, , \textit{et~al.}, eds, in Lecture Notes in Computer Science \textbf{3130}, pp.~59--67 (2004). 
+D. Filippou, ``Hyphenation Patterns for Ancient and Modern {Greek},'' in \textit{{\TeX}, {XML}, and Digital Typography: International Conference on {\TeX}, XML, and Digital Typography, held jointly with the 25th Annual Meeting of the TeX Users Group, TUG 2004, Xanthi, Greece, August 30--September 3, 2004: Proceedings}, A. Syropoulos, K. Berry, Y. Haralambous, B. Hughes, S. Peter, \textit{et~al.}, eds, in Lecture Notes in Computer Science \textbf{3130}, pp.~59--67 (2004). 
 \bibitem[6556]{Eddahibi:2004:AMD}
-M. Banouni, M. Elyaakoubi, and A. Lazrek, ``{Arabic} Mathematical e-Documents,'' in \textit{{\TeX}, {XML}, and Digital Typography: International Conference on {\TeX}, XML, and Digital Typography, held jointly with the 25th Annual Meeting of the TeX Users Group, TUG 2004, Xanthi, Greece, August 30--September 3, 2004: Proceedings}, A. Syropoulos, K. Berry, Y. Haralambous, B. Hughes, S. Peter, , \textit{et~al.}, eds, in Lecture Notes in Computer Science \textbf{3130}, pp.~158--168 (2004). 
+M. Banouni, M. Elyaakoubi, and A. Lazrek, ``{Arabic} Mathematical e-Documents,'' in \textit{{\TeX}, {XML}, and Digital Typography: International Conference on {\TeX}, XML, and Digital Typography, held jointly with the 25th Annual Meeting of the TeX Users Group, TUG 2004, Xanthi, Greece, August 30--September 3, 2004: Proceedings}, A. Syropoulos, K. Berry, Y. Haralambous, B. Hughes, S. Peter, \textit{et~al.}, eds, in Lecture Notes in Computer Science \textbf{3130}, pp.~158--168 (2004). 
 \bibitem[6556]{Beesley:2004:TDA}
-K. R. Beesley, ``Typesetting the {Deseret} Alphabet with {\LaTeX} and {\MF},'' in \textit{{\TeX}, {XML}, and Digital Typography: International Conference on {\TeX}, XML, and Digital Typography, held jointly with the 25th Annual Meeting of the TeX Users Group, TUG 2004, Xanthi, Greece, August 30--September 3, 2004: Proceedings}, A. Syropoulos, K. Berry, Y. Haralambous, B. Hughes, S. Peter, , \textit{et~al.}, eds, in Lecture Notes in Computer Science \textbf{3130}, pp.~68--111 (2004). 
+K. R. Beesley, ``Typesetting the {Deseret} Alphabet with {\LaTeX} and {\MF},'' in \textit{{\TeX}, {XML}, and Digital Typography: International Conference on {\TeX}, XML, and Digital Typography, held jointly with the 25th Annual Meeting of the TeX Users Group, TUG 2004, Xanthi, Greece, August 30--September 3, 2004: Proceedings}, A. Syropoulos, K. Berry, Y. Haralambous, B. Hughes, S. Peter, \textit{et~al.}, eds, in Lecture Notes in Computer Science \textbf{3130}, pp.~68--111 (2004). 
 \bibitem[6556]{Plaice:2004:MOO}
-J. Plaice, Y. Haralambous, P. Swoboda, and G. Bella, ``Moving {$\Omega$} to an Object-Oriented Platform,'' in \textit{{\TeX}, {XML}, and Digital Typography: International Conference on {\TeX}, XML, and Digital Typography, held jointly with the 25th Annual Meeting of the TeX Users Group, TUG 2004, Xanthi, Greece, August 30--September 3, 2004: Proceedings}, A. Syropoulos, K. Berry, Y. Haralambous, B. Hughes, S. Peter, , \textit{et~al.}, eds, in Lecture Notes in Computer Science \textbf{3130}, pp.~17--26 (2004). 
+J. Plaice, Y. Haralambous, P. Swoboda, and G. Bella, ``Moving {$\Omega$} to an Object-Oriented Platform,'' in \textit{{\TeX}, {XML}, and Digital Typography: International Conference on {\TeX}, XML, and Digital Typography, held jointly with the 25th Annual Meeting of the TeX Users Group, TUG 2004, Xanthi, Greece, August 30--September 3, 2004: Proceedings}, A. Syropoulos, K. Berry, Y. Haralambous, B. Hughes, S. Peter, \textit{et~al.}, eds, in Lecture Notes in Computer Science \textbf{3130}, pp.~17--26 (2004). 
 \bibitem[6557]{Harville:1994:HCA}
 D. A. Harville and M. H. Smith, ``The Home-Court Advantage: How Large Is It and Does It Vary From Team to Team?'' \textit{The American Statistician} \textbf{48}: 22--?? (1994).
 \bibitem[6558]{Fischetti:2002:WKC}
@@ -16491,7 +16491,7 @@ R. W. Service, \textit{Rhymes of a Red Cross Man}, vol.~315 (Project Gutenberg, 
 \bibitem[6601]{KalPru98}
 B. Kalyanasundaram and K. Pruhs, ``Maximizing job completions online,'' in \textit{Proc. 6thEuropean Symp. on Algorithms (ESA)}, in Lecture Notes in Comput. Sci. \textbf{1461}, pp.~235--245 (1998). 
 \bibitem[6602]{Cody:1984:PRW}
-W. J. {Cody, Jr.}, J. T. Coonen, D. M. Gay, K. Hanson, D. G. Hough, W. Kahan, R. Karpinski, J. F. Palmer, F. N. Ris, , \textit{et~al.}, ``A Proposed Radix- and Word-length-independent Standard for Floating-Point Arithmetic,'' \textit{IEEE Micro} \textbf{4}: 86--100 (1984).
+W. J. {Cody, Jr.}, J. T. Coonen, D. M. Gay, K. Hanson, D. G. Hough, W. Kahan, R. Karpinski, J. F. Palmer, F. N. Ris, \textit{et~al.}, ``A Proposed Radix- and Word-length-independent Standard for Floating-Point Arithmetic,'' \textit{IEEE Micro} \textbf{4}: 86--100 (1984).
 \bibitem[6603]{JaLaRW96}
 J. Januszewski, M. Lassak, G. Rote, and G. J. Woeginger, ``Online q-adic covering by the method of the n-th segment and its application to online covering by cubes,'' \textit{Contributions to Algebra and Geometry} \textbf{37}: 51--65 (1996).
 \bibitem[6604]{IraRam94}
@@ -16513,7 +16513,7 @@ J. N. Franklin, ``Deterministic Simulation of Random Processes,'' \textit{Mathem
 \bibitem[6611]{ACM:1997:PAS}
 . {ACM}, ed., \textit{Proceedings of the {ACM} Symposium on User Interface Software and Technology. 10th Annual Symposium. {UIST} '97: Banff, Alberta, Canada, 14--17 October 1997},  (1997).
 \bibitem[6611]{Pierce:1997:AEU}
-J. S. Pierce, S. Audia, T. Burnette, K. Christiansen, D. Cosgrove, M. Conway, K. Hinckley, K. Monkaitis, J. Patten, , \textit{et~al.}, ``{Alice}: easy to use interactive {3D} graphics,'' in \textit{Proceedings of the ACM Symposium on User Interface Software and Technology. 10th Annual Symposium. UIST '97: Banff, Alberta, Canada, 14--17 October 1997}, . {ACM}, ed., pp.~77--78 (1997). 
+J. S. Pierce, S. Audia, T. Burnette, K. Christiansen, D. Cosgrove, M. Conway, K. Hinckley, K. Monkaitis, J. Patten, \textit{et~al.}, ``{Alice}: easy to use interactive {3D} graphics,'' in \textit{Proceedings of the ACM Symposium on User Interface Software and Technology. 10th Annual Symposium. UIST '97: Banff, Alberta, Canada, 14--17 October 1997}, . {ACM}, ed., pp.~77--78 (1997). 
 \bibitem[6612]{rNIE88d}
 H. Niederreiter, ``Low-Discrepancy and Low-Dispersion Sequences,'' \textit{Journal of Number Theory} \textbf{30}: 51--70 (1988).
 \bibitem[6613]{Laubscher:1965:IT}
@@ -18211,7 +18211,7 @@ L. Kuipers, ``\href{http://www.fq.math.ca/Scanned/7-5/kuipers-a.pdf}{Remark on a
 \bibitem[738]{Lackritz:1990:SEP}
 J. R. Lackritz, ``Salary Evaluation for Professional Baseball Players,'' \textit{The American Statistician} \textbf{44}: 4--?? (1990).
 \bibitem[7380]{DataGuides97}
-R. Goldman and J. Widom, ``DataGuides: Enabling Query Formulation and Optimization in Semistructured Databases,'' in \textit{VLDB'97, Proceedings of 23rd International Conference on Very Large Data Bases, August 25-29, 1997, Athens, Greece}, M. Jarke, M. J. Carey, K. R. Dittrich, F. H. Lochovsky, P. Loucopoulos, , \textit{et~al.}, eds, pp.~436--445 (1997). 
+R. Goldman and J. Widom, ``DataGuides: Enabling Query Formulation and Optimization in Semistructured Databases,'' in \textit{VLDB'97, Proceedings of 23rd International Conference on Very Large Data Bases, August 25-29, 1997, Athens, Greece}, M. Jarke, M. J. Carey, K. R. Dittrich, F. H. Lochovsky, P. Loucopoulos, \textit{et~al.}, eds, pp.~436--445 (1997). 
 \bibitem[7381]{Kaigh:1987:NGD}
 W. D. Kaigh and M. F. Driscoll, ``Numerical and graphical data summary using ${O}$-statistics,'' \textit{The American Statistician} \textbf{41}: 25--32 (1987).
 \bibitem[7382]{Adams:F9H92}
@@ -18347,7 +18347,7 @@ A. D. Aczel, \textit{Uranium wars: the scientific rivalry that created the nucle
 \bibitem[7441]{rTHO09a}
 D. B. Thomas, L. Howes, and W. Luk, ``A comparison of {CPUs, GPUs, FPGAs}, and massively parallel processor arrays for random number generation,'' in \textit{Proceedings of the ACM/SIGDA international symposium on Field programmable gate arrays}, pp.~63--72 (2009). 
 \bibitem[7442]{RSS10Spec}
-G. Beged-Dov, D. Brickley, R. Dornfest, I. Davis, L. Dodds, J. Eisenzopf, D. Galbraith, R. Guha, K. MacLeod, , \textit{et~al.}, ``{RDF Site Summary (RSS) 1.0 Specifcation}''.
+G. Beged-Dov, D. Brickley, R. Dornfest, I. Davis, L. Dodds, J. Eisenzopf, D. Galbraith, R. Guha, K. MacLeod, \textit{et~al.}, ``{RDF Site Summary (RSS) 1.0 Specifcation}''.
 \bibitem[7443]{Howland:1986:TAU}
 J. E. Howland, ``Typesetting {APL} using a Macintosh,'' \textit{ACM SIGAPL APL Quote Quad} \textbf{16}: 301--305 (1986).
 \bibitem[7444]{Meynell:1998:HC}
@@ -18649,7 +18649,7 @@ T. Sterling, ``How to Build a Hypercomputer,'' \textit{Scientific American} \tex
 \bibitem[7579]{Davi:2005:RTT}
 A. Davi, D. Haughton, N. Nasr, G. Shah, M. Skaletsky, and R. Spack, ``A Review of Two Text-Mining Packages,'' \textit{The American Statistician} \textbf{59}: 89--103 (2005).
 \bibitem[758]{Athale:2004:ULT}
-M. Athale and R. Athale, ``Using {\LaTeX} to Typeset a {Mar\={a}\d{t}h\={\i}-English} Dictionary,'' in \textit{{\TeX}, {XML}, and Digital Typography: International Conference on {\TeX}, XML, and Digital Typography, held jointly with the 25th Annual Meeting of the TeX Users Group, TUG 2004, Xanthi, Greece, August 30--September 3, 2004: Proceedings}, A. Syropoulos, K. Berry, Y. Haralambous, B. Hughes, S. Peter, , \textit{et~al.}, eds, in Lecture Notes in Computer Science \textbf{3130}, pp.~55--58 (2004). 
+M. Athale and R. Athale, ``Using {\LaTeX} to Typeset a {Mar\={a}\d{t}h\={\i}-English} Dictionary,'' in \textit{{\TeX}, {XML}, and Digital Typography: International Conference on {\TeX}, XML, and Digital Typography, held jointly with the 25th Annual Meeting of the TeX Users Group, TUG 2004, Xanthi, Greece, August 30--September 3, 2004: Proceedings}, A. Syropoulos, K. Berry, Y. Haralambous, B. Hughes, S. Peter, \textit{et~al.}, eds, in Lecture Notes in Computer Science \textbf{3130}, pp.~55--58 (2004). 
 \bibitem[7580]{GalilPan}
 Z. Galil and V. Pan, ``Improved Processor Bounds for Combinatorial Problems in {$\RNC$},'' \textit{Combinatorica} \textbf{8}: 189--200 (1988).
 \bibitem[7581]{Mentis:2009:RAD}
@@ -20363,7 +20363,7 @@ S. Alpern and S. Gal, \textit{The Theory of Search Games and Rendezvous} (Kluwer
 \bibitem[8353]{STOC08}
 ???, \textit{???},  (2008).
 \bibitem[8354]{Nemeth:2001:USA}
-E. Nemeth, G. Snyder, S. Seebass, T. R. Hein, A. Boggs, R. Braun, N. McClain, D. Crawl, L. McGinley, , \textit{et~al.}, \textit{{UNIX} System Administration Handbook} (Pren{\-}tice-Hall, 2001).
+E. Nemeth, G. Snyder, S. Seebass, T. R. Hein, A. Boggs, R. Braun, N. McClain, D. Crawl, L. McGinley, \textit{et~al.}, \textit{{UNIX} System Administration Handbook} (Pren{\-}tice-Hall, 2001).
 \bibitem[8355]{Kernighan:1989:USD}
 B. W. Kernighan, ``The {UNIX} System Document Preparation Tools: a Retrospective,'' \textit{AT\&T Technical Journal} \textbf{68}: 5--20 (1989).
 \bibitem[8356]{Haunsperger:1991:LCS}
@@ -20799,7 +20799,7 @@ H. R. Haggard, \textit{Allan Quatermain}, vol.~711 (Project Gutenberg, 1996).
 \bibitem[8554]{Karger:AdversarialNetworks}
 B. Haeupler, ``Analyzing Network Coding Gossip Made Easy (simpler proofs for stronger results even in adversarial dynamic networks),'' in \textit{Forty-Eighth Annual Allerton Conference on Communication, Control, and Computing} (2010). 
 \bibitem[8555]{goldman97}
-R. Goldman and J. Widom, ``DataGuides: Enabling Query Formulation and Optimization in Semistructured Databases,'' in \textit{Proceedings of 23rd International Conference on Very Large Data Bases}, M. Jarke, M. J. Carey, K. R. Dittrich, F. H. Lochovsky, P. Loucopoulos, , \textit{et~al.}, eds, pp.~436--445 (1997). 
+R. Goldman and J. Widom, ``DataGuides: Enabling Query Formulation and Optimization in Semistructured Databases,'' in \textit{Proceedings of 23rd International Conference on Very Large Data Bases}, M. Jarke, M. J. Carey, K. R. Dittrich, F. H. Lochovsky, P. Loucopoulos, \textit{et~al.}, eds, pp.~436--445 (1997). 
 \bibitem[8556]{KleRub96}
 J. Kleinberg and R. Rubenfield, ``Short paths in expander graphs,'' in \textit{Proc. 37thSymp. Foundations of Computer Science (FOCS)}, pp.~86--95 (1996). 
 \bibitem[8557]{Hazeltine:1997:LWC}
@@ -22659,7 +22659,7 @@ M. Zhu, ``Kernels and Ensembles,'' \textit{The American Statistician} \textbf{62
 \bibitem[9395]{PlatonicImitator:1999:E}
 P. Imitator, \textit{Eryxias}, vol.~1681 (Project Gutenberg, 1999).
 \bibitem[9396]{Richardson:2001:LEO}
-B. Richardson, . Anonymous, N. Hokanson, K. O. Burtch, J. V., J. Crosland, P. Taylor, S. Dubrowin, P. D. Roberts, , \textit{et~al.}, ``Letters to the Editor: Offended; {A} Real Bastard; Common Misconception; {Ada} Boy!; Wacky Names; Penultimate {Linux} Box?; {SuSe} Too Loosa; {LJ} Interactive; Sold on {{\em Soldier}}; {\tt groff} is Great; What's up with {Ogg}?; Changes to the {{\em Python Developer's Handook}},'' \textit{Linux journal} \textbf{83}: 6--142 (2001).
+B. Richardson, . Anonymous, N. Hokanson, K. O. Burtch, J. V., J. Crosland, P. Taylor, S. Dubrowin, P. D. Roberts, \textit{et~al.}, ``Letters to the Editor: Offended; {A} Real Bastard; Common Misconception; {Ada} Boy!; Wacky Names; Penultimate {Linux} Box?; {SuSe} Too Loosa; {LJ} Interactive; Sold on {{\em Soldier}}; {\tt groff} is Great; What's up with {Ogg}?; Changes to the {{\em Python Developer's Handook}},'' \textit{Linux journal} \textbf{83}: 6--142 (2001).
 \bibitem[9397]{Bhattacharya:2002:MVU}
 B. Bhattacharya and D. Habtzghi, ``Median of the $p$ Value Under the Alternative Hypothesis,'' \textit{The American Statistician} \textbf{56}: 202--?? (2002).
 \bibitem[9398]{Legler:2010:MIU}
