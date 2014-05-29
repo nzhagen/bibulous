@@ -512,7 +512,7 @@
                 <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="n">brace_idx</span><span class="o">+</span><span class="mi">1</span><span class="p">:]</span>
                 <span class="n">entry_brace_level</span> <span class="o">=</span> <span class="mi">1</span>
 
-            <span class="c">## If we are not current inside an active entry, then skip the line and wait until the the next entry.</span>
+            <span class="c">## If we are not currently inside an active entry, then skip the line and wait until the the next entry.</span>
             <span class="k">if</span> <span class="p">(</span><span class="n">entry_brace_level</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
                 <span class="k">if</span> <span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">!=</span> <span class="s">&#39;&#39;</span><span class="p">):</span>
                     <span class="n">bib_warning</span><span class="p">(</span><span class="s">&#39;Warning 001b: line#&#39;</span> <span class="o">+</span> <span class="nb">unicode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="s">&#39; of &quot;&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">+</span> <span class="s">&#39;&quot; has data &#39;</span> <span class="o">+</span> \
@@ -538,6 +538,8 @@
                     <span class="n">endpos</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
                     <span class="k">break</span>
 
+            <span class="c">## If we have returned to brace level 0, then finish appending the contents and send the entire set to the</span>
+            <span class="c">## parser.</span>
             <span class="k">if</span> <span class="p">(</span><span class="n">entry_brace_level</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
                 <span class="n">entrystr</span> <span class="o">+=</span> <span class="n">line</span><span class="p">[:</span><span class="n">endpos</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>      <span class="c">## the &quot;-1&quot; here to remove the final closing brace</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">parse_bibentry</span><span class="p">(</span><span class="n">entrystr</span><span class="p">,</span> <span class="n">entrytype</span><span class="p">)</span>
@@ -603,7 +605,11 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="c">## First get the entry key. Then send the remainder of the entry string to the parser.</span>
             <span class="n">idx</span> <span class="o">=</span> <span class="n">entrystr</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">idx</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">idx</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">entrystr</span><span class="p">):</span>
+                <span class="n">bib_warning</span><span class="p">(</span><span class="s">&#39;Warning 035: the entry starting on line #&#39;</span> <span class="o">+</span> <span class="nb">unicode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="s">&#39; of file &quot;&#39;</span> <span class="o">+</span> \
+                     <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">+</span> <span class="s">&#39;&quot; provides only an entry key (&quot;&#39;</span> <span class="o">+</span> <span class="n">entrystr</span> <span class="o">+</span> <span class="s">&#39;&quot; and no item contents.&#39;</span><span class="p">,</span> \
+                     <span class="bp">self</span><span class="o">.</span><span class="n">disable</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="p">(</span><span class="n">idx</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
                 <span class="n">bib_warning</span><span class="p">(</span><span class="s">&#39;Warning 003: the entry ending on line #&#39;</span> <span class="o">+</span> <span class="nb">unicode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="s">&#39; of file &quot;&#39;</span> <span class="o">+</span> \
                      <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">+</span> <span class="s">&#39;&quot; is does not have an &quot;,&quot; for defining the entry key. &#39;</span>
                      <span class="s">&#39;Skipping ...&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">disable</span><span class="p">)</span>
@@ -1035,6 +1041,11 @@
                     <span class="c">## Find out if the template has nested option blocks. If so, then add it to</span>
                     <span class="c">## the list of nested templates.</span>
                     <span class="n">levels</span> <span class="o">=</span> <span class="n">get_delim_levels</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="s">&#39;[&#39;</span><span class="p">,</span><span class="s">&#39;]&#39;</span><span class="p">))</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">levels</span><span class="p">:</span>
+                        <span class="n">bib_warning</span><span class="p">(</span><span class="s">&#39;Warning 036: the style template for entrytype &quot;&#39;</span> <span class="o">+</span> <span class="n">var</span> <span class="o">+</span> <span class="s">&#39;&quot; has unbalanced &#39;</span> <span class="o">+</span> \
+                                    <span class="s">&#39;square brackets. Skipping ...&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">disable</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">specials</span><span class="p">[</span><span class="n">var</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+
                     <span class="k">if</span> <span class="p">(</span><span class="mi">2</span> <span class="ow">in</span> <span class="n">levels</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">var</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nested_templates</span><span class="p">):</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">nested_templates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">var</span><span class="p">)</span>
 
@@ -1299,8 +1310,8 @@
             <span class="n">templatestr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bstdict</span><span class="p">[</span><span class="n">entrytype</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;entrytype &quot;&#39;</span> <span class="o">+</span> <span class="n">entrytype</span> <span class="o">+</span> <span class="s">&#39;&quot; does not have a template defined in the .bst file&#39;</span>
-            <span class="n">bib_warning</span><span class="p">(</span><span class="s">&#39;Warning 011: &#39;</span> <span class="o">+</span> <span class="n">msg</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">disable</span><span class="p">)</span>
-            <span class="k">return</span><span class="p">(</span><span class="n">itemstr</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\\</span><span class="s">textit{Warning: &#39;</span> <span class="o">+</span> <span class="n">msg</span> <span class="o">+</span> <span class="s">&#39;}.&#39;</span><span class="p">)</span>
+            <span class="n">bib_warning</span><span class="p">(</span><span class="s">&#39;Warning 011: &#39;</span> <span class="o">+</span> <span class="n">msg</span> <span class="o">+</span> <span class="s">&#39;. Skipping ...&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">disable</span><span class="p">)</span>
+            <span class="k">return</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">)</span>
 
         <span class="c">## Before checking which variables are defined and which not, we first need to evaluate the user-defined</span>
         <span class="c">## variables or else they will always be &quot;undefined&quot;. To make this work, we also need to provide the user</span>
@@ -1913,14 +1924,6 @@
             <span class="c">## Only insert the user-defined special field if the field is missing.</span>
             <span class="k">if</span> <span class="p">(</span><span class="n">key</span> <span class="ow">in</span> <span class="n">entry</span><span class="p">):</span>
                 <span class="k">continue</span>
-
-            <span class="c">## The &quot;sortkey&quot; special requires a special function to operate correctly.</span>
-            <span class="c">#zzz</span>
-            <span class="c">#if (key == &#39;sortkey&#39;):</span>
-            <span class="c">#    res = self.generate_sortkey(entrykey)</span>
-            <span class="c">#    self.bibdata[entrykey][key] = res</span>
-            <span class="c">#    print(&#39;generating sortkey for &quot;&#39; + entrykey + &#39;&quot;: &#39; + res)</span>
-            <span class="c">#    continue</span>
 
             <span class="n">templatestr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">specials</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
 
@@ -2546,7 +2549,7 @@
         <span class="c">## When using the &quot;uniquify&quot; operator, we need to be able to tell it the variable name. Use the &quot;options&quot;</span>
         <span class="c">## dictionary to get the variable&#39;s name into the &quot;get_indexed_variable()&quot; function, so we don&#39;t need to</span>
         <span class="c">## add an extra input variable.</span>
-        <span class="k">if</span> <span class="p">(</span><span class="s">&#39;.uniquify(num)&#39;</span> <span class="ow">in</span> <span class="n">variable</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="s">&#39;.uniquify(&#39;</span> <span class="ow">in</span> <span class="n">variable</span><span class="p">):</span>
             <span class="n">options</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s">&#39;varname&#39;</span><span class="p">:</span><span class="n">fieldname</span><span class="p">})</span>
 
         <span class="n">indexer</span> <span class="o">=</span> <span class="s">&#39;.&#39;</span> <span class="o">+</span> <span class="s">&#39;.&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">var_parts</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
@@ -2699,26 +2702,6 @@
                     <span class="k">return</span><span class="p">(</span><span class="n">newfield</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">return</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_indexed_variable</span><span class="p">(</span><span class="n">newfield</span><span class="p">,</span> <span class="n">newindexer</span><span class="p">,</span> <span class="n">entrykey</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">))</span>
-            <span class="k">elif</span> <span class="n">indexer</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;.if_singular(&#39;</span><span class="p">):</span>
-                <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s">r&#39;.if_singular\(.*\)&#39;</span><span class="p">,</span> <span class="n">indexer</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">UNICODE</span><span class="p">)</span>
-                <span class="n">end_idx</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">end</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-                <span class="n">result</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)[</span><span class="mi">13</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-                <span class="p">(</span><span class="n">variable_to_eval</span><span class="p">,</span> <span class="n">singular_form</span><span class="p">,</span> <span class="n">plural_form</span><span class="p">)</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">)</span>
-
-                <span class="k">if</span> <span class="p">(</span><span class="n">variable_to_eval</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">bibdata</span><span class="p">[</span><span class="n">entrykey</span><span class="p">]):</span>
-                    <span class="n">newfield</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
-                <span class="k">elif</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bibdata</span><span class="p">[</span><span class="n">entrykey</span><span class="p">][</span><span class="n">variable_to_eval</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
-                    <span class="n">suffix</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="n">singular_form</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span>
-                    <span class="n">newfield</span> <span class="o">=</span> <span class="n">field</span> <span class="o">+</span> <span class="n">suffix</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">suffix</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="n">plural_form</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span>
-                    <span class="n">newfield</span> <span class="o">=</span> <span class="n">field</span> <span class="o">+</span> <span class="n">suffix</span>
-
-                <span class="n">newindexer</span> <span class="o">=</span> <span class="n">indexer</span><span class="p">[</span><span class="n">end_idx</span><span class="p">:]</span>
-                <span class="k">if</span> <span class="p">(</span><span class="n">nelements</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">newindexer</span> <span class="o">==</span> <span class="s">&#39;&#39;</span><span class="p">):</span>
-                    <span class="k">return</span><span class="p">(</span><span class="n">newfield</span><span class="p">)</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="k">return</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_indexed_variable</span><span class="p">(</span><span class="n">newfield</span><span class="p">,</span> <span class="n">newindexer</span><span class="p">,</span> <span class="n">entrykey</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">))</span>
             <span class="k">elif</span> <span class="n">indexer</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;.lower()&#39;</span><span class="p">):</span>
                 <span class="n">newfield</span> <span class="o">=</span> <span class="n">purify_string</span><span class="p">(</span><span class="n">field</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
                 <span class="n">newindexer</span> <span class="o">=</span> <span class="n">indexer</span><span class="p">[</span><span class="mi">8</span><span class="p">:]</span>
@@ -2816,6 +2799,87 @@
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">newindexer</span> <span class="o">=</span> <span class="s">&#39;.&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">index_elements</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
                     <span class="k">return</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_indexed_variable</span><span class="p">(</span><span class="n">newfield</span><span class="p">,</span> <span class="n">newindexer</span><span class="p">,</span> <span class="n">entrykey</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="n">indexer</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;.if_singular(&#39;</span><span class="p">):</span>
+                <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s">r&#39;.if_singular\(.*\)&#39;</span><span class="p">,</span> <span class="n">indexer</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">UNICODE</span><span class="p">)</span>
+                <span class="n">end_idx</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">end</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)[</span><span class="mi">13</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>      <span class="c">## remove function name and parentheses</span>
+                <span class="p">(</span><span class="n">variable_to_eval</span><span class="p">,</span> <span class="n">singular_form</span><span class="p">,</span> <span class="n">plural_form</span><span class="p">)</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="p">(</span><span class="n">variable_to_eval</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">bibdata</span><span class="p">[</span><span class="n">entrykey</span><span class="p">]):</span>
+                    <span class="n">newfield</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+                <span class="k">elif</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bibdata</span><span class="p">[</span><span class="n">entrykey</span><span class="p">][</span><span class="n">variable_to_eval</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
+                    <span class="n">suffix</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="n">singular_form</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span>
+                    <span class="n">newfield</span> <span class="o">=</span> <span class="n">field</span> <span class="o">+</span> <span class="n">suffix</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">suffix</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="n">plural_form</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span>
+                    <span class="n">newfield</span> <span class="o">=</span> <span class="n">field</span> <span class="o">+</span> <span class="n">suffix</span>
+
+                <span class="n">newindexer</span> <span class="o">=</span> <span class="n">indexer</span><span class="p">[</span><span class="n">end_idx</span><span class="p">:]</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">nelements</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">newindexer</span> <span class="o">==</span> <span class="s">&#39;&#39;</span><span class="p">):</span>
+                    <span class="k">return</span><span class="p">(</span><span class="n">newfield</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_indexed_variable</span><span class="p">(</span><span class="n">newfield</span><span class="p">,</span> <span class="n">newindexer</span><span class="p">,</span> <span class="n">entrykey</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">))</span>
+<span class="c">#            elif indexer.startswith(&#39;.if_length_equals(&#39;):</span>
+<span class="c">#                match = re.search(r&#39;.if_length_equals\(.*\)&#39;, indexer, re.UNICODE)</span>
+<span class="c">#                end_idx = match.end(0)</span>
+<span class="c">#                result = match.group(0)[18:-1]      ## remove function name and parentheses</span>
+<span class="c">#                (variable_to_eval, test_length, var_if_equals, var_if_notequals) = result.split(&#39;,&#39;)</span>
+<span class="c">#                #pdb.set_trace()</span>
+<span class="c">#</span>
+<span class="c">#                if (variable_to_eval not in self.bibdata[entrykey]):</span>
+<span class="c">#                    newfield = &#39;&#39;</span>
+<span class="c">#                elif (len(self.bibdata[entrykey][variable_to_eval]) == int(test_length)):</span>
+<span class="c">#                    suffix = self.options[var_if_equals.strip()]</span>
+<span class="c">#                    newfield = field + suffix</span>
+<span class="c">#                else:</span>
+<span class="c">#                    suffix = self.options[var_if_notequals.strip()]</span>
+<span class="c">#                    newfield = field + suffix</span>
+<span class="c">#</span>
+<span class="c">#                newindexer = indexer[end_idx:]</span>
+<span class="c">#                if (nelements == 1) or (newindexer == &#39;&#39;):</span>
+<span class="c">#                    return(newfield)</span>
+<span class="c">#                else:</span>
+<span class="c">#                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))</span>
+<span class="c">#            elif indexer.startswith(&#39;.if_length_less_than(&#39;):</span>
+<span class="c">#                match = re.search(r&#39;.if_length_less_than\(.*\)&#39;, indexer, re.UNICODE)</span>
+<span class="c">#                end_idx = match.end(0)</span>
+<span class="c">#                result = match.group(0)[21:-1]      ## remove function name and parentheses</span>
+<span class="c">#                (variable_to_eval, test_length, var_if_lessthan, var_if_notlessthan) = result.split(&#39;,&#39;)</span>
+<span class="c">#</span>
+<span class="c">#                if (variable_to_eval not in self.bibdata[entrykey]):</span>
+<span class="c">#                    newfield = &#39;&#39;</span>
+<span class="c">#                elif (len(self.bibdata[entrykey][variable_to_eval]) == int(test_length)):</span>
+<span class="c">#                    suffix = self.options[var_if_lessthan.strip()]</span>
+<span class="c">#                    newfield = field + suffix</span>
+<span class="c">#                else:</span>
+<span class="c">#                    suffix = self.options[var_if_notlessthan.strip()]</span>
+<span class="c">#                    newfield = field + suffix</span>
+<span class="c">#</span>
+<span class="c">#                newindexer = indexer[end_idx:]</span>
+<span class="c">#                if (nelements == 1) or (newindexer == &#39;&#39;):</span>
+<span class="c">#                    return(newfield)</span>
+<span class="c">#                else:</span>
+<span class="c">#                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))</span>
+<span class="c">#            elif indexer.startswith(&#39;.if_length_more_than(&#39;):</span>
+<span class="c">#                match = re.search(r&#39;.if_length_more_than\(.*\)&#39;, indexer, re.UNICODE)</span>
+<span class="c">#                end_idx = match.end(0)</span>
+<span class="c">#                result = match.group(0)[21:-1]      ## remove function name and parentheses</span>
+<span class="c">#                (variable_to_eval, test_length, var_if_morethan, var_if_notmorethan) = result.split(&#39;,&#39;)</span>
+<span class="c">#</span>
+<span class="c">#                if (variable_to_eval not in self.bibdata[entrykey]):</span>
+<span class="c">#                    newfield = &#39;&#39;</span>
+<span class="c">#                elif (len(self.bibdata[entrykey][variable_to_eval]) == int(test_length)):</span>
+<span class="c">#                    suffix = self.options[var_if_morethan.strip()]</span>
+<span class="c">#                    newfield = field + suffix</span>
+<span class="c">#                else:</span>
+<span class="c">#                    suffix = self.options[var_if_notmorethan.strip()]</span>
+<span class="c">#                    newfield = field + suffix</span>
+<span class="c">#</span>
+<span class="c">#                newindexer = indexer[end_idx:]</span>
+<span class="c">#                if (nelements == 1) or (newindexer == &#39;&#39;):</span>
+<span class="c">#                    return(newfield)</span>
+<span class="c">#                else:</span>
+<span class="c">#                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))</span>
             <span class="c">#else:</span>
             <span class="c">#    msg = &#39;Warning 029c: the template for entry &#39; + entrykey + &#39; has an unknown function &#39; + \</span>
             <span class="c">#          &#39;&quot;&#39; + index_elements[0] + &#39;&quot;. Aborting template substitution&#39;</span>
@@ -3177,6 +3241,8 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;b&#39;</span><span class="p">)</span>       <span class="c">## add a &quot;brace level&quot; marker to the stack</span>
         <span class="k">elif</span> <span class="p">(</span><span class="n">c</span> <span class="o">==</span> <span class="n">delims</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="c">## If the stack is empty but the delimiter level isn&#39;t resolved, then the braces are unbalanced.</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">stack</span><span class="p">:</span> <span class="k">return</span><span class="p">([])</span>
             <span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="p">(</span><span class="n">operator</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">):</span> <span class="n">oplevels</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">stack</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s">&#39;o&#39;</span><span class="p">)</span>
@@ -4560,7 +4626,10 @@
     <span class="k">elif</span> <span class="p">(</span><span class="n">npersons</span> <span class="o">&gt;</span> <span class="n">maxnames</span><span class="p">):</span>
         <span class="c">## If the number of names in the list exceeds the maximum, then truncate the list to the first &quot;minnames&quot; only,</span>
         <span class="c">## and add &quot;et al.&quot; to the end of the string giving all the names.</span>
-        <span class="n">namestr</span> <span class="o">=</span> <span class="s">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">new_namelist</span><span class="p">[:</span><span class="n">minnames</span><span class="p">])</span> <span class="o">+</span> <span class="s">r&#39;, &#39;</span> <span class="o">+</span> <span class="n">options</span><span class="p">[</span><span class="s">&#39;etal_message&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">minnames</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">namestr</span> <span class="o">=</span> <span class="n">new_namelist</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">options</span><span class="p">[</span><span class="s">&#39;etal_message&#39;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">namestr</span> <span class="o">=</span> <span class="s">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">new_namelist</span><span class="p">[:</span><span class="n">minnames</span><span class="p">])</span> <span class="o">+</span> <span class="n">options</span><span class="p">[</span><span class="s">&#39;etal_message&#39;</span><span class="p">]</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;How did you get here?&#39;</span><span class="p">)</span>
 

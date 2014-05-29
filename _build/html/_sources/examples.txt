@@ -91,11 +91,11 @@ The following example is taken from a question posted at ``http://tex.stackexcha
 .. image:: _static/example5a.png
    :width: 60%
 
-The answerer's database file 
+That is the reference list entries should have the author list in bold, journal articles should have their title quoted using German-style quotation marks, and editor lists should be given in small caps. The first answerer to the OP's question gives an example database file 
 
 .. literalinclude:: ../examples/example5.bib
 
-makes use of separate formatting instructions for titles and subtitles, so that an appropriate style template is
+that makes use of separate formatting instructions for titles and subtitles, so that an appropriate style template is
 
 .. literalinclude:: ../examples/example5.bst
 
