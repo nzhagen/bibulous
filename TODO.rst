@@ -4,6 +4,37 @@ Python code to-do list: (including goals for version 2.0)
 The primary goal for version 2.0 is to incorporate integration with a front-end LaTeX package.
 For version 1.4, the goal is to have group templates working.
 
+- You no longer have functionality using the ``.N`` index (for maximum index). Put that back in.
+
+- If a user added any options blocks to their defined variables, then they may have turned an
+  unnested sequence into a nested one. Need to look for that. We can probably do this check
+  when the BST file is parsed, rather than when we do string substitution in the template
+  for every entry.
+
+- Get the ``backrefs`` option back up and working.
+
+- Add stuff from ``jpnbook`` and ``bibtex_items`` in ``/LabNotes/Bibulous/stuff to add to code/``.
+
+- Re-implement the "nameabbrev" field inside ``initialize_name()``. Note that in order to do 
+  this you will have to re-expand the name into a string first, perform abbrev replacement, and 
+  then re-convert the result back into the namelist. Here were two items in the testing suite 
+  that I previously used to use to test this::
+
+    %% Test sorting with an entry using a "nameabbrev" field.
+    @ARTICLE{Fontaine1234,
+      author = {Jean de la Fontaine du Bois Joli},
+      title = {Something},
+      year = {1234},
+      nameabbrev = {Jean de la Fontaine > {JdlF.}}
+    }
+
+    %% The only difference between this entry and the one above, except for the entrykey, is in "nameabbrev".
+    @ARTICLE{Fontaine1234a,
+      author = {Jean de la Fontaine du Bois Joli},
+      title = {Something},
+      year = {1234},
+      nameabbrev = {de la Fontaine > {dlF.}, du Bois > du}
+    }
 - !!! Found a way to get different citation labels in the text than in the reference list: use::
 
     \makeatletter
@@ -21,16 +52,10 @@ For version 1.4, the goal is to have group templates working.
 
 - Consider adding a 4-arg operator ``.if_has_substr(input,sub,iftrue,iffalse)``.
 
-- Try installing some of the other popular TeX editors, change their backends to Bibulous, and provide instructions
-  on how to do this for: TeXnicCenter (Windows).
-
-- The Bibulous docs say that installation instruction are given in the
-  ``INSTALL.rst`` file, but there is no such file!
+- Try installing TeXnicCenter (Windows), change its backend to Bibulous, and provide how-to instructions.
 
 - The ``developer_guide.rst`` file has a section "Parsing BST files", but the section has nothing to say about implicit 
   loops. It probably should. (At the minimum, point to the location in the docs where implicit loops are discussed.)
-
-- Add stuff from ``jpnbook`` and ``bibtex_items`` in ``/LabNotes/Bibulous/stuff to add to code/``.
 
 - Add templates for: Elsevier journals with numerical 
   citations (``elsarticle-num.bst``), Springer journals (``springer.bst``), MNRAS (``mn2e.bst``). Actually, since
@@ -62,15 +87,6 @@ For version 1.4, the goal is to have group templates working.
 
 - Simplify the ``get_indexed_variable()`` function inside ``bibulous.py``.
 
-- You no longer have functionality using the ``.N`` index (for maximum index). Put that back in.
-
-- If a user added any options blocks to their defined variables, then they may have turned an
-  unnested sequence into a nested one. Need to look for that. We can probably do this check
-  when the BST file is parsed, rather than when we do string substitution in the template
-  for every entry.
-
-- Get the ``backrefs`` option back up and working.
-
 - Allow direct integration with front-end for: generating glossaries, customizing the
   appearance of citation labels, etc.
 
@@ -101,28 +117,6 @@ For version 1.4, the goal is to have group templates working.
   of quotation. Adapt to the British convention and, even better, for universal quotation
   usage.
 
-- Re-implement the "nameabbrev" field inside ``initialize_name()``. Note that in order to do 
-  this you will have to re-expand the name into a string first, perform abbrev replacement, and 
-  then re-convert the result back into the namelist. Here were two items in the testing suite 
-  that I previously used to use to test this::
-
-    %% Test sorting with an entry using a "nameabbrev" field.
-    @ARTICLE{Fontaine1234,
-      author = {Jean de la Fontaine du Bois Joli},
-      title = {Something},
-      year = {1234},
-      nameabbrev = {Jean de la Fontaine > {JdlF.}}
-    }
-
-    %% The only difference between this entry and the one above, except for the entrykey, is in "nameabbrev".
-    @ARTICLE{Fontaine1234a,
-      author = {Jean de la Fontaine du Bois Joli},
-      title = {Something},
-      year = {1234},
-      nameabbrev = {de la Fontaine > {dlF.}, du Bois > du}
-    }
-
-
 
 
 Python testing to-do
@@ -135,6 +129,12 @@ Python testing to-do
   That is, the first and last elements of the loop must have the same variable structure. Currently 
   the code simply truncates the RHS of the last element and ignores it, but it really should return
   a warning message.
+
+  NOTE: implementing this test will allow you to move a number of the warning messages from the 
+  ``fillout_implicit_indices()`` function, which issues runtime errors, to the ``validate_templatestr()``
+  function, which can issue errors while parsing the BST file. Catching these errors earlier in the
+  processing chain is probably a good thing, so let's do it. And hopefully the resulting code can
+  simplify ``fillout_implicit_indices()``, which is currently complex and difficult to modify.
 
 - Add a test for locale-dependent sorting? This requires a lot of work to set up for full
   BIB-AUX-BBL mapping. So it may be best to wait for a more directed test to come along.
