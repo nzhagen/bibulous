@@ -831,27 +831,27 @@ class Bibdata(object):
 
             if (section == 'DEFINITIONS'):
                 if ('__' in line):
-                    bib_warning('Warning 026a: Python script line #' + str(i) + ' of file "' + filename + '" contains' \
+                    bib_warning('Warning 026a: Python script line #' + str(i) + ' of file "' + filename + '" contains'\
                          ' an invalid use of "__".\nAborting script evaluation ...', self.disable)
                     abort_script = True
                 if re.search(r'\sos.\S', line, re.UNICODE):
-                    bib_warning('Warning 026b: Python script line #' + str(i) + ' of file "' + filename + '" contains' \
+                    bib_warning('Warning 026b: Python script line #' + str(i) + ' of file "' + filename + '" contains'\
                          ' an invalid call to the "os" module.\nAborting script evaluation ...', self.disable)
                     abort_script = True
                 if re.search(r'\ssys.\S', line, re.UNICODE):
-                    bib_warning('Warning 026c: Python script line #' + str(i) + ' of file "' + filename + '" contains' \
+                    bib_warning('Warning 026c: Python script line #' + str(i) + ' of file "' + filename + '" contains'\
                          ' an invalid call to the "sys" module.\nAborting script evaluation ...', self.disable)
                     abort_script = True
                 if re.search(r'\scodecs.\S', line, re.UNICODE):
-                    bib_warning('Warning 026c: Python script line #' + str(i) + ' of file "' + filename + '" contains' \
+                    bib_warning('Warning 026c: Python script line #' + str(i) + ' of file "' + filename + '" contains'\
                          ' an invalid call to the "codecs" module.\nAborting script evaluation ...', self.disable)
                     abort_script = True
                 if re.search(r'^import\s', line, re.UNICODE):
-                    bib_warning('Warning 026d: Python script line #' + str(i) + ' of file "' + filename + '" contains' \
+                    bib_warning('Warning 026d: Python script line #' + str(i) + ' of file "' + filename + '" contains'\
                          ' an invalid call to "import".\nAborting script evaluation ...', self.disable)
                     abort_script = True
                 if re.search(r'^import\s', line, re.UNICODE):
-                    bib_warning('Warning 026e: Python script line #' + str(i) + ' of file "' + filename + '" contains' \
+                    bib_warning('Warning 026e: Python script line #' + str(i) + ' of file "' + filename + '" contains'\
                          ' an invalid call to the "open()" function.\nAborting script evaluation ...', self.disable)
                     abort_script = True
 
@@ -874,9 +874,9 @@ class Bibdata(object):
                 if self.debug:
                     print('Adding user variable "' + var + '" with value "' + value + '" ...')
             elif (section in ('TEMPLATES','OPTIONS','SPECIAL-TEMPLATES')):
-                ## Skip empty lines. It is tempting to put this line above here, but resist the temptation -- putting it
-                ## higher above would remove empty lines from the Python scripts in the DEFINITIONS section, which would
-                ## make troubleshooting those more difficult.
+                ## Skip empty lines. It is tempting to put this line above here, but resist the temptation -- putting
+                ## it higher above would remove empty lines from the Python scripts in the DEFINITIONS section, which
+                ## would make troubleshooting those more difficult.
                 if not line: continue
                 if not continuation:
                     ## If the line ends with an ellipsis, then remove the ellipsis and set continuation to True.
@@ -886,7 +886,7 @@ class Bibdata(object):
 
                     matchobj = re.search(definition_pattern, line)
                     if (matchobj == None):
-                        bib_warning('Warning 008b: line #' + str(i) + ' of file "' + filename + '" does not contain' + \
+                        bib_warning('Warning 008b: line #' + str(i) + ' of file "' + filename + '" does not contain' +\
                              ' a valid variable definition.\n Skipping ...', self.disable)
                         continue
 
@@ -1019,6 +1019,13 @@ class Bibdata(object):
         for bad in bad_templates:
             self.bstdict[bad] = 'Error: malformed template.'
 
+        ## The "special templates" have to be treated differently, since we can't just replace the template with the
+        ## "malformed template" message. If the template is not okay, then validate_templatestr() will emit a warning
+        ## message. If not okay, then replace the offending template with self.options['undefstr'].
+        for key in self.specials:
+            okay = self.validate_templatestr(self.specials[key], key)
+            if not okay: self.specials[key] = self.options['undefstr']
+
         if self.debug:
             ## When displaying the BST dictionary, show it in sorted form.
             for key in sorted(self.bstdict, key=self.bstdict.get, cmp=locale.strcoll):
@@ -1086,7 +1093,8 @@ class Bibdata(object):
         ## BBL file.
         try:
             ## First insert special variables, so that the citation sorter and everything else can use them. Also
-            ## insert cross-reference data. Doing these here means that we don't have to add lots of extra checks later.
+            ## insert cross-reference data. Doing these here means that we don't have to add lots of extra checks
+            ## later.
             for c in self.citedict:
                 self.insert_crossref_data(c)
                 self.insert_specials(c)
@@ -1108,8 +1116,8 @@ class Bibdata(object):
                 ## Verbose output is for debugging.
                 if debug: print('Writing entry "' + c + '" to "' + filename + '" ...')
 
-                ## Now that we have generated all of the "special" fields, we can call the bibitem formatter to generate
-                ## the output for this entry.
+                ## Now that we have generated all of the "special" fields, we can call the bibitem formatter to
+                ## generate the output for this entry.
                 s = self.format_bibitem(c)
                 if (s != ''):
                     ## Need two line EOL's here and not one so that backrefs can work properly.
@@ -1188,9 +1196,9 @@ class Bibdata(object):
         Create the "\bibitem{...}" string to insert into the ".bbl" file.
 
         This is the workhorse function of Bibulous. For a given citation key, find the resulting entry in the
-        bibliography database. From the entry's `entrytype`, lookup the relevant template in bstdict and start replacing
-        template variables with formatted elements of the database entry. Once you've replaced all template variables,
-        you're done formatting that entry. Write the result to the BBL file.
+        bibliography database. From the entry's `entrytype`, lookup the relevant template in bstdict and start
+        replacing template variables with formatted elements of the database entry. Once you've replaced all template
+        variables, you're done formatting that entry. Write the result to the BBL file.
 
         Parameters
         ----------
@@ -1278,9 +1286,9 @@ class Bibdata(object):
                                            even_operator=r'\textmd')
 
         if self.options['wrap_nested_quotes']:
-            ## If there are any nested quotation marks in the string, then we need to modify the formatting properly. If
-            ## there are any apostrophes or foreign words that use apostrophes in the string then the current code will
-            ## raise an exception.
+            ## If there are any nested quotation marks in the string, then we need to modify the formatting properly.
+            ## If there are any apostrophes or foreign words that use apostrophes in the string then the current code
+            ## will raise an exception.
             itemstr = enwrap_nested_quotes(itemstr, disable=self.disable)
 
         return(itemstr)
@@ -1397,8 +1405,8 @@ class Bibdata(object):
             entries to the database file.
         '''
 
-        ## The "citedict" contains only those items directly cited, but we also need any cross-referenced items as well,
-        ## so let's add those.
+        ## The "citedict" contains only those items directly cited, but we also need any cross-referenced items as
+        ## well, so let's add those.
         crossref_list = []
         for key in self.citedict:
             if key not in self.bibdata: continue
@@ -1471,8 +1479,8 @@ class Bibdata(object):
             if not name_list_of_dicts:
                 continue
 
-            ## Compare each name dictionary in the entry with the input author's name dict. All of an author's name keys
-            ## must equal an entry's name key to produce a match.
+            ## Compare each name dictionary in the entry with the input author's name dict. All of an author's name
+            ## keys must equal an entry's name key to produce a match.
             for name in name_list_of_dicts:
                 if (searchname['last'] not in name['last']): continue
 
@@ -1487,7 +1495,8 @@ class Bibdata(object):
                         if (thisname == searchname[namekey]):
                             key_matches += 1
                             if self.debug:
-                                print('Found match in entry "' + k + '": name[' + namekey + '] = ' + name[namekey] + ' from "' + repr(name) + '"')
+                                print('Found match in entry "%s": name[%s] = %s from "%s"' % \
+                                      (k, namekey, name[namekey], repr(name)))
 
                 if (key_matches == nkeys):
                     bibextract[k] = self.bibdata[k]
@@ -1611,9 +1620,9 @@ class Bibdata(object):
         If the input is a filename ending in `.aux`, then read through the `.aux` file and locate the lines
         `\bibdata{...}` and `\bibstyle{...}` to get the filename(s) for the bibliography database and style template.
 
-        Also determine whether to set the `culldata` flag. If the input is a single AUX filename, then the default is to
-        set culldata=True. If the input is a list of filenames, then assume that this is the complete list of files to
-        use (i.e. ignore the contents of the AUX file except for generating the citedict), and set culldata=False.
+        Also determine whether to set the `culldata` flag. If the input is a single AUX filename, then the default is
+        to set culldata=True. If the input is a list of filenames, then assume that this is the complete list of files
+        to use (i.e. ignore the contents of the AUX file except for generating the citedict), and set culldata=False.
 
         Parameters
         ----------
@@ -1873,7 +1882,7 @@ class Bibdata(object):
         return
 
     ## =============================
-    def validate_templatestr(self, templatestr, entrytype):
+    def validate_templatestr(self, templatestr, key):
         '''
         Validate the template string so that it contains no formatting errors.
 
@@ -1881,8 +1890,8 @@ class Bibdata(object):
         ----------
         templatestr : str
             The template string to be validated.
-        entrytype : str
-            The type of entry that uses this template. (Useful for warning messages.)
+        key : str
+            The name of the variable that uses this template.
 
         Returns
         -------
@@ -1896,7 +1905,7 @@ class Bibdata(object):
         num_obrackets = templatestr.count('[')
         num_cbrackets = templatestr.count(']')
         if (num_obrackets != num_cbrackets):
-            msg = 'In the template for entrytype "' + entrytype + '" there are ' + unicode(num_obrackets) + \
+            msg = 'In the template for "' + key + '" there are ' + unicode(num_obrackets) + \
                   ' open brackets "[", but ' + unicode(num_cbrackets) + ' close brackets "]" in the formatting string'
             bib_warning('Warning 012: ' + msg, self.disable)
             okay = False
@@ -1928,6 +1937,13 @@ class Bibdata(object):
                 msg = 'An invalid "<" character appears inside the template variable "' + var + '"'
                 bib_warning('Warning 028d: ' + msg, self.disable)
                 okay = False
+
+        if okay and key in self.looped_templates:
+            pass #zzz
+
+            #bib_warning('Warning 037: line #' + str(i) + ' of file "' + filename + '" does not contain' +\
+            #         ' a valid variable definition.\n Skipping ...', self.disable)
+
 
         return(okay)
 
