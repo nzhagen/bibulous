@@ -2233,6 +2233,8 @@ class Bibdata(object):
             templatestr = templatestr.replace(r'{\makelessthan}', '<')
         if (r'{\makehashsign}' in templatestr):
             templatestr = templatestr.replace(r'{\makehashsign}', '\\#')
+        if (r'{\makeellipsis}' in templatestr):
+            templatestr = templatestr.replace(r'{\makeellipsis}', '...')
 
         return(templatestr)
 
