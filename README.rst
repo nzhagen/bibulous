@@ -19,7 +19,7 @@ Installing using pip:::
 
    pip install bibulous
 
-Instructions for installing Bibulous, and for seamlessly integrating it into your normal LaTeX workflow, are given in the ``INSTALL.rst`` file. Users can also consult the user guide (``user_guide.rst``) for further information and tutorials. A ``FAQ`` page is also available.
+Instructions for installing Bibulous, and for seamlessly integrating it into your normal LaTeX workflow, are given in the ``getting started`` section. Users can also consult the ``guidelines for writing style templates`` for further information, and the ``examples`` section. A ``FAQ`` page is also available.
 
 Example
 =======
