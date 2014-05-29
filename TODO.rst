@@ -139,6 +139,4 @@ Python testing to-do
 - Add a test for locale-dependent sorting? This requires a lot of work to set up for full
   BIB-AUX-BBL mapping. So it may be best to wait for a more directed test to come along.
 
-- Add tests for ``.if_length_less_than``, and ``.if_length_more_than`` operators. 
-
 - Add a test for ``.uniquify(1)`` and ``.uniquify(a)``.
