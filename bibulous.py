@@ -2739,67 +2739,67 @@ class Bibdata(object):
                     return(newfield)
                 else:
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
-            elif indexer.startswith('.if_length_equals('):
-                match = re.search(r'.if_length_equals\(.*\)', indexer, re.UNICODE)
-                end_idx = match.end(0)
-                result = match.group(0)[18:-1]      ## remove function name and parentheses
-                (variable_to_eval, test_length, var_if_equals, var_if_notequals) = result.split(',')
-                #pdb.set_trace()
-
-                if (variable_to_eval not in self.bibdata[entrykey]):
-                    newfield = ''
-                elif (len(self.bibdata[entrykey][variable_to_eval]) == int(test_length)):
-                    suffix = self.options[var_if_equals.strip()]
-                    newfield = field + suffix
-                else:
-                    suffix = self.options[var_if_notequals.strip()]
-                    newfield = field + suffix
-
-                newindexer = indexer[end_idx:]
-                if (nelements == 1) or (newindexer == ''):
-                    return(newfield)
-                else:
-                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
-            elif indexer.startswith('.if_length_less_than('):
-                match = re.search(r'.if_length_less_than\(.*\)', indexer, re.UNICODE)
-                end_idx = match.end(0)
-                result = match.group(0)[21:-1]      ## remove function name and parentheses
-                (variable_to_eval, test_length, var_if_lessthan, var_if_notlessthan) = result.split(',')
-
-                if (variable_to_eval not in self.bibdata[entrykey]):
-                    newfield = ''
-                elif (len(self.bibdata[entrykey][variable_to_eval]) == int(test_length)):
-                    suffix = self.options[var_if_lessthan.strip()]
-                    newfield = field + suffix
-                else:
-                    suffix = self.options[var_if_notlessthan.strip()]
-                    newfield = field + suffix
-
-                newindexer = indexer[end_idx:]
-                if (nelements == 1) or (newindexer == ''):
-                    return(newfield)
-                else:
-                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
-            elif indexer.startswith('.if_length_more_than('):
-                match = re.search(r'.if_length_more_than\(.*\)', indexer, re.UNICODE)
-                end_idx = match.end(0)
-                result = match.group(0)[21:-1]      ## remove function name and parentheses
-                (variable_to_eval, test_length, var_if_morethan, var_if_notmorethan) = result.split(',')
-
-                if (variable_to_eval not in self.bibdata[entrykey]):
-                    newfield = ''
-                elif (len(self.bibdata[entrykey][variable_to_eval]) == int(test_length)):
-                    suffix = self.options[var_if_morethan.strip()]
-                    newfield = field + suffix
-                else:
-                    suffix = self.options[var_if_notmorethan.strip()]
-                    newfield = field + suffix
-
-                newindexer = indexer[end_idx:]
-                if (nelements == 1) or (newindexer == ''):
-                    return(newfield)
-                else:
-                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
+#            elif indexer.startswith('.if_length_equals('):
+#                match = re.search(r'.if_length_equals\(.*\)', indexer, re.UNICODE)
+#                end_idx = match.end(0)
+#                result = match.group(0)[18:-1]      ## remove function name and parentheses
+#                (variable_to_eval, test_length, var_if_equals, var_if_notequals) = result.split(',')
+#                #pdb.set_trace()
+#
+#                if (variable_to_eval not in self.bibdata[entrykey]):
+#                    newfield = ''
+#                elif (len(self.bibdata[entrykey][variable_to_eval]) == int(test_length)):
+#                    suffix = self.options[var_if_equals.strip()]
+#                    newfield = field + suffix
+#                else:
+#                    suffix = self.options[var_if_notequals.strip()]
+#                    newfield = field + suffix
+#
+#                newindexer = indexer[end_idx:]
+#                if (nelements == 1) or (newindexer == ''):
+#                    return(newfield)
+#                else:
+#                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
+#            elif indexer.startswith('.if_length_less_than('):
+#                match = re.search(r'.if_length_less_than\(.*\)', indexer, re.UNICODE)
+#                end_idx = match.end(0)
+#                result = match.group(0)[21:-1]      ## remove function name and parentheses
+#                (variable_to_eval, test_length, var_if_lessthan, var_if_notlessthan) = result.split(',')
+#
+#                if (variable_to_eval not in self.bibdata[entrykey]):
+#                    newfield = ''
+#                elif (len(self.bibdata[entrykey][variable_to_eval]) == int(test_length)):
+#                    suffix = self.options[var_if_lessthan.strip()]
+#                    newfield = field + suffix
+#                else:
+#                    suffix = self.options[var_if_notlessthan.strip()]
+#                    newfield = field + suffix
+#
+#                newindexer = indexer[end_idx:]
+#                if (nelements == 1) or (newindexer == ''):
+#                    return(newfield)
+#                else:
+#                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
+#            elif indexer.startswith('.if_length_more_than('):
+#                match = re.search(r'.if_length_more_than\(.*\)', indexer, re.UNICODE)
+#                end_idx = match.end(0)
+#                result = match.group(0)[21:-1]      ## remove function name and parentheses
+#                (variable_to_eval, test_length, var_if_morethan, var_if_notmorethan) = result.split(',')
+#
+#                if (variable_to_eval not in self.bibdata[entrykey]):
+#                    newfield = ''
+#                elif (len(self.bibdata[entrykey][variable_to_eval]) == int(test_length)):
+#                    suffix = self.options[var_if_morethan.strip()]
+#                    newfield = field + suffix
+#                else:
+#                    suffix = self.options[var_if_notmorethan.strip()]
+#                    newfield = field + suffix
+#
+#                newindexer = indexer[end_idx:]
+#                if (nelements == 1) or (newindexer == ''):
+#                    return(newfield)
+#                else:
+#                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
             #else:
             #    msg = 'Warning 029c: the template for entry ' + entrykey + ' has an unknown function ' + \
             #          '"' + index_elements[0] + '". Aborting template substitution'

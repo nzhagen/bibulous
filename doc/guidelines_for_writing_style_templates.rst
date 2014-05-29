@@ -125,9 +125,9 @@ The complete list of operators available is:::
     .format_editorlist()
     .frenchinitial()
     .if_singular(var1,var2,var3)
-    .if_length_equals(var1,number,var2,var3)
-    .if_length_less_than(var1,number,var2,var3)
-    .if_length_more_than(var1,number,var2,var3)
+..    .if_length_equals(var1,number,var2,var3)
+..    .if_length_less_than(var1,number,var2,var3)
+..    .if_length_more_than(var1,number,var2,var3)
     .initial()
     .lower()
     .monthabbrev()
@@ -165,11 +165,11 @@ Without the ``.compress()`` operator, the name would come out as "RM A Azzam", s
 
 **.if_singular(var1,optvar2,optvar3)** inserts ``optvar2`` if ``var1`` has only one element, but ``optvar3`` if ``var1`` has more than one element. Here ``var1`` is assumed to be a list-type of variable, and ``optvar2`` and ``optvar3`` are assumed to be string-type variables defined in the OPTIONS section of the template file.
 
-**.if_length_equals(var1,number,optvar2,optvar3)** inserts ``var2`` if ``var1`` has ``number`` elements, but otherwise inserts ``var3``. Here ``var1`` is assumed to be a list-type of variable, and ``optvar2`` and ``optvar3`` are assumed to be string-type variables defined in the OPTIONS section of the template file.
+.. **.if_length_equals(var1,number,optvar2,optvar3)** inserts ``var2`` if ``var1`` has ``number`` elements, but otherwise inserts ``var3``. Here ``var1`` is assumed to be a list-type of variable, and ``optvar2`` and ``optvar3`` are assumed to be string-type variables defined in the OPTIONS section of the template file.
 
-**.if_length_less_than(var1,number,optvar2,optvar3)** inserts ``var2`` if ``var1`` has less than ``number`` elements, but otherwise inserts ``var3``. Here ``var1`` is assumed to be a list-type of variable, and ``optvar2`` and ``optvar3`` are assumed to be string-type variables defined in the OPTIONS section of the template file.
+.. **.if_length_less_than(var1,number,optvar2,optvar3)** inserts ``var2`` if ``var1`` has less than ``number`` elements, but otherwise inserts ``var3``. Here ``var1`` is assumed to be a list-type of variable, and ``optvar2`` and ``optvar3`` are assumed to be string-type variables defined in the OPTIONS section of the template file.
 
-**.if_length_more_than(var1,number,optvar2,optvar3)** inserts ``var2`` if ``var1`` has more than ``number`` elements, but otherwise inserts ``var3``. Here ``var1`` is assumed to be a list-type of variable, and ``optvar2`` and ``optvar3`` are string-type variables defined in the OPTIONS section of the template file.
+.. **.if_length_more_than(var1,number,optvar2,optvar3)** inserts ``var2`` if ``var1`` has more than ``number`` elements, but otherwise inserts ``var3``. Here ``var1`` is assumed to be a list-type of variable, and ``optvar2`` and ``optvar3`` are string-type variables defined in the OPTIONS section of the template file.
 
 **.initial()** will truncate the string to its first letter. Note that if a name begins with a LaTeX markup character, such as ``{\'E}``, then the operator will convert the input string to its best attempt at a Unicode-equivalent (without character markup) prior to performing the truncation. Thus, applying the ``.initial()`` operator to the name ``{\v{Z}}ukauskas`` will produce the initialized form "Ž". 
 
