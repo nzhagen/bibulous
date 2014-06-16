@@ -4,8 +4,6 @@ Python code to-do list: (including goals for version 2.0)
 The primary goal for version 2.0 is to incorporate integration with a front-end LaTeX package.
 For version 1.4, the goal is to have group templates working.
 
-- You no longer have functionality using the ``.N`` index (for maximum index). Put that back in.
-
 - If a user added any options blocks to their defined variables, then they may have turned an
   unnested sequence into a nested one. Need to look for that. We can probably do this check
   when the BST file is parsed, rather than when we do string substitution in the template
@@ -117,6 +115,10 @@ For version 1.4, the goal is to have group templates working.
   of quotation. Adapt to the British convention and, even better, for universal quotation
   usage.
 
+- Change the way you define the "specials" to use an object-oriented accessor. That is, do not
+  generate a field until it is asked for. This should speed things up significantly when the
+  user has specials defined.
+
 
 
 Python testing to-do
@@ -130,13 +132,14 @@ Python testing to-do
   the code simply truncates the RHS of the last element and ignores it, but it really should return
   a warning message.
 
-  NOTE: implementing this test will allow you to move a number of the warning messages from the 
-  ``fillout_implicit_indices()`` function, which issues runtime errors, to the ``validate_templatestr()``
-  function, which can issue errors while parsing the BST file. Catching these errors earlier in the
-  processing chain is probably a good thing, so let's do it. And hopefully the resulting code can
-  simplify ``fillout_implicit_indices()``, which is currently complex and difficult to modify.
-
 - Add a test for locale-dependent sorting? This requires a lot of work to set up for full
   BIB-AUX-BBL mapping. So it may be best to wait for a more directed test to come along.
 
 - Add a test for ``.uniquify(1)`` and ``.uniquify(a)``.
+
+- Add a test for the ``.N`` functionality inside the implicit loops.
+
+- Add a test for implicit loops where you have stuff in front of the implicit loop and behind it, within
+  the same variable definition. It should work. Especially try something like 
+  ``au = [<authorname.0>, ...,{ and }<authorname.6>]`` to see if you can put option brackets around the
+  entire loop.

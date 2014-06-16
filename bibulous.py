@@ -63,7 +63,7 @@ __all__ = ['sentence_case', 'stringsplit', 'finditer', 'namefield_to_namelist', 
            'search_middlename_for_prefixes', 'get_edition_ordinal', 'export_bibfile', 'parse_pagerange',
            'parse_nameabbrev', 'filter_script', 'str_is_integer', 'bib_warning', 'create_citation_alpha',
            'toplevel_split', 'get_variable_name_elements', 'get_names', 'format_namelist',
-           'namedict_to_formatted_namestr', 'argsort', 'create_alphanum_citelabels']
+           'namedict_to_formatted_namestr', 'argsort', 'create_alphanum_citelabels','get_implicit_loop_data']
 
 
 class Bibdata(object):
@@ -175,7 +175,7 @@ class Bibdata(object):
         self.searchkeys = []        ## when culling data, this is the list of keys to limit parsing to
         self.parse_only_entrykeys = False  ## don't parse the data in the database; get only entrykeys
         self.nested_templates = []  ## which templates have nested option blocks
-        self.looped_templates = ['au','ed']  ## which templates have implicit loops
+        self.looped_templates = {} #zzz['au','ed']  ## which templates have implicit loops
         self.implicitly_indexed_vars = ['authorname','editorname'] ## which templates have implicit indexing
         self.namelists = []         ## the namelists defined within the templates
         self.uniquify_vars = {}     ## dict containing all variables calling the "uniquify" operator
@@ -920,7 +920,8 @@ class Bibdata(object):
                     ## Find out if the template contains an implicit loop (an ellipsis not at the end of a line). If
                     ## so then add it to the list of looped templates.
                     if ('...' in value.strip()[:-3]) and (var not in self.looped_templates):
-                        self.looped_templates.append(var)
+                        loop_data = get_implicit_loop_data(value)
+                        self.looped_templates[var] = loop_data
 
                     if self.debug:
                         print('Setting BST entrytype template "' + var + '" to value "' + value + '"')
@@ -972,7 +973,8 @@ class Bibdata(object):
                     ## Find out if the template contains an implicit loop (an ellipsis not at the end of a line). If
                     ## so then add it to the list of looped templates.
                     if ('...' in value.strip()[:-3]) and (var not in self.looped_templates):
-                        self.looped_templates.append(var)
+                        loop_data = get_implicit_loop_data(value)
+                        self.looped_templates[var] = loop_data
 
                     ## Find out if the template contains an implicit index. If so then add it to the list of such.
                     if re.search('\.n\.', value) or re.search('\.n>', value):
@@ -1091,7 +1093,8 @@ class Bibdata(object):
 
         ## Use a try-except block here, so that if any exception is raised then we can make sure to produce a valid
         ## BBL file.
-        try:
+        #try:
+        if True:    #zzz
             ## First insert special variables, so that the citation sorter and everything else can use them. Also
             ## insert cross-reference data. Doing these here means that we don't have to add lots of extra checks
             ## later.
@@ -1122,10 +1125,11 @@ class Bibdata(object):
                 if (s != ''):
                     ## Need two line EOL's here and not one so that backrefs can work properly.
                     filehandle.write((s + '\n').encode('utf-8'))
-        except Exception, err:
-            ## Swallow the exception
-            print('Exception encountered: ' + repr(err))
-        finally:
+        #except Exception, err:
+        #    ## Swallow the exception
+        #    print('Exception encountered: ' + repr(err))
+        #finally:
+        if True: #zzz
             if write_postamble:
                 filehandle.write('\n\\end{thebibliography}\n'.encode('utf-8'))
             filehandle.close()
@@ -1938,17 +1942,10 @@ class Bibdata(object):
                 bib_warning('Warning 028d: ' + msg, self.disable)
                 okay = False
 
-        if okay and key in self.looped_templates:
-            pass #zzz
-
-            #bib_warning('Warning 037: line #' + str(i) + ' of file "' + filename + '" does not contain' +\
-            #         ' a valid variable definition.\n Skipping ...', self.disable)
-
-
         return(okay)
 
     ## ===================================
-    def fillout_implicit_indices(self, templatestr, entrykey):
+    def fillout_implicit_indices(self, templatestr, entrykey, templatekey=None):
         '''
         From a template containing an implicit loop ('...' notation), build a full-size template without an ellipsis.
 
@@ -1958,15 +1955,17 @@ class Bibdata(object):
         ----------
         templatestr : str
             The input template string (containing the implicit loop ellipsis notation).
+        entrykey : str
+            The key of the bibliography entry to query.
+        templatekey : str
+            If this template is for a special variable rather than an entrytype, then this key will tell which \
+            special variable is being operated on.
 
         Returns
         -------
         new_templatestr : str
             The new template with the ellipsis replaced with the loop-generated template variables and "glue".
         '''
-
-        ## TODO: there has got to be a much more organized way of writing this function. For now, let's get it working,
-        ## and later we can come back and try to clean it up.
 
         ## To look for an indexed variable, it has to have the form of a (dot plus an integer), or (dot plus 'n'), or
         ## (dot plus 'N'); and then followed by either another dot or by '>'.
@@ -1993,59 +1992,42 @@ class Bibdata(object):
             return(templatestr)
         num_names = len(names)
 
-        ## Split the string in two at the ellipsis (for now assume that there is only one).
-        idx = templatestr.find('...')
-        lhs = templatestr[:idx]
-        rhs = templatestr[idx+3:]
+        ## Get the key for the template to look up in the looped template data dictionary (generated when the BST
+        ## file is parsed).
+        if (templatekey is None):
+            templatekey = self.bibdata[entrykey]['entrytype']
 
-        ## In the string to the left of the ellipsis, look for the template variable farthest to the right. Note that
-        ## we can't just set "lhs_var = lhs_variables[-1]" because we need to know the *position* of the variable and
-        ## not just the variable name. And if the name occurs more than once in the template, then we can't easily get
-        ## the position from the name. Thus, we iterate through the string until we encounter the last match, and
-        ## return that.
-        match = re.search(r'<.*?>', lhs)
-        if not match:
-            msg = 'Warning 030a: the template string "' + templatestr + '" is malformed. It does not have a ' + \
-                  'template variable to the left of the ellipsis (implied loop).'
-            bib_warning(msg, self.disable)
-            return(None)
+        loop_data = self.looped_templates[templatekey]
+        loop_varname = loop_data['varname']
+        loop_start_index = loop_data['start_index']
+        regular_glue = loop_data['glue']
+        loop_lhs_prefix = loop_data['var_prefix']
+        loop_lhs_suffix = loop_data['var_suffix']
+        loop_end_index = loop_data['end_index']
+        last_glue = loop_data['last_glue']
+        last_glue_if_only_two = loop_data['last_glue_if_only_two']
+        before_loop_stuff = loop_data['before_loop_stuff']
+        after_loop_stuff = loop_data['after_loop_stuff']
 
-        ## Next, find the last variable before the ellipsis and extract its name, index, etc. elements.
-        for match in re.finditer(r'<.*?>', lhs):
-            lhs_span = match.span()
-        lhs_var = match.group()
-        lhs_var = get_variable_name_elements(lhs_var[1:-1])
+        #print('templatestr=', templatestr)
+        #print('self.looped_templates:', self.looped_templates.keys())
+        #pdb.set_trace()
 
-        if lhs_var['index'].isdigit():
-            start_index = int(lhs_var['index'])
-        elif (lhs_var['index'] == 'N'):
-            start_index = num_names - 1
+        ## Check that the indices are valid.
+        if loop_start_index.isdigit():
+            loop_start_index = int(loop_start_index)
+        elif (loop_start_index == 'N'):
+            loop_start_index = num_names - 1
         else:
             msg = 'Warning 031a: the template string "' + templatestr + '" is malformed. The index element "' + \
-                  lhs_var['index'] + '" is not recognized.'
-            bib_warning(msg, self.disable)
-            return(None)
+                  loop_start_index + '" is not recognized.'
+            bib_warning(msg)
 
-        ## Now that we have the info about the LHS variable, let's also find out the "glue" string that needs to be
-        ## inserted between all of the loop elements.
-        glue = lhs[lhs_span[1]:]
-
-        ## In the string to the right of the ellipsis, look for the template variable farthest to the right.
-        match = re.search(r'<.*?>', rhs)
-        if not match:
-            msg = 'Warning 030b: the template string "' + templatestr + '" is malformed. It does not have a ' + \
-                  'template variable to the right of the ellipsis (implied loop).'
-            bib_warning(msg, self.disable)
-            return(None)
-
-        rhs_span = match.span()
-        rhs_var = match.group()
-        rhs_var = get_variable_name_elements(rhs_var[1:-1])
-
-        ## Check that the implicit indices are valid.
-        if not (rhs_var['index'].isdigit()) and not (rhs_var['index'] == 'N'):
+        ## Check that the indices are valid.
+        if not loop_end_index.isdigit() and (loop_end_index != 'N'):
             msg = 'Warning 031b: the template string "' + templatestr + '" is malformed. The index element "' + \
-                  rhs_var['index'] + '" is not recognized.'
+                  loop_end_index + '" is not recognized.'
+            bib_warning(msg)
 
         ## What is the maximum number of allowed names? If the number of names in the namelist is more than the maximum
         ## allowed, then we need to replace the end of the formatted namelist with the "etal_message". Note that, in
@@ -2053,68 +2035,63 @@ class Bibdata(object):
         ## incomplete, and we should add an "et al." message.
         if (names[-1]['last'].lower() == 'others'):
             maxnames = num_names - 1
-        elif (rhs_var['index'] == 'N'):
+        elif (loop_end_index == 'N'):
             maxnames = num_names
         else:
-            maxnames = int(rhs_var['index']) + 1
+            maxnames = int(loop_end_index) + 1
 
         too_many_names = (num_names > maxnames)
-        end_index = min((num_names,maxnames+1)) - 1
-        if (end_index == 0): end_index = 1
+        loop_end_index = min((num_names,maxnames+1)) - 1
+        if (loop_end_index == 0): loop_end_index = 1
 
-        ## Get the RHS "glue" element. If it has curly braces in it, then we differentiate the conditions between when
-        ## the number of names is only two (then use only the stuff inside the curly braces) and more than two (then
-        ## use all of the glue). In both cases, remove the first and last curly braces before applying the glue.
-        rhs_glue = rhs[0:rhs_span[0]]
-        if re.search(r'\{.*?\}', rhs_glue):
-            glue_start = rhs_glue.find('{')
-            glue_end = rhs_glue.rfind('}')
-            if (num_names == 2):
-                rhs_glue = rhs_glue[glue_start+1:glue_end]
-            else:
-                rhs_glue = rhs_glue[:glue_start] + rhs_glue[glue_start+1:glue_end] + rhs_glue[glue_end+1:]
-
-        #zzz
-        #print('[%s]: start_index=%i, end_index=%i, num_names=%i' % (entrykey, start_index, end_index, num_names))
-        #print('[%s]: old_template=%s' % (entrykey, templatestr))
-        #print('[%s]: too_many_names=%i, rhs_glue=%s' % (entrykey, int(too_many_names), rhs_glue))
+        ## If there are only two items in the list to loop over, then use "last_glue_if_only_two", else use "last_glue".
+        if (num_names == 2):
+            rhs_glue = last_glue_if_only_two
+        else:
+            rhs_glue = last_glue
 
         ## Create the implicit loop, applying "glue" between each template variable that you generate. Here we take the
         ## part of the variable name to the left of the index and the part to the right of the index, and put them
         ## back together while replacing the index "n" with the number determined by the loop index.
         new_templatestr = ''
-        for n in range(start_index, end_index):
-            name_part = lhs_var['name'] + '.' + str(n)
+        for n in range(loop_start_index, loop_end_index):
+            name_part = loop_varname + '.' + str(n)
 
             ## Next find if the variable name itself has a template.
             if (name_part in self.specials):
                 name_part = self.specials[name_part]
-            elif (lhs_var['name'] in self.implicitly_indexed_vars):
-                name_part = self.specials[lhs_var['name'] + '.n']
+            elif (loop_varname in self.implicitly_indexed_vars):
+                name_part = self.specials[loop_varname + '.n']
                 name_part = re.sub(r'\.n\.', '.'+str(n)+'.', name_part)
                 name_part = re.sub(r'\.n>', '.'+str(n)+'>', name_part)
 
-            new_templatestr += name_part + lhs_var['suffix']
-            if (n < end_index-1):
-               new_templatestr += glue
+            new_templatestr += name_part + loop_lhs_suffix
+            if (n < loop_end_index-1):
+               new_templatestr += regular_glue
 
         ## Now do the same thing for the endpoint variable of the implicit loop. The endpoint is handled outside of the
         ## loop itself because the "glue" element is often different between the penultimate and the ultimate names.
         if too_many_names:
-            new_templatestr += self.options['etal_message'] + rhs[rhs_span[1]:]
+            new_templatestr += self.options['etal_message']
         elif (num_names > 1):
             n += 1
-            name_part = rhs_var['name'] + '.' + str(n)
+            name_part = loop_varname + '.' + str(n)
             if (name_part in self.specials):
                 name_part = self.specials[name_part]
-                new_templatestr += rhs_glue + name_part + lhs_var['suffix'] + rhs[rhs_span[1]:]
-            elif (rhs_var['name'] in self.implicitly_indexed_vars):
-                name_part = self.specials[rhs_var['name'] + '.n']
+                new_templatestr += rhs_glue + name_part + loop_lhs_suffix
+            elif (loop_varname in self.implicitly_indexed_vars):
+                name_part = self.specials[loop_varname + '.n']
                 name_part = re.sub(r'\.n\.', '.'+str(n)+'.', name_part)
                 name_part = re.sub(r'\.n>', '.'+str(n)+'>', name_part)
-                new_templatestr += rhs_glue + name_part + lhs_var['suffix'] + rhs[rhs_span[1]:]
+                new_templatestr += rhs_glue + name_part + loop_lhs_suffix
             else:
                 new_templatestr += rhs
+
+        new_templatestr = before_loop_stuff + new_templatestr + after_loop_stuff
+
+        #print('templatestr=', templatestr)
+        #print('new_templatestr=', new_templatestr)
+        #pdb.set_trace()
 
         return(new_templatestr)
 
@@ -2150,7 +2127,7 @@ class Bibdata(object):
             ## that.
             templatestr_all_undef = re.sub(r'<.*?>', self.options['undefstr'], templatestr, re.UNICODE)
 
-        templatestr = self.fillout_implicit_indices(templatestr, entrykey)
+        templatestr = self.fillout_implicit_indices(templatestr, entrykey, templatekey)
 
         if (templatekey != None):
             is_nested = (templatekey in self.nested_templates)
@@ -4723,6 +4700,106 @@ def create_alphanum_citelabels(entrykey, bibdata, citelist):
 
     return(citelabels)
 
+## =============================
+def get_implicit_loop_data(templatestr):
+    '''
+    From a template containing an implicit loop ('...' notation), build a full-size template without an ellipsis.
+
+    Right now, the code only allows one implicit loop in any given template.
+
+    Parameters
+    ----------
+    templatestr : str
+        The input template string (containing the implicit loop ellipsis notation).
+
+    Returns
+    -------
+    loop_data : dict
+        A dictionary containing all of the information needed to build a loop for a template.
+
+    '''
+
+    idx = templatestr.find('...')
+    lhs = templatestr[:idx]
+    rhs = templatestr[idx+3:]
+
+    ## In the string to the left of the ellipsis, look for the template variable farthest to the right. Note that
+    ## we can't just set "lhs_var = lhs_variables[-1]" because we need to know the *position* of the variable and
+    ## not just the variable name. And if the name occurs more than once in the template, then we can't easily get
+    ## the position from the name. Thus, we iterate through the string until we encounter the last match, and
+    ## return that.
+    match = re.search(r'<.*?>', lhs)
+    if not match:
+        msg = 'Warning 030a: the template string "' + templatestr + '" is malformed. It does not have a ' + \
+              'template variable to the left of the ellipsis (implied loop).'
+        bibulous.bib_warning(msg)
+        return(None)
+
+    for i,match in enumerate(re.finditer(r'<.*?>', lhs)):
+        if (i > 1):
+            msg = 'Warning 030b: the template string "' + templatestr + '" is malformed. Only one variable is allowed ' + \
+                  'but the template has more than one.'
+            bibulous.bib_warning(msg)
+        lhs_span = match.span()
+    lhs_var = match.group()
+
+    ## Get the part of the template that goes before the implicit loop.
+    before_loop_stuff = lhs[:lhs_span[0]]
+
+    ## "get_variable_name_elements()" returns a dictionary with keys "index", "name", "prefix", and "suffix".
+    lhs_var_dict = get_variable_name_elements(lhs_var[1:-1])
+
+    ## Now that we have the info about the LHS variable, let's also find out the "glue" string that needs to be
+    ## inserted between all of the loop elements.
+    lhs_glue = lhs[lhs_span[1]:]
+
+    ## In the string to the right of the ellipsis, look for the template variable farthest to the right.
+    match = re.search(r'<.*?>', rhs)
+    if not match:
+        msg = 'Warning 030c: the template string "' + templatestr + '" is malformed. It does not have a ' + \
+              'template variable to the right of the ellipsis (implied loop).'
+        bib_warning(msg)
+        return(None)
+
+    rhs_span = match.span()
+    rhs_var = match.group()
+    rhs_var_dict = get_variable_name_elements(rhs_var[1:-1])
+
+    if (rhs_var_dict['name'] != lhs_var_dict['name']) or (rhs_var_dict['prefix'] != lhs_var_dict['prefix']) or \
+            (rhs_var_dict['suffix'] != lhs_var_dict['suffix']):
+        msg = 'Warning 030d: the template string "' + templatestr + '" is malformed. The LHS variable "' + \
+              lhs_var + '" is not the same as the RHS variable "' + rhs_var + '".'
+        bib_warning(msg)
+
+    ## Get the RHS "glue" element. If it has curly braces in it, then we differentiate the conditions between when
+    ## the number of names is only two (then use only the stuff inside the curly braces) and more than two (then
+    ## use all of the glue). In both cases, remove the first and last curly braces before applying the glue.
+    rhs_glue = rhs[0:rhs_span[0]]
+    if re.search(r'\{.*?\}', rhs_glue):
+        glue_start = rhs_glue.find('{')
+        glue_end = rhs_glue.rfind('}')
+        last_glue_if_only_two = rhs_glue[glue_start+1:glue_end]
+        last_glue = rhs_glue[:glue_start] + rhs_glue[glue_start+1:glue_end] + rhs_glue[glue_end+1:]
+    else:
+        last_glue_if_only_two = rhs_glue
+        last_glue = rhs_glue
+
+    ## Get the part of the template that goes after the implicit loop.
+    after_loop_stuff = rhs[rhs_span[1]:]
+
+    loop_data = {}
+    loop_data['varname'] = lhs_var_dict['name']
+    loop_data['start_index'] = lhs_var_dict['index']
+    loop_data['end_index'] = rhs_var_dict['index']
+    loop_data['glue'] = lhs_glue
+    loop_data['var_prefix'] = lhs_var_dict['prefix']
+    loop_data['var_suffix'] = lhs_var_dict['suffix']
+    loop_data['last_glue'] = last_glue
+    loop_data['last_glue_if_only_two'] = last_glue_if_only_two
+    loop_data['before_loop_stuff'] = before_loop_stuff
+    loop_data['after_loop_stuff'] = after_loop_stuff
+
+    return(loop_data)
 
 ## ==================================================================================================
 
