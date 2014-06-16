@@ -28,7 +28,7 @@ Syntax
 
    This list is actually freely extensible. A user can add any additional variables needed, so that if a ``video`` field is used in a ``.bib`` database file, then this can be used within a formatted reference simply by placing ``<video>`` into the template wherever the information needs to be inserted.
 
-#. Any variable placed within square brackets ``[]`` indicate that it is an optional variable --- it is not required that the database have that entry. While required entries that are not defined in the BibTeX database file (.bib file) are replaced with '???', and undefined optional variables are simply skipped. If a ``|`` is present within the square brackets, it indicates an "elseif" clause. That is, if the template is ``[<var1>|<var2> and <var3>]``, then the code will look for ``var1`` as a field within the current database entry being formatted. If it does not find the entry, then it will try the next block, where it finds the two variables ``var2`` and ``var3``. If both are defined, then the original template ``[<var1>|<var2> and <var3>]`` is replaced with ``<var2> and <var3>`` (i.e. removing the square brackets) and proceeds to replace the two variables with their corresponding fields. If either one of ``var2`` or ``var3`` is undefined in the entry, then the entire optional [...] portion of the template is skipped.
+#. Any variable placed within square brackets ``[]`` indicate that it is an optional variable --- it is not required that the database have that entry. While required entries that are not defined in the BibTeX database file (.bib file) are replaced with '???', and undefined optional variables are simply skipped. If a ``|`` is present within the square brackets, it indicates an "elseif" clause. That is, if the template is ``[<var1>|<var2> and <var3>]``, then the code will look for ``var1`` as a field within the current database entry being formatted. If it does not find the entry, then it will try the next block, where it finds the two variables ``var2`` and ``var3``. If both are defined, then the original template ``[<var1>|<var2> and <var3>]`` is replaced with ``<var2> and <var3>`` (i.e. removing the square brackets) and proceeds to replace the two variables with their corresponding fields. If either one of ``var2`` or ``var3`` is undefined in the entry, then the entire optional (bracketed) portion of the template is skipped.
 
 #. If the ``|`` symbol is used to create an empty last cell, as in ``[<var1>|<var2>|]``, this indicates that while the individual cells within the optional block are themselves optional, it is required to have at least _one_ among the cells to be defined. Thus, ``[<note>|]`` has the same meaning as simply ``<note>`` does.
 
@@ -335,8 +335,6 @@ That is, the implicit index ``.n`` is everywhere replaced with the explicit inde
     [<editorlist.1.prefix> ]<editorlist.1.last>[, <editorlist.1.suffix>]
 
 With this template now complete, the code begins to evaluate the entry and replace the individual variables with their corresponding database fields.
-
-Note that implicit loop structures only work when they comprise the *entire* template. That is, a template such as ``au = <authorname.0>, ...,{ and }<authorname.6>`` works fine, whereas the template ``au = [<authorname.0>, ...,{ and }<authorname.6>]`` uses the ``[`` as part of each entry in the loop, and the ``]`` as part of the final entry, so that the final result is a malformed template. (The left and right square brackets are no longer matched.)
 
 Python API
 ==========

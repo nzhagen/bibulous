@@ -59,7 +59,7 @@ On the main menu bar, select ``Options`` then ``Configure Texmaker``. In the ``B
 .. image:: _static/modified_texmaker_setup.png
    :width: 49%
 
-(The example shows the location of the ``bibulous.py`` file as ``/home/repos/bibulous/bibulous.py``, but you need to replace it with the appropriate location on your own system.)
+(The example shows the location of the ``bibulous.py`` file as ``/home/repos/bibulous/bibulous.py``, but you need to replace it with the appropriate location on your own system.) Also note that the ``bibulous.py`` must be executable by the user.
 
 Modifying TeXStudio to replace BibTeX with Bibulous
 ---------------------------------------------------
