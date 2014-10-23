@@ -179,7 +179,7 @@ and a style template file
 
 .. literalinclude:: ../examples/example9.bst
 
-that when comiled by the main ``.tex`` file
+that when compiled by the main ``.tex`` file
 
 .. literalinclude:: ../examples/example9.tex
 
@@ -188,8 +188,27 @@ produces the formatted result
 .. image:: _static/example9.png
    :width: 60%
 
+************************************************
 
+Example 10
+==========
 
+The following example is taken from a question posted at ``http://tex.stackexchange.com/questions/68080/beamer-bibliography-icon?lq=1``, where the OP asks for a way to place images alongside each bibliography entry. For this example, we have a database file
+
+.. literalinclude:: ../examples/example10.bib
+
+and a style template file
+
+.. literalinclude:: ../examples/example10.bst
+
+that when compiled by the main ``.tex`` file
+
+.. literalinclude:: ../examples/example10.tex
+
+produces the formatted result
+
+.. image:: _static/example10.png
+   :width: 60%
 
 
 
