@@ -175,7 +175,7 @@ class Bibdata(object):
         self.searchkeys = []        ## when culling data, this is the list of keys to limit parsing to
         self.parse_only_entrykeys = False  ## don't parse the data in the database; get only entrykeys
         self.nested_templates = []  ## which templates have nested option blocks
-        self.looped_templates = {} #zzz['au','ed']  ## which templates have implicit loops
+        self.looped_templates = {} #['au','ed']  ## which templates have implicit loops
         self.implicitly_indexed_vars = ['authorname','editorname'] ## which templates have implicit indexing
         self.namelists = []         ## the namelists defined within the templates
         self.uniquify_vars = {}     ## dict containing all variables calling the "uniquify" operator
@@ -1093,8 +1093,7 @@ class Bibdata(object):
 
         ## Use a try-except block here, so that if any exception is raised then we can make sure to produce a valid
         ## BBL file.
-        #try:
-        if True:    #zzz
+        try:
             ## First insert special variables, so that the citation sorter and everything else can use them. Also
             ## insert cross-reference data. Doing these here means that we don't have to add lots of extra checks
             ## later.
@@ -1125,11 +1124,10 @@ class Bibdata(object):
                 if (s != ''):
                     ## Need two line EOL's here and not one so that backrefs can work properly.
                     filehandle.write((s + '\n').encode('utf-8'))
-        #except Exception, err:
-        #    ## Swallow the exception
-        #    print('Exception encountered: ' + repr(err))
-        #finally:
-        if True: #zzz
+        except Exception, err:
+            ## Swallow the exception
+            print('Exception encountered: ' + repr(err))
+        finally:
             if write_postamble:
                 filehandle.write('\n\\end{thebibliography}\n'.encode('utf-8'))
             filehandle.close()
@@ -1222,7 +1220,7 @@ class Bibdata(object):
 
         ## If the citation key is not in the database, replace the format string with a message to the fact.
         if (c not in self.bibdata):
-            msg = 'citation key "' + c + '" is not in the bibliography database'
+            msg = 'citation key ``' + c + '\'\' is not in the bibliography database'
             bib_warning('Warning 010a: ' + msg, self.disable)
             return(r'\bibitem[' + c + ']{' + c + '}\n' + r'\textit{Warning: ' + msg + '}.')
         else:
