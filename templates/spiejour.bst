@@ -20,7 +20,7 @@ poster = <au>, \enquote{<title>}, poster [presented at <conference>]([<month> ]<
 presentation = <au>, \enquote{<title>}, presentation [presented at <conference>]([<month> ]<year>).[ <note>]
 proceedings = <ed>, \textit{<title>}, [vol.~<volume>][, <edition.ordinal()>~ed.] (<year>).[ <note>]
 techreport = [<au>|<ed>|<organization>|<institution>|], \enquote{<title>,} <institution>, <number> (<year>).[ <note>]
-website = \href{[<url>|<doi>]}{[<url>|<doi>]}
+website = \href{[<url>|<doi>]}{[\url{<url>}|\url{<doi>}]}
 
 SPECIAL-TEMPLATES:
 sortkey = <citenum.zfill(2)>              ## order the reference list in the same order as the citations were given in
