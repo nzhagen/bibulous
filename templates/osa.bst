@@ -1,7 +1,7 @@
 TEMPLATES:
-article = <au>, \enquote{[\href{<url>}{<title>}|\href{<doi>}{<title>}|<title>],} <journal> \textbf{<volume>}, ...
+article = <au>, \enquote{[\href{<url>}{<title>}|\href{<doi>}{<title>}|<title>],} <journal> \textbf{<volume>},{ }...
         [<startpage>--<endpage>|<startpage>|<eid>|] (<year>).[ <note>]
-book = [<au>|<ed>|<organization>|<institution>|], \textit{<title>}[, <edition.ordinal()>~ed.][, vol.~<volume>] ...
+book = [<au>|<ed>|<organization>|<institution>|], \textit{<title>}[, <edition.ordinal()>~ed.][, vol.~<volume>]{ }...
         (<publisher>, <year>)[ Chap.~<chapter>][, pp.~<startpage>--<endpage>|, p.~<startpage>].[ <note>]
 endnote = <note>
 inbook = incollection
@@ -24,7 +24,7 @@ website = \href{[<url>|<doi>]}{[<url>|<doi>]}
 
 SPECIAL-TEMPLATES:
 sortkey = <citenum.zfill(2)>              ## order the reference list in the same order as the citations were given in
-citelabel = <citenum>.                    ## use numeric reference labels
+citelabel = <citenum>                    ## use numeric reference labels
 
 OPTIONS:
 maxauthors = 25                           ## if more than 25 authors, then use "et al." format
