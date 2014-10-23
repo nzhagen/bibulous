@@ -1,0 +1,18 @@
+\documentclass{article}
+\usepackage[pdftex]{graphicx}
+\usepackage[paper=letterpaper, text={4in,5in},centering]{geometry}
+
+\makeatletter
+   \renewcommand{\@biblabel}[1]{}
+   \newcommand{\citenum}[1]{\def\@cite##1##2{##1}\cite{#1}}
+\makeatother
+
+\begin{document}
+
+References \citenum{Knuth-1984}, \citenum{Lamport-1994}, and \citenum{Gratzer-2007} are useful for learning {\TeX} and \LaTeX.
+
+\bibliography{example10}
+\bibliographystyle{example10}
+
+\end{document}
+
