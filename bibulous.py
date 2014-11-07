@@ -56,7 +56,7 @@ import pdb          ## put "pdb.set_trace()" at any place you want to interact w
 #       #traceback.print_stack()
 #sys.excepthook = info      ## go into debugger automatically on an exception
 
-__version__ = '1.0'
+__version__ = '1.3'
 __all__ = ['sentence_case', 'stringsplit', 'finditer', 'namefield_to_namelist', 'namestr_to_namedict',
            'initialize_name', 'get_delim_levels', 'show_levels_debug', 'get_quote_levels', 'splitat', 'multisplit',
            'enwrap_nested_string', 'enwrap_nested_quotes', 'purify_string', 'latex_to_utf8',
@@ -1098,6 +1098,15 @@ class Bibdata(object):
             ## insert cross-reference data. Doing these here means that we don't have to add lots of extra checks
             ## later.
             for c in self.citedict:
+                ## If the citation key is not in the database, then create a fake entry with it, using entrytype
+                ## "errormsg", and an item "errormsg" that contains the thing we want printed out in the citation
+                ## list to warn the user.
+                if c not in self.bibdata:
+                    msg = 'citation key ``' + c + '\'\' is not in the bibliography database'
+                    bib_warning('Warning 010a: ' + msg, self.disable)
+                    errormsg = r'\textit{Warning: ' + msg + '}.'
+                    self.bibdata[c] = {'errormsg':errormsg, 'entrytype':'errormsg', 'entrykey':c}
+
                 self.insert_crossref_data(c)
                 self.insert_specials(c)
 
@@ -1148,10 +1157,7 @@ class Bibdata(object):
 
         ## Generate a sortkey for each citation.
         for c in self.citedict:
-            if (c in self.bibdata):
-                s = self.bibdata[c]['sortkey']
-            else:
-                s = c
+            s = self.bibdata[c]['sortkey']
             self.sortlist.append(s)
             self.citelist.append(c)
 
@@ -1218,14 +1224,7 @@ class Bibdata(object):
         if (c == 'preamble'):
             return('')
 
-        ## If the citation key is not in the database, replace the format string with a message to the fact.
-        if (c not in self.bibdata):
-            msg = 'citation key ``' + c + '\'\' is not in the bibliography database'
-            bib_warning('Warning 010a: ' + msg, self.disable)
-            return(r'\bibitem[' + c + ']{' + c + '}\n' + r'\textit{Warning: ' + msg + '}.')
-        else:
-            entry = self.bibdata[c]
-
+        entry = self.bibdata[c]
         entrytype = entry['entrytype']
 
         ## If the journal format uses ProcSPIE like a journal, then you need to change the entrytype from
@@ -1238,6 +1237,12 @@ class Bibdata(object):
 
         if (entrytype in self.bstdict):
             templatestr = self.bstdict[entrytype]
+        elif (entrytype == 'errormsg'):
+            if (unicode(self.bibdata[c]['citelabel']) == 'None'):
+                itemstr = r'\bibitem{' + c + '}\n' + self.bibdata[c]['errormsg']
+            else:
+                itemstr = r'\bibitem[' + self.bibdata[c]['citelabel'] + ']{' + c + '}\n' + self.bibdata[c]['errormsg']
+            return(itemstr)
         else:
             msg = 'entrytype "' + entrytype + '" does not have a template defined in the .bst file'
             bib_warning('Warning 011: ' + msg + '. Skipping ...', self.disable)
@@ -1255,10 +1260,7 @@ class Bibdata(object):
                 user_var_value = eval(self.user_variables[user_var_name])
                 entry[user_var_name] = user_var_value
 
-        if (c in self.bibdata):
-            bibitem_label = self.bibdata[c]['citelabel']
-        else:
-            bibitem_label = c
+        bibitem_label = self.bibdata[c]['citelabel']
 
         if (unicode(bibitem_label) == 'None'):
             itemstr = r'\bibitem{' + c + '}\n'
@@ -1311,11 +1313,6 @@ class Bibdata(object):
             A string to use as a sorting key.
         '''
 
-        if citekey not in self.bibdata:
-            msg = '"' + citekey + '" is not in the bibliography database.'
-            #bib_warning('Warning 010b: ' + msg, self.disable)
-            return('Warning: ' + msg)
-
         entry = self.bibdata[citekey]
         templatestr = self.specials['sortkey']
 
@@ -1355,12 +1352,12 @@ class Bibdata(object):
         '''
 
         ## First check that the entrykey exists.
-        if (entrykey not in self.bibdata):
+        if ('errormsg' in self.bibdata[entrykey]):
+            return
+        if ('crossref' not in self.bibdata[entrykey]):
             return
 
         bibentry = self.bibdata[entrykey]
-        if ('crossref' not in self.bibdata[entrykey]):
-            return
 
         if (fieldname == None):
             fieldnames = bibentry.keys()
@@ -1821,9 +1818,6 @@ class Bibdata(object):
         entrykey : str
             The key of the entry to which we want to add special fields.
         '''
-
-        if (entrykey not in self.bibdata):
-            return
 
         entry = self.bibdata[entrykey]
 
