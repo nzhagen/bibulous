@@ -12,7 +12,8 @@ patent = <au>, \enquote{<title>,} <nationality> patent <number> (<year>).[ <note
 phdthesis = <au>, \enquote{<title>,} Ph.D. dissertation (<school>, <year>).[ <note>]
 proceedings = <ed.if_singular(editorlist, edmsg1, edmsg2)>, \textit{<title>}, [vol.~<volume>][, <edition.ordinal()>~ed.] (<year>).[ <note>]
 techreport = [<au>|<ed.if_singular(editorlist, edmsg1, edmsg2)>|<organization>|<institution>|], \enquote{<title>,} <institution>, <number> (<year>).[ <note>]
-website = \href{[<url>|<doi>]}{[<url>|<doi>]}
+website = \url{[<url>|<doi>]}
+#website = \href{[<url>|<doi>]}{[<url>|<doi>]}
 
 SPECIAL-TEMPLATES:
 sortkey = <citenum>                       ## order the reference list in the same order as the citations were given in

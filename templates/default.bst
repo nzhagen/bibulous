@@ -12,13 +12,16 @@ patent = <au>, \enquote{<title>,} <nationality> patent <number> (<year>).[ <note
 phdthesis = <au>, \enquote{<title>,} Ph.D. dissertation (<school>, <year>).[ <note>]
 proceedings = <ed.if_singular(editorlist, edmsg1, edmsg2)>, \textit{<title>}, [vol.~<volume>][, <edition.ordinal()>~ed.] (<year>).[ <note>]
 techreport = [<au>, |<ed.if_singular(editorlist, edmsg1, edmsg2)>, ]``<title>,'' <institution>, Tech.\ Report <number> (<year>).[ <note>]
+website = \url{[<url>|<doi>]}
 ##article = <au>, \enquote{\href{[<url>|<doi>]}{<title>},} <journal> \textbf{<volume>}, [<startpage>--<endpage>|<eid>|] (<year>).[ <note>][ {\makeopenbracket}<url>{\makeclosebracket}| {\makeopenbracket}<doi>{\makeclosebracket}]
 ##book = [<au>|], \textit{<title>}, [<edition.ordinal()>~ed., ][vol.~<volume>, ](<publisher>, <year>)[ Chap.~<chapter>][, pp.~<startpage>--<endpage>].[ <note>]
 ##inproceedings = <au>, \enquote{<title>,} [in \textit{<booktitle>}, <ed.if_singular(editorlist, edmsg1, edmsg2)>, <series> |in \textit{<booktitle>}, <series> |in \textit{<booktitle>}, ]\textbf{<volume>}[, pp.~<startpage>--<endpage>|, <eid>] (<year>).[ <note>]
 
+
 SPECIAL-TEMPLATES:
 sortkey = <citekey>                       ## order the reference list by "citekey"
 citelabel = <citekey>                     ## the type of label to use for the reference list items
+
 
 OPTIONS:
 procspie_as_journal = True                ## treat SPIE conference proceedings like a journal, with journal name 'Proc. SPIE'
@@ -37,7 +40,9 @@ allow_scripts = False                     ## whether to allow user scripts in BS
 case_sensitive_field_names = False        ## whether to allow field names to be case sensitive (i.e. "BOOK" will not be the same entrytype as "book")
 name_separator = and                      ## the string used to separate names in a BibTeX-format field of names
 
+
 VARIABLES:
+
 
 DEFINITIONS:
 

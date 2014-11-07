@@ -20,11 +20,14 @@ poster = <au>, \enquote{<title>}, poster [presented at <conference>]([<month> ]<
 presentation = <au>, \enquote{<title>}, presentation [presented at <conference>]([<month> ]<year>).[ <note>]
 proceedings = <ed>, \textit{<title>}, [vol.~<volume>][, <edition.ordinal()>~ed.] (<year>).[ <note>]
 techreport = [<au>|<ed>|<organization>|<institution>|], \enquote{<title>,} <institution>, <number> (<year>).[ <note>]
-website = \href{[<url>|<doi>]}{[\url{<url>}|\url{<doi>}]}
+website = \url{[<url>|<doi>]}
+#website = \href{[<url>|<doi>]}{[\url{<url>}|\url{<doi>}]}
+
 
 SPECIAL-TEMPLATES:
 sortkey = <citenum.zfill(2)>              ## order the reference list in the same order as the citations were given in
 citelabel = <citenum>                     ## use numeric reference labels
+
 
 OPTIONS:
 maxauthors = 3                            ## if more than 3 authors, then use "et al." format (only works for default "<au>" variable)
@@ -46,6 +49,8 @@ allow_scripts = False                     ## whether to allow user scripts in BS
 case_sensitive_field_names = False        ## whether to allow field names to be case sensitive (i.e. "BOOK" will not be the same entrytype as "book")
 name_separator = and                      ## the string used to separate names in a BibTeX-format field of names
 
+
 VARIABLES:
+
 
 DEFINITIONS:

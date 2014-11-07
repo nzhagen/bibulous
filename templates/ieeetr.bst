@@ -12,10 +12,13 @@ phdthesis = <au>, \textit{<title>}, Ph.D. thesis, <school>, <address>, [<monthrn
 proceedings = <ed.if_singular(editorlist, edmsg1, edmsg2)>, ed., \textit{<title>}, [vol.~<volume>, ][<organization>, ]<publisher> [<month.monthabbrev()> ]<year>.[ <note>]
 techreport = <au>, \enquote{<title>,} Tech.\ Rep.\ <number>, [<institution>, |<organization>, |]<publisher>, [<month.monthabbrev()> ]<year>.[ <note>]
 unpublished = <au>, \enquote{<title>.}[ <note>,] [<month.monthabbrev()> ]<year>.
+website = \url{[<url>|<doi>]}
+
 
 SPECIAL-TEMPLATES:
 sortkey = <citenum>                       ## order the reference list in the same order as the citations were given in
 citelabel = <citenum.remove_leading_zeros()>  ## use numeric reference labels
+
 
 OPTIONS:
 maxauthors = 9                            ## if more than 10 authors, then use "et al." format
@@ -37,7 +40,9 @@ allow_scripts = False                     ## whether to allow user scripts in BS
 case_sensitive_field_names = False        ## whether to allow field names to be case sensitive (i.e. "BOOK" will not be the same entrytype as "book")
 name_separator = and                      ## the string used to separate names in a BibTeX-format field of names
 
+
 VARIABLES:
+
 
 DEFINITIONS:
 
