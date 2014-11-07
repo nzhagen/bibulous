@@ -40,7 +40,7 @@ etal_message = , \textit{et~al.}          ## what text to place at the end of an
 edmsg1 = , ed.                            ## the label to use after the editor namelist when only one editor is present
 edmsg2 = , eds                            ## the label to use after the editor namelist when multiple editors are present
 
-## The remaining exceptions below are really for users rather than for the journal. Maybe put these someplace else?
+## The remaining exceptions below are really for users rather than for the journal.
 undefstr = ???                            ## what string to replace undefined required fields with
 replace_newlines = True                   ## whether to replace newline characters inside fields with spaces
 allow_scripts = False                     ## whether to allow user scripts in BST files
