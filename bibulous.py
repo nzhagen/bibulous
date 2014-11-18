@@ -133,7 +133,7 @@ class Bibdata(object):
     write_bblfile
     create_citation_list
     format_bibitem
-    generate_sortkey
+#    generate_sortkey
     insert_crossref_data
     write_citeextract
     write_authorextract
@@ -1842,8 +1842,7 @@ class Bibdata(object):
         self.bibdata[entrykey]['citenum'] = citenum
 
         ## Next loop through the "special" variables. These are variable definitions from the SPECIAL-
-        ## TEMPLATES section of the style file. Note that we do want to deal with only *user-defined* specials, so we
-        ## have to eliminate the fixed list of specials from the list of keys. Note that rather than looping through
+        ## TEMPLATES section of the style file. Note that rather than looping through
         ## self.specials.keys(), we loop through "self.specials_list" because we want it to be ordered.
         for key in self.specials_list:
             ## Only insert the user-defined special field if the field is missing.
@@ -1851,6 +1850,11 @@ class Bibdata(object):
                 continue
 
             templatestr = self.specials[key]
+
+            ## Need to treat citealpha specially. Check if it needs to be present before anything else is defined.
+            if ('<citealpha.' in templatestr) or ('<citealpha>' in templatestr):
+                citealpha = create_citation_alpha(entry, self.options)
+                self.bibdata[entrykey]['citealpha'] = citealpha
 
             ## If this special template is an implicitly indexed one, then it can only be used after explicit index
             ## replacement (such as within an implicit loop) and not by itself, so we have to skip it here. We
@@ -2726,6 +2730,23 @@ class Bibdata(object):
                     return(newfield)
                 else:
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
+#            elif indexer.startswith('.if_equals('):
+#                match = re.search(r'.if_equals\(.*\)', indexer, re.UNICODE)
+#                end_idx = match.end(0)
+#                result = match.group(0)[11:-1]      ## remove function name and parentheses
+#                (test_str, then_form, else_form) = result.split(',')
+#
+#                if (field == test_str):
+#                    newfield = then_form
+#                else:
+#                    newfield = else_form
+#
+#                newindexer = indexer[end_idx:]
+#                if (nelements == 1) or (newindexer == ''):
+#                    return(newfield)
+#                else:
+#                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
+
 #            elif indexer.startswith('.if_length_equals('):
 #                match = re.search(r'.if_length_equals\(.*\)', indexer, re.UNICODE)
 #                end_idx = match.end(0)
@@ -2794,12 +2815,18 @@ class Bibdata(object):
             #    return(None)
 
         ## If the indexer is a numerical range...
-        if re.search(r'^.\d*:\d*', indexer, re.UNICODE):
+        if re.search(r'^.-?\d*:-?\d*', indexer, re.UNICODE):
             indexer = indexer[1:]   ## remove the leading period
-            match = re.search(r'^.\d*:\d*', indexer, re.UNICODE)
+            match = re.search(r'^.-?\d*:-?\d*', indexer, re.UNICODE)
             (start_idx,end_idx) = match.group(0).split(':')
-            newfield = field[int(start_idx):int(end_idx)+1]
+            start_idx = int(start_idx)
+            end_idx = int(end_idx)
+            if (start_idx < 0):
+                newfield = field[start_idx-1:end_idx]
+            else:
+                newfield = field[start_idx:end_idx+1]
             newindexer = indexer[int(match.end(0))+1:]
+
             if (nelements == 1) or (newindexer == ''):
                 return(newfield)
             else:
@@ -4337,6 +4364,12 @@ def create_citation_alpha(entry, options):
         namelist = namefield_to_namelist(entry['author'], sep=options['name_separator'])
     elif ('editor' in entry):
         namelist = namefield_to_namelist(entry['editor'], sep=options['name_separator'])
+    elif ('organization' in entry):
+        org = entry['organization']
+        namelist = namefield_to_namelist(org, sep=options['name_separator'])
+    elif ('institution' in entry):
+        inst = entry['institution']
+        namelist = namefield_to_namelist(inst, sep=options['name_separator'])
     else:
         return('UNDEFINED')
 
