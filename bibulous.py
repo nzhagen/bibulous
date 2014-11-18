@@ -2730,22 +2730,22 @@ class Bibdata(object):
                     return(newfield)
                 else:
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
-#            elif indexer.startswith('.if_equals('):
-#                match = re.search(r'.if_equals\(.*\)', indexer, re.UNICODE)
-#                end_idx = match.end(0)
-#                result = match.group(0)[11:-1]      ## remove function name and parentheses
-#                (test_str, then_form, else_form) = result.split(',')
-#
-#                if (field == test_str):
-#                    newfield = then_form
-#                else:
-#                    newfield = else_form
-#
-#                newindexer = indexer[end_idx:]
-#                if (nelements == 1) or (newindexer == ''):
-#                    return(newfield)
-#                else:
-#                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
+            elif indexer.startswith('.if_equals('):
+                match = re.search(r'.if_equals\(.*\)', indexer, re.UNICODE)
+                end_idx = match.end(0)
+                result = match.group(0)[11:-1]      ## remove function name and parentheses
+                (test_str, then_form, else_form) = result.split(',')
+
+                if (field == test_str):
+                    newfield = then_form
+                else:
+                    newfield = else_form
+
+                newindexer = indexer[end_idx:]
+                if (nelements == 1) or (newindexer == ''):
+                    return(newfield)
+                else:
+                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
 
 #            elif indexer.startswith('.if_length_equals('):
 #                match = re.search(r'.if_length_equals\(.*\)', indexer, re.UNICODE)
