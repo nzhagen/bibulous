@@ -4,6 +4,8 @@ Python code to-do list: (including goals for version 2.0)
 The primary goal for version 2.0 is to incorporate integration with a front-end LaTeX package.
 For version 1.4, the goal is to have group templates working.
 
+- Add a test for the new ``.if_equals()`` operator.
+
 - If a user added any options blocks to their defined variables, then they may have turned an
   unnested sequence into a nested one. Need to look for that. We can probably do this check
   when the BST file is parsed, rather than when we do string substitution in the template

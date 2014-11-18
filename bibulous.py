@@ -133,7 +133,6 @@ class Bibdata(object):
     write_bblfile
     create_citation_list
     format_bibitem
-#    generate_sortkey
     insert_crossref_data
     write_citeextract
     write_authorextract
@@ -1296,38 +1295,6 @@ class Bibdata(object):
             itemstr = enwrap_nested_quotes(itemstr, disable=self.disable)
 
         return(itemstr)
-
-    ## ===================================
-    def generate_sortkey(self, citekey):
-        '''
-        From a bibliography entry and the formatting template options, generate a sorting key for the entry.
-
-        Parameters
-        ----------
-        citekey : str
-            The key for the current entry.
-
-        Returns
-        -------
-        sortkey : str
-            A string to use as a sorting key.
-        '''
-
-        entry = self.bibdata[citekey]
-        templatestr = self.specials['sortkey']
-
-        ## Substitute entry fields for template variables.
-        templatestr = self.template_substitution(templatestr, citekey)
-        sortkey = purify_string(templatestr)
-        sortkey = sortkey.replace(' ','')
-
-        if not self.options['sort_case']:
-            sortkey = sortkey.lower()
-
-        if self.debug:
-            print('citekey "%s": sortkey = "%s"' % (citekey, sortkey))
-
-        return(sortkey)
 
     ## =============================
     def insert_crossref_data(self, entrykey, fieldname=None):
