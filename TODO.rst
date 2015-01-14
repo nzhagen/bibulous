@@ -35,7 +35,7 @@ For version 1.4, the goal is to have group templates working.
       year = {1234},
       nameabbrev = {de la Fontaine > {dlF.}, du Bois > du}
     }
-- !!! Found a way to get different citation labels in the text than in the reference list: use::
+- Found a way to get different citation labels in the text than in the reference list: use::
 
     \makeatletter
       \renewcommand{\@biblabel}[1]{}
@@ -50,7 +50,7 @@ For version 1.4, the goal is to have group templates working.
 
   Compare this with natbib's author-year style.
 
-- Consider adding a 4-arg operator ``.if_has_substr(input,sub,iftrue,iffalse)``.
+- Consider adding a 4-arg operator ``.if_has_substr(input,sub,do_if_true,do_if_false)``.
 
 - Try installing TeXnicCenter (Windows), change its backend to Bibulous, and provide how-to instructions.
 

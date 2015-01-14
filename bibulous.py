@@ -1270,6 +1270,7 @@ class Bibdata(object):
             print('Formatting entry "' + citekey + '"')
             print('Template: "' + self.bstdict[entrytype] + '"')
             print('Field data: ' + repr(entry))
+
         try:
             ## Substitute the template variables with fields from the bibliography entry.
             templatestr = self.template_substitution(templatestr, citekey)
