@@ -1,15 +1,17 @@
 # chardet's setup.py
-from distutils.core import setup
+#from distutils.core import setup
+from setuptools import setup
 
 setup(
     name = "bibulous",
     py_modules = ["bibulous, bibulous_test, bibulous_authorextract"],
-    version = "1.3.1",
-    description = "Replacement for BibTeX and BibTeX file parser",
+    version = "1.3.2",
+    description = "BibTeX replacement and enhancement",
     author = "Nathan Hagen",
-    author_email = "nhagen@optics.arizona.edu",
+    author_email = "and.the.light.shattered@gmail.com",
     url = "https://github.com/nzhagen/bibulous",
     download_url = "https://github.com/nzhagen/bibulous/blob/master/bibulous.py",
+    license = "MIT",
     keywords = ["bibtex", "bibliography", "parser", "tex", "latex"],
     classifiers = [
         "Programming Language :: Python :: 2.7",
@@ -23,9 +25,10 @@ setup(
 A drop-in replacement for BibTeX based on string templates.
 -----------------------------------------------------------
 
-Bibulous provides a flexible way of accomplishing the same tasks as BibTeX, and going far
-beyond it in capability. The advantages include:
+Bibulous provides a flexible way of accomplishing the same tasks as BibTeX, and going
+beyond it in capability. Some of its advantages include:
 
+  - An integrated BibTeX database file (.bib file) parser.
   - Fully internationalized: Bibulous can use bibliography databases and bibliography style
     files written in any language.
   - Simple and powerful customization: style templates are an ideal way of visualizing and
@@ -33,8 +36,8 @@ beyond it in capability. The advantages include:
     language in order to build or customize a bibliography style.
   - Multilingual capability: templates are largely language agnostic, so that multilingual
     bibliographies can be achieved almost effortlessly.
-  - Allows users to build glossaries, lists of symbols, and lists of acronyms using the
-    same infrastructure as with bibliographies.
+  - Users can build glossaries, lists of symbols, and lists of acronyms using the same
+    infrastructure as used for bibliographies.
   - Sorting of citations is fully localized and has no difficulty in dealing with strings
     that contain Unicode, LaTeX-markup characters for non-English languages, or even
     mathematics markup.

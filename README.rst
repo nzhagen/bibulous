@@ -21,6 +21,8 @@ Installing using pip:::
 
 Instructions for installing Bibulous, and for seamlessly integrating it into your normal LaTeX workflow, are given in the ``getting started`` section. Users can also consult the ``guidelines for writing style templates`` for further information, and the ``examples`` section. A ``FAQ`` page is also available.
 
+Another approach is to clone the git repository ``https://github.com/nzhagen/bibulous`` and place it into your Python path. For compiling bibliographies, the only file needed within the project is ``bibulous.py``, so that going to ``https://github.com/nzhagen/bibulous`` and copying ``bibulous.py`` from there is sufficient.
+
 Example
 =======
 
