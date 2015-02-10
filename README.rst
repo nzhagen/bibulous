@@ -12,6 +12,8 @@ Bibulous' “style template” files allow a user to visualize the entire biblio
 
 The project website, with complete documentation, can be found at ``http://nzhagen.github.io/bibulous/``. The complete sourcecode for the project can be found at ``https://github.com/nzhagen/bibulous``.
 
+For any questions, the Bibulous project maintainer can be contacted at ``and.the.light.shattered@gmail.com``.
+
 Installation
 ============
 
