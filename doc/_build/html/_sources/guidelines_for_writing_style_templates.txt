@@ -28,23 +28,23 @@ Syntax
 
    This list is actually freely extensible. A user can add any additional variables needed, so that if a ``video`` field is used in a ``.bib`` database file, then this can be used within a formatted reference simply by placing ``<video>`` into the template wherever the information needs to be inserted.
 
-#. Any variable placed within square brackets ``[]`` indicate that it is an optional variable --- it is not required that the database have that entry. While required entries that are not defined in the BibTeX database file (.bib file) are replaced with '???', and undefined optional variables are simply skipped. If a ``|`` is present within the square brackets, it indicates an "elseif" clause. That is, if the template is ``[<var1>|<var2> and <var3>]``, then the code will look for ``var1`` as a field within the current database entry being formatted. If it does not find the entry, then it will try the next block, where it finds the two variables ``var2`` and ``var3``. If both are defined, then the original template ``[<var1>|<var2> and <var3>]`` is replaced with ``<var2> and <var3>`` (i.e. removing the square brackets) and proceeds to replace the two variables with their corresponding fields. If either one of ``var2`` or ``var3`` is undefined in the entry, then the entire optional [...] portion of the template is skipped.
+#. Any variable placed within square brackets ``[]`` indicate that it is an optional variable --- it is not required that the database have that entry. While required entries that are not defined in the BibTeX database file (.bib file) are replaced with '???', and undefined optional variables are simply skipped. If a ``|`` is present within the square brackets, it indicates an "elseif" clause. That is, if the template is ``[<var1>|<var2> and <var3>]``, then the code will look for ``var1`` as a field within the current database entry being formatted. If it does not find the entry, then it will try the next block, where it finds the two variables ``var2`` and ``var3``. If both are defined, then the original template ``[<var1>|<var2> and <var3>]`` is replaced with ``<var2> and <var3>`` (i.e. removing the square brackets) and proceeds to replace the two variables with their corresponding fields. If either one of ``var2`` or ``var3`` is undefined in the entry, then the entire optional (bracketed) portion of the template is skipped.
 
 #. If the ``|`` symbol is used to create an empty last cell, as in ``[<var1>|<var2>|]``, this indicates that while the individual cells within the optional block are themselves optional, it is required to have at least _one_ among the cells to be defined. Thus, ``[<note>|]`` has the same meaning as simply ``<note>`` does.
 
-#. Nesting of ``[]`` brackets is allowed, but the syntax becomes computationally expensive to parse, so that these structures should be used sparingly::
+#. Nesting of ``[]`` brackets is allowed, but the syntax becomes computationally expensive to parse, so that these structures should be used sparingly.
 
-#. Users that need to use ``[``, ``]``, ``#``, ``<``, ``>``, or ``|`` symbols as formatting elements within the reference list can implement them using some custom LaTeX-markup commands: ``{\makeopenbracket}``, ``{\makeclosebracket}``, ``{\makehashsign}``, ``{\makelessthan}``, ``{\makegreaterthan}``, or ``{\makeverticalbar}``. Note that the curly brackets used in each case are required.
+#. Users that need to use ``[``, ``]``, ``#``, ``<``, ``>``, or ``|`` symbols as formatting elements within the reference list can implement them using some custom LaTeX-markup commands: ``{\makeopenbracket}``, ``{\makeclosebracket}``, ``{\makehashsign}``, ``{\makelessthan}``, ``{\makegreaterthan}``, ``{\makeverticalbar}``, or ``{\makeellipsis}``. Note that the curly brackets used in each case are required.
 
 #. In the ``TEMPLATES`` section of the file, if an entrytype format definition contains only another entrytype name on the right hand side of the ``=``, i.e.::
 
        inbook = incollection
 
-   then this means that the existing ``incollection`` template should be copied for use with ``inbook`` entrytypes. (Note that ``incollection`` should be defined above this line in order for this to work.)
+   then this means that the existing ``incollection`` template should be copied for use with ``inbook`` entrytypes.
 
 #. Note that several fields are defined by default which are *not* directly from the bibliography database. These are ``au``, ``authorlist``, ``citekey``, ``citenum``, ``ed``, ``editorlist``, ``endpage``, and ``startpage``. These fields are derived from the original database file, but have been reformatted. See the *Default Fields* section below.
 
-#. Although the entrytype template definitions listed below are in alphabetical order, that can be put in any desired order within the file. (The exception to this rule is that if a definition consists of, for example::
+#. Although the entrytype template definitions listed below are in alphabetical order, that can be put in any desired order within the file. The exception to this rule is that if a definition consists of, for example::
 
       inbook = incollection
 
@@ -60,7 +60,7 @@ Syntax
 
    in the ``SPECIAL-TEMPLATES`` section will create a ``group`` field that can be used as the variable ``<group>`` within the regular ``TEMPLATES`` section of the file. This effectively allows users to create a shortcut. Where they could write out ``[<organization>|<institution>|<corporation>|]`` inside each template that needs this structure, the special template definition allows them to replace each instance with a simple ``<group>``.
 
-   Another example usage would be the following:::
+   Another example usage would be the following::
 
       author = [<author-en>|<author-jp>|]
 
@@ -101,7 +101,7 @@ Also, in addition to these default fields, there are also two special variables 
 
 **citealnum** is a field generated by taking the first letter of the first author's last name, and appending to it the citation sort order number within all entries sharing that prefix. Thus "Bugs Bunny" would have a ``citealnum`` of "B" followed by its order number. If "Yogi Bear" were another first-author name in the list, then "Yogi Bear" would receive ``citealnum = B1`` while "Bugs Bunny" would receive ``citealnum = B2``.
 
-**citealpha** is a field generated according to BibTeX's classic "alpha" style. That is, it takes the first three letters of the author's last name if there is only one author. If multiple authors, it takes the initials of the author last names, for up to the first three authors. If no author is present, then it looks for the first three letters of the ``organization`` field. Finally, the three-letter alphabetical label is followed by the last two digits of the publication year. Thus, any user wishing to use BibTeX's classic ``alpha`` style for citation labels can use ``citelabel == <citealpha>`` in the SPECIAL-TEMPLATES section of the file.
+**citealpha** is a field generated according to BibTeX's classic "alpha" style. That is, it takes the first three letters of the author's last name if there is only one author. If multiple authors, it takes the initials of the author last names, for up to the first three authors. If no author is present, then it looks for the first three letters of the ``organization`` field. Finally, the three-letter alphabetical label is followed by the last two digits of the publication year. Thus, any user wishing to use BibTeX's classic ``alpha`` style for citation labels can use ``citelabel = <citealpha>`` in the SPECIAL-TEMPLATES section of the file.
 
 **citelabel** is the thing that appears at the front of the formatted reference, and is identical to the citation label used in the manuscript to point to the item in the reference list. In technical journal articles, this is typically just a number, as in the default definition ``<citenum>``. The number used here for the label indicates the order in which the entry was cited.
 
@@ -124,10 +124,8 @@ The complete list of operators available is:::
     .format_authorlist()
     .format_editorlist()
     .frenchinitial()
+    .if_equals(test_str,then_var,else_var)
     .if_singular(var1,var2,var3)
-..    .if_length_equals(var1,number,var2,var3)
-..    .if_length_less_than(var1,number,var2,var3)
-..    .if_length_more_than(var1,number,var2,var3)
     .initial()
     .lower()
     .monthabbrev()
@@ -143,6 +141,9 @@ The complete list of operators available is:::
     .uniquify(arg)
     .upper()
     .zfill(num)
+..    .if_length_equals(var1,number,var2,var3)
+..    .if_length_less_than(var1,number,var2,var3)
+..    .if_length_more_than(var1,number,var2,var3)
 
 The function of each operator is summarized below.
 
@@ -162,6 +163,8 @@ Without the ``.compress()`` operator, the name would come out as "RM A Azzam", s
 
 **.frenchinitial()** is an alternative form of the ``.initial()`` operator that has slightly different behavior. If a name begins with one of the digraphs
 "Ch", "Gn", "Ll", "Ph", "Ss", or "Th", then the initial will truncate the name after the digraph instead of after the first letter.
+
+**.if_equals(test_str,then_var,else_var)** inserts ``then_var`` if the string to be operated on is equal to ``test_str``, else it inserts the string ``else_var``.
 
 **.if_singular(var1,optvar2,optvar3)** inserts ``optvar2`` if ``var1`` has only one element, but ``optvar3`` if ``var1`` has more than one element. Here ``var1`` is assumed to be a list-type of variable, and ``optvar2`` and ``optvar3`` are assumed to be string-type variables defined in the OPTIONS section of the template file.
 
@@ -335,8 +338,6 @@ That is, the implicit index ``.n`` is everywhere replaced with the explicit inde
     [<editorlist.1.prefix> ]<editorlist.1.last>[, <editorlist.1.suffix>]
 
 With this template now complete, the code begins to evaluate the entry and replace the individual variables with their corresponding database fields.
-
-Note that implicit loop structures only work when they comprise the *entire* template. That is, a template such as ``au = <authorname.0>, ...,{ and }<authorname.6>`` works fine, whereas the template ``au = [<authorname.0>, ...,{ and }<authorname.6>]`` uses the ``[`` as part of each entry in the loop, and the ``]`` as part of the final entry, so that the final result is a malformed template. (The left and right square brackets are no longer matched.)
 
 Python API
 ==========

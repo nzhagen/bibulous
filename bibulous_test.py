@@ -2,27 +2,27 @@
 # -*- coding: UTF-8 -*-
 # See the LICENSE.rst file for licensing information.
 '''
-    Bibulous_test.py is a script which runs through the entire Bibulous regression testing suite.
+Bibulous_test.py is a script which runs through the entire Bibulous regression testing suite.
 
-    The basic approach of the tests is as follows:
-    (1) Once a change is made to the code (to fix a bug or add functionality), the writer should add an entry to the
-        /test/test1.bib file, where the "entrytype" gives an indication of what the test is for. For example, the entry
-        in the BIB file may start with
-                @test_initialize1{...
-        and provide an "author" field where one or more authors have names which the code for generating initials can
-        potentially break is not written carefully. Include a 1-line comment about the purpose of the entry as well.
-    (2) If this is something which can be checked with normal options settings, then add a corresponding line in the BST
-        file defining how that new entrytype ("test_initialize1") should be formatted. If different options settings are
-        needed, then a new BST file is needed. To make this, copy the "test1.bst" file, remove the entrytype definitions
-        (you can keep them, but they would be redundant), and change the options to the needed settings. Then add a line
-        in this file to define the entrytype template.
-    (3) Add a line "\citation{key}" to the AUX file where "key" is the key given in the new entry of the BIB file you
-        just put in (e.g. "test_initialize1")
-    (4) Add two lines to the test1_target.bbl file (one for the "bibentry" function call, and one for the entry
-        contents) to say what the formatted result should look like.
-    (5) Finally, run this script to check the result. This script will load the modified BIB and BST files and will
-        write out a formatted BBL file "test1.bbl". It will then try to run a "diff" program on these two files to see
-        if there are any differences between the target and actual output BBL files.
+The basic approach of the tests is as follows:
+(1) Once a change is made to the code (to fix a bug or add functionality), the writer should add an entry to the
+    /test/test1.bib file, where the "entrytype" gives an indication of what the test is for. For example, the entry
+    in the BIB file may start with
+            @test_initialize1{...
+    and provide an "author" field where one or more authors have names which the code for generating initials can
+    potentially break is not written carefully. Include a 1-line comment about the purpose of the entry as well.
+(2) If this is something which can be checked with normal options settings, then add a corresponding line in the BST
+    file defining how that new entrytype ("test_initialize1") should be formatted. If different options settings are
+    needed, then a new BST file is needed. To make this, copy the "test1.bst" file, remove the entrytype definitions
+    (you can keep them, but they would be redundant), and change the options to the needed settings. Then add a line
+    in this file to define the entrytype template.
+(3) Add a line "\citation{key}" to the AUX file where "key" is the key given in the new entry of the BIB file you
+    just put in (e.g. "test_initialize1")
+(4) Add two lines to the test1_target.bbl file (one for the "bibentry" function call, and one for the entry
+    contents) to say what the formatted result should look like.
+(5) Finally, run this script to check the result. This script will load the modified BIB and BST files and will
+    write out a formatted BBL file "test1.bbl". It will then try to run a "diff" program on these two files to see
+    if there are any differences between the target and actual output BBL files.
 '''
 
 from __future__ import unicode_literals, print_function, division     ## for Python3 compatibility

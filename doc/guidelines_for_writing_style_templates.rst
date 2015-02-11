@@ -126,9 +126,6 @@ The complete list of operators available is:::
     .frenchinitial()
     .if_equals(test_str,then_var,else_var)
     .if_singular(var1,var2,var3)
-..    .if_length_equals(var1,number,var2,var3)
-..    .if_length_less_than(var1,number,var2,var3)
-..    .if_length_more_than(var1,number,var2,var3)
     .initial()
     .lower()
     .monthabbrev()
@@ -144,6 +141,9 @@ The complete list of operators available is:::
     .uniquify(arg)
     .upper()
     .zfill(num)
+..    .if_length_equals(var1,number,var2,var3)
+..    .if_length_less_than(var1,number,var2,var3)
+..    .if_length_more_than(var1,number,var2,var3)
 
 The function of each operator is summarized below.
 

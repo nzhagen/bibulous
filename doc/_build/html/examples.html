@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Examples &mdash; Bibulous 1.2 documentation</title>
+    <title>Examples &mdash; Bibulous 1.3.2 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '1.2',
+        VERSION:     '1.3.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="Bibulous 1.2 documentation" href="index.html" />
+    <link rel="top" title="Bibulous 1.3.2 documentation" href="index.html" />
     <link rel="prev" title="Developer guide" href="developer_guide.html" /> 
   </head>
   <body>
@@ -70,6 +70,7 @@
 <li><a class="reference internal" href="#example-7">Example 7</a></li>
 <li><a class="reference internal" href="#example-8">Example 8</a></li>
 <li><a class="reference internal" href="#example-9">Example 9</a></li>
+<li><a class="reference internal" href="#example-10">Example 10</a></li>
 <li><a class="reference internal" href="#example">Example ?</a></li>
 </ul>
 </li>
@@ -1047,7 +1048,7 @@ OPTIONS:
 namelist_format = last_name_first
 </pre></div>
 </div>
-<p>that when comiled by the main <tt class="docutils literal"><span class="pre">.tex</span></tt> file</p>
+<p>that when compiled by the main <tt class="docutils literal"><span class="pre">.tex</span></tt> file</p>
 <div class="highlight-python"><div class="highlight"><pre>\documentclass{article}
 \usepackage[paper=letterpaper, text={6.2in,8.5in},centering]{geometry}
 \usepackage[colorlinks=True,urlcolor=blue,citecolor=black,breaklinks=true]{hyperref}
@@ -1069,6 +1070,73 @@ Lorem \cite{test1} ipsum \cite{test2}.
 </div>
 <p>produces the formatted result</p>
 <a class="reference internal image-reference" href="_images/example9.png"><img alt="_images/example9.png" src="_images/example9.png" style="width: 60%;" /></a>
+</div>
+<hr class="docutils" />
+<div class="section" id="example-10">
+<h2>Example 10<a class="headerlink" href="#example-10" title="Permalink to this headline">¶</a></h2>
+<p>The following example is taken from a question posted at <tt class="docutils literal"><span class="pre">http://tex.stackexchange.com/questions/68080/beamer-bibliography-icon?lq=1</span></tt>, where the OP asks for a way to place images alongside each bibliography entry. For this example, we have a database file</p>
+<div class="highlight-python"><div class="highlight"><pre>@Book{Lamport-1994,
+  author = {Leslie Lamport},
+  title = {LaTeX: A Document Preparation System: User&#39;s Guide and Reference Manual},
+  edition = {2},
+  year = {1994},
+  image_filename = {example10_lamport},
+  publisher = {Pearson / Prentice Hall}
+}
+
+@Book{Knuth-1984,
+  title = {TeXbook},
+  year = {1984},
+  author = {Donald Knuth},
+  image_filename = {example10_knuth},
+  publisher = {Addison-Wesley}
+}
+
+@Book{Gratzer-2007,
+  title = {More Math into LaTeX},
+  year = {2007},
+  author = {George Gr{\&quot;a}tzer},
+  edition = {4},
+  image_filename = {example10_gratzer},
+  publisher = {Springer}
+}
+</pre></div>
+</div>
+<p>and a style template file</p>
+<div class="highlight-python"><div class="highlight"><pre>TEMPLATES:
+book = \begin{minipage}{\linewidth}...
+          \begin{minipage}{\makeopenbracket}c{\makeclosebracket}{0.15\linewidth}...
+             \includegraphics{\makeopenbracket}width=\linewidth{\makeclosebracket}{&lt;image_filename&gt;}...
+          \end{minipage}...
+          \hfill...
+          \begin{minipage}{\makeopenbracket}c{\makeclosebracket}{0.8\linewidth}...
+             &lt;au&gt;, \textit{&lt;title&gt;}[, &lt;edition.ordinal()&gt; Edition]. &lt;publisher&gt;, &lt;year&gt;. ...
+          \end{minipage}...
+       \end{minipage}
+</pre></div>
+</div>
+<p>that when compiled by the main <tt class="docutils literal"><span class="pre">.tex</span></tt> file</p>
+<div class="highlight-python"><div class="highlight"><pre>\documentclass{article}
+\usepackage[pdftex]{graphicx}
+\usepackage[paper=letterpaper, text={4in,5in},centering]{geometry}
+
+\makeatletter
+   \renewcommand{\@biblabel}[1]{}
+   \newcommand{\citenum}[1]{\def\@cite##1##2{##1}\cite{#1}}
+\makeatother
+
+\begin{document}
+
+References \citenum{Knuth-1984}, \citenum{Lamport-1994}, and \citenum{Gratzer-2007} are useful for learning {\TeX} and \LaTeX.
+
+\bibliography{example10}
+\bibliographystyle{example10}
+
+\end{document}
+</pre></div>
+</div>
+<p>produces the formatted result</p>
+<a class="reference internal image-reference" href="_images/example10.png"><img alt="_images/example10.png" src="_images/example10.png" style="width: 60%;" /></a>
 </div>
 <hr class="docutils" />
 <div class="section" id="example">
@@ -1105,7 +1173,7 @@ Lorem \cite{test1} ipsum \cite{test2}.
     </div>
     <div class="footer">
         &copy; Copyright 2013, Bibulous developers.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
   </body>
 </html>

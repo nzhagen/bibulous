@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>bibulous_test &mdash; Bibulous 1.2 documentation</title>
+    <title>bibulous_test &mdash; Bibulous 1.3.2 documentation</title>
     
     <link rel="stylesheet" href="../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.2',
+        VERSION:     '1.3.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <link rel="top" title="Bibulous 1.2 documentation" href="../index.html" />
+    <link rel="top" title="Bibulous 1.3.2 documentation" href="../index.html" />
     <link rel="up" title="Module code" href="index.html" /> 
   </head>
   <body>
@@ -82,27 +82,27 @@
 <span class="c"># -*- coding: UTF-8 -*-</span>
 <span class="c"># See the LICENSE.rst file for licensing information.</span>
 <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Bibulous_test.py is a script which runs through the entire Bibulous regression testing suite.</span>
+<span class="sd">Bibulous_test.py is a script which runs through the entire Bibulous regression testing suite.</span>
 
-<span class="sd">    The basic approach of the tests is as follows:</span>
-<span class="sd">    (1) Once a change is made to the code (to fix a bug or add functionality), the writer should add an entry to the</span>
-<span class="sd">        /test/test1.bib file, where the &quot;entrytype&quot; gives an indication of what the test is for. For example, the entry</span>
-<span class="sd">        in the BIB file may start with</span>
-<span class="sd">                @test_initialize1{...</span>
-<span class="sd">        and provide an &quot;author&quot; field where one or more authors have names which the code for generating initials can</span>
-<span class="sd">        potentially break is not written carefully. Include a 1-line comment about the purpose of the entry as well.</span>
-<span class="sd">    (2) If this is something which can be checked with normal options settings, then add a corresponding line in the BST</span>
-<span class="sd">        file defining how that new entrytype (&quot;test_initialize1&quot;) should be formatted. If different options settings are</span>
-<span class="sd">        needed, then a new BST file is needed. To make this, copy the &quot;test1.bst&quot; file, remove the entrytype definitions</span>
-<span class="sd">        (you can keep them, but they would be redundant), and change the options to the needed settings. Then add a line</span>
-<span class="sd">        in this file to define the entrytype template.</span>
-<span class="sd">    (3) Add a line &quot;\citation{key}&quot; to the AUX file where &quot;key&quot; is the key given in the new entry of the BIB file you</span>
-<span class="sd">        just put in (e.g. &quot;test_initialize1&quot;)</span>
-<span class="sd">    (4) Add two lines to the test1_target.bbl file (one for the &quot;bibentry&quot; function call, and one for the entry</span>
-<span class="sd">        contents) to say what the formatted result should look like.</span>
-<span class="sd">    (5) Finally, run this script to check the result. This script will load the modified BIB and BST files and will</span>
-<span class="sd">        write out a formatted BBL file &quot;test1.bbl&quot;. It will then try to run a &quot;diff&quot; program on these two files to see</span>
-<span class="sd">        if there are any differences between the target and actual output BBL files.</span>
+<span class="sd">The basic approach of the tests is as follows:</span>
+<span class="sd">(1) Once a change is made to the code (to fix a bug or add functionality), the writer should add an entry to the</span>
+<span class="sd">    /test/test1.bib file, where the &quot;entrytype&quot; gives an indication of what the test is for. For example, the entry</span>
+<span class="sd">    in the BIB file may start with</span>
+<span class="sd">            @test_initialize1{...</span>
+<span class="sd">    and provide an &quot;author&quot; field where one or more authors have names which the code for generating initials can</span>
+<span class="sd">    potentially break is not written carefully. Include a 1-line comment about the purpose of the entry as well.</span>
+<span class="sd">(2) If this is something which can be checked with normal options settings, then add a corresponding line in the BST</span>
+<span class="sd">    file defining how that new entrytype (&quot;test_initialize1&quot;) should be formatted. If different options settings are</span>
+<span class="sd">    needed, then a new BST file is needed. To make this, copy the &quot;test1.bst&quot; file, remove the entrytype definitions</span>
+<span class="sd">    (you can keep them, but they would be redundant), and change the options to the needed settings. Then add a line</span>
+<span class="sd">    in this file to define the entrytype template.</span>
+<span class="sd">(3) Add a line &quot;\citation{key}&quot; to the AUX file where &quot;key&quot; is the key given in the new entry of the BIB file you</span>
+<span class="sd">    just put in (e.g. &quot;test_initialize1&quot;)</span>
+<span class="sd">(4) Add two lines to the test1_target.bbl file (one for the &quot;bibentry&quot; function call, and one for the entry</span>
+<span class="sd">    contents) to say what the formatted result should look like.</span>
+<span class="sd">(5) Finally, run this script to check the result. This script will load the modified BIB and BST files and will</span>
+<span class="sd">    write out a formatted BBL file &quot;test1.bbl&quot;. It will then try to run a &quot;diff&quot; program on these two files to see</span>
+<span class="sd">    if there are any differences between the target and actual output BBL files.</span>
 <span class="sd">&#39;&#39;&#39;</span>
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">unicode_literals</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">division</span>     <span class="c">## for Python3 compatibility</span>
@@ -561,7 +561,7 @@
     </div>
     <div class="footer">
         &copy; Copyright 2013, Bibulous developers.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
   </body>
 </html>
