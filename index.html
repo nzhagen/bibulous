@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Bibulous documentation &mdash; Bibulous 1.2 documentation</title>
+    <title>Bibulous documentation &mdash; Bibulous 1.3.2 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '1.2',
+        VERSION:     '1.3.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="Bibulous 1.2 documentation" href="#" />
+    <link rel="top" title="Bibulous 1.3.2 documentation" href="#" />
     <link rel="next" title="Getting started" href="getting_started.html" /> 
   </head>
   <body>
@@ -110,13 +110,17 @@
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting started</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="getting_started.html#kile-replacing-bibtex-with-bibulous">Kile: replacing BibTeX with Bibulous</a></li>
 <li class="toctree-l2"><a class="reference internal" href="getting_started.html#modifying-winedt5-to-replace-bibtex-with-bibulous">Modifying WinEdt5 to replace BibTeX with Bibulous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#modifying-texmaker-to-replace-bibtex-with-bibulous">Modifying Texmaker to replace BibTeX with Bibulous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#modifying-texstudio-to-replace-bibtex-with-bibulous">Modifying TeXStudio to replace BibTeX with Bibulous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#modifying-texworks-to-replace-bibtex-with-bibulous">Modifying TeXworks to replace BibTeX with Bibulous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#modifying-lyx-to-replace-bibtex-with-bibulous">Modifying LyX to replace BibTeX with Bibulous</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="guidelines_for_writing_style_templates.html">Guidelines for writing bibliography style templates</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="guidelines_for_writing_style_templates.html#syntax">Syntax</a></li>
 <li class="toctree-l2"><a class="reference internal" href="guidelines_for_writing_style_templates.html#default-fields">Default Fields</a></li>
 <li class="toctree-l2"><a class="reference internal" href="guidelines_for_writing_style_templates.html#options-keywords">Options keywords</a></li>
-<li class="toctree-l2"><a class="reference internal" href="guidelines_for_writing_style_templates.html#examples-for-namelist-formatting">Examples for namelist formatting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guidelines_for_writing_style_templates.html#implicit-loops-and-examples-for-namelist-formatting">Implicit loops and examples for namelist formatting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="guidelines_for_writing_style_templates.html#python-api">Python API</a></li>
 </ul>
 </li>
@@ -136,6 +140,8 @@
 <li class="toctree-l2"><a class="reference internal" href="developer_guide.html#generating-sortkeys">Generating sortkeys</a></li>
 <li class="toctree-l2"><a class="reference internal" href="developer_guide.html#testing">Testing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="developer_guide.html#generating-the-documentation">Generating the documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developer_guide.html#updating-the-pypi-package">Updating the PyPI package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developer_guide.html#miscellaneous-notes">Miscellaneous notes</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a><ul>
@@ -145,6 +151,10 @@
 <li class="toctree-l2"><a class="reference internal" href="examples.html#example-4">Example 4</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples.html#example-5">Example 5</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples.html#example-6">Example 6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#example-7">Example 7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#example-8">Example 8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#example-9">Example 9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#example-10">Example 10</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples.html#example">Example ?</a></li>
 </ul>
 </li>
@@ -156,14 +166,16 @@
 <p>Bibulous developed out of frustration with the complexity of creating bibliography styles using BibTeX&#8217;s obscure language, and also from the realization that because bibliographies are highly structured, one should be able to specify them simply and flexibly using a template approach. There should be no need to learn a new language just to build a bibliography style, and specifying a style should take only a matter of minutes.</p>
 <p>Bibulous incorporates this template approach, and at the same time implements many of the modern enhancements to BibTeX, such as the ability to work with languages other than English, better support for allowing non-standard bibliography entry types, increased options for author name formatting, and more. And one can use the same basic structures and LaTeX commands to generating each of: a bibliography, a glossary, an annotated bibliography, a list of acronyms and symbols, and more, by specifying a different style template for each case.</p>
 <p>Bibulous&#8217; “style template” files allow a user to visualize the entire bibliography format structure in a concise way within a single page of text. Moreover, the template is structured with its own Python-like mini-language, intended to allow uses to create flexible formatting instructions quickly and easily. The example below illustrates the simplicity of the format.</p>
-<p>The project website, with complete documentation, can be found at <tt class="docutils literal"><span class="pre">http://nzhagen.github.io/bibulous/</span></tt>.</p>
+<p>The project website, with complete documentation, can be found at <tt class="docutils literal"><span class="pre">http://nzhagen.github.io/bibulous/</span></tt>. The complete sourcecode for the project can be found at <tt class="docutils literal"><span class="pre">https://github.com/nzhagen/bibulous</span></tt>.</p>
+<p>For any questions, the Bibulous project maintainer can be contacted at <tt class="docutils literal"><span class="pre">and.the.light.shattered&#64;gmail.com</span></tt>.</p>
 <div class="section" id="installation">
 <h3>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h3>
 <p>Installing using pip::</p>
 <div class="highlight-python"><div class="highlight"><pre>pip install bibulous
 </pre></div>
 </div>
-<p>Instructions for installing Bibulous, and for seamlessly integrating it into your normal LaTeX workflow, are given in the <tt class="docutils literal"><span class="pre">INSTALL.rst</span></tt> file. Users can also consult the user guide (<tt class="docutils literal"><span class="pre">user_guide.rst</span></tt>) for further information and tutorials. A <tt class="docutils literal"><span class="pre">FAQ</span></tt> page is also available.</p>
+<p>Instructions for installing Bibulous, and for seamlessly integrating it into your normal LaTeX workflow, are given in the <tt class="docutils literal"><span class="pre">getting</span> <span class="pre">started</span></tt> section. Users can also consult the <tt class="docutils literal"><span class="pre">guidelines</span> <span class="pre">for</span> <span class="pre">writing</span> <span class="pre">style</span> <span class="pre">templates</span></tt> for further information, and the <tt class="docutils literal"><span class="pre">examples</span></tt> section. A <tt class="docutils literal"><span class="pre">FAQ</span></tt> page is also available.</p>
+<p>Another approach is to clone the git repository <tt class="docutils literal"><span class="pre">https://github.com/nzhagen/bibulous</span></tt> and place it into your Python path. For compiling bibliographies, the only file needed within the project is <tt class="docutils literal"><span class="pre">bibulous.py</span></tt>, so that going to <tt class="docutils literal"><span class="pre">https://github.com/nzhagen/bibulous</span></tt> and copying <tt class="docutils literal"><span class="pre">bibulous.py</span></tt> from there is sufficient.</p>
 </div>
 <div class="section" id="example">
 <h3>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h3>
@@ -234,7 +246,7 @@ book = [&lt;au&gt;|&lt;ed&gt;|], \textit{&lt;title&gt;} (&lt;publisher&gt;, &lt;
     </div>
     <div class="footer">
         &copy; Copyright 2013, Bibulous developers.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.1.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
   </body>
 </html>
