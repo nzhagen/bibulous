@@ -57,7 +57,7 @@ import pdb          ## put "pdb.set_trace()" at any place you want to interact w
 #sys.excepthook = info      ## go into debugger automatically on an exception
 
 __version__ = '1.3'
-__all__ = ['sentence_case', 'stringsplit', 'finditer', 'namefield_to_namelist', 'namestr_to_namedict',
+__all__ = ['sentence_case', 'stringsplit', 'namefield_to_namelist', 'namestr_to_namedict',
            'initialize_name', 'get_delim_levels', 'show_levels_debug', 'get_quote_levels', 'splitat', 'multisplit',
            'enwrap_nested_string', 'enwrap_nested_quotes', 'purify_string', 'latex_to_utf8',
            'search_middlename_for_prefixes', 'get_edition_ordinal', 'export_bibfile', 'parse_pagerange',
@@ -3245,7 +3245,7 @@ def get_quote_levels(s, disable=None, debug=False):
              '". Ignoring the problem and continuing on ...', disable)
         blevels[-1] = 0
     if (clevels[-1] > 0):
-        bib_warning('Warning 018c: found mismatched '"'...'"' quote pairs in the input string "' + s + \
+        bib_warning('Warning 018c: found mismatched "..." quote pairs in the input string "' + s + \
              '". Ignoring the problem and continuing on ...', disable)
         clevels[-1] = 0
 
@@ -3425,7 +3425,7 @@ def enwrap_nested_quotes(s, disable=None, debug=False):
     if ("```" in s) or ("'''" in s):
         bib_warning('Warning 020: the input string ["' + s + '"] contains multiple unseparated quote characters.'
              ' Bibulous cannot unnest the single and double quotes from this set, so the separate quotations must be '
-             ' physically separated like ``{\:}`, for example. Ignoring the quotation marks and continuing ...',
+             ' physically separated like ``{\:}``, for example. Ignoring the quotation marks and continuing ...',
              disable)
         return(s)
 
