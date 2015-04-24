@@ -12,6 +12,7 @@ Contents:
    :maxdepth: 2
 
    getting_started.rst
+   faq.rst
    guidelines_for_writing_style_templates.rst
    instructions_for_reporting_bugs.rst
    developer_guide.rst

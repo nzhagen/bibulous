@@ -5,7 +5,6 @@ include bibulous_profiler.py
 
 include README.rst
 include LICENSE.txt
-include FAQ.rst
 graft test
 graft templates
 graft doc
