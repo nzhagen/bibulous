@@ -1,7 +1,10 @@
 Frequently asked questions
-==========================
+**************************
 
-1. **What is the difference between using Bibulous and using BibLatex+Biber?** The biggest difference between these two is that Bibulous uses bibliography style template files that are intuitive and compact, whereas the Bibulous+Biber combination uses LaTeX code to generate styles, and these make them much more difficult to create and customize. A question posted on StackExchange [http://tex.stackexchange.com/questions/151628/bibtex-fields-for-doi-mr-zbl-and-arxiv/163628#163628] asked how one can build a reference list with hyperlinks to zbl, mr, doi, and eprint fields as defined in the database entries.
+1. What is the difference between using Bibulous and using BibLatex+Biber?
+==========================================================================
+
+The biggest difference between these two is that Bibulous uses bibliography style template files that are intuitive and compact, whereas the Bibulous+Biber combination uses LaTeX code to generate styles, and these make them much more difficult to create and customize. A question posted on StackExchange [http://tex.stackexchange.com/questions/151628/bibtex-fields-for-doi-mr-zbl-and-arxiv/163628#163628] asked how one can build a reference list with hyperlinks to zbl, mr, doi, and eprint fields as defined in the database entries.
 
 For Bibulous, we can create a template file, or modify an existing one, to have a ``link`` variable (you can call it almost anything you like), and add a definition for ``link`` in the ``SPECIAL-TEMPLATES`` section of the file::
 
