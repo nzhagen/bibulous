@@ -1167,8 +1167,6 @@ class Bibdata(object):
         ## should make sure that negative-values get sorted in front of positive ones. This happens correctly in simple
         ## sort() but not when we use locale's "strcoll". So we have to separate the two cases manually. Also, use
         ## [::-1] on the negative integers because they need to be ordered from largest number to smallest.
-        #variables = re.findall(r'<.*?>', self.specials['sortkey'])
-        #if variables and (variables[0] in ['<year>','<sortyear>','<year.zfill(4)>','<sortyear.zfill(4)>']):
         if humansort:
             neg_idx = [i for (i,k) in enumerate(self.sortlist) if k[0] == '-']
             pos_idx = [i for (i,k) in enumerate(self.sortlist) if k[0] != '-']
@@ -1187,9 +1185,27 @@ class Bibdata(object):
             self.citelist = [self.citelist[x] for x in idx]
 
         ## If using a citation order which is descending rather than ascending, then reverse the list.
-        if (self.options['sort_order'] == 'Reverse'):
+        if (self.options['sort_order'].lower() == 'reverse'):
             self.sortlist = self.sortlist[::-1]
             self.citelist = self.citelist[::-1]
+
+        ## Finally, generate the "sortnum" for the reference --- the order in which it will appear in the reference
+        ## list. This is different from "citenum", which is the order of citation in the text. For example, if
+        ## the reference list is sorted alphabetically, but you want the list enumerated, then you need "sortnum"
+        ## to get the enumerated value for each reference.
+        for i,c in enumerate(self.citelist):
+            self.bibdata[c]['sortnum'] = i+1
+
+            ## If "sortnum" appears somewhere inside the special template definitions, where it is not yet defined,
+            ## then we need to go back and redo the specials.
+            foundit = False
+            for key in self.specials.keys():
+                if ('sortnum' in self.specials[key]):
+                    foundit = True
+                    break
+
+            if foundit:
+                self.insert_specials(c)
 
         if self.debug:
             for i in range(len(self.citelist)):
@@ -2714,6 +2730,14 @@ class Bibdata(object):
                     return(newfield)
                 else:
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
+            elif indexer.startswith('.remove_leading_zeros()'):
+                newfield = field.lstrip('0')
+                newindexer = indexer[23:]
+                if (nelements == 1) or (newindexer == ''):
+                    return(newfield)
+                else:
+                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
+
 
 #            elif indexer.startswith('.if_length_equals('):
 #                match = re.search(r'.if_length_equals\(.*\)', indexer, re.UNICODE)
