@@ -121,6 +121,17 @@ For version 1.4, the goal is to have group templates working.
   generate a field until it is asked for. This should speed things up significantly when the
   user has specials defined.
 
+- Create a checklist for developers to make sure that they have done everything necessary to
+  check in new code:
+    - [Developer] ran the tests and they passed!
+    - Someone else ran the tests and they passed!
+    - A computer ran the tests automatically and they passed! (Continuous Integration)
+    - The code formatting guidelines are met. (> 2 people with different coding styles? CHAOS.)
+    - The code coverage guidelines are met.
+    - Changes were described in a ChangeLog.
+    - Commit messages make sense.
+    - Code coverage didn't decrease.
+    - Checks on specific types of features ("Script parameters should be documented").
 
 
 Python testing to-do
