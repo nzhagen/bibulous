@@ -2814,7 +2814,10 @@ class Bibdata(object):
             start_idx = int(start_idx)
             end_idx = int(end_idx)
             if (start_idx < 0):
-                newfield = field[start_idx-1:end_idx]
+                start_idx -= 1
+
+            if (end_idx == -1):
+                newfield = field[start_idx:end_idx] + field[end_idx]
             else:
                 newfield = field[start_idx:end_idx+1]
             newindexer = indexer[int(match.end(0))+1:]
