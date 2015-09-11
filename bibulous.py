@@ -2230,9 +2230,8 @@ class Bibdata(object):
             idx = templatestr.index(title_var)
             if (templatestr[idx + len(title_var)] in (',','.','!','?',';',':')):
                 templatestr = templatestr[:idx+len(title_var)] + templatestr[idx+1+len(title_var):]
-                templatestr = templatestr.replace(title_var, title)
-        else:
-            templatestr = templatestr.replace(title_var, title)
+
+        templatestr = templatestr.replace(title_var, title)
 
         return(templatestr)
 
