@@ -16,8 +16,8 @@ website = \url{[<url>|<doi>]}
 #website = \href{[<url>|<doi>]}{[<url>|<doi>]}
 
 SPECIAL-TEMPLATES:
-sortkey = <citenum>                       ## order the reference list in the same order as the citations were given in
-citelabel = <citenum.remove_leading_zeros()>  ## use numeric reference labels
+sortkey = <citenum.zfill(3)>              ## order the reference list in the same order as the citations were given in
+citelabel = <citenum>                     ## use numeric reference labels
 
 OPTIONS:
 maxauthors = 25                           ## if more than 10 authors, then use "et al." format

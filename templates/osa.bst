@@ -24,7 +24,7 @@ website = \url{[<url>|<doi>]}
 #website = \href{[<url>|<doi>]}{[<url>|<doi>]}
 
 SPECIAL-TEMPLATES:
-sortkey = <citenum.zfill(2)>              ## order the reference list in the same order as the citations were given in
+sortkey = <citenum.zfill(3)>              ## order the reference list in the same order as the citations were given in
 citelabel = <citenum>                    ## use numeric reference labels
 
 OPTIONS:
