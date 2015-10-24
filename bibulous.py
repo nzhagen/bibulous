@@ -178,6 +178,8 @@ class Bibdata(object):
         self.implicitly_indexed_vars = ['authorname','editorname'] ## which templates have implicit indexing
         self.namelists = []         ## the namelists defined within the templates
         self.uniquify_vars = {}     ## dict containing all variables calling the "uniquify" operator
+        self.keylist = []           ## "keylist" is just a temporary holding place for the citations
+        self.auxfile_list = []      ## a list of *.aux files, for use when citations are inside nested files
 
         if (uselocale == None):
             self.locale = locale.setlocale(locale.LC_ALL,'')    ## set the locale to the user's default
@@ -718,7 +720,7 @@ class Bibdata(object):
         return(fd)
 
     ## =============================
-    def parse_auxfile(self, filename, debug=False):
+    def parse_auxfile(self, filename, recursive_call=False, debug=False):
         '''
         Read in an `.aux` file and convert the `\citation{}` entries found there into a dictionary of citekeys and
         citation order number.
@@ -727,37 +729,63 @@ class Bibdata(object):
         ----------
         filename : str
             The filename of the `.aux` file to parse.
+        recursive_call : bool
+            Whether this function was called recursively (recursive_call=True), or if it is the top-level call \
+            (recursive_call=False). Only in the latter case do we take the keylist and make self.citedict with it.
         '''
 
         if debug: print('Reading AUX file "' + filename + '" ...')
+
+        ## Check if this file has been called before --- don't allow infinite recursion!
+        if filename in self.auxfile_list:
+            return
 
         ## Need to use the "codecs" module to handle UTF8 encoding/decoding properly. Using mode='rU' with the common
         ## "open()" file function doesn't do this probperly, though I don't know why.
         self.filename = filename
         filehandle = codecs.open(os.path.normpath(filename), 'r', 'utf-8')
+        self.auxfile_list.append(filename)
 
         ## First go through the file and grab the list of citation keys. Once we get them all, then we can go through
         ## the list and figure out the numbering.
-        keylist = []
         for line in filehandle:
             line = line.strip()
+
+            ## If the line begins with "\@input{" then it says to go into a file and look for citations there.
+            if line.startswith(r'\@input{'):
+                input_filename = line[8:-1].strip()
+                #zzz
+                print('INPUT FILENAME IS: ' + input_filename)
+                self.parse_auxfile(input_filename, recursive_call=True)
+                print('>>> self.citedict=', repr(self.citedict))
+
             if not line.startswith(r'\citation{'): continue
 
             ## Remove the "\citation{" from the front and the "}" from the back. If multiple citations are given,
             ## then split them using the comma.
             items = line[10:-1].split(',')
             for item in items:
-                keylist.append(item)
+                self.keylist.append(item)
         filehandle.close()
 
+        if recursive_call:
+            return
+
         ## If you didn't find any citations in the file, issue a warning. Otherwise, build a dictionary of keys giving
-        ## the citation keys with values equal to the citation order number.
-        if not keylist:
+        ## the citation keys with values equal to the citation order number. For citation order number, we can't just
+        ## start at 1 here, since some citations may occur in a recursive call to this function. Rather, we
+        ## need to look into the citation dictionary, grab the highest citation number available there, and increment.
+        if not self.keylist:
             bib_warning('Warning 007: no citations found in AUX file "' + filename + '"', self.disable)
         else:
-            q = 1                       ## citation order counter
-            self.citedict[keylist[0]] = q
-            for key in keylist[1:]:
+            #pdb.set_trace()
+            if not self.citedict:
+                q = 1                   ## citation order counter
+            else:
+                q = max(self.citedict.values())
+
+            self.citedict[self.keylist[0]] = q
+            for key in self.keylist[1:]:
                 if key in self.citedict: continue
                 q += 1
                 self.citedict[key] = q
@@ -767,6 +795,8 @@ class Bibdata(object):
             ## sort.
             for key in sorted(self.citedict, key=self.citedict.get, cmp=locale.strcoll):
                 print(key + ': ' + unicode(self.citedict[key]))
+
+        print('self.citedict=', repr(self.citedict))
 
         return
 
