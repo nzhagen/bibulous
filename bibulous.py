@@ -754,10 +754,7 @@ class Bibdata(object):
             ## If the line begins with "\@input{" then it says to go into a file and look for citations there.
             if line.startswith(r'\@input{'):
                 input_filename = line[8:-1].strip()
-                #zzz
-                print('INPUT FILENAME IS: ' + input_filename)
                 self.parse_auxfile(input_filename, recursive_call=True)
-                print('>>> self.citedict=', repr(self.citedict))
 
             if not line.startswith(r'\citation{'): continue
 
@@ -778,7 +775,6 @@ class Bibdata(object):
         if not self.keylist:
             bib_warning('Warning 007: no citations found in AUX file "' + filename + '"', self.disable)
         else:
-            #pdb.set_trace()
             if not self.citedict:
                 q = 1                   ## citation order counter
             else:
@@ -795,8 +791,6 @@ class Bibdata(object):
             ## sort.
             for key in sorted(self.citedict, key=self.citedict.get, cmp=locale.strcoll):
                 print(key + ': ' + unicode(self.citedict[key]))
-
-        print('self.citedict=', repr(self.citedict))
 
         return
 
