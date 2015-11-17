@@ -10,7 +10,7 @@ Bibulous incorporates this template approach, and at the same time implements ma
 
 Bibulous' “style template” files allow a user to visualize the entire bibliography format structure in a concise way within a single page of text. Moreover, the template is structured with its own Python-like mini-language, intended to allow uses to create flexible formatting instructions quickly and easily. The example below illustrates the simplicity of the format.
 
-The project website, with complete documentation, can be found at ``http://nzhagen.github.io/bibulous/``. The complete sourcecode for the project can be found at ``https://github.com/nzhagen/bibulous``. For any questions, the Bibulous project maintainer can be contacted at ``and.the.light.shattered@gmail.com``.
+The project website, with complete documentation, can be found at `<http://nzhagen.github.io/bibulous/>`_. The complete sourcecode for the project can be found at `<https://github.com/nzhagen/bibulous>`_. For any questions, the Bibulous project maintainer can be contacted at `and.the.light.shattered@gmail.com <mailto:and.the.light.shattered@gmail.com>`_.
 
 Installation
 ============
@@ -19,9 +19,11 @@ Installing using pip:::
 
    pip install bibulous
 
-Instructions for installing Bibulous, and for seamlessly integrating it into your normal LaTeX workflow, are given in the ``getting started`` section. Users can also consult the ``guidelines for writing style templates`` for further information, and the ``examples`` section. A ``FAQ`` page is also available.
+Instructions for installing Bibulous, and for seamlessly integrating it into your normal LaTeX workflow, are given in the ``getting started`` section.
+Users can also consult the ``guidelines for writing style templates`` for further information, and the ``examples`` section. A ``FAQ`` page is also available.
 
-Another approach is to clone the git repository ``https://github.com/nzhagen/bibulous`` and place it into your Python path. For compiling bibliographies, the only file needed within the project is ``bibulous.py``, so that going to ``https://github.com/nzhagen/bibulous`` and copying ``bibulous.py`` from there is sufficient.
+Another approach is to clone the git repository `<https://github.com/nzhagen/bibulous>`_ and place it into your Python path.
+For compiling bibliographies, the only file needed within the project is ``bibulous.py``, so that going to `<https://github.com/nzhagen/bibulous>`_ and copying ``bibulous.py`` from there is sufficient (direct link `<https://github.com/nzhagen/bibulous/raw/master/bibulous.py>`_).
 
 Example
 =======
@@ -49,10 +51,9 @@ Guidelines for developers are given in ``developer_guide.rst``, and includes an 
 Contact
 =======
 
-For any questions, the current Bibulous project maintainer can be reached at ``and.the.light.shattered@gmail.com``.
+For any questions, the current Bibulous project maintainer can be reached at `and.the.light.shattered@gmail.com <mailto:and.the.light.shattered@gmail.com>`_.
 
 License
 =======
 
 Bibulous is released under the MIT/X11 license, meaning that it is free and open source, and that it can be used without restriction in other programs, commercial or not. The full license is given in the file ``LICENSE.txt``.
-
