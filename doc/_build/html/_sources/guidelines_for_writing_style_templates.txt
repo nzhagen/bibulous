@@ -71,7 +71,7 @@ Syntax
 Default Fields
 ==============
 
-A complete of the existing default fields is:::
+A complete list of the existing default fields is:::
 
     au
     authorlist
@@ -81,19 +81,22 @@ A complete of the existing default fields is:::
     citenum
     ed
     editorlist
+    sortkey
+    sortnum
 
-Each of these default fields are defined as "special templates". If a user defines a special template with the same name as one of the above, then the default is overwritten with the user's version. The definitions of these six default special templates are:::
+Each of these default fields are defined as "special templates". If a user defines a special template with the same name as one of the above, then the default is overwritten with the user's version. The definitions of the default special templates are:::
 
     authorlist = <author.to_namelist()>
     editorlist = <editor.to_namelist()>
+    citealnum = ?
     citelabel = <citenum>
     sortkey = <citenum>
     au = <authorlist.format_authorlist()>
     ed = <editorlist.format_editorlist()>
 
-Note that the ordering of definitions is important. The following summarizes what these definitions are used for.
+Note that the ordering of definitions is important (that is, if ``citelabel`` uses ``authorlist`` in its definition, then the latter has to appear before it in the list of special templates, so that it is defined by the time that ``citelabel`` needs to be defined). The following summarizes what these definitions are used for.
 
-Also, in addition to these default fields, there are also two special variables defined, ``citealpha`` and ``citealnum``, that can be accessed as ``<citealpha>`` and ``<citealnum>`` within any template. The first, ``<citealpha>``, is designed to reproduce the citation label style used by BibTeX's ``alpha`` style. For example, ``GKP94`` is the ``alpha``--style citation label for the book *Concrete Mathematics*, 2nd Edition, by Ronald L. Graham, Donald E. Knuth, and Oren Patashnik (1994). The second variable ``<citealnum>`` is a variant of this that creates a citation label from the first letter of the author's last name, followed by an integer indicating its place in the sorted bibliography. Thus the book by Graham *et al.* would have the label "G2" if preceded by, say, *Introduction to Fourier Optics* by Joseph W. Goodman (1968), since the latter, being published earlier, would be placed earlier in the sorted list.
+Also, in addition to these default fields, there are also four special variables defined, ``citealpha``, ``citealnum``, ``citenum``, and ``sortnum``. These can be accessed as ``<citealpha>``, ``<citealnum>``, ``<citenum>``, and ``<sortnum>`` within any template. The first, ``<citealpha>``, is designed to reproduce the citation label style used by BibTeX's ``alpha`` style. For example, ``GKP94`` is the ``alpha``--style citation label for the book *Concrete Mathematics*, 2nd Edition, by Ronald L. Graham, Donald E. Knuth, and Oren Patashnik (1994). The second variable ``<citealnum>`` is a variant of this that creates a citation label from the first letter of the author's last name, followed by an integer indicating its place in the sorted bibliography. Thus the book by Graham *et al.* would have the label "G2" if preceded by, say, *Introduction to Fourier Optics* by Joseph W. Goodman (1968), since the latter, being published earlier, would be placed earlier in the sorted list. ``<citenum>`` is simply the numerical order in which the reference was cited in the text (starting at 1 with the first citation). ``<sortnum>`` is the numerical order in which the citation appears in the reference list. If the reference list is sorted alphabetically, for example, then ``sortnum`` will generally be different from ``citenum``.
 
 **au** is the string representing the formatted list of author names. In the default definition shown above, the name list is a standard form, and so simply uses the ``.format_authorlist()`` operator. Generally, this operator creates name lists that have the form "firstauthor" for only one author, "firstauthor and secondauthor" if only two authors, "firstauthor, secondauthor, ..., and lastauthor" if more than two authors but less than the maximum, and "firstauthor, secondauthor, ..., minauthor, et al." if more than the maximum allowed number of authors. Which author in the list is "minauthor" is defined using the ``minauthors`` option keyword. The maximum number of allowed authors is set by the ``maxauthors`` option keyword.
 
@@ -230,6 +233,7 @@ A complete list of existing options keywords, together with their default defini
     period_after_initial = True
     procspie_as_journal = False
     sort_case = True
+    sort_order = forward
     terse_inits = False
     undefstr = ???
     use_abbrevs = True
@@ -274,6 +278,8 @@ Each of the keywords is summarized below.
 **procspie_as_journal** [default value: False] The "Proceedings of SPIE" are treated as special by the journals of the Optical Society of America. That is, they format these proceedings (and only these) in the same way that they do journal articles. Thus, a special keyword is required to allow this behavior.
 
 **sort_case** [default value: True] informs Bibulous whether or not to use case-sensitive sorting of reference keys.
+
+**sort_order** [default value: forward] whether to sort in increasing order (``forward``) or decreasing order (``reverse``).
 
 **terse_inits** [default value: False] tells the ``.format_namelist()`` operator whether to compress together the initials of an individual's name. Thus, if ``terse_inits = True``, a name will appear as "RMA Azzam", but if ``False`` will appear as "R. M. A. Azzam". (This keyword is only used within the ``.format_namelist()`` operator.)
 

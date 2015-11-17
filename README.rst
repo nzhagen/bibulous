@@ -19,11 +19,11 @@ Installing using pip:::
 
    pip install bibulous
 
-Instructions for installing Bibulous, and for seamlessly integrating it into your normal LaTeX workflow, are given in the ``getting started`` section.
-Users can also consult the ``guidelines for writing style templates`` for further information, and the ``examples`` section. A ``FAQ`` page is also available.
+Instructions for installing Bibulous, and for seamlessly integrating it into your normal LaTeX workflow, are given in the `getting started <https://github.com/nzhagen/bibulous/blob/master/doc/getting_started.rst>`_ section.
+Users can also consult the `guidelines for writing style templates <https://github.com/nzhagen/bibulous/blob/master/doc/guidelines_for_writing_style_templates.rst>`_ for further information, and the `examples <https://github.com/nzhagen/bibulous/blob/master/doc/examples.rst>`_ section. A `FAQ <https://github.com/nzhagen/bibulous/blob/master/doc/faq.rst>`_ page is also available.
 
 Another approach is to clone the git repository `<https://github.com/nzhagen/bibulous>`_ and place it into your Python path.
-For compiling bibliographies, the only file needed within the project is ``bibulous.py``, so that going to `<https://github.com/nzhagen/bibulous>`_ and copying ``bibulous.py`` from there is sufficient (direct link `<https://github.com/nzhagen/bibulous/raw/master/bibulous.py>`_).
+For compiling bibliographies, the only file needed within the project is ``bibulous.py``, so that going to `<https://github.com/nzhagen/bibulous>`_ and copying `bibulous.py <https://github.com/nzhagen/bibulous/raw/master/bibulous.py>`_ from there is sufficient.
 
 Example
 =======
@@ -46,7 +46,7 @@ Developers
 
 Bibulous is a new project, and so it has until now been a solo effort. Anyone interested in helping out is welcome to join; just send an email to the developers mailing list and we will try to help you get involved and show you the ropes. And, this being the maintainer's first open source project, any suggestions by experienced developers are welcome.
 
-Guidelines for developers are given in ``developer_guide.rst``, and includes an overview of the project's strategy and overall code structure. Note that a bug tracking system has not yet been set up for the project. HTML-based documentation is provided at ``bibulous/doc/_build/html/index.html``, and a corresponding PDF file at ``bibulous/doc/_build/latex/Bibulous.pdf``. The ``setup.py`` and ``MANIFEST.in`` files provided in the repository base directory are used to create a Python package using the ``disutils`` distribution utilities module.
+Guidelines for developers are given in `developer_guide.rst <https://github.com/nzhagen/bibulous/blob/master/doc/developer_guide.rst>`_, and includes an overview of the project's strategy and overall code structure. Note that a bug tracking system has not yet been set up for the project. HTML-based documentation is provided at ``bibulous/doc/_build/html/index.html``, and a corresponding PDF file at `bibulous/doc/_build/latex/Bibulous.pdf <https://github.com/nzhagen/bibulous/blob/master/doc/_build/latex/Bibulous.pdf>`_. The `setup.py <https://github.com/nzhagen/bibulous/blob/master/setup.py>`_ and `MANIFEST.in <https://github.com/nzhagen/bibulous/blob/master/MANIFEST.in>`_ files provided in the repository base directory are used to create a Python package using the ``disutils`` distribution utilities module.
 
 Contact
 =======
@@ -56,4 +56,4 @@ For any questions, the current Bibulous project maintainer can be reached at `an
 License
 =======
 
-Bibulous is released under the MIT/X11 license, meaning that it is free and open source, and that it can be used without restriction in other programs, commercial or not. The full license is given in the file ``LICENSE.txt``.
+Bibulous is released under the MIT/X11 license, meaning that it is free and open source, and that it can be used without restriction in other programs, commercial or not. The full license is given in the file `LICENSE.txt <https://github.com/nzhagen/bibulous/blob/master/LICENSE.txt>`_.

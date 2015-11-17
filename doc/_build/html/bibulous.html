@@ -1112,7 +1112,7 @@ values their string template.</td>
 <tr class="row-odd"><td><a class="reference internal" href="#bibulous.Bibdata.parse_bibfield" title="bibulous.Bibdata.parse_bibfield"><tt class="xref py py-obj docutils literal"><span class="pre">parse_bibfield</span></tt></a>(entrystr[,&nbsp;entrykey])</td>
 <td>For a given string representing the raw contents of a BibTeX-format bibliography entry, parse the contents into a dictionary of key:value pairs corresponding to the field names and field values.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#bibulous.Bibdata.parse_auxfile" title="bibulous.Bibdata.parse_auxfile"><tt class="xref py py-obj docutils literal"><span class="pre">parse_auxfile</span></tt></a>(filename[,&nbsp;debug])</td>
+<tr class="row-even"><td><a class="reference internal" href="#bibulous.Bibdata.parse_auxfile" title="bibulous.Bibdata.parse_auxfile"><tt class="xref py py-obj docutils literal"><span class="pre">parse_auxfile</span></tt></a>(filename[,&nbsp;recursive_call,&nbsp;debug])</td>
 <td>Read in an <cite>.aux</cite> file and convert the <cite>citation{}</cite> entries found there into a dictionary of citekeys and citation order number.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#bibulous.Bibdata.parse_bstfile" title="bibulous.Bibdata.parse_bstfile"><tt class="xref py py-obj docutils literal"><span class="pre">parse_bstfile</span></tt></a>(filename)</td>
@@ -1481,7 +1481,7 @@ title.</p>
 
 <dl class="method">
 <dt id="bibulous.Bibdata.parse_auxfile">
-<tt class="descname">parse_auxfile</tt><big>(</big><em>filename</em>, <em>debug=False</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#Bibdata.parse_auxfile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.Bibdata.parse_auxfile" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">parse_auxfile</tt><big>(</big><em>filename</em>, <em>recursive_call=False</em>, <em>debug=False</em><big>)</big><a class="reference internal" href="_modules/bibulous.html#Bibdata.parse_auxfile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bibulous.Bibdata.parse_auxfile" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read in an <cite>.aux</cite> file and convert the <cite>citation{}</cite> entries found there into a dictionary of citekeys and
 citation order number.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1489,8 +1489,12 @@ citation order number.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>filename</strong> : str</p>
-<blockquote class="last">
+<blockquote>
 <div><p>The filename of the <cite>.aux</cite> file to parse.</p>
+</div></blockquote>
+<p><strong>recursive_call</strong> : bool</p>
+<blockquote class="last">
+<div><p>Whether this function was called recursively (recursive_call=True), or if it is the top-level call             (recursive_call=False). Only in the latter case do we take the keylist and make self.citedict with it.</p>
 </div></blockquote>
 </td>
 </tr>
