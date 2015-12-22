@@ -4,6 +4,20 @@
 # pylint: max-line-length=120
 # pylint: max-module-lines=10000
 # See the LICENSE.rst file for licensing information.
+
+from __future__ import unicode_literals, print_function, division
+import re
+import os
+import sys
+import codecs       ## for importing UTF8-encoded files
+import locale       ## for language internationalization and localization
+import getopt       ## for getting command-line options
+import copy         ## for the "deepcopy" command
+import platform     ## for determining the OS of the system
+from math import log10
+import pdb          ## put "pdb.set_trace()" at any place you want to interact with pdb
+#import traceback    ## for getting full traceback info in exceptions
+
 '''
 Bibulous is a drop-in replacement for BibTeX, with the primary advantage that the bibliography
 template format is compact and *very* easy to modify.
@@ -29,19 +43,6 @@ The basic program flow upon object initialization is as follows:
    check for cross-references and use crossref data to fill in missing values.
 '''
 
-from __future__ import unicode_literals, print_function, division
-import re
-import os
-import sys
-import codecs       ## for importing UTF8-encoded files
-import locale       ## for language internationalization and localization
-import getopt       ## for getting command-line options
-import copy         ## for the "deepcopy" command
-import platform     ## for determining the OS of the system
-from math import log10
-import pdb          ## put "pdb.set_trace()" at any place you want to interact with pdb
-#import traceback    ## for getting full traceback info in exceptions
-
 #def info(type, value, tb):
 #   #if (not sys.stderr.isatty() or
 #   #    not sys.stdin.isatty()):
@@ -56,6 +57,9 @@ import pdb          ## put "pdb.set_trace()" at any place you want to interact w
 #       #traceback.print_stack()
 #sys.excepthook = info      ## go into debugger automatically on an exception
 
+__authors__ = 'Nathan Hagen'
+__license__ = 'MIT/X11 License'
+__contact__ = 'Nathan Hagen <and.the.light.shattered@gmail.com>'
 __version__ = '1.3'
 __all__ = ['sentence_case', 'stringsplit', 'namefield_to_namelist', 'namestr_to_namedict',
            'initialize_name', 'get_delim_levels', 'show_levels_debug', 'get_quote_levels', 'splitat', 'multisplit',
