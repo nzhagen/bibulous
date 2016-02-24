@@ -66,6 +66,7 @@ author_or_editor3 = [[[<authorlist.0.first> ][<authorlist.0.prefix> ]<authorlist
 #if_length_equals2 = <emptystr.if_length_equals(authorlist,2,au_two,au_three)> \textbf{<title>} (<year>).
 badkey = <au>
 badtemplate = <badauthorname.0>
+nofirstname = <au>, \enquote{<title>} (<year>).
 
 
 SPECIAL-TEMPLATES:

@@ -126,6 +126,8 @@ Editor One, ``Blah blah'' (4321).
 No editors, ``Blah blah'' (4321).
 \bibitem{badkey}
 \textit{Warning: citation key ``badkey'' is not in the bibliography database}.
+\bibitem{nofirstname}
+Kelvin, ``On vortex motion'' (1869).
 \bibitem{badtemplate}
 
 

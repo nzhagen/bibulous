@@ -1,4 +1,4 @@
-\begin{thebibliography}{61}
+\begin{thebibliography}{ZZ}
 \providecommand{\enquote}[1]{``#1''}
 \providecommand{\url}[1]{{\tt #1}}
 \providecommand{\href}[2]{#2}
@@ -126,6 +126,8 @@ Editor One, ``Blah blah'' (4321).
 No editors, ``Blah blah'' (4321).
 \bibitem{badkey}
 \textit{Warning: citation key ``badkey'' is not in the bibliography database}.
+\bibitem{nofirstname}
+Kelvin, ``On vortex motion'' (1869).
 \bibitem{badtemplate}
 
 
