@@ -3137,7 +3137,7 @@ def initialize_name(name, options=None, debug=False):
             pieces = token.split('-')
             nametokens[j] = (period+'-').join([initialize_name(p, options) for p in pieces])
         else:
-            ## If the token already ends in a period then it's might already be an initial, but only if it has length 2.
+            ## If the token already ends in a period then it might already be an initial, but only if it has length 2.
             ## Otherwise you still need to truncate it. If the name only has one character in it, then treat it as a
             ## full name that doesn't need initializing.
             if token.endswith('.') and (len(token) == 2):
@@ -4643,10 +4643,11 @@ def namedict_to_formatted_namestr(namedict, options=None):
     suffix = '' if ('suffix' not in namedict) else namedict['suffix']
 
     if options['use_firstname_initials']:
-        firstname = initialize_name(firstname, options) + '.'
+        if firstname:
+            firstname = initialize_name(firstname, options) + '.'
         middlename = initialize_name(middlename, options)
 
-    if (middlename != ''):
+    if middlename:
         if options['terse_inits']:
             frontname = firstname + middlename
             frontname.replace(' ','')
