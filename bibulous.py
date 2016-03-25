@@ -3880,6 +3880,40 @@ def latex_to_utf8(s):
     return(s)
 
 ## =============================
+def brace_split(string, splitter=" "):
+
+    ## If there are braces in the string, then we need to be careful to only allow splitting of the names when
+    ## ' and ' is at brace level 0. This requires replacing re.split() with a bunch of low-level code.
+    z = get_delim_levels(string, ('{','}'))
+    separators = []
+    sep_pattern = re.compile(splitter, re.UNICODE)
+    
+    for match in re.finditer(sep_pattern, string):
+        (i,j) = match.span()
+        if (z[i] == 0):
+            ## Record the indices of the start and end of the match.
+            separators.append((i,j))
+
+    num_splits = len(separators)
+    splits = []
+    if (num_splits == 0):
+        splits.append(string.strip())
+    if (num_splits > 0) and (separators[0][0] > 0):
+        splits.append(string[:separators[0][0]].strip())
+
+    ## Go through each match's indices and split the string at each.
+    for n in xrange(num_splits):
+        if (n == num_splits-1):
+            j = separators[n][1]            ## the end of *this* separator
+            splits.append(string[j:].strip())
+        else:
+            nexti = separators[n+1][0]      ## the beginning of the *next* separator
+            j = separators[n][1]            ## the end of *this* separator
+            splits.append(string[j:nexti].strip())
+    return splits
+
+## =============================
+
 def namestr_to_namedict(namestr, disable=None):
     '''
     Take a BibTeX string representing a single person's name and parse it into its first, middle, last, etc pieces.
@@ -3953,8 +3987,8 @@ def namestr_to_namedict(namestr, disable=None):
     elif (len(commapos) == 1):
         namedict = {}
         (firstpart, secondpart) = splitat(namestr, commapos)
-        first_nametokens = firstpart.strip().split(' ')
-        second_nametokens = secondpart.strip().split(' ')
+        first_nametokens = brace_split(firstpart.strip(),' ') 
+        second_nametokens = brace_split(secondpart.strip(),' ')
 
         if (len(first_nametokens) == 1):
             namedict['last'] = first_nametokens[0]
