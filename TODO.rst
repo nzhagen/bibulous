@@ -10,6 +10,11 @@ For version 1.4, the goal is to have group templates working.
   unnested sequence into a nested one. Need to look for that. We can probably do this check
   when the BST file is parsed, rather than when we do string substitution in the template
   for every entry.
+  
+- Add a comment in the documentation about changing the option keyword "name_separator" from the default "and"
+  to some new one, like "y". This appears to force the separator to be used in both the BIB database file and not just the output formatted reference. Add functionality allowing you to separate the database name separator from the formatted reference name separator.
+  
+- It seems likely that the hyperref package compatibility is fragile. Try finding a way to make it more robust.
 
 - Get the ``backrefs`` option back up and working.
 

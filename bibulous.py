@@ -3012,7 +3012,7 @@ def namefield_to_namelist(namefield, key=None, sep='and', disable=None):
     key : str, optional
         The bibliography data entry key.
     sep : str, optional
-        The string defining the string to be used as a name separator.
+        The string defining what to use as a name separator.
     disable : list of int, optional
         The list of warning message numbers to ignore.
 
