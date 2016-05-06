@@ -138,6 +138,10 @@ For version 1.4, the goal is to have group templates working.
     - Code coverage didn't decrease.
     - Checks on specific types of features ("Script parameters should be documented").
 
+- ``citationstyles.org`` has thousands of styles defined which are used by other programs such 
+  as Zotero and Mendeley. Think about how to convert these to Bibulous templates and have a large
+  library of pre-defined styles. PS: Also see ``https://github.com/citation-style-language``
+
 
 Python testing to-do
 --------------------
