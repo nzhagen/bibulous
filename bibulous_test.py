@@ -26,13 +26,10 @@ The basic approach of the tests is as follows:
 '''
 
 from __future__ import unicode_literals, print_function, division     ## for Python3 compatibility
-import string
-import re
 import os
-import sys
 import locale
-import traceback    ## for getting full traceback info in exceptions
-import pdb          ## put "pdb.set_trace()" at any place you want to interact with pdb
+#import traceback    ## for getting full traceback info in exceptions
+#import pdb          ## put "pdb.set_trace()" at any place you want to interact with pdb
 import difflib      ## for comparing one string sequence with another
 import getopt
 from bibulous import Bibdata
@@ -67,11 +64,6 @@ def run_test2():
     emitted when processing the entire database through the full chain of functions.
     '''
 
-    bibfiles = ['./test/master.bib',    './test/journal.bib',    './test/amstat.bib',   './test/cccuj2000.bib',
-                './test/gutenberg.bib', './test/onlinealgs.bib', './test/python.bib',   './test/random.bib',
-                './test/sciam2000.bib', './test/template.bib',   './test/thiruv.bib',   './test/benfords-law.bib',
-                './test/texstuff.bib',  './test/karger.bib']
-    bblfile = './test/test2.bbl'
     auxfile = './test/test2.aux'
 
     print('\n' + '='*75)
@@ -240,10 +232,10 @@ def run_test6():
     print('Running Bibulous Test #6')
 
     try:
-        bibobj = Bibdata([auxfile, bstfile], debug=False, disable=[8,9])
+        Bibdata([auxfile, bstfile], debug=False, disable=[8,9])
         result = False
         print('TEST #6 FAILED')
-    except ImportError, arg:
+    except ImportError:
         result = True
         print('TEST #6 PASSED.')
 
@@ -321,9 +313,6 @@ def run_test8():
     Test #8 tests Bibulous' ability to generate glossaries, symbol lists, and acronym lists.
     '''
 
-    texfile = './test/test8.tex'
-    bstfile = './test/test8.bst'
-    bibfile = './test/test8.bib'
     bblfile = './test/test8.bbl'
     auxfile = './test/test8.aux'
     target_bblfile = './test/test8_target.bbl'
