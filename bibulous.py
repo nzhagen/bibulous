@@ -14,8 +14,7 @@ import locale       ## for language internationalization and localization
 import getopt       ## for getting command-line options
 import copy         ## for the "deepcopy" command
 import platform     ## for determining the OS of the system
-from math import log10
-import pdb          ## put "pdb.set_trace()" at any place you want to interact with pdb
+#import pdb          ## put "pdb.set_trace()" at any place you want to interact with pdb
 #import traceback    ## for getting full traceback info in exceptions
 
 '''
@@ -1295,10 +1294,11 @@ class Bibdata(object):
         ## variables or else they will always be "undefined". To make this work, we also need to provide the user
         ## shortcut names:
         if self.user_variables and self.options['allow_scripts']:
-            options = self.options
-            citedict = self.citedict
-            bstdict = self.bstdict
-            bibdata = self.bibdata
+            options = self.options      # pyflakes:ignore
+            assert options
+            citedict = self.citedict    # pyflakes:ignore
+            bstdict = self.bstdict      # pyflakes:ignore
+            bibdata = self.bibdata      # pyflakes:ignore
             for user_var_name in self.user_variables:
                 user_var_value = eval(self.user_variables[user_var_name])
                 entry[user_var_name] = user_var_value
@@ -1845,8 +1845,8 @@ class Bibdata(object):
         ## Define the variables "citekey" and "citenum".
         self.bibdata[entrykey]['citekey'] = entrykey
         if self.citedict:
-            ncites = len(self.citedict)
-            #ndigits = 1 + int(log10(ncites))
+            #ncites = len(self.citedict)
+            #ndigits = 1 + int(log10(ncites))    ## note that this requires import of: from math import log10
             citenum = unicode(self.citedict[entrykey])
         else:
             citenum = '1'
@@ -3887,7 +3887,7 @@ def brace_split(string, splitter=" "):
     z = get_delim_levels(string, ('{','}'))
     separators = []
     sep_pattern = re.compile(splitter, re.UNICODE)
-    
+
     for match in re.finditer(sep_pattern, string):
         (i,j) = match.span()
         if (z[i] == 0):
@@ -3987,7 +3987,7 @@ def namestr_to_namedict(namestr, disable=None):
     elif (len(commapos) == 1):
         namedict = {}
         (firstpart, secondpart) = splitat(namestr, commapos)
-        first_nametokens = brace_split(firstpart.strip(),' ') 
+        first_nametokens = brace_split(firstpart.strip(),' ')
         second_nametokens = brace_split(secondpart.strip(),' ')
 
         if (len(first_nametokens) == 1):
@@ -4357,7 +4357,7 @@ def str_is_integer(s):
     '''
 
     try:
-        value = int(s)
+        int(s)
         return(True)
     except ValueError:
         return(False)
@@ -4538,8 +4538,6 @@ def get_names(entry, templatestr):
         The list of names found.
     '''
 
-    ## TODO: currently, the code is tied to using the 'authorname' and 'editorname'. Users should
-    ## have the ability to use whatever names they want. How can we achieve that?
     if ('authorname' in templatestr) and ('authorlist' in entry):
         return(entry['authorlist'])
     elif ('editorname' in templatestr) and ('editorlist' in entry):
@@ -4814,14 +4812,14 @@ def get_implicit_loop_data(templatestr):
     if not match:
         msg = 'Warning 030a: the template string "' + templatestr + '" is malformed. It does not have a ' + \
               'template variable to the left of the ellipsis (implied loop).'
-        bibulous.bib_warning(msg)
+        bib_warning(msg)
         return(None)
 
     for i,match in enumerate(re.finditer(r'<.*?>', lhs)):
         if (i > 1):
             msg = 'Warning 030b: the template string "' + templatestr + '" is malformed. Only one variable is allowed ' + \
                   'but the template has more than one.'
-            bibulous.bib_warning(msg)
+            bib_warning(msg)
         lhs_span = match.span()
     lhs_var = match.group()
 

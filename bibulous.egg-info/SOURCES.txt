@@ -1,4 +1,3 @@
-FAQ.rst
 LICENSE.txt
 MANIFEST.in
 README.rst
@@ -20,6 +19,7 @@ doc/bibulous_test.rst
 doc/conf.py
 doc/developer_guide.rst
 doc/examples.rst
+doc/faq.rst
 doc/getting_started.rst
 doc/guidelines_for_writing_style_templates.rst
 doc/index.rst
@@ -29,8 +29,8 @@ doc/_build/doctrees/bibulous.doctree
 doc/_build/doctrees/bibulous_authorextract.doctree
 doc/_build/doctrees/bibulous_test.doctree
 doc/_build/doctrees/developer_guide.doctree
-doc/_build/doctrees/environment.pickle
 doc/_build/doctrees/examples.doctree
+doc/_build/doctrees/faq.doctree
 doc/_build/doctrees/getting_started.doctree
 doc/_build/doctrees/guidelines_for_writing_style_templates.doctree
 doc/_build/doctrees/index.doctree
@@ -43,6 +43,7 @@ doc/_build/html/bibulous_authorextract.html
 doc/_build/html/bibulous_test.html
 doc/_build/html/developer_guide.html
 doc/_build/html/examples.html
+doc/_build/html/faq.html
 doc/_build/html/genindex.html
 doc/_build/html/getting_started.html
 doc/_build/html/guidelines_for_writing_style_templates.html
@@ -53,6 +54,7 @@ doc/_build/html/objects.inv
 doc/_build/html/py-modindex.html
 doc/_build/html/search.html
 doc/_build/html/searchindex.js
+doc/_build/html/_images/example10.png
 doc/_build/html/_images/example1a.png
 doc/_build/html/_images/example1b.png
 doc/_build/html/_images/example2a.png
@@ -86,6 +88,7 @@ doc/_build/html/_sources/bibulous_authorextract.txt
 doc/_build/html/_sources/bibulous_test.txt
 doc/_build/html/_sources/developer_guide.txt
 doc/_build/html/_sources/examples.txt
+doc/_build/html/_sources/faq.txt
 doc/_build/html/_sources/getting_started.txt
 doc/_build/html/_sources/guidelines_for_writing_style_templates.txt
 doc/_build/html/_sources/index.txt
@@ -100,6 +103,7 @@ doc/_build/html/_static/default.css
 doc/_build/html/_static/doctools.js
 doc/_build/html/_static/down-pressed.png
 doc/_build/html/_static/down.png
+doc/_build/html/_static/example10.png
 doc/_build/html/_static/example1a.png
 doc/_build/html/_static/example1b.png
 doc/_build/html/_static/example2a.png
@@ -218,10 +222,13 @@ doc/_static/screenshot_for_kile_instructions2.png
 doc/_templates/layout.html
 doc/sphinxext/apigen.py
 doc/sphinxext/docscrape.py
+doc/sphinxext/docscrape.pyc
 doc/sphinxext/docscrape_sphinx.py
+doc/sphinxext/docscrape_sphinx.pyc
 doc/sphinxext/inheritance_diagram.py
 doc/sphinxext/ipython_console_highlighting.py
 doc/sphinxext/numpydoc.py
+doc/sphinxext/numpydoc.pyc
 examples/example1.bib
 examples/example1.bst
 examples/example1.tex

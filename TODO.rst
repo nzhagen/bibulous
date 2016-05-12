@@ -16,6 +16,9 @@ For version 1.4, the goal is to have group templates working.
   
 - It seems likely that the hyperref package compatibility is fragile. Try finding a way to make it more robust.
 
+- Currently, the ``get_names()`` function code is tied to using ``authorname`` and ``editorname``. Users should
+  have the ability to use whatever names they want. How can we achieve that?
+
 - Get the ``backrefs`` option back up and working.
 
 - Add stuff from ``jpnbook`` and ``bibtex_items`` in ``/LabNotes/Bibulous/stuff to add to code/``.
