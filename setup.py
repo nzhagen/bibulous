@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name = "bibulous",
-    py_modules = ["bibulous, bibulous_test, bibulous_authorextract"],
+    py_modules = ['bibulous', 'bibulous_test', 'bibulous_authorextract'],
     version = "1.3.2",
     description = "BibTeX replacement and enhancement",
     author = "Nathan Hagen",
