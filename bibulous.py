@@ -1158,7 +1158,7 @@ class Bibdata(object):
                 s = self.format_bibitem(c)
                 if (s != ''):
                     ## Need two line EOL's here and not one so that backrefs can work properly.
-                    filehandle.write((s + '\n').encode('utf-8'))
+                    filehandle.write((s + '\n\n').encode('utf-8'))
         except Exception, err:
             ## Swallow the exception
             print('Exception encountered: ' + repr(err))
