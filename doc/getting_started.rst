@@ -5,6 +5,12 @@ For general users, all that is needed is place the main `bibulous.py <https://gi
 
 Once you bibliography engine is set to Bibulous, remember that the filename within the ``\bibliography{...}`` command in your ``*.tex`` files must point to a Bibulous-format bibliography style template (``.bst`` file) and not a BibTeX one. Note that if the `bibulous.py <https://github.com/nzhagen/bibulous/raw/master/bibulous.py>`_ file is placed in a standard Python path location, then its complete path does not need to be specified in each setup below. For example, if Bibulous is installed using ``pip install bibulous``, then the Python path will be updated appropriately such that any call to ``bibulous.py`` will work.
 
+For users who run the bibliography engine at the command line:
+
+    python /path_to_file/bibulous.py mybib.aux
+    
+where ``path_to_file`` gives the location of the ``bibulous.py`` file, and ``mybib.aux`` gives the name of the file to process. The output file will have the same filename as the aux file, but a different extension, i.e. ``mybib.bbl``.
+
 
 Kile: replacing BibTeX with Bibulous
 ------------------------------------
