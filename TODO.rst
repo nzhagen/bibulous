@@ -16,9 +16,6 @@ For version 1.4, the goal is to have group templates working.
   
 - It seems likely that the hyperref package compatibility is fragile. Try finding a way to make it more robust.
 
-- Currently, the ``get_names()`` function code is tied to using ``authorname`` and ``editorname``. Users should
-  have the ability to use whatever names they want. How can we achieve that?
-
 - Get the ``backrefs`` option back up and working.
 
 - Add stuff from ``jpnbook`` and ``bibtex_items`` in ``/LabNotes/Bibulous/stuff to add to code/``.
@@ -88,10 +85,6 @@ For version 1.4, the goal is to have group templates working.
   That is, the first author is given as ``lastname, firstname'' whereas the other authors are given as 
   ``firstname lastname``. Probably the answer to this is that the first name in the list should be done outside
   of an implicit loop, while the remaining names should be formatted within the implicit loop.
-
-- In the get_names() function, you've hard-coded the "authorname" and "editorname" variables. Users should be
-  able to use whatever names they like. Fixing this is harder than it looks at first glance! How to inform a given
-  template which namelist to query, when all it knows locally is the template string and not the actual field?
 
 - Simplify the ``get_indexed_variable()`` function inside ``bibulous.py``.
 

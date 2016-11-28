@@ -177,11 +177,11 @@ class Bibdata(object):
         self.searchkeys = []        ## when culling data, this is the list of keys to limit parsing to
         self.parse_only_entrykeys = False  ## don't parse the data in the database; get only entrykeys
         self.nested_templates = []  ## which templates have nested option blocks
-        self.looped_templates = {} #['au','ed']  ## which templates have implicit loops
+        self.looped_templates = {}  ## which templates have implicit loops
         self.implicitly_indexed_vars = ['authorname','editorname'] ## which templates have implicit indexing
-        self.namelists = []         ## the namelists defined within the templates
+        self.implicit_loop_pairs = {}    ## the dictionary pairing name variable with namelist (i.e. "authorname" with "authorlist")
         self.uniquify_vars = {}     ## dict containing all variables calling the "uniquify" operator
-        self.keylist = []           ## "keylist" is just a temporary holding place for the citations
+        self.keylist = []           ## "keylist" is a temporary holding place for the citations
         self.auxfile_list = []      ## a list of *.aux files, for use when citations are inside nested files
 
         if (uselocale == None):
@@ -982,9 +982,6 @@ class Bibdata(object):
                     if (var not in self.specials_list):
                         self.specials_list.append(var)
 
-                    if ('.to_namelist()>' in value):
-                        self.namelists.append(var)
-
                     ## Find out if the template has nested option blocks. If so, then add it to
                     ## the list of nested templates.
                     levels = get_delim_levels(value, ('[',']'))
@@ -1003,10 +1000,17 @@ class Bibdata(object):
                         self.looped_templates[var] = loop_data
 
                     ## Find out if the template contains an implicit index. If so then add it to the list of such.
+                    ## Also, if the variable has an implicit index, then it must also have a corresponding list that
+                    ## goes with it. Find out what list that is and put it into the implicit_loop_pairs dictionary.
                     if re.search('\.n\.', value) or re.search('\.n>', value):
                         (varname,_) = var.split('.',1)
                         if (varname not in self.implicitly_indexed_vars):
                             self.implicitly_indexed_vars.append(varname)
+                        if (varname not in self.implicit_loop_pairs):
+                            matchobj = re.search('\.n\.|\.n>', value)
+                            (start,end) = matchobj.span()
+                            lhs_var = value[:start].strip('<').strip()
+                            self.implicit_loop_pairs[varname] = lhs_var
 
                     if self.debug:
                         print('Setting BST special template "' + var + '" to value "' + value + '"')
@@ -1158,7 +1162,7 @@ class Bibdata(object):
                 s = self.format_bibitem(c)
                 if (s != ''):
                     ## Need two line EOL's here and not one so that backrefs can work properly.
-                    filehandle.write((s + '\n\n').encode('utf-8'))
+                    filehandle.write((s + '\n').encode('utf-8'))
         except Exception, err:
             ## Swallow the exception
             print('Exception encountered: ' + repr(err))
@@ -1995,7 +1999,7 @@ class Bibdata(object):
                     templatestr = re.sub(r'(?<=\.)n(?=\.)|(?<=\.)n(?=>)', elem['index'], templatestr)
             return(templatestr)
 
-        names = get_names(self.bibdata[entrykey], templatestr)
+        names = self.get_names(self.bibdata[entrykey], templatestr)
         if not names:
             return(templatestr)
         num_names = len(names)
@@ -2016,10 +2020,6 @@ class Bibdata(object):
         last_glue_if_only_two = loop_data['last_glue_if_only_two']
         before_loop_stuff = loop_data['before_loop_stuff']
         after_loop_stuff = loop_data['after_loop_stuff']
-
-        #print('templatestr=', templatestr)
-        #print('self.looped_templates:', self.looped_templates.keys())
-        #pdb.set_trace()
 
         ## Check that the indices are valid.
         if loop_start_index.isdigit():
@@ -2096,10 +2096,6 @@ class Bibdata(object):
                 new_templatestr += rhs
 
         new_templatestr = before_loop_stuff + new_templatestr + after_loop_stuff
-
-        #print('templatestr=', templatestr)
-        #print('new_templatestr=', new_templatestr)
-        #pdb.set_trace()
 
         return(new_templatestr)
 
@@ -2881,7 +2877,7 @@ class Bibdata(object):
         bib_warning(msg, disable=self.disable)
         return(None)
 
-    ## ===================================
+    ## =============================
     def get_indexed_vars_in_template(self, templatestr):
         '''
         Get a list of the indexed variables within a template.
@@ -2908,6 +2904,39 @@ class Bibdata(object):
 
         return(indexed_vars)
 
+    ## =============================
+    def get_names(self, entry, templatestr):
+        '''
+        Get the list of names associated with a given entry, giving priority to the first namelist
+        present in the "namelists" list.
+
+        Parameters
+        ----------
+        entry : dict
+            The bibliography data entry.
+        templatestr : str
+            The template string -- to tell whether to use authors or editors.
+
+        Returns
+        -------
+        namelist : list of dicts
+            The list of names found.
+        '''
+
+        ## Make a list of the variables in the templatestr so we can do string compares. To do this, we get the
+        ## list of indexed variables, select only the first one (they should all be the same), and then strip off
+        ## the index from the end of the variable.
+        template_indexed_vars = self.get_indexed_vars_in_template(templatestr)
+        indexed_var = get_variable_name_elements(template_indexed_vars[0])['name']
+
+        if (self.implicit_loop_pairs[indexed_var] in entry):
+            listname = self.implicit_loop_pairs[indexed_var]
+            result = entry[listname]
+        else:
+            msg = 'Warning 037: The variable "%s" does not have a valid corresponding list to loop over' % indexed_var
+            bib_warning(msg, disable=self.disable)
+
+        return(result)
 
 ## ================================================================================================
 ## END OF BIBDATA CLASS.
@@ -4518,32 +4547,6 @@ def get_variable_name_elements(variable):
             var_dict['suffix'] += '.' + piece
 
     return(var_dict)
-
-## ===================================
-def get_names(entry, templatestr):
-    '''
-    Get the list of names associated with a given entry, giving priority to the first namelist
-    present in the "namelists" list.
-
-    Parameters
-    ----------
-    entry : dict
-        The bibliography data entry.
-    templatestr : str
-        The template string -- to tell whether to use authors or editors.
-
-    Returns
-    -------
-    namelist : list of dicts
-        The list of names found.
-    '''
-
-    if ('authorname' in templatestr) and ('authorlist' in entry):
-        return(entry['authorlist'])
-    elif ('editorname' in templatestr) and ('editorlist' in entry):
-        return(entry['editorlist'])
-
-    return([])
 
 ## =============================
 def format_namelist(namelist, nametype='author', options=None):
