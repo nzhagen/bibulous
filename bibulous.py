@@ -183,6 +183,7 @@ class Bibdata(object):
         self.uniquify_vars = {}     ## dict containing all variables calling the "uniquify" operator
         self.keylist = []           ## "keylist" is a temporary holding place for the citations
         self.auxfile_list = []      ## a list of *.aux files, for use when citations are inside nested files
+        self.namelists = []         ## the list of all "namelist" type variables
 
         if (uselocale == None):
             self.locale = locale.setlocale(locale.LC_ALL,'')    ## set the locale to the user's default
@@ -385,7 +386,7 @@ class Bibdata(object):
         self.filename = filename
         filehandle = codecs.open(os.path.normpath(self.filename), 'r', 'utf-8')
 
-        ## This next block parses the lines in the file into a dictionary. The tricky part here is that the BibTeX
+        ## We need to parse the lines in the file into a dictionary. The tricky part here is that the BibTeX
         ## format allows for multiline entries. So we have to look for places where a line does not end in a comma, and
         ## check the following line to see if it a continuation of that line. Unfortunately, this means we need to read
         ## the whole file into memory --- not just one line at a time.
@@ -982,6 +983,11 @@ class Bibdata(object):
                     if (var not in self.specials_list):
                         self.specials_list.append(var)
 
+                    ## If we are defining a namelist, adding it to the namelist_pair dictionary, leaving the dictionary
+                    ## value undefined for now. We will add that when we get to the implicitly indexed variables.
+                    if ('.to_namelist()>' in value):
+                        self.namelists.append(var)
+
                     ## Find out if the template has nested option blocks. If so, then add it to
                     ## the list of nested templates.
                     levels = get_delim_levels(value, ('[',']'))
@@ -1007,10 +1013,9 @@ class Bibdata(object):
                         if (varname not in self.implicitly_indexed_vars):
                             self.implicitly_indexed_vars.append(varname)
                         if (varname not in self.implicit_loop_pairs):
-                            matchobj = re.search('\.n\.|\.n>', value)
-                            (start,end) = matchobj.span()
-                            lhs_var = value[:start].strip('<').strip()
-                            self.implicit_loop_pairs[varname] = lhs_var
+                            implicit_matchobj = re.search('\.n\.|\.n>', value)
+                            (new_start,new_end) = implicit_matchobj.span()
+                            self.implicit_loop_pairs[varname] = value[:new_start].strip('[<').strip()
 
                     if self.debug:
                         print('Setting BST special template "' + var + '" to value "' + value + '"')
@@ -1162,7 +1167,7 @@ class Bibdata(object):
                 s = self.format_bibitem(c)
                 if (s != ''):
                     ## Need two line EOL's here and not one so that backrefs can work properly.
-                    filehandle.write((s + '\n').encode('utf-8'))
+                    filehandle.write((s + '\n\n').encode('utf-8'))
         except Exception, err:
             ## Swallow the exception
             print('Exception encountered: ' + repr(err))
@@ -2933,8 +2938,8 @@ class Bibdata(object):
             listname = self.implicit_loop_pairs[indexed_var]
             result = entry[listname]
         else:
-            msg = 'Warning 037: The variable "%s" does not have a valid corresponding list to loop over' % indexed_var
-            bib_warning(msg, disable=self.disable)
+            ## There is no corresponding namelist available for this variable, so we treat the variable as undefined.
+            result = []
 
         return(result)
 
