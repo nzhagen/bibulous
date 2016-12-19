@@ -67,6 +67,7 @@ author_or_editor3 = [[[<authorlist.0.first> ][<authorlist.0.prefix> ]<authorlist
 badkey = <au>
 badtemplate = <badauthorname.0>
 nofirstname = <au>, \enquote{<title>} (<year>).
+any_namelist = <au> (<year>): <title>. In: <bau>/<ed>: <booktitle>.
 
 
 SPECIAL-TEMPLATES:
@@ -100,6 +101,9 @@ group = [<institution>|<organization>|<corporation>|]
 citelabel = None
 sortkey = <citenum.zfill(2)>
 emptystr = {}
+bookauthorlist = <bookauthor.to_namelist()>
+bookauthorname.n = <bookauthorlist.n.last>[, <bookauthorlist.n.first>]
+bau = <bookauthorname.0>/.../<bookauthorname.9>
 
 
 OPTIONS:
@@ -123,6 +127,8 @@ autocomplete_doi = True                   ## whether to add "http://dx.doi.org/"
 #au_two = Two                              ## defined for use with the .if_length_equals() operator
 #au_three = Three                          ## defined for use with the .if_length_equals() operator
 
+
 VARIABLES:
+
 
 DEFINITIONS:

@@ -396,21 +396,21 @@ def check_file_match(testnum, outputfile, targetfile):
 if (__name__ == '__main__'):
     suite_pass = True
 
-    ## Run test #1.
+    ## Run test #1: testing miscellaneous templates.
     (outputfile, targetfile) = run_test1()
     result = check_file_match(1, outputfile, targetfile)
     suite_pass *= result
 
-    ## Run test #2.
+    ## Run test #2: testing the BIB file parser.
     result = run_test2()
     suite_pass *= result
 
-    ## Run test #3.
+    ## Run test #3: testing the "authorextract" function.
     (outputfile, targetfile) = run_test3()
     result = check_file_match(3, outputfile, targetfile)
     suite_pass *= result
 
-    ## Run test #4.
+    ## Run test #4: testing the correct generation of citation keys.
     (outputfile, targetfile) = run_test4()
     result = check_file_match(4, outputfile, targetfile)
     suite_pass *= result

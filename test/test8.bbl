@@ -6,17 +6,24 @@
 
 \bibitem[Active Directory]{AD}
 The directory service for Windows based networks that allows central organization and administration of any network resource. It allows a single-sign-on concept independent from network topologies or network protocols. As a prerequisite you need a Windows Server acting as Domain Controller. This computer stores all necessary data, e.\,g.~usernames and corresponding passwords.
+
 \bibitem[CD]{CD}
 Compact Disc
+
 \bibitem[JS]{JS}
 Javascript
+
 \bibitem[Response File]{RF}
 A file that allows unattended software installation.
+
 \bibitem[$\lambda$]{sym:lambda}
 Indicates an eigenvalue in the mathematics  of linear algebra.
+
 \bibitem[$\phi$]{sym:phi}
 An angle.
+
 \bibitem[$\pi$]{sym:pi}
 A mathematical constant whose value is the ratio of any circle's circumference to its diameter.
+
 
 \end{thebibliography}

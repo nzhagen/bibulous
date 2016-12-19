@@ -8,127 +8,192 @@
 
 \bibitem{initialize1}
 L. Kelvin, ``On vortex motion'' (1869).
+
 \bibitem{initialize2}
 C.-I. Chang, ``Implementation scheme for recursion in spectral dimension'' (1992).
+
 \bibitem{title_punctuation}
 J. S. Bell, ``Are there quantum jumps?'' (1987).
+
 \bibitem{quote_delimits}
 S. Else, ``Comments on `Filenames and Fonts'\:'' (0000).
+
 \bibitem{page_range}
 D. Stewart, ``Interview with Walter Stewart,'' \textit{Omni} \textbf{11}: 64--94 (1989).
+
 \bibitem{nested_italics1}
 A. Aspect, P. Grangier, and G. Roger, \textit{Experimental realization of Einstein-Podolsky-Rosen-Bohm \textup{Gedenkenexperiment}: a new violation of Bell's inequalities} (1982).
+
 \bibitem{nested_italics2}
 ``z\textit{{{\textup{mm}}w\textup{{qq}}}}\textit{zz}y'', ``a\textit{\textup{\textit{bbb} cc}d}eee\textit{ff}g''.
+
 \bibitem{nested_bold}
 ``a\textbf{bb{\A}}c\textbf{d}ff\textbf{{g}}h{i}!'', ``a\textbf{b{c{\textmd{d}}e\textmd{f}g}h}i''.
+
 \bibitem{nested_quotes}
 ``\:`\:``This is'' ``quoted and `nested'.''\:'\:'', ``\:`This is ``quoted and `nested'.''\:'\:'', ``\:`\:``This is `quoted and ``nested''.'\:''\:'\:'', ``\:`This is ``\:`quoted and ``nested''.'\:''\:'\:'', ``\:`This is ``\:`qu\'oted and \"e ``nested''.'\:''\:'\:''.
+
 \bibitem{name_parsing1}
 AA, A. bb, A. bb CC, A. bb CC dd EE, A. bb CC dd EE, A. bb, BB, A. bb CC, XX, and A. BB, ``None'' (0000).
+
 \bibitem{name_parsing2}
 F. M. Prefix Last and F. M. Prefix Last, Suffix, ``None'' (0000).
+
 \bibitem{name_parsing3}
 W. {Thomson [Lord Kelvin]}, ``On an absolute thermometric scale, founded on Carnot's theory of the motive power of heat'' (1848).
+
 \bibitem{name_parsing4}
 G. Dalhquist, Å. Bj{\"o}rck, and N. Anderson, \textit{Numerical Methods} (???).
+
 \bibitem{name_parsing5}
 T. H. Cormen, C. E. Leiserson, and R. L. Rivest, \textit{Introduction to Algorithms} (1990).
+
 \bibitem{many_authors}
 B. Yanny, C. Rockosi, H. J. Newberg, G. R. Knapp, J. K. Adelman-McCarthy, B. Alcorn, S. Allam, C. A. Prieto, D. An, K. S. J. Anderson, \textit{et~al.}, ``SEGUE: a spectroscopic survey of 240,000 stars with $g = 14$--20'' (2009).
+
 \bibitem{many_editors}
 M. M. Blouke, N. Sampat, G. M. Williams, Jr., \textit{et~al.}, eds, ``Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications'' (2000).
+
 \bibitem{brace_delimited_quotes}
 S. New, ``Comments on `Filenames and Fonts'\:'' (4321).
+
 \bibitem{procspie_as_journal}
 A. S. Alenin and J. S. Tyo, ``Task-specific snapshot Mueller matrix channeled spectropolarimeter optimization,'' \textit{Proc.\ SPIE} \textbf{8364}: 836402 (2012).
+
 \bibitem{crossref1}
 A. S. Alenin and J. S. Tyo, ``Task-specific snapshot Mueller matrix channeled spectropolarimeter optimization,'' in \textit{Polarization: Measurement, Analysis, and Remote Sensing X}, D. B. Chenault and D. H. Goldstein, eds, Proc. SPIE \textbf{8364}: 836402 (2012).
+
 \bibitem{japanese}
 Y. Otobe and P. Horton, ``jBibTEXの使用法,'' ソフトバンクパブリッシング (2006). [In Japanese.]
+
 \bibitem{trailing_comma}
 B. Bunny, ``Looney tunes'' (2001).
+
 \bibitem{monthname1}
 B. Bunny, ``Looney tunes'' (April, 2001).
+
 \bibitem{monthname2}
 B. Bunny, ``Looney tunes'' (4, 2001).
+
 \bibitem{monthabbrev}
 B. Bunny, ``Looney tunes'' (Apr, 2001).
+
 \bibitem{replace_newlines}
 D. L. Marks, B. J. Davis, S. A. Boppart, and P. S. Carney, ``Partially coherent illumination in full-field interferometric synthetic aperture microscopy,'' \textit{J. Opt. Soc. Am. A} \textbf{26}: 376--386 (2009).
+
 \bibitem{quote_and_accent_detection}
 P. J. C. Janssen, ``Sur l'{\'e}tude spectrale des protub{\'e}rances solaires [Spectral study of solar prominences],'' \textit{Comptes Rendus Acad. Sci.} \textbf{68}: 93--95 (1869).
+
 \bibitem{hyperlinked_title}
 R. Kaye, ``\href{http://dx.doi.org/10.1007/BF03025367}{Minesweeper is NP-complete},'' \textit{Mathematical Intelligencer} \textbf{22}: 9--15 (2000).
+
 \bibitem{edition_ordinal}
 M. Born and E. Wolf, \textit{Principles of Optics}, 7th~ed. (Cambridge Univ. Press, 1999).
+
 \bibitem{capitalized_field_names1}
 H. Schmidt, ``Quantum-mechanical random-number generator,'' \textit{J. Appl. Phys.} \textbf{41}: 462--468 (1970).
+
 \bibitem{multilingual}
 Someone, ``ユーザー別サイト 体中文 מדורים מבוקשים أفضل البحوث Σὲ γνωρίζω ἀπὸ Десятую Международную แผ่นดินฮั่นเสื่อมโทรมแสนสังเวช ∮ E⋅da = Q, n → ∞, ∑ f(i) = ∏ g(i) français langue étrangère mañana olé'' (2222).
+
 \bibitem{hindu}
 S. W. S. Hindu, ``सच्चिदानन्द हीरानन्द वात्स्यायन'' (2013).
+
 \bibitem{user_defined_field}
 N. Soseki, ``Michikusa,'' Tuttle (1915).
+
 \bibitem{movie1}
 5. \color{blue}{The Inheritance}\color{black}, Per Fly (\year>).
+
 \bibitem{movie2}
 4. \color{blue}{The Celebration}\color{black}, Thomas Vinterberg (\year>).
+
 \bibitem{negativeyear}
 T. F. Chan, G. H. Golub, and R. J. LeVeque, ``Updating formulae and a pairwise algorithm for computing sample variances,'' Stanford University Tech.\ Rep.\ \#STAN-CS-79-773 (-1979).
+
 \bibitem{use_sentence_case}
 P. Stoica and B. C. Ng, ``On the {C}ram{\'e}r-{R}ao bound under parametric constraints'' (1998).
+
 \bibitem{malformed_template1}
 J. S. Bell ``<title.anycase()>'' (1982).
+
 \bibitem{malformed_template2}
 Error: malformed template.
+
 \bibitem{malformed_template3}
 Error: malformed template.
+
 \bibitem{malformed_template4}
 Error: malformed template.
+
 \bibitem{others_becomes_etal1}
 M. A, M. B, M. C, \textit{et~al.} ``Some title'' (2000).
+
 \bibitem{others_becomes_etal2}
 H. Arp, \textit{et~al.} ``An open letter to the scientific community'' (2004).
+
 \bibitem{implicit_index}
 David Hestenes
+
 \bibitem{french_initials}
 A. Perot and Ch. Fabry, ``Sur l'application de ph{\'e}nom{\`e}nes d'interf{\'e}rence {\`a} la solution de divers probl{\`e}mes de spectroscopie et de m{\'e}trologie'' (1899).
+
 \bibitem{use_name_ties}
 F.~M.~M. Prefix~Last and F.~Prefix~Last, Suffix, ``None'' (0000).
+
 \bibitem{period_after_initial}
 B R Bunny, ``Looney tunes'' (2001).
+
 \bibitem{terse_inits}
 DD Duck, ``Looney tunes'' (2001).
+
 \bibitem{author_firstname_initials}
 Alain Aspect, Philippe Grangier, and G{\'e}rard Roger, ``Experimental realization of Einstein-Podolsky-Rosen-Bohm \textit{Gedenkenexperiment}: a new violation of Bell's inequalities'' (1982).
+
 \bibitem{editor_firstname_initials}
 David B. Chenault and Dennis H. Goldstein, eds, ``Polarization: Measurement, Analysis, and Remote Sensing X'' (2012).
+
 \bibitem{key_not_in_database}
 \textit{Warning: citation key ``key_not_in_database'' is not in the bibliography database}.
+
 \bibitem{andothers}
 \textit{Smolanzuk, R., Skalski, J., Sobiczewski, A.} Masses and half-life of superheavy elements // Proc.\ of the International Workshop 24 on Gross Properties of Nuclei and Nuclear Excitations / Ed. by Feldmeier, H., \textit{et~al.} -- GSI, Darmstadt, 1996. -- P.~35 -- 42.
+
 \bibitem{lowerupper}
 M. C. A. Name, TITLE WAS IN LOWER CASE (Sentencecase, lowercase, 1985).
+
 \bibitem{substr_replace}
 \textbf{J. W. Tukey}, ``\color{red}Sunset\color{black} salvo,'' The \textit{American} Statistician \textbf{40} (1986).
+
 \bibitem{japanese_name_separator}
 舩冨卓哉 美濃導彦, 動物体三次元形状計測システム (2013).
+
 \bibitem{zfill}
 N. Guy, Nothing special (0005).
+
 \bibitem{rangeindex}
 N. Special, ``5678'' (4321).
+
 \bibitem{author_or_editor1}
 Author One, ``Blah blah'' (4321).
+
 \bibitem{author_or_editor2}
 Editor One, ``Blah blah'' (4321).
+
 \bibitem{author_or_editor3}
 No editors, ``Blah blah'' (4321).
+
 \bibitem{badkey}
 \textit{Warning: citation key ``badkey'' is not in the bibliography database}.
+
 \bibitem{nofirstname}
 Kelvin, ``On vortex motion'' (1869).
+
+\bibitem{any_namelist}
+I. Beck and H. Greving (2012): My journey through bibliographies. In: Brinkmann, Heinz/P. Anderson: My Bibliography Book.
+
 \bibitem{badtemplate}
+
 
 
 \end{thebibliography}
