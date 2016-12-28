@@ -65,7 +65,7 @@ __all__ = ['sentence_case', 'stringsplit', 'namefield_to_namelist', 'namestr_to_
            'enwrap_nested_string', 'enwrap_nested_quotes', 'purify_string', 'latex_to_utf8',
            'search_middlename_for_prefixes', 'get_edition_ordinal', 'export_bibfile', 'parse_pagerange',
            'parse_nameabbrev', 'filter_script', 'str_is_integer', 'bib_warning', 'create_citation_alpha',
-           'toplevel_split', 'get_variable_name_elements', 'get_names', 'format_namelist',
+           'toplevel_split', 'get_variable_name_elements', 'format_namelist',
            'namedict_to_formatted_namestr', 'argsort', 'create_alphanum_citelabels','get_implicit_loop_data']
 
 
@@ -386,7 +386,7 @@ class Bibdata(object):
         self.filename = filename
         filehandle = codecs.open(os.path.normpath(self.filename), 'r', 'utf-8')
 
-        ## We need to parse the lines in the file into a dictionary. The tricky part here is that the BibTeX
+        ## This next block parses the lines in the file into a dictionary. The tricky part here is that the BibTeX
         ## format allows for multiline entries. So we have to look for places where a line does not end in a comma, and
         ## check the following line to see if it a continuation of that line. Unfortunately, this means we need to read
         ## the whole file into memory --- not just one line at a time.

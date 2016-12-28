@@ -12,7 +12,9 @@ For version 1.4, the goal is to have group templates working.
   for every entry.
   
 - Add a comment in the documentation about changing the option keyword "name_separator" from the default "and"
-  to some new one, like "y". This appears to force the separator to be used in both the BIB database file and not just the output formatted reference. Add functionality allowing you to separate the database name separator from the formatted reference name separator.
+  to some new one, like "y" (as in Spanish). This appears to force the separator to be used in both the BIB database 
+  file and not just the output formatted reference. Add functionality allowing you to separate the database name 
+  separator from the formatted reference name separator.
   
 - It seems likely that the hyperref package compatibility is fragile. Try finding a way to make it more robust.
 
@@ -40,6 +42,7 @@ For version 1.4, the goal is to have group templates working.
       year = {1234},
       nameabbrev = {de la Fontaine > {dlF.}, du Bois > du}
     }
+    
 - Found a way to get different citation labels in the text than in the reference list: use::
 
     \makeatletter
