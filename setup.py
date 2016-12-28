@@ -1,11 +1,12 @@
-# chardet's setup.py
 #from distutils.core import setup
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(
     name = "bibulous",
     py_modules = ['bibulous', 'bibulous_test', 'bibulous_authorextract'],
-    version = "1.3.2",
+    package_dir = {'':'.'},
+    packages = find_packages(exclude=['test']),
+    version = "1.3.3",
     description = "BibTeX replacement and enhancement",
     author = "Nathan Hagen",
     author_email = "and.the.light.shattered@gmail.com",

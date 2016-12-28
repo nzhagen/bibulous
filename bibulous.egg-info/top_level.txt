@@ -1,1 +1,3 @@
-bibulous, bibulous_test, bibulous_authorextract
+bibulous_authorextract
+bibulous_test
+bibulous

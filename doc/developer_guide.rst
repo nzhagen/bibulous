@@ -183,9 +183,11 @@ From the bibulous base folder, run::
 
     python setup.py sdist --formats=gztar,zip
 
-and then::
+to create the package locally, and then run::
 
     python setup.py sdist upload
+    
+to update the PIP package online.
 
 Miscellaneous notes
 ===================
