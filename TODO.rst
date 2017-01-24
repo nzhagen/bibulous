@@ -4,7 +4,7 @@ Python code to-do list: (including goals for version 2.0)
 The primary goal for version 2.0 is to incorporate integration with a front-end LaTeX package.
 For version 1.4, the goal is to have group templates working.
 
-- Copy Gareth's code changes into this repo for full Python2/3 compatibility. Then remake the PyPi install
+- One you have full Python2/3 compatibility, remake the PyPi install
   package and upload it to PyPi. And test it.
 
 - Add a test for the new ``.if_equals()`` operator.
