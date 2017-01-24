@@ -4,10 +4,13 @@ Python code to-do list: (including goals for version 2.0)
 The primary goal for version 2.0 is to incorporate integration with a front-end LaTeX package.
 For version 1.4, the goal is to have group templates working.
 
+- Copy Gareth's code changes into this repo for full Python2/3 compatibility. Then remake the PyPi install
+  package and upload it to PyPi. And test it.
+
 - Add a test for the new ``.if_equals()`` operator.
 
-- If a user added any options blocks to their defined variables, then they may have turned an
-  unnested sequence into a nested one. Need to look for that. We can probably do this check
+- If a user added any options blocks to their defined variables, then this may turned an unnested sequence 
+  into an implicitly nested one. Need to look for that. We can probably do this check
   when the BST file is parsed, rather than when we do string substitution in the template
   for every entry.
   
@@ -130,12 +133,10 @@ For version 1.4, the goal is to have group templates working.
     - [Developer] ran the tests and they passed!
     - Someone else ran the tests and they passed!
     - A computer ran the tests automatically and they passed! (Continuous Integration)
-    - The code formatting guidelines are met. (> 2 people with different coding styles? CHAOS.)
-    - The code coverage guidelines are met.
+    - The code formatting guidelines are met.
+    - The code coverage didn't decrease (i.e. the testing suite still test most of the code base).
     - Changes were described in a ChangeLog.
     - Commit messages make sense.
-    - Code coverage didn't decrease.
-    - Checks on specific types of features ("Script parameters should be documented").
 
 - ``citationstyles.org`` has thousands of styles defined which are used by other programs such 
   as Zotero and Mendeley. Think about how to convert these to Bibulous templates and have a large
