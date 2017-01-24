@@ -26,14 +26,17 @@ The basic approach of the tests is as follows:
 '''
 
 from __future__ import unicode_literals, print_function, division     ## for Python3 compatibility
+from io import open ## for Python3 compatibility
+
 import os
+import sys
+import platform
 import locale
 #import traceback    ## for getting full traceback info in exceptions
 #import pdb          ## put "pdb.set_trace()" at any place you want to interact with pdb
 import difflib      ## for comparing one string sequence with another
 import getopt
 from bibulous import Bibdata
-
 
 ## =================================================================================================
 def run_test1():
@@ -113,15 +116,29 @@ def run_test4():
     bblfile = './test/test4.bbl'
     bstfile = './test/test4.bst'
     auxfile = './test/test4.aux'
-    target_bblfile = './test/test4_target.bbl'
+    #target_bblfile = './test/test4_target.bbl'
 
-    ## The default locale will be US english. Ironically, the locale argument needs to use an ASCII string, and since
-    ## the default string encoding here is Unicode, we have to re-encode it manually. Later below, we will try some
-    ## other locale settings.
-    if (os.name == 'posix'):
-        thislocale = locale.setlocale(locale.LC_ALL,'en_US.UTF8'.encode('ascii','replace'))
-    elif (os.name == 'nt'):
-        thislocale = locale.setlocale(locale.LC_ALL,'usa_usa'.encode('ascii','replace'))
+    ## Linux locale implementation sorts slightly differently to Windows locale implementation and ICU
+    ## Alternative test file used
+
+    if platform.system() == "Linux":
+        target_bblfile = './test/test4_target_linux.bbl'
+    else:
+        target_bblfile = './test/test4_target.bbl'
+
+    ## The default locale for testing will be US english. Ironically, in Python2 the locale argument needs to use an
+    ## ASCII string, and since the default string encoding here is Unicode, we have to re-encode it manually. Later
+    ## below, we will try some other locale settings.
+    if (sys.version_info[0] == 2):
+        if (os.name == 'posix'):
+            thislocale = locale.setlocale(locale.LC_ALL,'en_US.UTF-8'.encode('ascii','replace'))
+        elif (os.name == 'nt'):
+            thislocale = locale.setlocale(locale.LC_ALL,'usa_usa'.encode('ascii','replace'))
+    elif (sys.version_info[0] == 3):
+        if (os.name == 'posix'):
+            thislocale = locale.setlocale(locale.LC_ALL,'en_US.UTF-8')
+        elif (os.name == 'nt'):
+            thislocale = locale.setlocale(locale.LC_ALL,'usa_usa')
 
     ## Need to make a list of all the citation sort options we want to try. Skip "citenum" since that is the default,
     ## and so has been tested already. Note: In the "uniquify" example below, the .upper() operator is needed to force the
@@ -134,8 +151,8 @@ def run_test4():
                    '[<alphalabel>][<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear.zfill(4)>|<year.zfill(4)>|]<volume>[<sorttitle>|<title>]<citekey>',
                    '[<sortyear.zfill(4)>|<year.zfill(4)>][<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sorttitle>|<title>]<citekey>',
                    '[<sortyear.zfill(4)>|<year.zfill(4)>][<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sorttitle>|<title>]<citekey>',
-                   #'<author_or_editor.initial().upper().uniquify(num)>',
                    '[<sortname>|<authorlist.0.last>|<editorlist.0.last>|][<authorlist.0.first>|<editorlist.0.first>][<sortyear.zfill(4)>|<year.zfill(4)>][<sorttitle>|<title>]<citekey>']
+
     sortkeys = ['<presortkey.purify().lower().compress()>',
                 '<presortkey.purify().lower().compress()>',
                 '<presortkey.purify().lower().compress()>',
@@ -179,8 +196,7 @@ def run_test4():
                 filehandle.write(line)
         filehandle.close()
 
-        bibobj = Bibdata(auxfile, disable=[9], silent=(i>0))
-        bibobj.locale = thislocale
+        bibobj = Bibdata(auxfile, disable=[9], uselocale=thislocale, silent=(i>0))
         bibobj.bibdata['preamble'] = '\n\n%% SETTING PRESORTKEY = ' + presortkey
         bibobj.bibdata['preamble'] += '\n%% SETTING SORTKEY = ' + sortkey
         #bibobj.debug = True     ## turn on debugging for citekey printing
@@ -254,13 +270,19 @@ def run_test7():
     auxfile = './test/test7.aux'
     target_bblfile = './test/test7_target.bbl'
 
-    ## The default locale will be US english. Ironically, the locale argument needs to use an ASCII string, and since
-    ## the default string encoding here is Unicode, we have to re-encode it manually. Later below, we will try some
-    ## other locale settings.
-    if (os.name == 'posix'):
-        thislocale = locale.setlocale(locale.LC_ALL,'en_US.UTF8'.encode('ascii','replace'))
-    elif (os.name == 'nt'):
-        thislocale = locale.setlocale(locale.LC_ALL,'usa_usa'.encode('ascii','replace'))
+    ## The default locale for testing will be US english. Ironically, in Python2 the locale argument needs to use an
+    ## ASCII string, and since the default string encoding here is Unicode, we have to re-encode it manually. Later
+    ## below, we will try some other locale settings.
+    if (sys.version_info[0] == 2):
+        if (os.name == 'posix'):
+            thislocale = locale.setlocale(locale.LC_ALL,'en_US.UTF-8'.encode('ascii','replace'))
+        elif (os.name == 'nt'):
+            thislocale = locale.setlocale(locale.LC_ALL,'usa_usa'.encode('ascii','replace'))
+    elif (sys.version_info[0] == 3):
+        if (os.name == 'posix'):
+            thislocale = locale.setlocale(locale.LC_ALL,'en_US.UTF-8')
+        elif (os.name == 'nt'):
+            thislocale = locale.setlocale(locale.LC_ALL,'usa_usa')
 
     ## Need to make a list of all the citation label options we want to try. Skip "citenum" since that is the default,
     ## and so has been tested already.
@@ -290,8 +312,7 @@ def run_test7():
                 filehandle.write(line)
         filehandle.close()
 
-        bibobj = Bibdata(auxfile, disable=[9], silent=(i>0))
-        bibobj.locale = thislocale
+        bibobj = Bibdata(auxfile, disable=[9], uselocale=thislocale, silent=(i>0))
         bibobj.bibdata['preamble'] = '\n\n%% SETTING CITELABEL = ' + citelabel
         #bibobj.debug = True     ## turn on debugging for citekey printing
 
@@ -345,6 +366,7 @@ def run_test9():
         write_preamble = (auxfile == auxfiles[0])
         write_postamble = (auxfile == auxfiles[-1])
         bibobj.write_bblfile(write_preamble=write_preamble, write_postamble=write_postamble)
+
         print('')
 
     return(bblfile, target_bblfile)
@@ -365,8 +387,8 @@ def check_file_match(testnum, outputfile, targetfile):
 
         ## Load the actual output BBL file and the target BBL file (the former says what we got; the latter says what
         ## we *should* get). Load each into strings and calculate their difference.
-        foutput = open(file1, 'rU')
-        ftarget = open(file2, 'rU')
+        foutput = open(file1, 'rU', encoding="utf8")  ## for Py3 compatibility, we use from io import open
+        ftarget = open(file2, 'rU', encoding="utf8")  ## for Py3 compatibility, we use from io import open
 
         outputlines = foutput.readlines()
         targetlines = ftarget.readlines()
@@ -374,7 +396,6 @@ def check_file_match(testnum, outputfile, targetfile):
         foutput.close()
         ftarget.close()
 
-        #diffobj = difflib.ndiff(outputlines, targetlines, lineterm='')
         diffobj = difflib.unified_diff(outputlines, targetlines, lineterm='')
         difflist = list(diffobj)
         if (len(difflist) > 1):
@@ -396,21 +417,21 @@ def check_file_match(testnum, outputfile, targetfile):
 if (__name__ == '__main__'):
     suite_pass = True
 
-    ## Run test #1: testing miscellaneous templates.
+    ## Run test #1.
     (outputfile, targetfile) = run_test1()
     result = check_file_match(1, outputfile, targetfile)
     suite_pass *= result
 
-    ## Run test #2: testing the BIB file parser.
+    ## Run test #2.
     result = run_test2()
     suite_pass *= result
 
-    ## Run test #3: testing the "authorextract" function.
+    ## Run test #3.
     (outputfile, targetfile) = run_test3()
     result = check_file_match(3, outputfile, targetfile)
     suite_pass *= result
 
-    ## Run test #4: testing the correct generation of citation keys.
+    ## Run test #4.
     (outputfile, targetfile) = run_test4()
     result = check_file_match(4, outputfile, targetfile)
     suite_pass *= result
