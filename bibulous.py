@@ -188,7 +188,7 @@ class Bibdata(object):
         if (uselocale == None):
             self.locale = locale.setlocale(locale.LC_ALL,'')    ## set the locale to the user's default
         else:
-            self.locale = locale.setlocale(locale.LC_ALL,uselocale)    ## set the locale to the user's default
+            self.locale = locale.setlocale(locale.LC_ALL,uselocale)    ## set the locale as requested
 
         ## Not only do we need a dictionary for "special templates" but we also need to be able to iterate through it
         ## in the order given in the file. Thus, we have a "specials list" too.
@@ -4883,7 +4883,7 @@ def get_implicit_loop_data(templatestr):
 
 if (__name__ == '__main__'):
     print('sys.argv=', sys.argv)
-    user_locale = None
+    uselocale = None
     if (len(sys.argv) > 1):
         try:
             (opts, args) = getopt.getopt(sys.argv[1:], '', ['locale='])
@@ -4891,7 +4891,7 @@ if (__name__ == '__main__'):
             ## Print help information and exit.
             print(err)              ## this will print something like "option -a not recognized"
             print('Bibulous can be called with')
-            print('    bibulous.py myfile.aux --locale=mylocale')
+            print('    bibulous.py --locale=mylocale myfile.aux')
             print('where "locale" is an optional variable.')
             sys.exit(2)
 
@@ -4910,7 +4910,7 @@ if (__name__ == '__main__'):
         arg_bstfile = './test/test1.bst'
         files = [arg_bibfile, arg_auxfile, arg_bstfile]
 
-    main_bibdata = Bibdata(files, uselocale=user_locale, debug=False)
+    main_bibdata = Bibdata(files, uselocale=uselocale, debug=False)
 
     ## Check if the bibliography database and style template files exist. If they don't, then the user didn't specify
     ## them, and it's probably true that there is no bibliography requested. That is, Bibulous was called without any
