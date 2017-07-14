@@ -1187,38 +1187,28 @@ class Bibdata(object):
         self.citelist = []
         self.sortlist = []
 
-        ## If the sortkeys all begin with numbers, then sort numerically (i.e. -100 before -99, 99 before 100, etc).
-        humansort = True
+        def to_int_or_locale(text):
+            try:
+               return int(text)
+            except ValueError:
+               return locale.strxfrm(text.encode('utf-8'))
+
+        def natural_keys(text):
+            '''
+            Use humansort, i.e. sort 10 after 2
+            http://nedbatchelder.com/blog/200712/human_sorting.html
+            '''
+            return [ to_int_or_locale(c) for c in re.split('(-?\d+)', text) ]
 
         ## Generate a sortkey for each citation.
         for c in self.citedict:
-            s = self.bibdata[c]['sortkey']
+            s = natural_keys(self.bibdata[c]['sortkey'])
             self.sortlist.append(s)
             self.citelist.append(c)
 
-            if not re.search(r'^-?[0-9]+', s, re.UNICODE) and not s.startswith(self.options['undefstr']):
-                humansort = False
-
-        ## This part can be a little tricky. If the sortkey is generated such that it begins with an integer, then we
-        ## should make sure that negative-values get sorted in front of positive ones. This happens correctly in simple
-        ## sort() but not when we use locale's "strcoll". So we have to separate the two cases manually. Also, use
-        ## [::-1] on the negative integers because they need to be ordered from largest number to smallest.
-        if humansort:
-            neg_idx = [i for (i,k) in enumerate(self.sortlist) if k[0] == '-']
-            pos_idx = [i for (i,k) in enumerate(self.sortlist) if k[0] != '-']
-            pos_sortkeys = [self.sortlist[x] for x in pos_idx]
-            neg_sortkeys = [self.sortlist[x] for x in neg_idx]
-            pos_citekeys = [self.citelist[x] for x in pos_idx]
-            neg_citekeys = [self.citelist[x] for x in neg_idx]
-
-            pos_idx = argsort(pos_sortkeys)
-            neg_idx = argsort(neg_sortkeys, reverse=True)
-            self.sortlist = [neg_sortkeys[x] for x in neg_idx] + [pos_sortkeys[x] for x in pos_idx]
-            self.citelist = [neg_citekeys[x] for x in neg_idx] + [pos_citekeys[x] for x in pos_idx]
-        else:
-            idx = argsort(self.sortlist)
-            self.sortlist = [self.sortlist[x] for x in idx]
-            self.citelist = [self.citelist[x] for x in idx]
+        idx = argsort(self.sortlist)
+        self.sortlist = [self.sortlist[x] for x in idx]
+        self.citelist = [self.citelist[x] for x in idx]
 
         ## If using a citation order which is descending rather than ascending, then reverse the list.
         if (self.options['sort_order'].lower() == 'reverse'):
@@ -4732,7 +4722,7 @@ def argsort(seq, reverse=False):
         The indices needed for a sorted list.
     '''
 
-    res = sorted(range(len(seq)), key=seq.__getitem__, cmp=locale.strcoll, reverse=reverse)
+    res = sorted(range(len(seq)), key=seq.__getitem__, reverse=reverse)
     return(res)
 
 ## =============================
