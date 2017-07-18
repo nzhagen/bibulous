@@ -349,6 +349,24 @@ def run_test9():
 
     return(bblfile, target_bblfile)
 
+## =================================================================================================
+def run_test10():
+    '''
+    Test #10 tests Bibulous' ability to sort numbers correctly.
+    '''
+
+    bblfile = './test/test10_humansort.bbl'
+    auxfile = './test/test10_humansort.aux'
+    target_bblfile = './test/test10_humansort_target.bbl'
+
+    print('\n' + '='*75)
+    print('Running Bibulous Test #10')
+
+    bibobj = Bibdata(auxfile, debug=False)
+    bibobj.write_bblfile()
+
+    return(bblfile, target_bblfile)
+
 
 ## =================================================================================================
 def check_file_match(testnum, outputfile, targetfile):
@@ -437,6 +455,11 @@ if (__name__ == '__main__'):
     ## Run test #9.
     (outputfile, targetfile) = run_test9()
     result = check_file_match(9, outputfile, targetfile)
+    suite_pass *= result
+
+    ## Run test #10.
+    (outputfile, targetfile) = run_test10()
+    result = check_file_match(10, outputfile, targetfile)
     suite_pass *= result
 
     if suite_pass:
