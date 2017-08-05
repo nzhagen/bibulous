@@ -1168,7 +1168,7 @@ class Bibdata(object):
                 if (s != ''):
                     ## Need two line EOL's here and not one so that backrefs can work properly.
                     filehandle.write((s + '\n\n').encode('utf-8'))
-        except Exception, err:
+        except Exception(err):
             ## Swallow the exception
             print('Exception encountered: ' + repr(err))
         finally:
@@ -1329,7 +1329,7 @@ class Bibdata(object):
             templatestr = self.template_substitution(templatestr, citekey)
             ## Add the filled-in template string onto the "\bibitem{...}\n" line in front of it.
             itemstr = itemstr + templatestr
-        except SyntaxError, err:
+        except SyntaxError(err):
             itemstr = itemstr + '\\textit{' + err + '}.'
             bib_warning('Warning 013: ' + err, self.disable)
 
@@ -4930,4 +4930,3 @@ if (__name__ == '__main__'):
         print('Writing to BBL file = ' + main_bibdata.filedict['bbl'])
         #os.system('kwrite ' + main_bibdata.filedict['bbl'])
         print('DONE')
-
