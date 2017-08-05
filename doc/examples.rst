@@ -91,7 +91,7 @@ The following example is taken from a question posted at ``http://tex.stackexcha
 .. image:: _static/example5a.png
    :width: 60%
 
-That is the reference list entries should have the author list in bold, journal articles should have their title quoted using German-style quotation marks, and editor lists should be given in small caps. The first answerer to the OP's question gives an example database file 
+That is the reference list entries should have the author list in bold, journal articles should have their title quoted using German-style quotation marks, and editor lists should be given in small caps. The first answerer to the OP's question gives an example database file
 
 .. literalinclude:: ../examples/example5.bib
 
@@ -210,19 +210,24 @@ produces the formatted result
 .. image:: _static/example10.png
    :width: 60%
 
-
-
-
-
-
-
-
-
-
-
 ************************************************
 
-Example ?
+Example 11
 =========
 
-This follows an online question posted at ``http://tex.stackexchange.com/questions/961/bibtex-style-that-groups-by-author``.
+The following example shows how to make use of ``natbib`` for inline citation commands such as ``citep`` and ``citet``. This example uses the database file
+
+.. literalinclude:: ../examples/example11.bib
+
+style template file
+
+.. literalinclude:: ../examples/example11.bst
+
+and main ``.tex`` file
+
+.. literalinclude:: ../examples/example11.tex
+
+to produce the formatted result
+
+.. image:: _static/example11.png
+   :width: 60%

@@ -9,25 +9,25 @@ For version 1.4, the goal is to have group templates working.
 
 - Add a test for the new ``.if_equals()`` operator.
 
-- If a user added any options blocks to their defined variables, then this may turned an unnested sequence 
+- If a user added any options blocks to their defined variables, then this may turned an unnested sequence
   into an implicitly nested one. Need to look for that. We can probably do this check
   when the BST file is parsed, rather than when we do string substitution in the template
   for every entry.
-  
+
 - Add a comment in the documentation about changing the option keyword "name_separator" from the default "and"
-  to some new one, like "y" (as in Spanish). This appears to force the separator to be used in both the BIB database 
-  file and not just the output formatted reference. Add functionality allowing you to separate the database name 
+  to some new one, like "y" (as in Spanish). This appears to force the separator to be used in both the BIB database
+  file and not just the output formatted reference. Add functionality allowing you to separate the database name
   separator from the formatted reference name separator.
-  
+
 - It seems likely that the hyperref package compatibility is fragile. Try finding a way to make it more robust.
 
 - Get the ``backrefs`` option back up and working.
 
 - Add stuff from ``jpnbook`` and ``bibtex_items`` in ``/LabNotes/Bibulous/stuff to add to code/``.
 
-- Re-implement the "nameabbrev" field inside ``initialize_name()``. Note that in order to do 
-  this you will have to re-expand the name into a string first, perform abbrev replacement, and 
-  then re-convert the result back into the namelist. Here were two items in the testing suite 
+- Re-implement the "nameabbrev" field inside ``initialize_name()``. Note that in order to do
+  this you will have to re-expand the name into a string first, perform abbrev replacement, and
+  then re-convert the result back into the namelist. Here were two items in the testing suite
   that I previously used to use to test this::
 
     %% Test sorting with an entry using a "nameabbrev" field.
@@ -45,7 +45,7 @@ For version 1.4, the goal is to have group templates working.
       year = {1234},
       nameabbrev = {de la Fontaine > {dlF.}, du Bois > du}
     }
-    
+
 - Found a way to get different citation labels in the text than in the reference list: use::
 
     \makeatletter
@@ -56,7 +56,7 @@ For version 1.4, the goal is to have group templates working.
   at the top of the ``.tex`` file. Then, in the *text*, LaTeX will use ``citelabel`` while, in the *reference list*,
   it will now ignore the citelabel and simply use the main template without any item label. If we *want* an item label
   for entries in the reference list, then we can simply make them part of the main entrytype template. Will that work
-  the way we want? But if we do it with a template, then the reference list item label and the text citation label can 
+  the way we want? But if we do it with a template, then the reference list item label and the text citation label can
   be treated completely separately.
 
   Compare this with natbib's author-year style.
@@ -65,10 +65,10 @@ For version 1.4, the goal is to have group templates working.
 
 - Try installing TeXnicCenter (Windows), change its backend to Bibulous, and provide how-to instructions.
 
-- The ``developer_guide.rst`` file has a section "Parsing BST files", but the section has nothing to say about implicit 
+- The ``developer_guide.rst`` file has a section "Parsing BST files", but the section has nothing to say about implicit
   loops. It probably should. (At the minimum, point to the location in the docs where implicit loops are discussed.)
 
-- Add templates for: Elsevier journals with numerical 
+- Add templates for: Elsevier journals with numerical
   citations (``elsarticle-num.bst``), Springer journals (``springer.bst``), MNRAS (``mn2e.bst``). Actually, since
   the file ending cannot be used to distinguish Bibulous-format from BibTeX-format style files, maybe we should
   append ``-bibulous`` to each filename? Also, since it's now clear how to define non-numeric citation styles, we
@@ -88,7 +88,7 @@ For version 1.4, the goal is to have group templates working.
 
     Doe, John, David Dane, and Marry Dewy (2000). "This and that". In: Journal of Deep Understanding of Things.
 
-  That is, the first author is given as ``lastname, firstname'' whereas the other authors are given as 
+  That is, the first author is given as ``lastname, firstname'' whereas the other authors are given as
   ``firstname lastname``. Probably the answer to this is that the first name in the list should be done outside
   of an implicit loop, while the remaining names should be formatted within the implicit loop.
 
@@ -138,9 +138,11 @@ For version 1.4, the goal is to have group templates working.
     - Changes were described in a ChangeLog.
     - Commit messages make sense.
 
-- ``citationstyles.org`` has thousands of styles defined which are used by other programs such 
+- ``citationstyles.org`` has thousands of styles defined which are used by other programs such
   as Zotero and Mendeley. Think about how to convert these to Bibulous templates and have a large
   library of pre-defined styles. PS: Also see ``https://github.com/citation-style-language``
+
+- Add an example that handles the question posted at http://tex.stackexchange.com/questions/961/bibtex-style-that-groups-by-author
 
 
 Python testing to-do
@@ -150,7 +152,7 @@ Python testing to-do
 
     au = <name.0>, ..., and <name.N.last>
 
-  That is, the first and last elements of the loop must have the same variable structure. Currently 
+  That is, the first and last elements of the loop must have the same variable structure. Currently
   the code simply truncates the RHS of the last element and ignores it, but it really should return
   a warning message.
 
@@ -162,6 +164,6 @@ Python testing to-do
 - Add a test for the ``.N`` functionality inside the implicit loops.
 
 - Add a test for implicit loops where you have stuff in front of the implicit loop and behind it, within
-  the same variable definition. It should work. Especially try something like 
+  the same variable definition. It should work. Especially try something like
   ``au = [<authorname.0>, ...,{ and }<authorname.6>]`` to see if you can put option brackets around the
   entire loop.
