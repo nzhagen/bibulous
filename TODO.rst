@@ -7,6 +7,9 @@ For version 1.4, the goal is to have group templates working.
 - Copy Gareth's code changes into this repo for full Python2/3 compatibility. Then remake the PyPi install
   package and upload it to PyPi. And test it.
 
+- The current code apparently only allows defining variables that are all lower case. There is no good reason
+  for the restriction, so we should modify the code to allow mixed case.
+
 - Add a test for the new ``.if_equals()`` operator.
 
 - If a user added any options blocks to their defined variables, then this may turned an unnested sequence
