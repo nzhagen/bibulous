@@ -127,7 +127,7 @@ The complete list of operators available is:::
     .format_authorlist()
     .format_editorlist()
     .frenchinitial()
-    .if_equals(test_str,then_var,else_var)
+    .if_str_equal(test_str,then_var,else_var)
     .if_singular(var1,var2,var3)
     .initial()
     .lower()
@@ -167,7 +167,7 @@ Without the ``.compress()`` operator, the name would come out as "RM A Azzam", s
 **.frenchinitial()** is an alternative form of the ``.initial()`` operator that has slightly different behavior. If a name begins with one of the digraphs
 "Ch", "Gn", "Ll", "Ph", "Ss", or "Th", then the initial will truncate the name after the digraph instead of after the first letter.
 
-**.if_equals(test_str,then_var,else_var)** inserts ``then_var`` if the string to be operated on is equal to ``test_str``, else it inserts the string ``else_var``.
+**.if_str_equal(test_str,then_var,else_var)** inserts ``then_var`` if the string to be operated on is equal to ``test_str``, else it inserts the string ``else_var``.
 
 **.if_singular(var1,optvar2,optvar3)** inserts ``optvar2`` if ``var1`` has only one element, but ``optvar3`` if ``var1`` has more than one element. Here ``var1`` is assumed to be a list-type of variable, and ``optvar2`` and ``optvar3`` are assumed to be string-type variables defined in the OPTIONS section of the template file.
 
@@ -177,7 +177,7 @@ Without the ``.compress()`` operator, the name would come out as "RM A Azzam", s
 
 .. **.if_length_more_than(var1,number,optvar2,optvar3)** inserts ``var2`` if ``var1`` has more than ``number`` elements, but otherwise inserts ``var3``. Here ``var1`` is assumed to be a list-type of variable, and ``optvar2`` and ``optvar3`` are string-type variables defined in the OPTIONS section of the template file.
 
-**.initial()** will truncate the string to its first letter. Note that if a name begins with a LaTeX markup character, such as ``{\'E}``, then the operator will convert the input string to its best attempt at a Unicode-equivalent (without character markup) prior to performing the truncation. Thus, applying the ``.initial()`` operator to the name ``{\v{Z}}ukauskas`` will produce the initialized form "Ž". 
+**.initial()** will truncate the string to its first letter. Note that if a name begins with a LaTeX markup character, such as ``{\'E}``, then the operator will convert the input string to its best attempt at a Unicode-equivalent (without character markup) prior to performing the truncation. Thus, applying the ``.initial()`` operator to the name ``{\v{Z}}ukauskas`` will produce the initialized form "Ž".
 
 **.lower()** reduces all letters in its argument to lower case. If any LaTeX markup letters exist in the argument, then they will be converted to Unicode equivalents first before applying the operator. Thus, if the field ``au`` contains ``{\AA}`` then the operator will first convert this to the letter Å and then reduce it to the lower case å.
 

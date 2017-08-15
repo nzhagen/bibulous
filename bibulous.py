@@ -2742,8 +2742,8 @@ class Bibdata(object):
                     return(newfield)
                 else:
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
-            elif indexer.startswith('.if_equals('):
-                match = re.search(r'.if_equals\(.*\)', indexer, re.UNICODE)
+            elif indexer.startswith('.if_str_equal(('):
+                match = re.search(r'.if_str_equal(\(.*\)', indexer, re.UNICODE)
                 end_idx = match.end(0)
                 result = match.group(0)[11:-1]      ## remove function name and parentheses
                 (test_str, then_form, else_form) = result.split(',')

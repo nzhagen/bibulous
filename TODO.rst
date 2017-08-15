@@ -10,7 +10,7 @@ For version 1.4, the goal is to have group templates working.
 - The current code apparently only allows defining variables that are all lower case. There is no good reason
   for the restriction, so we should modify the code to allow mixed case.
 
-- Add a test for the new ``.if_equals()`` operator.
+- Add a test for the new ``.if_str_equal()`` operator.
 
 - If a user added any options blocks to their defined variables, then this may turned an unnested sequence
   into an implicitly nested one. Need to look for that. We can probably do this check
