@@ -1,0 +1,59 @@
+\begin{thebibliography}{17}
+\providecommand{\enquote}[1]{``#1''}
+\providecommand{\url}[1]{{\tt #1}}
+\providecommand{\href}[2]{#2}
+
+
+\bibitem[-17 test]{Gemert1995}
+M. J. C. van Gemert, \enquote{One dimensional transport theory,} Plenum Press (1995).
+
+\bibitem[-16 test]{Bunny1}
+B. Bunny, \enquote{Looney tunes} (2001).
+
+\bibitem[-15 test]{Mustafa2013b}
+S. Mustafa, J. Hannagan, P. Rigby, K. Pfleger, and B. Corry, \enquote{Quantitative F{\"o}rster resonance energy transfer efficiency measurements using simultaneous spectral unmixing of excitation and emission spectra} (2012).
+
+\bibitem[-14 test]{Mustafa2013a}
+S. Mustafa, J. Hannagan, P. Rigby, K. Pfleger, and B. Corry, \enquote{Quantitative F{\"o}rster resonance energy transfer efficiency measurements using simultaneous spectral unmixing of excitation and emission spectra} (2013).
+
+\bibitem[-13 test]{Mustafa2013}
+S. Mustafa, J. Hannagan, P. Rigby, K. Pfleger, and B. Corry, \enquote{Quantitative Förster resonance energy transfer efficiency measurements using simultaneous spectral unmixing of excitation and emission spectra} (2013).
+
+\bibitem[-12 test]{Strangekey}
+M. Aaa, \enquote{Noting of consequence} (1901).
+
+\bibitem[-11 test]{AAberg2010}
+I. {\AA}berg, B. Ackland, J. V. Beach, C. Godek, R. Johnson, C. A. King, A. Lattes, J. O'Neill, S. Pappas, \textit{et al.}, \enquote{A low dark current and high quantum efficiency monolithic Germanium-on-Silicon CMOS imager technology for day and night imaging applications} (2010).
+
+\bibitem[-10 test]{乙部2006}
+乙. {厳己} and P. Horton, \enquote{jBibTEXの使用法,} ソフトバンクパブリッシング (2006). [In Japanese.]
+
+\bibitem[-9 test]{Otobe2006}
+乙. {厳己} and P. Horton, \enquote{jBibTEXの使用法,} ソフトバンクパブリッシング (2006). [In Japanese.]
+
+\bibitem[-8 test]{Blouke2000}
+M. M. Blouke, N. Sampat, G. M. Williams, Jr., and T. Yeh, eds, eds, \enquote{Sensors and Camera Systems for Scientific, Industrial, and Digital Photography Applications} (2000).
+
+\bibitem[-7 test]{Yanny2009}
+B. Yanny, C. Rockosi, H. J. Newberg, G. R. Knapp, J. K. Adelman-McCarthy, B. Alcorn, S. Allam, C. A. Prieto, D. An, \textit{et al.}, \enquote{SEGUE: a spectroscopic survey of 240,000 stars with $g = 14$--20} (2009).
+
+\bibitem[-6 test]{Thomson1848}
+W. {Thomson [Lord Kelvin]}, \enquote{On an absolute thermometric scale, founded on Carnot's theory of the motive power of heat} (1848).
+
+\bibitem[-5 test]{bb0000}
+A. bb and AA, \enquote{Nothing much} (0000).
+
+\bibitem[-4 test]{AA0000}
+AA and A. bb, \enquote{None} (0000).
+
+\bibitem[-3 test]{Aspect1982}
+A. Aspect, P. Grangier, and G. Roger, \enquote{Experimental realization of Einstein-Podolsky-Rosen-Bohm \textit{Gedenkenexperiment}: a new violation of Bell's inequalities} (1982).
+
+\bibitem[-2 test]{Chang1992}
+C.-I. Chang, \enquote{Implementation scheme for recursion in spectral dimension} (1992).
+
+\bibitem[-1 test]{Kelvin1869}
+L. Kelvin, \enquote{On vortex motion} (1869).
+
+
+\end{thebibliography}
