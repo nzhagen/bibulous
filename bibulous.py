@@ -188,7 +188,7 @@ class Bibdata(object):
         if (uselocale == None):
             self.locale = locale.setlocale(locale.LC_ALL,'')    ## set the locale to the user's default
         else:
-            self.locale = locale.setlocale(locale.LC_ALL,uselocale)    ## set the locale to the user's default
+            self.locale = locale.setlocale(locale.LC_ALL,uselocale)    ## set the locale as requested
 
         ## Not only do we need a dictionary for "special templates" but we also need to be able to iterate through it
         ## in the order given in the file. Thus, we have a "specials list" too.
@@ -1168,9 +1168,11 @@ class Bibdata(object):
                 if (s != ''):
                     ## Need two line EOL's here and not one so that backrefs can work properly.
                     filehandle.write((s + '\n\n').encode('utf-8'))
-        except Exception(err):
+        except Exception as this_exception:
+            if debug:
+                raise Exception(this_exception)
             ## Swallow the exception
-            print('Exception encountered: ' + repr(err))
+            print('Exception encountered: ' + repr(this_exception))
         finally:
             if write_postamble:
                 filehandle.write('\n\\end{thebibliography}\n'.encode('utf-8'))
@@ -1187,38 +1189,16 @@ class Bibdata(object):
         self.citelist = []
         self.sortlist = []
 
-        ## If the sortkeys all begin with numbers, then sort numerically (i.e. -100 before -99, 99 before 100, etc).
-        humansort = True
-
         ## Generate a sortkey for each citation.
         for c in self.citedict:
-            s = self.bibdata[c]['sortkey']
+            #s = self.bibdata[c]['sortkey']
+            s = natural_keys(self.bibdata[c]['sortkey'])
             self.sortlist.append(s)
             self.citelist.append(c)
 
-            if not re.search(r'^-?[0-9]+', s, re.UNICODE) and not s.startswith(self.options['undefstr']):
-                humansort = False
-
-        ## This part can be a little tricky. If the sortkey is generated such that it begins with an integer, then we
-        ## should make sure that negative-values get sorted in front of positive ones. This happens correctly in simple
-        ## sort() but not when we use locale's "strcoll". So we have to separate the two cases manually. Also, use
-        ## [::-1] on the negative integers because they need to be ordered from largest number to smallest.
-        if humansort:
-            neg_idx = [i for (i,k) in enumerate(self.sortlist) if k[0] == '-']
-            pos_idx = [i for (i,k) in enumerate(self.sortlist) if k[0] != '-']
-            pos_sortkeys = [self.sortlist[x] for x in pos_idx]
-            neg_sortkeys = [self.sortlist[x] for x in neg_idx]
-            pos_citekeys = [self.citelist[x] for x in pos_idx]
-            neg_citekeys = [self.citelist[x] for x in neg_idx]
-
-            pos_idx = argsort(pos_sortkeys)
-            neg_idx = argsort(neg_sortkeys, reverse=True)
-            self.sortlist = [neg_sortkeys[x] for x in neg_idx] + [pos_sortkeys[x] for x in pos_idx]
-            self.citelist = [neg_citekeys[x] for x in neg_idx] + [pos_citekeys[x] for x in pos_idx]
-        else:
-            idx = argsort(self.sortlist)
-            self.sortlist = [self.sortlist[x] for x in idx]
-            self.citelist = [self.citelist[x] for x in idx]
+        idx = argsort(self.sortlist)
+        self.sortlist = [self.sortlist[x] for x in idx]
+        self.citelist = [self.citelist[x] for x in idx]
 
         ## If using a citation order which is descending rather than ascending, then reverse the list.
         if (self.options['sort_order'].lower() == 'reverse'):
@@ -1329,7 +1309,7 @@ class Bibdata(object):
             templatestr = self.template_substitution(templatestr, citekey)
             ## Add the filled-in template string onto the "\bibitem{...}\n" line in front of it.
             itemstr = itemstr + templatestr
-        except SyntaxError(err):
+        except SyntaxError, err:
             itemstr = itemstr + '\\textit{' + err + '}.'
             bib_warning('Warning 013: ' + err, self.disable)
 
@@ -4732,7 +4712,7 @@ def argsort(seq, reverse=False):
         The indices needed for a sorted list.
     '''
 
-    res = sorted(range(len(seq)), key=seq.__getitem__, cmp=locale.strcoll, reverse=reverse)
+    res = sorted(range(len(seq)), key=seq.__getitem__, reverse=reverse)
     return(res)
 
 ## =============================
@@ -4889,11 +4869,27 @@ def get_implicit_loop_data(templatestr):
 
     return(loop_data)
 
+## =============================
+def to_int_or_locale(text):
+    try:
+       return int(text)
+    except ValueError:
+       return locale.strxfrm(text.encode('utf-8'))
+
+## =============================
+def natural_keys(text):
+    '''
+    If the sortkeys all begin with numbers, then sort numerically (i.e. -100 before -99, 99 before 100, 10 after 2, etc).
+    http://nedbatchelder.com/blog/200712/human_sorting.html
+    '''
+    keys = [to_int_or_locale(c) for c in re.split('(-?\d+)', text)]
+    return(keys)
+
 ## ==================================================================================================
 
 if (__name__ == '__main__'):
     print('sys.argv=', sys.argv)
-    user_locale = None
+    uselocale = None
     if (len(sys.argv) > 1):
         try:
             (opts, args) = getopt.getopt(sys.argv[1:], '', ['locale='])
@@ -4901,7 +4897,7 @@ if (__name__ == '__main__'):
             ## Print help information and exit.
             print(err)              ## this will print something like "option -a not recognized"
             print('Bibulous can be called with')
-            print('    bibulous.py myfile.aux --locale=mylocale')
+            print('    bibulous.py --locale=mylocale myfile.aux')
             print('where "locale" is an optional variable.')
             sys.exit(2)
 
@@ -4920,7 +4916,7 @@ if (__name__ == '__main__'):
         arg_bstfile = './test/test1.bst'
         files = [arg_bibfile, arg_auxfile, arg_bstfile]
 
-    main_bibdata = Bibdata(files, uselocale=user_locale, debug=False)
+    main_bibdata = Bibdata(files, uselocale=uselocale, debug=False)
 
     ## Check if the bibliography database and style template files exist. If they don't, then the user didn't specify
     ## them, and it's probably true that there is no bibliography requested. That is, Bibulous was called without any
