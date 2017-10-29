@@ -1189,7 +1189,8 @@ class Bibdata(object):
         self.citelist = []
         self.sortlist = []
 
-        ## Generate a sortkey for each citation.
+        ## Generate a sortkey for each citation. If the sortkeys all begin with numbers, then sort numerically
+        ## (i.e. -100 before -99, 99 before 100, etc).
         for c in self.citedict:
             #s = self.bibdata[c]['sortkey']
             s = natural_keys(self.bibdata[c]['sortkey'])
@@ -2745,31 +2746,29 @@ class Bibdata(object):
                     return(newfield)
                 else:
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
+            elif indexer.startswith('.if_len_equals('):
+                match = re.search(r'.if_len_equals\(.*\)', indexer, re.UNICODE)
+                end_idx = match.end(0)
+                result = match.group(0)[18:-1]      ## remove function name and parentheses
+                (variable_to_eval, test_length, var_if_equals, var_if_notequals) = result.split(',')
+                pdb.set_trace()
 
+                if (variable_to_eval not in self.bibdata[entrykey]):
+                    newfield = ''
+                elif (len(self.bibdata[entrykey][variable_to_eval]) == int(test_length)):
+                    suffix = self.options[var_if_equals.strip()]
+                    newfield = field + suffix
+                else:
+                    suffix = self.options[var_if_notequals.strip()]
+                    newfield = field + suffix
 
-#            elif indexer.startswith('.if_length_equals('):
-#                match = re.search(r'.if_length_equals\(.*\)', indexer, re.UNICODE)
-#                end_idx = match.end(0)
-#                result = match.group(0)[18:-1]      ## remove function name and parentheses
-#                (variable_to_eval, test_length, var_if_equals, var_if_notequals) = result.split(',')
-#                #pdb.set_trace()
-#
-#                if (variable_to_eval not in self.bibdata[entrykey]):
-#                    newfield = ''
-#                elif (len(self.bibdata[entrykey][variable_to_eval]) == int(test_length)):
-#                    suffix = self.options[var_if_equals.strip()]
-#                    newfield = field + suffix
-#                else:
-#                    suffix = self.options[var_if_notequals.strip()]
-#                    newfield = field + suffix
-#
-#                newindexer = indexer[end_idx:]
-#                if (nelements == 1) or (newindexer == ''):
-#                    return(newfield)
-#                else:
-#                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
-#            elif indexer.startswith('.if_length_less_than('):
-#                match = re.search(r'.if_length_less_than\(.*\)', indexer, re.UNICODE)
+                newindexer = indexer[end_idx:]
+                if (nelements == 1) or (newindexer == ''):
+                    return(newfield)
+                else:
+                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
+#            elif indexer.startswith('.if_len_less_than('):
+#                match = re.search(r'.if_len_less_than\(.*\)', indexer, re.UNICODE)
 #                end_idx = match.end(0)
 #                result = match.group(0)[21:-1]      ## remove function name and parentheses
 #                (variable_to_eval, test_length, var_if_lessthan, var_if_notlessthan) = result.split(',')
@@ -2788,8 +2787,8 @@ class Bibdata(object):
 #                    return(newfield)
 #                else:
 #                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
-#            elif indexer.startswith('.if_length_more_than('):
-#                match = re.search(r'.if_length_more_than\(.*\)', indexer, re.UNICODE)
+#            elif indexer.startswith('.if_len_more_than('):
+#                match = re.search(r'.if_len_more_than\(.*\)', indexer, re.UNICODE)
 #                end_idx = match.end(0)
 #                result = match.group(0)[21:-1]      ## remove function name and parentheses
 #                (variable_to_eval, test_length, var_if_morethan, var_if_notmorethan) = result.split(',')

@@ -127,6 +127,9 @@ The complete list of operators available is:::
     .format_authorlist()
     .format_editorlist()
     .frenchinitial()
+    .if_len_equals(var1,number,var2,var3)
+    ..    .if_len_less_than(var1,number,var2,var3)
+    ..    .if_len_more_than(var1,number,var2,var3)
     .if_str_equal(test_str,then_var,else_var)
     .if_singular(var1,var2,var3)
     .initial()
@@ -135,6 +138,7 @@ The complete list of operators available is:::
     .monthname()
     .n
     .N
+    .null()
     .ordinal()
     .purify()
     .replace(old,new)
@@ -144,9 +148,6 @@ The complete list of operators available is:::
     .uniquify(arg)
     .upper()
     .zfill(num)
-..    .if_length_equals(var1,number,var2,var3)
-..    .if_length_less_than(var1,number,var2,var3)
-..    .if_length_more_than(var1,number,var2,var3)
 
 The function of each operator is summarized below.
 
@@ -169,13 +170,13 @@ Without the ``.compress()`` operator, the name would come out as "RM A Azzam", s
 
 **.if_str_equal(test_str,then_var,else_var)** inserts ``then_var`` if the string to be operated on is equal to ``test_str``, else it inserts the string ``else_var``.
 
-**.if_singular(var1,optvar2,optvar3)** inserts ``optvar2`` if ``var1`` has only one element, but ``optvar3`` if ``var1`` has more than one element. Here ``var1`` is assumed to be a list-type of variable, and ``optvar2`` and ``optvar3`` are assumed to be string-type variables defined in the OPTIONS section of the template file.
+**.if_singular(var1,optvar2,optvar3)** inserts ``optvar2`` if ``var1`` has only one element, but ``optvar3`` if ``var1`` has more than one element. Here ``var1`` is assumed to be a list-type of variable, and ``optvar2`` and ``optvar3`` are assumed to be string-type variables defined in the OPTIONS section of the template file. An example common usage is the following: ``[<ed.if_singular(editorlist, edmsg1, edmsg2)>, ]''. This form appends the contents of the ``edmsg1'' variable to the end of the ``ed'' variable if the ``editorlist'' variable contains only one element (is singular). If ``editorlist'' has more than one element, then ``edmsg2'' is appended instead. (This could potentially be a null string.)
 
-.. **.if_length_equals(var1,number,optvar2,optvar3)** inserts ``var2`` if ``var1`` has ``number`` elements, but otherwise inserts ``var3``. Here ``var1`` is assumed to be a list-type of variable, and ``optvar2`` and ``optvar3`` are assumed to be string-type variables defined in the OPTIONS section of the template file.
+**.if_len_equals(var1,number,optvar2,optvar3)** appends ``var2`` if ``var1`` has ``number`` elements, but otherwise appends ``var3``. Here ``var1`` is assumed to be a list-type of variable, and ``optvar2`` and ``optvar3`` are assumed to be string-type variables defined in the OPTIONS section of the template file.
 
-.. **.if_length_less_than(var1,number,optvar2,optvar3)** inserts ``var2`` if ``var1`` has less than ``number`` elements, but otherwise inserts ``var3``. Here ``var1`` is assumed to be a list-type of variable, and ``optvar2`` and ``optvar3`` are assumed to be string-type variables defined in the OPTIONS section of the template file.
+.. **.if_len_less_than(var1,number,optvar2,optvar3)** appends ``var2`` if ``var1`` has less than ``number`` elements, but otherwise appends ``var3``. Here ``var1`` is assumed to be a list-type of variable, and ``optvar2`` and ``optvar3`` are assumed to be string-type variables defined in the OPTIONS section of the template file.
 
-.. **.if_length_more_than(var1,number,optvar2,optvar3)** inserts ``var2`` if ``var1`` has more than ``number`` elements, but otherwise inserts ``var3``. Here ``var1`` is assumed to be a list-type of variable, and ``optvar2`` and ``optvar3`` are string-type variables defined in the OPTIONS section of the template file.
+.. **.if_len_more_than(var1,number,optvar2,optvar3)** appends ``var2`` if ``var1`` has more than ``number`` elements, but otherwise appends ``var3``. Here ``var1`` is assumed to be a list-type of variable, and ``optvar2`` and ``optvar3`` are string-type variables defined in the OPTIONS section of the template file.
 
 **.initial()** will truncate the string to its first letter. Note that if a name begins with a LaTeX markup character, such as ``{\'E}``, then the operator will convert the input string to its best attempt at a Unicode-equivalent (without character markup) prior to performing the truncation. Thus, applying the ``.initial()`` operator to the name ``{\v{Z}}ukauskas`` will produce the initialized form "Ž".
 
@@ -188,6 +189,8 @@ Without the ``.compress()`` operator, the name would come out as "RM A Azzam", s
 **.n** See the *Examples for namelist formatting* below
 
 **.N** [Not currently supported]
+
+**.null()** returns an undefined variable, forcing the string to be evaluated as "undefined".
 
 **.ordinal()** creates an "ordinal" from a numerical field. Thus, if the field operated on is "1", "2", "3", or "4", then the operator will replace the template with "1st", "2nd", "3rd" or "4th". Any number above 4 simply has "th" appended to the end of it. Currently Bibulous does not support non-English locales for this function. (Anyone having suggestions of how this may be implemented without too much fuss should contact us!)
 
