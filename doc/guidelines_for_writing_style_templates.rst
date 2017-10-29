@@ -133,6 +133,7 @@ The complete list of operators available is:::
     .if_str_equal(test_str,then_var,else_var)
     .if_singular(var1,var2,var3)
     .initial()
+	.len()
     .lower()
     .monthabbrev()
     .monthname()
@@ -180,6 +181,8 @@ Without the ``.compress()`` operator, the name would come out as "RM A Azzam", s
 .. **.if_len_more_than(var1,number,optvar2,optvar3)** appends ``var2`` if ``var1`` has more than ``number`` elements, but otherwise appends ``var3``. Here ``var1`` is assumed to be a list-type of variable, and ``optvar2`` and ``optvar3`` are string-type variables defined in the OPTIONS section of the template file.
 
 **.initial()** will truncate the string to its first letter. Note that if a name begins with a LaTeX markup character, such as ``{\'E}``, then the operator will convert the input string to its best attempt at a Unicode-equivalent (without character markup) prior to performing the truncation. Thus, applying the ``.initial()`` operator to the name ``{\v{Z}}ukauskas`` will produce the initialized form "Ž".
+
+**.len()** returns the number of elements in a list variable (to the left of the operator dot).
 
 **.lower()** reduces all letters in its argument to lower case. If any LaTeX markup letters exist in the argument, then they will be converted to Unicode equivalents first before applying the operator. Thus, if the field ``au`` contains ``{\AA}`` then the operator will first convert this to the letter Å and then reduce it to the lower case å.
 

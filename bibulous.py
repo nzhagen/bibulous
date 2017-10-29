@@ -2760,6 +2760,13 @@ class Bibdata(object):
                     return(newfield)
                 else:
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
+            elif indexer.startswith('.len()'):
+                newfield = len(field)
+                newindexer = indexer[6:]
+                if (nelements == 1) or (newindexer == ''):
+                    return(newfield)
+                else:
+                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
             elif indexer.startswith('.if_len_equals('):
                 match = re.search(r'.if_len_equals\(.*\)', indexer, re.UNICODE)
                 end_idx = match.end(0)
