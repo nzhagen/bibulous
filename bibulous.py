@@ -4577,6 +4577,12 @@ def format_namelist(namelist, nametype='author', options=None):
         maxnames = options['maxeditors']
         minnames = options['mineditors']
 
+    ## It makes no sense for the "minnames" to be equal to or larger than the "maxnames" -- an issue which can easily 
+    ## happen if a user specifies the "maxnames" option keyword but leaves the "minnames" keyword as a default. In this
+    ## case, we need to fix the minnames value.
+    if (minnames > maxnames):
+        minnames = maxnames
+        
     ## This next block generates the list "namelist", which is a list of strings, with each element of `namelist` being
     ## a single author's name. That single author's name is encoded as a dictionary with keys "first", "middle",
     ## "prefix", "last", and "suffix".
