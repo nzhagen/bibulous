@@ -2707,16 +2707,14 @@ class Bibdata(object):
                 match = re.search(r'.if_singular\(.*\)', indexer, re.UNICODE)
                 end_idx = match.end(0)
                 result = match.group(0)[13:-1]      ## remove function name and parentheses
-                (variable_to_eval, singular_form, plural_form) = result.split(',')
+                (variable_to_eval, res1, res2) = result.split(',')
 
                 if (variable_to_eval not in self.bibdata[entrykey]):
                     newfield = ''
                 elif (len(self.bibdata[entrykey][variable_to_eval]) == 1):
-                    suffix = self.options[singular_form.strip()]
-                    newfield = field + suffix
+                    newfield = field + res1
                 else:
-                    suffix = self.options[plural_form.strip()]
-                    newfield = field + suffix
+                    newfield = field + res2
 
                 newindexer = indexer[end_idx:]
                 if (nelements == 1) or (newindexer == ''):
@@ -2749,7 +2747,7 @@ class Bibdata(object):
             elif indexer.startswith('.optionval('):
                 match = re.search(r'.optionval(\(.*\)', indexer, re.UNICODE)
                 end_idx = match.end(0)
-                option_name = match.group(0)[11:-1]      ## remove function name and parentheses
+                option_name = match.group(0)[11:-1]            ## remove function name and parentheses
                 if (option_name in options):
                     newfield = options[option_name]
                 else:
@@ -2767,21 +2765,18 @@ class Bibdata(object):
                     return(newfield)
                 else:
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
-            elif indexer.startswith('.if_len_equals('):
-                match = re.search(r'.if_len_equals\(.*\)', indexer, re.UNICODE)
+            elif indexer.startswith('.if_num_equals('):
+                match = re.search(r'.if_num_equals\(.*\)', indexer, re.UNICODE)
                 end_idx = match.end(0)
-                result = match.group(0)[18:-1]      ## remove function name and parentheses
-                (variable_to_eval, test_length, var_if_equals, var_if_notequals) = result.split(',')
-                pdb.set_trace()
+                result = match.group(0)[18:-1]                  ## remove function name and parentheses
+                (variable_to_eval, test_length, return_if_equal, return_if_unequal) = result.split(',')
 
                 if (variable_to_eval not in self.bibdata[entrykey]):
                     newfield = ''
-                elif (len(self.bibdata[entrykey][variable_to_eval]) == int(test_length)):
-                    suffix = self.options[var_if_equals.strip()]
-                    newfield = field + suffix
+                elif (int(self.bibdata[entrykey][variable_to_eval]) == int(test_length)):
+                    newfield = field + return_if_equal
                 else:
-                    suffix = self.options[var_if_notequals.strip()]
-                    newfield = field + suffix
+                    newfield = field + return_if_unequal
 
                 newindexer = indexer[end_idx:]
                 if (nelements == 1) or (newindexer == ''):

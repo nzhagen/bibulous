@@ -167,18 +167,17 @@ Without the ``.compress()`` operator, the name would come out as "RM A Azzam", s
 
 **.format_editorlist()** operates on a list of dictionaries type of variable (a namelist), and uses the keyword-based default formatting scheme to create a formatted string of names.  The complete list keywords that looks for is: ``etal_message``, ``maxeditors``, ``mineditors``, ``namelist_format``, ``period_after_initial``, ``terse_inits``, ``use_firstname_initials``, ``use_name_ties``. (The difference with the ``.format_authorlist()`` operator is that it uses ``maxeditors`` and ``mineditors`` rather than ``maxauthors`` and ``minauthors``) The default formatter, while fast, is not very flexible, so that users looking for more customizability will want to make use of Bibulous' implicit-index and implicit-loop based definitions. See the *Example definitions for namelist formatting* section below.
 
-**.frenchinitial()** is an alternative form of the ``.initial()`` operator that has slightly different behavior. If a name begins with one of the digraphs
-"Ch", "Gn", "Ll", "Ph", "Ss", or "Th", then the initial will truncate the name after the digraph instead of after the first letter.
+**.frenchinitial()** is an alternative form of the ``.initial()`` operator that has slightly different behavior. If a name begins with one of the digraphs "Ch", "Gn", "Ll", "Ph", "Ss", or "Th", then the initial will truncate the name after the digraph instead of after the first letter.
 
 **.if_str_equal(test_str,then_var,else_var)** inserts ``then_var`` if the string to be operated on is equal to ``test_str``, else it inserts the string ``else_var``.
 
-**.if_singular(var1,optvar2,optvar3)** inserts ``optvar2`` if ``var1`` has only one element, but ``optvar3`` if ``var1`` has more than one element. Here ``var1`` is assumed to be a list-type of variable, and ``optvar2`` and ``optvar3`` are assumed to be string-type variables defined in the OPTIONS section of the template file. An example common usage is the following: ``[<ed.if_singular(editorlist, edmsg1, edmsg2)>, ]''. This form appends the contents of the ``edmsg1'' variable to the end of the ``ed'' variable if the ``editorlist'' variable contains only one element (is singular). If ``editorlist'' has more than one element, then ``edmsg2'' is appended instead. (This could potentially be a null string.)
+**.if_singular(var,res1,res2)** inserts ``res1`` if ``var`` has only one element, but ``res2`` if ``var`` has more than one element. Here ``var`` is assumed to be a list-type of variable. An example usage is the following: ``[<ed.if_singular(editorlist, {}.optionval(edmsg1), {}.optionval(edmsg2))>, ]``. This form appends the contents of the ``edmsg1`` option variable to the end of the ``ed`` variable if the ``editorlist`` variable contains only one element (is singular). If ``editorlist`` has more than one element, then the contents of the ``edmsg2`` variable is appended instead. (This could potentially be a null string.)
 
-**.if_len_equals(var1,number,optvar2,optvar3)** appends ``var2`` if ``var1`` has ``number`` elements, but otherwise appends ``var3``. Here ``var1`` is assumed to be a list-type of variable, and ``optvar2`` and ``optvar3`` are assumed to be string-type variables defined in the OPTIONS section of the template file.
+**.if_num_equals(var,number,res1,res2)** appends ``res1`` if ``var`` equals ``number``, but otherwise appends ``var2``.
 
-.. **.if_len_less_than(var1,number,optvar2,optvar3)** appends ``var2`` if ``var1`` has less than ``number`` elements, but otherwise appends ``var3``. Here ``var1`` is assumed to be a list-type of variable, and ``optvar2`` and ``optvar3`` are assumed to be string-type variables defined in the OPTIONS section of the template file.
+.. **.if_less_than(var,number,res1,res2)** appends ``res1`` if ``var`` is less than ``number``, but otherwise appends ``res2``.
 
-.. **.if_len_more_than(var1,number,optvar2,optvar3)** appends ``var2`` if ``var1`` has more than ``number`` elements, but otherwise appends ``var3``. Here ``var1`` is assumed to be a list-type of variable, and ``optvar2`` and ``optvar3`` are string-type variables defined in the OPTIONS section of the template file.
+.. **.if_more_than(var,number,res1,res2)** appends ``res1`` if ``var`` is more than ``number``, but otherwise appends ``res2``.
 
 **.initial()** will truncate the string to its first letter. Note that if a name begins with a LaTeX markup character, such as ``{\'E}``, then the operator will convert the input string to its best attempt at a Unicode-equivalent (without character markup) prior to performing the truncation. Thus, applying the ``.initial()`` operator to the name ``{\v{Z}}ukauskas`` will produce the initialized form "Ž".
 
