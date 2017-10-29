@@ -2723,10 +2723,10 @@ class Bibdata(object):
                     return(newfield)
                 else:
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
-            elif indexer.startswith('.if_str_equal(('):
+            elif indexer.startswith('.if_str_equal('):
                 match = re.search(r'.if_str_equal(\(.*\)', indexer, re.UNICODE)
                 end_idx = match.end(0)
-                result = match.group(0)[11:-1]      ## remove function name and parentheses
+                result = match.group(0)[14:-1]      ## remove function name and parentheses
                 (test_str, then_form, else_form) = result.split(',')
 
                 if (field == test_str):
@@ -2742,6 +2742,20 @@ class Bibdata(object):
             elif indexer.startswith('.remove_leading_zeros()'):
                 newfield = field.lstrip('0')
                 newindexer = indexer[23:]
+                if (nelements == 1) or (newindexer == ''):
+                    return(newfield)
+                else:
+                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
+            elif indexer.startswith('.optionval('):
+                match = re.search(r'.optionval(\(.*\)', indexer, re.UNICODE)
+                end_idx = match.end(0)
+                option_name = match.group(0)[11:-1]      ## remove function name and parentheses
+                if (option_name in options):
+                    newfield = options[option_name]
+                else:
+                    newfield = options['undefstr']
+
+                newindexer = indexer[end_idx:]
                 if (nelements == 1) or (newindexer == ''):
                     return(newfield)
                 else:

@@ -139,6 +139,7 @@ The complete list of operators available is:::
     .n
     .N
     .null()
+    .optionval(option_var)
     .ordinal()
     .purify()
     .replace(old,new)
@@ -191,6 +192,8 @@ Without the ``.compress()`` operator, the name would come out as "RM A Azzam", s
 **.N** [Not currently supported]
 
 **.null()** returns an undefined variable, forcing the string to be evaluated as "undefined".
+
+**.optionval(option_var)** returns the value of the option variable ``option_var``. If the option variable is undefined, then the operator returns the string used to mark undefined variables (i.e. the default is "???"). It will allow the rest of the formatting commands to continue without aborting.
 
 **.ordinal()** creates an "ordinal" from a numerical field. Thus, if the field operated on is "1", "2", "3", or "4", then the operator will replace the template with "1st", "2nd", "3rd" or "4th". Any number above 4 simply has "th" appended to the end of it. Currently Bibulous does not support non-English locales for this function. (Anyone having suggestions of how this may be implemented without too much fuss should contact us!)
 
