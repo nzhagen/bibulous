@@ -140,7 +140,6 @@ The complete list of operators available is:::
     .n
     .N
     .null()
-    .optionval(option_var)
     .ordinal()
     .purify()
     .replace(old,new)
@@ -171,7 +170,7 @@ Without the ``.compress()`` operator, the name would come out as "RM A Azzam", s
 
 **.if_str_equal(test_str,then_var,else_var)** inserts ``then_var`` if the string to be operated on is equal to ``test_str``, else it inserts the string ``else_var``.
 
-**.if_singular(var,res1,res2)** inserts ``res1`` if ``var`` has only one element, but ``res2`` if ``var`` has more than one element. Here ``var`` is assumed to be a list-type of variable. An example usage is the following: ``[<ed.if_singular(editorlist, {}.optionval(edmsg1), {}.optionval(edmsg2))>, ]``. This form appends the contents of the ``edmsg1`` option variable to the end of the ``ed`` variable if the ``editorlist`` variable contains only one element (is singular). If ``editorlist`` has more than one element, then the contents of the ``edmsg2`` variable is appended instead. (This could potentially be a null string.)
+**.if_singular(var,res1,res2)** inserts ``res1`` if ``var`` has only one element, but ``res2`` if ``var`` has more than one element. Here ``var`` is assumed to be a list-type of variable. An example usage is the following: ``[<ed.if_singular(editorlist, option.edmsg1), option.edmsg2)>, ]``. This form appends the contents of the ``edmsg1`` option variable to the end of the ``ed`` variable if the ``editorlist`` variable contains only one element (is singular). If ``editorlist`` has more than one element, then the contents of the ``edmsg2`` variable is appended instead. (This could potentially be a null string.)
 
 **.if_num_equals(var,number,res1,res2)** appends ``res1`` if ``var`` equals ``number``, but otherwise appends ``var2``.
 
@@ -194,8 +193,6 @@ Without the ``.compress()`` operator, the name would come out as "RM A Azzam", s
 **.N** [Not currently supported]
 
 **.null()** returns an undefined variable, forcing the string to be evaluated as "undefined".
-
-**.optionval(option_var)** returns the value of the option variable ``option_var``. If the option variable is undefined, then the operator returns the string used to mark undefined variables (i.e. the default is "???"). It will allow the rest of the formatting commands to continue without aborting.
 
 **.ordinal()** creates an "ordinal" from a numerical field. Thus, if the field operated on is "1", "2", "3", or "4", then the operator will replace the template with "1st", "2nd", "3rd" or "4th". Any number above 4 simply has "th" appended to the end of it. Currently Bibulous does not support non-English locales for this function. (Anyone having suggestions of how this may be implemented without too much fuss should contact us!)
 

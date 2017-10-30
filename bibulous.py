@@ -14,7 +14,7 @@ import locale       ## for language internationalization and localization
 import getopt       ## for getting command-line options
 import copy         ## for the "deepcopy" command
 import platform     ## for determining the OS of the system
-#import pdb          ## put "pdb.set_trace()" at any place you want to interact with pdb
+import pdb          ## put "pdb.set_trace()" at any place you want to interact with pdb
 #import traceback    ## for getting full traceback info in exceptions
 
 '''
@@ -152,6 +152,7 @@ class Bibdata(object):
     remove_template_options_brackets
     simplify_template_bracket
     get_variable
+    format_operator_arg
     get_indexed_variable
     get_indexed_vars_in_template
 
@@ -2462,6 +2463,24 @@ class Bibdata(object):
         return(result)
 
     ## =============================
+    def format_operator_arg(self, varname):
+        '''
+        If the operator argument begins with "option." then return the content of the options variable following the dot. If there is not "option."
+        at the beginning of the argument, then it's just a regular string.
+        '''
+        varname = varname.strip()
+
+        if varname.startswith('option.'):
+            (_, option_name) = varname.split('.')
+            if option_name in self.options:
+                return(self.options[option_name])
+            else:
+                return(self.options['undefstr'])
+        else:
+            result = varname
+        return(varname)
+
+    ## =============================
     def get_indexed_variable(self, field, indexer, entrykey='', options={}):
         '''
         Get the result of dot-indexing into a field. This can be accessing an element of a list or dictionary, or the result
@@ -2697,7 +2716,7 @@ class Bibdata(object):
                         if (newfield not in self.uniquify_vars[options['varname']]):
                             break
                 self.uniquify_vars[options['varname']].append(newfield)
-                print('varname=%s, field=%s, newfield=%s' % (options['varname'], field, newfield))
+                #print('varname=%s, field=%s, newfield=%s' % (options['varname'], field, newfield))
                 if (nelements == 1):
                     return(newfield)
                 else:
@@ -2712,9 +2731,9 @@ class Bibdata(object):
                 if (variable_to_eval not in self.bibdata[entrykey]):
                     newfield = ''
                 elif (len(self.bibdata[entrykey][variable_to_eval]) == 1):
-                    newfield = field + res1
+                    newfield = field + self.format_operator_arg(res1)
                 else:
-                    newfield = field + res2
+                    newfield = field + self.format_operator_arg(res2)
 
                 newindexer = indexer[end_idx:]
                 if (nelements == 1) or (newindexer == ''):
@@ -2744,20 +2763,6 @@ class Bibdata(object):
                     return(newfield)
                 else:
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
-            elif indexer.startswith('.optionval('):
-                match = re.search(r'.optionval(\(.*\)', indexer, re.UNICODE)
-                end_idx = match.end(0)
-                option_name = match.group(0)[11:-1]            ## remove function name and parentheses
-                if (option_name in options):
-                    newfield = options[option_name]
-                else:
-                    newfield = options['undefstr']
-
-                newindexer = indexer[end_idx:]
-                if (nelements == 1) or (newindexer == ''):
-                    return(newfield)
-                else:
-                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
             elif indexer.startswith('.len()'):
                 newfield = len(field)
                 newindexer = indexer[6:]
@@ -2774,55 +2779,60 @@ class Bibdata(object):
                 if (variable_to_eval not in self.bibdata[entrykey]):
                     newfield = ''
                 elif (int(self.bibdata[entrykey][variable_to_eval]) == int(test_length)):
-                    newfield = field + return_if_equal
+                    newfield = field + self.format_operator_arg(return_if_equal)
                 else:
-                    newfield = field + return_if_unequal
+                    newfield = field + self.format_operator_arg(return_if_unequal)
 
                 newindexer = indexer[end_idx:]
                 if (nelements == 1) or (newindexer == ''):
                     return(newfield)
                 else:
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
-#            elif indexer.startswith('.if_len_less_than('):
-#                match = re.search(r'.if_len_less_than\(.*\)', indexer, re.UNICODE)
-#                end_idx = match.end(0)
-#                result = match.group(0)[21:-1]      ## remove function name and parentheses
-#                (variable_to_eval, test_length, var_if_lessthan, var_if_notlessthan) = result.split(',')
-#
-#                if (variable_to_eval not in self.bibdata[entrykey]):
-#                    newfield = ''
-#                elif (len(self.bibdata[entrykey][variable_to_eval]) == int(test_length)):
-#                    suffix = self.options[var_if_lessthan.strip()]
-#                    newfield = field + suffix
-#                else:
-#                    suffix = self.options[var_if_notlessthan.strip()]
-#                    newfield = field + suffix
-#
-#                newindexer = indexer[end_idx:]
-#                if (nelements == 1) or (newindexer == ''):
-#                    return(newfield)
-#                else:
-#                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
-#            elif indexer.startswith('.if_len_more_than('):
-#                match = re.search(r'.if_len_more_than\(.*\)', indexer, re.UNICODE)
-#                end_idx = match.end(0)
-#                result = match.group(0)[21:-1]      ## remove function name and parentheses
-#                (variable_to_eval, test_length, var_if_morethan, var_if_notmorethan) = result.split(',')
-#
-#                if (variable_to_eval not in self.bibdata[entrykey]):
-#                    newfield = ''
-#                elif (len(self.bibdata[entrykey][variable_to_eval]) == int(test_length)):
-#                    suffix = self.options[var_if_morethan.strip()]
-#                    newfield = field + suffix
-#                else:
-#                    suffix = self.options[var_if_notmorethan.strip()]
-#                    newfield = field + suffix
-#
-#                newindexer = indexer[end_idx:]
-#                if (nelements == 1) or (newindexer == ''):
-#                    return(newfield)
-#                else:
-#                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
+            elif indexer.startswith('.if_less_than('):
+                match = re.search(r'.if_less_than\(.*\)', indexer, re.UNICODE)
+                end_idx = match.end(0)
+                result = match.group(0)[14:-1]      ## remove function name and parentheses
+                (variable_to_eval, test_length, res1, res2) = result.split(',')
+
+                if (variable_to_eval not in self.bibdata[entrykey]):
+                    newfield = ''
+                elif (int(self.bibdata[entrykey][variable_to_eval]) < int(test_length)):
+                    newfield = field + self.format_operator_arg(res1)
+                else:
+                    newfield = field + self.format_operator_arg(res2)
+
+                newindexer = indexer[end_idx:]
+                if (nelements == 1) or (newindexer == ''):
+                    return(newfield)
+                else:
+                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
+            elif indexer.startswith('.if_greater_than('):
+                #print('>>>')
+                match = re.search(r'.if_greater_than\(.*\)', indexer, re.UNICODE)
+                end_idx = match.end(0)
+                result = match.group(0)[17:-1]      ## remove function name and parentheses
+                (variable_to_eval, test_length, res1, res2) = result.split(',')
+
+                if (variable_to_eval not in self.bibdata[entrykey]):
+                    newfield = ''
+                elif (int(self.bibdata[entrykey][variable_to_eval]) > int(test_length)):
+                    newfield = field + self.format_operator_arg(res1)
+                else:
+                    newfield = field + self.format_operator_arg(res2)
+
+                #print('>>>')
+                #print(self.bibdata[entrykey])
+                #print(variable_to_eval)
+                #print(int(self.bibdata[entrykey][variable_to_eval]))
+                #print(int(test_length))
+                #print(newfield)
+                #print('>>>')
+
+                newindexer = indexer[end_idx:]
+                if (nelements == 1) or (newindexer == ''):
+                    return(newfield)
+                else:
+                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
             #else:
             #    msg = 'Warning 029c: the template for entry ' + entrykey + ' has an unknown function ' + \
             #          '"' + index_elements[0] + '". Aborting template substitution'
@@ -4593,12 +4603,12 @@ def format_namelist(namelist, nametype='author', options=None):
         maxnames = options['maxeditors']
         minnames = options['mineditors']
 
-    ## It makes no sense for the "minnames" to be equal to or larger than the "maxnames" -- an issue which can easily 
+    ## It makes no sense for the "minnames" to be equal to or larger than the "maxnames" -- an issue which can easily
     ## happen if a user specifies the "maxnames" option keyword but leaves the "minnames" keyword as a default. In this
     ## case, we need to fix the minnames value.
     if (minnames > maxnames):
         minnames = maxnames
-        
+
     ## This next block generates the list "namelist", which is a list of strings, with each element of `namelist` being
     ## a single author's name. That single author's name is encoded as a dictionary with keys "first", "middle",
     ## "prefix", "last", and "suffix".

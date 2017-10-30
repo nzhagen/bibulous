@@ -1,6 +1,6 @@
 TEMPLATES:
 article = [<au>|<ed>|], \enquote{<title>} (<year>).
-incollection = [<au>|<ed.if_singular(editorlist, edmsg1, edmsg2)>|], \enquote{<title>,} [in <booktitle>, ]<publisher> (<year>).[ {\makeopenbracket}In <language>.{\makeclosebracket}]
+incollection = [<au>|<ed.if_singular(editorlist, option.edmsg1, option.edmsg2)>|], \enquote{<title>,} [in <booktitle>, ]<publisher> (<year>).[ {\makeopenbracket}In <language>.{\makeclosebracket}]
 
 
 SPECIAL-TEMPLATES:
