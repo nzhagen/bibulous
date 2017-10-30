@@ -149,7 +149,8 @@ For version 1.4, the goal is to have group templates working.
 Python testing to-do
 --------------------
 
-- Add a test for the new ``.if_str_equal()`` operator.
+- Add a test for the new operators: ``.if_str_equal()``, ``.if_num_equals()``, ``.if_less_than()``, ``.if_greater_than()``, and
+  ``.null()``.
 
 - The following should create a malformed implicit loop error but doesn't::
 

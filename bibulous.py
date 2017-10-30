@@ -2639,6 +2639,8 @@ class Bibdata(object):
                     return(newfield)
                 else:
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
+            elif indexer.startswith('.null()'):
+                return(None)
             elif indexer.startswith('.zfill('):
                 match = re.search(r'.zfill\(.*\)', indexer, re.UNICODE)
                 end_idx = match.end(0)
