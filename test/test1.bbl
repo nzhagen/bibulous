@@ -139,7 +139,7 @@ David Hestenes
 A. Perot and Ch. Fabry, ``Sur l'application de ph{\'e}nom{\`e}nes d'interf{\'e}rence {\`a} la solution de divers probl{\`e}mes de spectroscopie et de m{\'e}trologie'' (1899).
 
 \bibitem{use_name_ties}
-F.~M.~M. Prefix~Last and F.~Prefix~Last, Suffix, ``None'' (0000).
+F.~M.~M. Prefix~Last and F.~P. Last~Suffix, ``None'' (0000).
 
 \bibitem{period_after_initial}
 B R Bunny, ``Looney tunes'' (2001).
@@ -191,6 +191,12 @@ Kelvin, ``On vortex motion'' (1869).
 
 \bibitem{any_namelist}
 I. Beck and H. Greving (2012): My journey through bibliographies. In: Brinkmann, Heinz/P. Anderson: My Bibliography Book.
+
+\bibitem{bad_comma1}
+M. S. Schollmeier, M. Geissel, I. C. S. Jonathon E. Shores, and J. L. Porter, ``Performance of bent-crystal x-ray microscopes for high energy density physics research'' \textbf{54}: 5147--5161 (2015).
+
+\bibitem{bad_comma2}
+L. Pan, X. Wang, Z. Li, X. Zhang, Y. Bu, N. Nan, Y. Chen, and X. Wang, ``Depth-dependent dispersion compensation for full-depth OCT image'' \textbf{25}: 10345--10354 (2017).
 
 \bibitem{badtemplate}
 

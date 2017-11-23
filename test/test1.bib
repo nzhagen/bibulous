@@ -75,7 +75,7 @@
 %% delimited and one not).
 @NAME_PARSING1{name_parsing1,
   title = {None},
-  author = {AA and AA bb and AA bb CC and AA bb CC dd EE and bb CC dd EE, AA and bb, AA and BB, and bb CC,XX, AA and BB,, AA},
+  author = {AA and AA bb and AA bb CC and AA bb CC dd EE and bb CC dd EE, AA and bb, AA and BB, and bb CC, XX, AA and BB, , AA},
   year = {0000}
 }
 
@@ -259,7 +259,7 @@
 %% Test the name ties option.
 @USE_NAME_TIES{use_name_ties,
   title = {None},
-  author = {First, Middle1 Middle2, Prefix, Last and First,, Prefix, Last, Suffix},
+  author = {First, Middle1 Middle2, Prefix, Last and First, Prefix, Last, Suffix},
   year = {0000}
 }
 
@@ -591,3 +591,20 @@
   bookauthor = "Heinz Brinkmann"
 }
 
+@BAD_COMMA1{bad_comma1,
+  title   = {Performance of bent-crystal x-ray microscopes for high energy density physics research},
+  author  = {Marius S. Schollmeier and Matthias Geissel and Jonathon E. Shores,Ian C. Smith and John L. Porter},
+  journal = {Appl. Opt.},
+  year    = {2015},
+  pages   = {5147--5161},
+  volume  = {54}
+}
+
+@BAD_COMMA2{bad_comma2,
+  Title   = {Depth-dependent dispersion compensation for full-depth OCT image},
+  Author  = {Liuhua Pan and Xiangzhao Wang and Zhongliang Li and Xiangyang Zhang and Yang Bu and Nan Nan and Yan Chen and Xuan Wang and ,},
+  Journal = ox,
+  Year    = {2017},
+  Pages   = {10345--10354},
+  Volume  = {25}
+}
