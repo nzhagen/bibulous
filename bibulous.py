@@ -3980,14 +3980,21 @@ def namestr_to_namedict(namestr, disable=None):
 
     namestr = namestr.strip()
 
-    ## First, if there is a comma within the string, then build the delimiter level list so we can check whether the
-    ## comma is at delimiter level 0 (and therefore a valid comma for determining name structure). Using this,
-    ## determine the locations of "valid" commas.
+    ## First we check to see if the namestr contains *only* a comma plus whitespace. This is definitely a format error
+    ## of some sort. Second, we check if the comma has whitespace to its right-hand side. If not, then it is likely a typo,
+    ## in which case issue a Warning but continue. If there is a valid comma within the string, then build the
+    ## delimiter level list so we can check whether the comma is at delimiter level 0 (and therefore a valid comma
+    ## for determining name structure). Using this, determine the locations of "valid" commas.
     if (',' in namestr):
+        if (namestr.strip() == ','):
+            bib_warning('Warning 038: A name string in the bibliography file contains a lone comma, and so is a typo. Skipping ...', disable)
+            return({})
         z = get_delim_levels(namestr, ('{','}'))
         commapos = []
         for match in re.finditer(',', namestr):
             i = match.start()
+            if (len(namestr) > i) and not namestr[i+1].isspace():
+                bib_warning('Warning 037: A comma appears within the namestring "' + namestr + '" and has no whitspace following it, and so is likely a typo. Ignoring ...', disable)
             if (z[i] == 0): commapos.append(i)
     else:
         commapos = []
