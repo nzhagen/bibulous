@@ -688,9 +688,9 @@ class Bibdata(object):
                             if abbrevkey in self.abbrevs:
                                 resultstr += self.abbrevs[abbrevkey].strip()
                             else:
-                                bib_warning('Warning 006: for the entry ending on line #' + unicode(self.i) + \
-                                    ' of file "' + self.filename + '", cannot find the abbreviation key "' +
-                                    abbrevkey + '". Skipping ...', self.disable)
+                                bib_warning('Warning 006: cannot find the abbreviation key "' +
+                                            abbrevkey + '" for the bib file entry ending on line #' + unicode(self.i) + \
+                                            ' of file "' + self.filename + '", . Skipping ...', self.disable)
                                 resultstr = self.options['undefstr']
                         fieldstr = ''
                         end_of_field = True
@@ -3087,7 +3087,8 @@ def namefield_to_namelist(namefield, key=None, sep='and', disable=None):
     ## scalar.
     if not re.search(sep_pattern, namefield):
         namedict = namestr_to_namedict(namefield, disable)
-        namelist.append(namedict)
+        if namedict:
+            namelist.append(namedict)
     else:
         if '{' not in namefield:
             names = re.split(sep_pattern, namefield.strip())
@@ -3123,7 +3124,8 @@ def namefield_to_namelist(namefield, key=None, sep='and', disable=None):
         nauthors = len(names)
         for i in range(nauthors):
             namedict = namestr_to_namedict(names[i], disable)
-            namelist.append(namedict)
+            if namedict:
+                namelist.append(namedict)
 
     return(namelist)
 
@@ -3987,14 +3989,14 @@ def namestr_to_namedict(namestr, disable=None):
     ## for determining name structure). Using this, determine the locations of "valid" commas.
     if (',' in namestr):
         if (namestr.strip() == ','):
-            bib_warning('Warning 038: A name string in the bibliography file contains a lone comma, and so is a typo. Skipping ...', disable)
+            bib_warning('Warning 038: A name in the bibliography file contains only a lone comma, and so is a typo. Skipping ...', disable)
             return({})
         z = get_delim_levels(namestr, ('{','}'))
         commapos = []
         for match in re.finditer(',', namestr):
             i = match.start()
-            if (len(namestr) > i) and not namestr[i+1].isspace():
-                bib_warning('Warning 037: A comma appears within the namestring "' + namestr + '" and has no whitspace following it, and so is likely a typo. Ignoring ...', disable)
+            if (len(namestr) > i) and not (namestr[i] == ',') and not namestr[i+1].isspace():
+                bib_warning('Warning 037: A comma appears within the name string "' + namestr + '" and has no whitespace following it, and so is likely a typo. Ignoring ...', disable)
             if (z[i] == 0): commapos.append(i)
     else:
         commapos = []
