@@ -1,5 +1,5 @@
 TEMPLATES:
-article = <au>, \enquote{<title>,} [\href{<doi>}{\textit{<journal>}}|\textit{<journal>}|] \textbf{<volume>}(<number>),{ }...
+article = <au>, \enquote{<title>,} [\href{<doi>}{\textit{<journal>}}|\textit{<journal>}|] \textbf{<volume>}[(<number>)],{ }...
         [<startpage>--<endpage>|<startpage>|<eid>|] (<year>). [ <note>]
 book = [<au>|<ed>|<organization>|<institution>|], \textit{<title>}[, <edition.ordinal()>~ed.][, vol.~<volume>]{ }...
         <publisher>, <address> (<year>)[ Chap.~<chapter>][, pp.~<startpage>--<endpage>|, p.~<startpage>].[ \url{<url>}.][ <note>]
@@ -37,7 +37,6 @@ mineditors = 1                            ## if "maxeditors" is exceeded, then d
 procspie_as_journal = True                ## treat SPIE conference proceedings like a journal, with journal name 'Proc. SPIE'
 sort_case = False                         ## whether to use case-sensitive citation sorting (default is False)
 use_abbrevs = True                        ## whether to use the abbreviation strings (mainly useful for debugging)
-bibitemsep = 0pt                          ## the extra vertical separation between each bibliography entry. Defining this option *overrides* LaTeX's existing definition for \bibitemsep.
 etal_message = , \textit{et~al.}          ## what text to place at the end of an authorlist when there are too many
 edmsg1 = , ed.                            ## the label to use after the editor namelist when only one editor is present
 edmsg2 = , eds                            ## the label to use after the editor namelist when multiple editors are present
