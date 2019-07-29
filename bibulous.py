@@ -7,7 +7,6 @@
 import re
 import os
 import sys
-import codecs       ## for importing UTF8-encoded files
 import locale       ## for language internationalization and localization
 import getopt       ## for getting command-line options
 import copy         ## for the "deepcopy" command
@@ -383,7 +382,7 @@ class Bibdata(object):
         ## Need to use the "codecs" module to handle UTF8 encoding/decoding properly. Using mode='rU' with the common
         ## "open()" file function doesn't do this probperly, though I don't know why.
         self.filename = filename
-        filehandle = codecs.open(os.path.normpath(self.filename), 'r', 'utf-8')
+        filehandle = open(os.path.normpath(self.filename), 'r', encoding='utf8')
 
         ## This next block parses the lines in the file into a dictionary. The tricky part here is that the BibTeX
         ## format allows for multiline entries. So we have to look for places where a line does not end in a comma, and
@@ -744,9 +743,9 @@ class Bibdata(object):
             return
 
         ## Need to use the "codecs" module to handle UTF8 encoding/decoding properly. Using mode='rU' with the common
-        ## "open()" file function doesn't do this probperly, though I don't know why.
+        ## "open()" file function doesn't do this properly, though I don't know why.
         self.filename = filename
-        filehandle = codecs.open(os.path.normpath(filename), 'r', 'utf-8')
+        filehandle = open(os.path.normpath(filename), 'r', encoding='utf8')
         self.auxfile_list.append(filename)
 
         ## First go through the file and grab the list of citation keys. Once we get them all, then we can go through
@@ -813,7 +812,7 @@ class Bibdata(object):
         '''
 
         self.filename = filename
-        filehandle = codecs.open(os.path.normpath(filename), 'r', 'utf-8')
+        filehandle = open(os.path.normpath(filename), 'r', encoding='utf8')
 
         ## For the "definition_pattern", rather than matching the initial string up to the first whitespace character,
         ## we match a whitespace-equals-whitespace
@@ -920,7 +919,7 @@ class Bibdata(object):
                     var = line[:start].strip()
                     value = line[end:].strip()
                 else:
-                    ## If the line ends with an ellpsis, then remove the ellipsis and set continuation to True.
+                    ## If the line ends with an ellipsis, then remove the ellipsis and set continuation to True.
                     if line.endswith('...'):
                         line = line[:-3].strip()
                         continuation = True
@@ -1519,14 +1518,14 @@ class Bibdata(object):
         Parameters
         ==========
         fieldstr : str
-            The string to search for the abbrevation key.
+            The string to search for the abbreviation key.
         resultstr : str
             The thing to hold the abbreviation's full form. (Note that it might not be empty on input.)
 
         Returns
         =======
         fieldstr : str
-            The string to search for the abbrevation key.
+            The string to search for the abbreviation key.
         resultstr : str
             The thing to hold the abbreviation's full form.
         end_of_field : bool
@@ -1535,7 +1534,7 @@ class Bibdata(object):
 
         end_of_field = False
 
-        ## The "abbrevkey_pattern" seaerches for the first '#' or ',' that is not preceded by a backslash. If this
+        ## The "abbrevkey_pattern" searches for the first '#' or ',' that is not preceded by a backslash. If this
         ## pattern is found, then we've found the *end* of the abbreviation key.
         for match in re.finditer(self.abbrevkey_pattern, fieldstr):
             endpos = match.end()
@@ -4239,8 +4238,8 @@ def export_bibfile(bibdata, filename, abbrevs=None):
         The dictionary of abbreviations to write to the BIB file.
     '''
 
-    assert isinstance(filename, basestring), 'Input "filename" must be a string.'
-    filehandle = codecs.open(filename, 'w', 'utf-8')
+    assert isinstance(filename, str), 'Input "filename" must be a string.'
+    filehandle = open(filename, 'w', encoding='utf8')
 
     if ('preamble' in bibdata):
         filehandle.write(bibdata['preamble'])
