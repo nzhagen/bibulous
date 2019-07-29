@@ -1645,7 +1645,7 @@ class Bibdata(object):
         bibres = None
         bstres = None
 
-        if isinstance(filename, basestring) and filename.endswith('.aux'):
+        if isinstance(filename, str) and filename.endswith('.aux'):
             auxfile = os.path.normpath(os.path.abspath(filename))
             path = os.path.normpath(os.path.dirname(auxfile))
 
@@ -1720,7 +1720,7 @@ class Bibdata(object):
                 bstfiles[i] = os.path.normpath(bstfiles[i])
 
         ## Or if the input is only a BIB file, then go off of that.
-        elif isinstance(filename, basestring) and filename.endswith('.bib'):
+        elif isinstance(filename, str) and filename.endswith('.bib'):
             self.culldata = False
             bibfiles = [os.path.normpath(filename)]
 
