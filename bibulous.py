@@ -336,7 +336,7 @@ class Bibdata(object):
                 self.parse_only_entrykeys = False
                 is_complete = self.check_citekeys_in_datakeys()
                 if is_complete:
-                    self.searchkeys = self.citedict.keys()
+                    self.searchkeys = list(self.citedict)
                 else:
                     self.searchkeys = []
                 ## Clear the bibliography database, or we will get "overwrite" errors when we parse it again below
@@ -351,7 +351,7 @@ class Bibdata(object):
                 self.parse_bibfile(self.filedict['extract'])
             else:
                 if self.culldata:
-                    self.searchkeys = self.citedict.keys()
+                    self.searchkeys = list(self.citedict)
                 for f in self.filedict['bib']:
                     self.parse_bibfile(f)
                 if self.culldata:
