@@ -1,11 +1,10 @@
 Python code to-do list: (including goals for version 2.0)
 ---------------------------------------------------------
 
-The primary goal for version 2.0 is to incorporate integration with a front-end LaTeX package.
-For version 1.4, the goal is to have group templates working.
+The primary goal for version 3.0 is to incorporate integration with a front-end LaTeX package.
+For version 2.1, the goal is to have group templates working.
 
-- Copy Gareth's code changes into this repo for full Python2/3 compatibility. Then remake the PyPi install
-  package and upload it to PyPi. And test it.
+- Upload the new Python3-compatible code to PyPi.
 
 - The current code apparently only allows defining variables that are all lower case. There is no good reason
   for the restriction, so we should modify the code to allow mixed case.

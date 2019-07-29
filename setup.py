@@ -6,7 +6,7 @@ setup(
     py_modules = ['bibulous', 'bibulous_test', 'bibulous_authorextract'],
     package_dir = {'':'.'},
     packages = find_packages(exclude=['test']),
-    version = "1.3.3",
+    version = "2.0",
     description = "BibTeX replacement and enhancement",
     author = "Nathan Hagen",
     author_email = "and.the.light.shattered@gmail.com",
@@ -15,7 +15,7 @@ setup(
     license = "MIT",
     keywords = ["bibtex", "bibliography", "parser", "tex", "latex"],
     classifiers = [
-        "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 3.6",
         "Development Status :: 4 - Beta",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
@@ -43,6 +43,6 @@ beyond it in capability. Some of its advantages include:
     that contain Unicode, LaTeX-markup characters for non-English languages, or even
     mathematics markup.
 
-This version requires Python 2.7 or later.
+This version requires Python 3.6 or later.
 """
 )
