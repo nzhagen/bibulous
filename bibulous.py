@@ -1105,24 +1105,24 @@ class Bibdata(object):
             raise ImportError('No template file was found. Aborting writing the BBL file ...')
 
         if not write_preamble:
-            filehandle = open(filename, 'a')
+            filehandle = open(filename, 'a', encoding='utf8')
         else:
-            filehandle = open(filename, 'w')
+            filehandle = open(filename, 'w', encoding='utf8')
 
         if write_preamble:
             if not bibsize: bibsize = repr(len(self.citedict))
-            filehandle.write('\\begin{thebibliography}{' + bibsize + '}\n'.encode('utf-8'))
-            filehandle.write("\\providecommand{\\enquote}[1]{``#1''}\n".encode('utf-8'))
-            filehandle.write('\\providecommand{\\url}[1]{{\\tt #1}}\n'.encode('utf-8'))
-            filehandle.write('\\providecommand{\\href}[2]{#2}\n'.encode('utf-8'))
+            filehandle.write('\\begin{thebibliography}{' + bibsize + '}\n')
+            filehandle.write("\\providecommand{\\enquote}[1]{``#1''}\n")
+            filehandle.write('\\providecommand{\\url}[1]{{\\tt #1}}\n')
+            filehandle.write('\\providecommand{\\href}[2]{#2}\n')
             if (self.options['bibitemsep'] != None):
                 s = '\\setlength{\\itemsep}{' + self.options['bibitemsep'] + '}\n'
-                filehandle.write(s.encode('utf-8'))
+                filehandle.write(s)
 
             if ('preamble' in self.bibdata):
-                filehandle.write(self.bibdata['preamble'].encode('utf-8'))
+                filehandle.write(self.bibdata['preamble'])
 
-            filehandle.write('\n\n'.encode('utf-8'))
+            filehandle.write('\n\n')
 
         ## Use a try-except block here, so that if any exception is raised then we can make sure to produce a valid
         ## BBL file.
@@ -1165,7 +1165,7 @@ class Bibdata(object):
                 s = self.format_bibitem(c)
                 if (s != ''):
                     ## Need two line EOL's here and not one so that backrefs can work properly.
-                    filehandle.write((s + '\n\n').encode('utf-8'))
+                    filehandle.write(s + '\n\n')
         except Exception as this_exception:
             if debug:
                 raise Exception(this_exception)
@@ -1173,7 +1173,7 @@ class Bibdata(object):
             print('Exception encountered: ' + repr(this_exception))
         finally:
             if write_postamble:
-                filehandle.write('\n\\end{thebibliography}\n'.encode('utf-8'))
+                filehandle.write('\n\\end{thebibliography}\n')
             filehandle.close()
 
         return
@@ -1592,10 +1592,10 @@ class Bibdata(object):
         if (filename == None):
             filename = self.filedict['aux']
 
-        filehandle = open(filename, 'w')
+        filehandle = open(filename, 'w', encoding='utf8')
 
         for entry in self.bibdata:
-            filehandle.write('\\citation{' + entry + '}\n'.encode('utf-8'))
+            filehandle.write('\\citation{' + entry + '}\n')
 
         filehandle.write('\n')
         filehandle.write('\\bibdata{')
@@ -1649,9 +1649,9 @@ class Bibdata(object):
             auxfile = os.path.normpath(os.path.abspath(filename))
             path = os.path.normpath(os.path.dirname(auxfile))
 
-            s = open(filename, 'rU')
+            s = open(filename, 'rU', encoding='utf8')
             for line in s.readlines():
-                line = line.decode('utf-8').strip()
+                line = line.strip()
                 if line.startswith('%'): continue
                 if line.startswith('\\bibdata{'):
                     line = line[9:]
@@ -4913,7 +4913,7 @@ def to_int_or_locale(text):
     try:
        return int(text)
     except ValueError:
-       return locale.strxfrm(text.encode('utf-8'))
+       return locale.strxfrm(text)
 
 ## =============================
 def natural_keys(text):
