@@ -1,38 +1,28 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>Bibulous documentation &mdash; Bibulous 1.3.2 documentation</title>
-    
-    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <title>Bibulous documentation &#8212; Bibulous 1.3.2 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '1.3.2',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="Bibulous 1.3.2 documentation" href="#" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Getting started" href="getting_started.html" /> 
-  </head>
-  <body>
+  </head><body>
 
 <div style="background-color: white; text-align: left; padding: 10px 10px 15px 15px">
 <a href="#"><img src="_static/banner.svg" border="0" height=300 alt="py4sci"/></a>
 </div>
 
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -40,9 +30,6 @@
              accesskey="I">index</a></li>
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="np-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
           <a href="getting_started.html" title="Getting started"
@@ -53,7 +40,7 @@
       </ul>
     </div>
 
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
             <p class="logo"><a href="#">
               <img class="logo" src="_static/logo_small.svg" alt="Logo"/>
@@ -77,22 +64,23 @@
   <h4>Next topic</h4>
   <p class="topless"><a href="getting_started.html"
                         title="next chapter">Getting started</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/index.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -101,7 +89,7 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="bibulous-documentation">
 <h1>Bibulous documentation<a class="headerlink" href="#bibulous-documentation" title="Permalink to this headline">¶</a></h1>
@@ -160,46 +148,46 @@
 <li class="toctree-l2"><a class="reference internal" href="examples.html#example-8">Example 8</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples.html#example-9">Example 9</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples.html#example-10">Example 10</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples.html#example">Example ?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#example-11">Example 11</a></li>
 </ul>
 </li>
 </ul>
 </div>
 <div class="section" id="bibulous-overview">
 <h2>Bibulous Overview<a class="headerlink" href="#bibulous-overview" title="Permalink to this headline">¶</a></h2>
-<p>Bibulous is a drop-in replacement for BibTeX that makes use of style templates instead of BibTeX&#8217;s BST language. The code is written in Python and, like BibTeX itself, is open source.</p>
-<p>Bibulous developed out of frustration with the complexity of creating bibliography styles using BibTeX&#8217;s obscure language, and also from the realization that because bibliographies are highly structured, one should be able to specify them simply and flexibly using a template approach. There should be no need to learn a new language just to build a bibliography style, and specifying a style should take only a matter of minutes.</p>
+<p>Bibulous is a drop-in replacement for BibTeX that makes use of style templates instead of BibTeX’s BST language. The code is written in Python and, like BibTeX itself, is open source.</p>
+<p>Bibulous developed out of frustration with the complexity of creating bibliography styles using BibTeX’s obscure language, and also from the realization that because bibliographies are highly structured, one should be able to specify them simply and flexibly using a template approach. There should be no need to learn a new language just to build a bibliography style, and specifying a style should take only a matter of minutes.</p>
 <p>Bibulous incorporates this template approach, and at the same time implements many of the modern enhancements to BibTeX, such as the ability to work with languages other than English, better support for allowing non-standard bibliography entry types, increased options for author name formatting, and more. And one can use the same basic structures and LaTeX commands to generating each of: a bibliography, a glossary, an annotated bibliography, a list of acronyms and symbols, and more, by specifying a different style template for each case.</p>
-<p>Bibulous&#8217; “style template” files allow a user to visualize the entire bibliography format structure in a concise way within a single page of text. Moreover, the template is structured with its own Python-like mini-language, intended to allow uses to create flexible formatting instructions quickly and easily. The example below illustrates the simplicity of the format.</p>
+<p>Bibulous’ “style template” files allow a user to visualize the entire bibliography format structure in a concise way within a single page of text. Moreover, the template is structured with its own Python-like mini-language, intended to allow uses to create flexible formatting instructions quickly and easily. The example below illustrates the simplicity of the format.</p>
 <p>The project website, with complete documentation, can be found at <a class="reference external" href="http://nzhagen.github.io/bibulous/">http://nzhagen.github.io/bibulous/</a>. The complete sourcecode for the project can be found at <a class="reference external" href="https://github.com/nzhagen/bibulous">https://github.com/nzhagen/bibulous</a>. For any questions, the Bibulous project maintainer can be contacted at <a class="reference external" href="mailto:and&#46;the&#46;light&#46;shattered&#37;&#52;&#48;gmail&#46;com">and<span>&#46;</span>the<span>&#46;</span>light<span>&#46;</span>shattered<span>&#64;</span>gmail<span>&#46;</span>com</a>.</p>
 <div class="section" id="installation">
 <h3>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h3>
 <p>Installing using pip::</p>
-<div class="highlight-python"><div class="highlight"><pre>pip install bibulous
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">bibulous</span>
 </pre></div>
 </div>
 <p>Instructions for installing Bibulous, and for seamlessly integrating it into your normal LaTeX workflow, are given in the <a class="reference external" href="https://github.com/nzhagen/bibulous/blob/master/doc/getting_started.rst">getting started</a> section.
 Users can also consult the <a class="reference external" href="https://github.com/nzhagen/bibulous/blob/master/doc/guidelines_for_writing_style_templates.rst">guidelines for writing style templates</a> for further information, and the <a class="reference external" href="https://github.com/nzhagen/bibulous/blob/master/doc/examples.rst">examples</a> section. A <a class="reference external" href="https://github.com/nzhagen/bibulous/blob/master/doc/faq.rst">FAQ</a> page is also available.</p>
 <p>Another approach is to clone the git repository <a class="reference external" href="https://github.com/nzhagen/bibulous">https://github.com/nzhagen/bibulous</a> and place it into your Python path.
-For compiling bibliographies, the only file needed within the project is <tt class="docutils literal"><span class="pre">bibulous.py</span></tt>, so that going to <a class="reference external" href="https://github.com/nzhagen/bibulous">https://github.com/nzhagen/bibulous</a> and copying <a class="reference external" href="https://github.com/nzhagen/bibulous/raw/master/bibulous.py">bibulous.py</a> from there is sufficient.</p>
+For compiling bibliographies, the only file needed within the project is <code class="docutils literal notranslate"><span class="pre">bibulous.py</span></code>, so that going to <a class="reference external" href="https://github.com/nzhagen/bibulous">https://github.com/nzhagen/bibulous</a> and copying <a class="reference external" href="https://github.com/nzhagen/bibulous/raw/master/bibulous.py">bibulous.py</a> from there is sufficient.</p>
 </div>
 <div class="section" id="example">
 <h3>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h3>
 <p>For a very simple bibliography, consisting of only journal articles and books, a complete style template file may consist of just two lines::</p>
-<div class="highlight-python"><div class="highlight"><pre>article = &lt;au&gt;, \enquote{&lt;title&gt;,} \textit{&lt;journal&gt;} \textbf{&lt;volume&gt;}: ...
-             [&lt;startpage&gt;--&lt;endpage&gt;|&lt;startpage&gt;|&lt;eid&gt;|] (&lt;year&gt;).[ &lt;note&gt;]
-book = [&lt;au&gt;|&lt;ed&gt;|], \textit{&lt;title&gt;} (&lt;publisher&gt;, &lt;year&gt;)...
-             [, pp.~&lt;startpage&gt;--&lt;endpage&gt;].[ &lt;note&gt;]
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">article</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">au</span><span class="o">&gt;</span><span class="p">,</span> \<span class="n">enquote</span><span class="p">{</span><span class="o">&lt;</span><span class="n">title</span><span class="o">&gt;</span><span class="p">,}</span> \<span class="n">textit</span><span class="p">{</span><span class="o">&lt;</span><span class="n">journal</span><span class="o">&gt;</span><span class="p">}</span> \<span class="n">textbf</span><span class="p">{</span><span class="o">&lt;</span><span class="n">volume</span><span class="o">&gt;</span><span class="p">}:</span> <span class="o">...</span>
+             <span class="p">[</span><span class="o">&lt;</span><span class="n">startpage</span><span class="o">&gt;--&lt;</span><span class="n">endpage</span><span class="o">&gt;|&lt;</span><span class="n">startpage</span><span class="o">&gt;|&lt;</span><span class="n">eid</span><span class="o">&gt;|</span><span class="p">]</span> <span class="p">(</span><span class="o">&lt;</span><span class="n">year</span><span class="o">&gt;</span><span class="p">)</span><span class="o">.</span><span class="p">[</span> <span class="o">&lt;</span><span class="n">note</span><span class="o">&gt;</span><span class="p">]</span>
+<span class="n">book</span> <span class="o">=</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">au</span><span class="o">&gt;|&lt;</span><span class="n">ed</span><span class="o">&gt;|</span><span class="p">],</span> \<span class="n">textit</span><span class="p">{</span><span class="o">&lt;</span><span class="n">title</span><span class="o">&gt;</span><span class="p">}</span> <span class="p">(</span><span class="o">&lt;</span><span class="n">publisher</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">year</span><span class="o">&gt;</span><span class="p">)</span><span class="o">...</span>
+             <span class="p">[,</span> <span class="n">pp</span><span class="o">.~&lt;</span><span class="n">startpage</span><span class="o">&gt;--&lt;</span><span class="n">endpage</span><span class="o">&gt;</span><span class="p">]</span><span class="o">.</span><span class="p">[</span> <span class="o">&lt;</span><span class="n">note</span><span class="o">&gt;</span><span class="p">]</span>
 </pre></div>
 </div>
-<p>The <tt class="docutils literal"><span class="pre">&lt;variable&gt;</span></tt> notation indicates that the corresponding bibliography entry&#8217;s field is to be inserted into the template there. The <tt class="docutils literal"><span class="pre">[...|...]</span></tt> notation behaves similar to an if...elseif... statement, checking whether a given field is defined within the bibliography entry. If not defined, then it attempts to implement the instruction in the block following the next <tt class="docutils literal"><span class="pre">|</span></tt> character.</p>
-<p>We can read the above article template as indicating the following structure for LaTeX-formatting the cited entry in the bibliography (<tt class="docutils literal"><span class="pre">.bib</span></tt> file). For articles, we first insert the list of author names (formatted according to the default form), followed by a comma. If no <tt class="docutils literal"><span class="pre">author</span></tt> field was found in the bibliography entry, then insert <tt class="docutils literal"><span class="pre">???</span></tt> to indicate a missing required field. Next insert a quoted title, followed by an italicized journal name, and a boldface volume number (all of these are required fields). Next, if the <tt class="docutils literal"><span class="pre">pages</span></tt> field was found in the entry&#8217;s database, then parse the start and end page numbers and insert them here. If the <tt class="docutils literal"><span class="pre">pages</span></tt> field indicates that there was only one page, then use that instead. Or if the <tt class="docutils literal"><span class="pre">pages</span></tt> field is not present, then check to see if the <tt class="docutils literal"><span class="pre">eid</span></tt> is defined, and use it instead. However, if none of these three possibilities are available, then insert the “missing field” indicator, <tt class="docutils literal"><span class="pre">???</span></tt>. Finally, put the year inside parentheses, and if the <tt class="docutils literal"><span class="pre">note</span></tt> field is defined in the entry, then add that to the end (following the period). If <tt class="docutils literal"><span class="pre">note</span></tt> is not defined, then just ignore it.</p>
-<p>One can read the book template similarly, and find that it has different required and optional fields. The simplicity of the format allows one to customize databases to suit any use. For example, to use a bibliography entrytype <tt class="docutils literal"><span class="pre">本</span></tt> instead of <tt class="docutils literal"><span class="pre">book</span></tt>, then all that is necessary is to go into the template file and change <tt class="docutils literal"><span class="pre">book</span></tt> to <tt class="docutils literal"><span class="pre">本</span></tt>. If a user wishes to add a new field, such as <tt class="docutils literal"><span class="pre">translator</span></tt>, then if it has been added to the <tt class="docutils literal"><span class="pre">.bib</span></tt> database file, then all that is needed is to add some text to the template, such as <tt class="docutils literal"><span class="pre">(&lt;translator&gt;,</span> <span class="pre">trans.)</span></tt> to insert the field into every bibliography entry that has <tt class="docutils literal"><span class="pre">translator</span></tt> defined for that entrytype.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">&lt;variable&gt;</span></code> notation indicates that the corresponding bibliography entry’s field is to be inserted into the template there. The <code class="docutils literal notranslate"><span class="pre">[...|...]</span></code> notation behaves similar to an if…elseif… statement, checking whether a given field is defined within the bibliography entry. If not defined, then it attempts to implement the instruction in the block following the next <code class="docutils literal notranslate"><span class="pre">|</span></code> character.</p>
+<p>We can read the above article template as indicating the following structure for LaTeX-formatting the cited entry in the bibliography (<code class="docutils literal notranslate"><span class="pre">.bib</span></code> file). For articles, we first insert the list of author names (formatted according to the default form), followed by a comma. If no <code class="docutils literal notranslate"><span class="pre">author</span></code> field was found in the bibliography entry, then insert <code class="docutils literal notranslate"><span class="pre">???</span></code> to indicate a missing required field. Next insert a quoted title, followed by an italicized journal name, and a boldface volume number (all of these are required fields). Next, if the <code class="docutils literal notranslate"><span class="pre">pages</span></code> field was found in the entry’s database, then parse the start and end page numbers and insert them here. If the <code class="docutils literal notranslate"><span class="pre">pages</span></code> field indicates that there was only one page, then use that instead. Or if the <code class="docutils literal notranslate"><span class="pre">pages</span></code> field is not present, then check to see if the <code class="docutils literal notranslate"><span class="pre">eid</span></code> is defined, and use it instead. However, if none of these three possibilities are available, then insert the “missing field” indicator, <code class="docutils literal notranslate"><span class="pre">???</span></code>. Finally, put the year inside parentheses, and if the <code class="docutils literal notranslate"><span class="pre">note</span></code> field is defined in the entry, then add that to the end (following the period). If <code class="docutils literal notranslate"><span class="pre">note</span></code> is not defined, then just ignore it.</p>
+<p>One can read the book template similarly, and find that it has different required and optional fields. The simplicity of the format allows one to customize databases to suit any use. For example, to use a bibliography entrytype <code class="docutils literal notranslate"><span class="pre">本</span></code> instead of <code class="docutils literal notranslate"><span class="pre">book</span></code>, then all that is necessary is to go into the template file and change <code class="docutils literal notranslate"><span class="pre">book</span></code> to <code class="docutils literal notranslate"><span class="pre">本</span></code>. If a user wishes to add a new field, such as <code class="docutils literal notranslate"><span class="pre">translator</span></code>, then if it has been added to the <code class="docutils literal notranslate"><span class="pre">.bib</span></code> database file, then all that is needed is to add some text to the template, such as <code class="docutils literal notranslate"><span class="pre">(&lt;translator&gt;,</span> <span class="pre">trans.)</span></code> to insert the field into every bibliography entry that has <code class="docutils literal notranslate"><span class="pre">translator</span></code> defined for that entrytype.</p>
 </div>
 <div class="section" id="developers">
 <h3>Developers<a class="headerlink" href="#developers" title="Permalink to this headline">¶</a></h3>
-<p>Bibulous is a new project, and so it has until now been a solo effort. Anyone interested in helping out is welcome to join; just send an email to the developers mailing list and we will try to help you get involved and show you the ropes. And, this being the maintainer&#8217;s first open source project, any suggestions by experienced developers are welcome.</p>
-<p>Guidelines for developers are given in <a class="reference external" href="https://github.com/nzhagen/bibulous/blob/master/doc/developer_guide.rst">developer_guide.rst</a>, and includes an overview of the project&#8217;s strategy and overall code structure. Note that a bug tracking system has not yet been set up for the project. HTML-based documentation is provided at <tt class="docutils literal"><span class="pre">bibulous/doc/_build/html/index.html</span></tt>, and a corresponding PDF file at <a class="reference external" href="https://github.com/nzhagen/bibulous/blob/master/doc/_build/latex/Bibulous.pdf">bibulous/doc/_build/latex/Bibulous.pdf</a>. The <a class="reference external" href="https://github.com/nzhagen/bibulous/blob/master/setup.py">setup.py</a> and <a class="reference external" href="https://github.com/nzhagen/bibulous/blob/master/MANIFEST.in">MANIFEST.in</a> files provided in the repository base directory are used to create a Python package using the <tt class="docutils literal"><span class="pre">disutils</span></tt> distribution utilities module.</p>
+<p>Bibulous is a new project, and so it has until now been a solo effort. Anyone interested in helping out is welcome to join; just send an email to the developers mailing list and we will try to help you get involved and show you the ropes. And, this being the maintainer’s first open source project, any suggestions by experienced developers are welcome.</p>
+<p>Guidelines for developers are given in <a class="reference external" href="https://github.com/nzhagen/bibulous/blob/master/doc/developer_guide.rst">developer_guide.rst</a>, and includes an overview of the project’s strategy and overall code structure. Note that a bug tracking system has not yet been set up for the project. HTML-based documentation is provided at <code class="docutils literal notranslate"><span class="pre">bibulous/doc/_build/html/index.html</span></code>, and a corresponding PDF file at <a class="reference external" href="https://github.com/nzhagen/bibulous/blob/master/doc/_build/latex/Bibulous.pdf">bibulous/doc/_build/latex/Bibulous.pdf</a>. The <a class="reference external" href="https://github.com/nzhagen/bibulous/blob/master/setup.py">setup.py</a> and <a class="reference external" href="https://github.com/nzhagen/bibulous/blob/master/MANIFEST.in">MANIFEST.in</a> files provided in the repository base directory are used to create a Python package using the <code class="docutils literal notranslate"><span class="pre">disutils</span></code> distribution utilities module.</p>
 </div>
 <div class="section" id="contact">
 <h3>Contact<a class="headerlink" href="#contact" title="Permalink to this headline">¶</a></h3>
@@ -213,8 +201,8 @@ book = [&lt;au&gt;|&lt;ed&gt;|], \textit{&lt;title&gt;} (&lt;publisher&gt;, &lt;
 <h3>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h3>
 <p>The link below provides an index to the source code for all functions contained in the Bibulous project.</p>
 <ul class="simple">
-<li><a class="reference internal" href="genindex.html"><em>Index</em></a></li>
-<li><a class="reference internal" href="search.html"><em>Search Page</em></a></li>
+<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
+<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
 </ul>
 <table border="1" class="longtable docutils">
 <colgroup>
@@ -234,7 +222,7 @@ book = [&lt;au&gt;|&lt;ed&gt;|], \textit{&lt;title&gt;} (&lt;publisher&gt;, &lt;
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -244,9 +232,6 @@ book = [&lt;au&gt;|&lt;ed&gt;|], \textit{&lt;title&gt;} (&lt;publisher&gt;, &lt;
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="np-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
           <a href="getting_started.html" title="Getting started"
              >next</a> |</li>
         <li><a href="#">home</a>|&nbsp;</li>
@@ -254,9 +239,9 @@ book = [&lt;au&gt;|&lt;ed&gt;|], \textit{&lt;title&gt;} (&lt;publisher&gt;, &lt;
  
       </ul>
     </div>
-    <div class="footer">
-        &copy; Copyright 2013, Bibulous developers.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2013, Bibulous developers.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.9.
     </div>
   </body>
 </html>
