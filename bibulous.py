@@ -1,11 +1,9 @@
 #!/usr/bin/env python
-# -*- coding: UTF-8 -*-
 # pylint: disable-msg=C0321
 # pylint: max-line-length=120
 # pylint: max-module-lines=10000
 # See the LICENSE.rst file for licensing information.
 
-from __future__ import unicode_literals, print_function, division
 import re
 import os
 import sys
