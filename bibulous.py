@@ -3027,7 +3027,7 @@ def stringsplit(s, sep=r' |(?<!\\)~'):
             tokens.append(s[:indices[0][0]])
 
         ## Go through each match's indices and split the string at each.
-        for n in xrange(ntokens):
+        for n in range(ntokens):
             if (n == ntokens-1):
                 j = indices[n][1]            ## the end of *this* separator
                 tokens.append(s[j:])
@@ -3109,7 +3109,7 @@ def namefield_to_namelist(namefield, key=None, sep='and', disable=None):
                 names.append(namefield[:separators[0][0]].strip())
 
             ## Go through each match's indices and split the string at each.
-            for n in xrange(num_names):
+            for n in range(num_names):
                 if (n == num_names-1):
                     j = separators[n][1]            ## the end of *this* separator
                     names.append(namefield[j:].strip())
@@ -3942,7 +3942,7 @@ def brace_split(string, splitter=" "):
         splits.append(string[:separators[0][0]].strip())
 
     ## Go through each match's indices and split the string at each.
-    for n in xrange(num_splits):
+    for n in range(num_splits):
         if (n == num_splits-1):
             j = separators[n][1]            ## the end of *this* separator
             splits.append(string[j:].strip())
