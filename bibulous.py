@@ -357,7 +357,7 @@ class Bibdata(object):
                 if self.culldata:
                     self.add_crossrefs_to_searchkeys()
                 if ('*' in self.citedict):
-                    for i,key in enumerate(self.bibdata.keys()):
+                    for i,key in enumerate(list(self.bibdata.keys())):
                         if (key != 'preamble'):
                             self.citedict[key] = 1 + i
                     if ('preamble' in self.citedict): del self.citedict['preamble']
@@ -1126,7 +1126,8 @@ class Bibdata(object):
 
         ## Use a try-except block here, so that if any exception is raised then we can make sure to produce a valid
         ## BBL file.
-        try:
+#        try:
+        if True:
             ## First insert special variables, so that the citation sorter and everything else can use them. Also
             ## insert cross-reference data. Doing these here means that we don't have to add lots of extra checks
             ## later.
@@ -1166,12 +1167,12 @@ class Bibdata(object):
                 if (s != ''):
                     ## Need two line EOL's here and not one so that backrefs can work properly.
                     filehandle.write(s + '\n\n')
-        except Exception as this_exception:
-            if debug:
-                raise Exception(this_exception)
-            ## Swallow the exception
-            print('Exception encountered: ' + repr(this_exception))
-        finally:
+#        except Exception as this_exception:
+#            if debug:
+#                raise Exception(this_exception)
+#            ## Swallow the exception
+#            print('Exception encountered: ' + repr(this_exception))
+#        finally:
             if write_postamble:
                 filehandle.write('\n\\end{thebibliography}\n')
             filehandle.close()
@@ -1214,7 +1215,7 @@ class Bibdata(object):
             ## If "sortnum" appears somewhere inside the special template definitions, where it is not yet defined,
             ## then we need to go back and redo the specials.
             foundit = False
-            for key in self.specials.keys():
+            for key in list(self.specials.keys()):
                 if ('sortnum' in self.specials[key]):
                     foundit = True
                     break
@@ -1360,7 +1361,7 @@ class Bibdata(object):
         bibentry = self.bibdata[entrykey]
 
         if (fieldname == None):
-            fieldnames = bibentry.keys()
+            fieldnames = list(bibentry.keys())
         else:
             if isinstance(fieldname, list):
                 fieldnames = fieldname
@@ -1412,7 +1413,7 @@ class Bibdata(object):
             if ('crossref' in self.bibdata[key]) and (self.bibdata[key]['crossref'] in self.bibdata):
                 crossref_list.append(self.bibdata[key]['crossref'])
 
-        citekeylist = self.citedict.keys()
+        citekeylist = list(self.citedict.keys())
         if crossref_list: citekeylist.extend(crossref_list)
 
         ## A dict comprehension to extract only the relevant items in "bibdata". Note that these entries are mapped by
@@ -4128,7 +4129,7 @@ def namestr_to_namedict(namestr, disable=None):
 
     ## Finally, go through and remove any name elements that are blank. Use "key in namedict.keys()" rather than
     ## "key in namedict" here because we want to be able to change the dictionary in the loop.
-    for key in namedict.keys():
+    for key in list(namedict.keys()):
         if (namedict[key].strip() == ''):
             del namedict[key]
 
