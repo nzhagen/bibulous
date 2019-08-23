@@ -1126,8 +1126,7 @@ class Bibdata(object):
 
         ## Use a try-except block here, so that if any exception is raised then we can make sure to produce a valid
         ## BBL file.
-#        try:
-        if True:
+        try:
             ## First insert special variables, so that the citation sorter and everything else can use them. Also
             ## insert cross-reference data. Doing these here means that we don't have to add lots of extra checks
             ## later.
@@ -1167,12 +1166,12 @@ class Bibdata(object):
                 if (s != ''):
                     ## Need two line EOL's here and not one so that backrefs can work properly.
                     filehandle.write(s + '\n\n')
-#        except Exception as this_exception:
-#            if debug:
-#                raise Exception(this_exception)
-#            ## Swallow the exception
-#            print('Exception encountered: ' + repr(this_exception))
-#        finally:
+        except Exception as this_exception:
+            if debug:
+                raise Exception(this_exception)
+            ## Swallow the exception
+            print('Exception encountered: ' + repr(this_exception))
+        finally:
             if write_postamble:
                 filehandle.write('\n\\end{thebibliography}\n')
             filehandle.close()
