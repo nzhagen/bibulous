@@ -359,7 +359,7 @@ class Bibdata(object):
                 if ('*' in self.citedict):
                     for i,key in enumerate(list(self.bibdata.keys())):
                         if (key != 'preamble'):
-                            self.citedict[key] = 1 + i
+                            self.citedict[key] = i
                     if ('preamble' in self.citedict): del self.citedict['preamble']
                     if ('*' in self.citedict): del self.citedict['*']
                 ## Write out the extracted database.
