@@ -3066,13 +3066,13 @@ def namefield_to_namelist(namefield, key=None, sep='and', disable=None):
 
     ## Look for common typos.
     if re.search(r'\s'+sep+',\s', namefield, re.UNICODE):
-        bib_warning('Warning 017a: The name string in entry "' + unicode(key) + '" has " '+sep+', ", which is likely a'
+        bib_warning('Warning 017a: The name string in entry "' + key + '" has " '+sep+', ", which is likely a'
              ' typo. Continuing on anyway ...', disable)
     if re.search(r', '+sep, namefield, re.UNICODE):
-        bib_warning('Warning 017b: The name string in entry "' + unicode(key) + '" has ", '+sep+'", which is likely a'
+        bib_warning('Warning 017b: The name string in entry "' + key + '" has ", '+sep+'", which is likely a'
              ' typo. Continuing on anyway ...', disable)
     if re.search(r'\s'+sep+'\s+'+sep+'\s', namefield, re.UNICODE):
-        bib_warning('Warning 017c: The name string in entry "' + unicode(key) + '" has two "'+sep+'"s separated by spaces, '
+        bib_warning('Warning 017c: The name string in entry "' + key + '" has two "'+sep+'"s separated by spaces, '
              'which is likely a typo. Continuing on anyway ...', disable)
         ## Replace the two "and"s with just one "and".
         namefield = re.sub(r'(?<=\s)'+sep+'\s+'+sep+'(?=\s)', namefield, sep, re.UNICODE)
