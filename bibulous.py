@@ -789,9 +789,8 @@ class Bibdata(object):
                 self.citedict[key] = q
 
         if debug:
-            ## When displaying the dictionary, show it in order-sorted form. Remember to use the user's locale for the
-            ## sort.
-            for key in sorted(self.citedict, key=self.citedict.get, cmp=locale.strcoll):
+            ## When displaying the dictionary, show it in order-sorted form.
+            for key in sorted(self.citedict, key=self.citedict.get):
                 print(key + ': ' + str(self.citedict[key]))
 
         return
@@ -1063,7 +1062,7 @@ class Bibdata(object):
 
         if self.debug:
             ## When displaying the BST dictionary, show it in sorted form.
-            for key in sorted(self.bstdict, key=self.bstdict.get, cmp=locale.strcoll):
+            for key in sorted(self.bstdict, key=self.bstdict.get):
                 print('entrytype.' + key + ': ' + str(self.bstdict[key]))
             for key in sorted(self.options, key=self.options.get):
                 print('options.' + key + ': ' + str(self.options[key]))
