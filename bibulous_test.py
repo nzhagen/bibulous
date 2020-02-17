@@ -25,7 +25,6 @@ The basic approach of the tests is as follows:
     if there are any differences between the target and actual output BBL files.
 '''
 
-from __future__ import unicode_literals, print_function, division     ## for Python3 compatibility
 import os
 import locale
 #import traceback    ## for getting full traceback info in exceptions
@@ -115,9 +114,7 @@ def run_test4():
     auxfile = './test/test4.aux'
     target_bblfile = './test/test4_target.bbl'
 
-    ## The default locale will be US english. Ironically, the locale argument needs to use an ASCII string, and since
-    ## the default string encoding here is Unicode, we have to re-encode it manually. Later below, we will try some
-    ## other locale settings.
+    ## The default locale will be US english. Later below, we will try testing some other locale settings.
     if (os.name == 'posix'):
         thislocale = locale.setlocale(locale.LC_ALL, 'en_US.UTF8')
     elif (os.name == 'nt'):
@@ -254,9 +251,7 @@ def run_test7():
     auxfile = './test/test7.aux'
     target_bblfile = './test/test7_target.bbl'
 
-    ## The default locale will be US english. Ironically, the locale argument needs to use an ASCII string, and since
-    ## the default string encoding here is Unicode, we have to re-encode it manually. Later below, we will try some
-    ## other locale settings.
+    ## The default locale will be US english. Later below, we will try testing some other locale settings.
     if (os.name == 'posix'):
         thislocale = locale.setlocale(locale.LC_ALL, 'en_US.UTF8')
     elif (os.name == 'nt'):
