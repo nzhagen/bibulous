@@ -2827,11 +2827,11 @@ class Bibdata(object):
                     return(newfield)
                 else:
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
-            #else:
-            #    msg = 'Warning 029c: the template for entry ' + entrykey + ' has an unknown function ' + \
-            #          '"' + index_elements[0] + '". Aborting template substitution'
-            #    bib_warning(msg, disable=self.disable)
-            #    return(None)
+            else:
+                msg = 'Warning 029c: the template for entry ' + entrykey + ' has an unknown function ' + \
+                      '"' + index_elements[0] + '". Aborting template substitution'
+                bib_warning(msg, disable=self.disable)
+                return(None)
 
         ## If the indexer is a numerical range...
         if re.search(r'^.-?\d*:-?\d*', indexer, re.UNICODE):
