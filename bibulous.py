@@ -3793,9 +3793,8 @@ def latex_to_utf8(s):
         for c in trans:
             if c in s: s = s.replace(c, trans[c])
 
-    ## Characters with breve above. Note that the "\u" is problematic when "unicode_literals" is turned on via
-    ## "from __future__ import unicode_literals". Thus, in the block below, rather than raw strings with single
-    ## backslashes, we have to use double-backslashes.
+    ## Characters with breve above. Note that the "\u" is problematic when using raw strings, so we use
+    ## double-backslashes instead.
     if ('\\u' in s):
         trans = {'\\u{A}':'Ă', '{\\u A}':'Ă', '\\u{a}':'ă',  '{\\u a}':'ă', '\\u{E}':'Ĕ', '{\\u E}':'Ĕ',
                  '\\u{e}':'ĕ', '{\\u e}':'ĕ', '\\u{G}':'Ğ',  '{\\u G}':'Ğ', '\\u{g}':'ğ', '{\\u g}':'ğ',
