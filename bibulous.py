@@ -357,7 +357,7 @@ class Bibdata(object):
                 if self.culldata:
                     self.add_crossrefs_to_searchkeys()
                 if ('*' in self.citedict):
-                    for i,key in enumerate(list(self.bibdata.keys())):
+                    for i,key in enumerate(list(self.bibdata)):
                         if (key != 'preamble'):
                             self.citedict[key] = i
                     if ('preamble' in self.citedict): del self.citedict['preamble']
@@ -518,7 +518,7 @@ class Bibdata(object):
             ## Acronym entrytypes have an identical form to "string" types, but we map them into a dictionary like a
             ## regular field, so we can access them as regular database entries.
             fd = self.parse_bibfield(entrystr)
-            entrykey = fd.keys()[0]
+            entrykey = list(fd)[0]
             newentry = {'name':entrykey, 'description':fd[entrykey], 'entrytype':'acronym'}
             if (entrykey in self.bibdata):
                 bib_warning('Warning 032b: line#' + str(self.i) + ' of "' + self.filename +
@@ -1213,7 +1213,7 @@ class Bibdata(object):
             ## If "sortnum" appears somewhere inside the special template definitions, where it is not yet defined,
             ## then we need to go back and redo the specials.
             foundit = False
-            for key in list(self.specials.keys()):
+            for key in list(self.specials):
                 if ('sortnum' in self.specials[key]):
                     foundit = True
                     break
@@ -1359,7 +1359,7 @@ class Bibdata(object):
         bibentry = self.bibdata[entrykey]
 
         if (fieldname == None):
-            fieldnames = list(bibentry.keys())
+            fieldnames = list(bibentry)
         else:
             if isinstance(fieldname, list):
                 fieldnames = fieldname
@@ -1411,7 +1411,7 @@ class Bibdata(object):
             if ('crossref' in self.bibdata[key]) and (self.bibdata[key]['crossref'] in self.bibdata):
                 crossref_list.append(self.bibdata[key]['crossref'])
 
-        citekeylist = list(self.citedict.keys())
+        citekeylist = list(self.citedict)
         if crossref_list: citekeylist.extend(crossref_list)
 
         ## A dict comprehension to extract only the relevant items in "bibdata". Note that these entries are mapped by
@@ -1447,7 +1447,7 @@ class Bibdata(object):
             outputfile = self.filedict['aux'][:-4] + '_authorextract.bib'
 
         searchname = namestr_to_namedict(searchname, self.disable)
-        nkeys = len(searchname.keys())
+        nkeys = len(searchname)
         sep = self.options['name_separator']
 
         ## Find out if any of the tokens in the search name are initials. If so, then we need to perform the search
@@ -1772,8 +1772,8 @@ class Bibdata(object):
             True if all citations exist in the database, False otherwise.
         '''
 
-        citekeys = set(self.citedict.keys())
-        datakeys = set(self.bibdata.keys())
+        citekeys = set(self.citedict)
+        datakeys = set(self.bibdata)
         diff = citekeys.difference(datakeys)
 
         if self.debug:
@@ -1842,7 +1842,7 @@ class Bibdata(object):
 
         ## Next loop through the "special" variables. These are variable definitions from the SPECIAL-
         ## TEMPLATES section of the style file. Note that rather than looping through
-        ## self.specials.keys(), we loop through "self.specials_list" because we want it to be ordered.
+        ## self.specials' keys, we loop through "self.specials_list" because we want it to be ordered.
         for key in self.specials_list:
             ## Only insert the user-defined special field if the field is missing.
             if (key in entry):
@@ -4125,9 +4125,9 @@ def namestr_to_namedict(namestr, disable=None):
             nametokens = [t for i,t in enumerate(nametokens) if i not in removelist]
             namedict['middle'] = ' '.join(nametokens)
 
-    ## Finally, go through and remove any name elements that are blank. Use "key in namedict.keys()" rather than
+    ## Finally, go through and remove any name elements that are blank. Use "key in list(namedict)" rather than
     ## "key in namedict" here because we want to be able to change the dictionary in the loop.
-    for key in list(namedict.keys()):
+    for key in list(namedict):
         if (namedict[key].strip() == ''):
             del namedict[key]
 
@@ -4258,7 +4258,7 @@ def export_bibfile(bibdata, filename, abbrevs=None):
         entry = copy.deepcopy(bibdata[key])
         filehandle.write('@' + entry['entrytype'].upper() + '{' + key + ',\n')
         del entry['entrytype']
-        nkeys = len(entry.keys())
+        nkeys = len(entry)
 
         ## Write out the entries.
         for i,k in enumerate(entry):
