@@ -248,17 +248,17 @@ class Bibdata(object):
 
         ## Compile some patterns for use in regex searches. Note that "[\-\+\*\#\$\w]" matches any alphanumeric character plus any of [~@%&-+*#$^?!=:]
         pat = r'[~@%&\-\+\*\#\$\^\?\!\=\:\w]+?'
-        self.anybrace_pattern = re.compile(r'(?<!\\)[{}]', re.UNICODE)
-        self.startbrace_pattern = re.compile(r'(?<!\\){', re.UNICODE)
-        self.endbrace_pattern = re.compile(r'(?<!\\)}', re.UNICODE)
-        self.quote_pattern = re.compile(r'(?<!\\)"', re.UNICODE)
-        self.abbrevkey_pattern = re.compile(r'(?<!\\)[,#]', re.UNICODE)
-        self.anybraceorquote_pattern = re.compile(r'(?<!\\)[{}"]', re.UNICODE)
-        self.integer_pattern = re.compile(r'^-?[0-9]+', re.UNICODE)
-        self.index_pattern = re.compile(r'(<'+pat+r'\.\d+\.'+pat+r'>)|(<'+pat+r'\.\d+>)|(<'+pat+r'\.(nN)\.'+pat+r'>)|('+pat+r'\.(nN)>)', re.UNICODE)
-        self.implicit_index_pattern = re.compile(r'(<'+pat+r'\.n\.'+pat+r'>)|(<'+pat+r'\.n>)', re.UNICODE)
-        self.template_variable_pattern = re.compile(r'(?<=<)\.+?(?=>)', re.UNICODE)
-        self.namelist_variable_pattern = re.compile(r'(?<=<)\.+?(?=.to_namelist\(\)>)', re.UNICODE)
+        self.anybrace_pattern = re.compile(r'(?<!\\)[{}]')
+        self.startbrace_pattern = re.compile(r'(?<!\\){')
+        self.endbrace_pattern = re.compile(r'(?<!\\)}')
+        self.quote_pattern = re.compile(r'(?<!\\)"')
+        self.abbrevkey_pattern = re.compile(r'(?<!\\)[,#]')
+        self.anybraceorquote_pattern = re.compile(r'(?<!\\)[{}"]')
+        self.integer_pattern = re.compile(r'^-?[0-9]+')
+        self.index_pattern = re.compile(r'(<'+pat+r'\.\d+\.'+pat+r'>)|(<'+pat+r'\.\d+>)|(<'+pat+r'\.(nN)\.'+pat+r'>)|('+pat+r'\.(nN)>)')
+        self.implicit_index_pattern = re.compile(r'(<'+pat+r'\.n\.'+pat+r'>)|(<'+pat+r'\.n>)')
+        self.template_variable_pattern = re.compile(r'(?<=<)\.+?(?=>)')
+        self.namelist_variable_pattern = re.compile(r'(?<=<)\.+?(?=.to_namelist\(\)>)')
 
         ## Create an inverse dictionary for the month names --- one version will full names, and one with abbreviated
         ## names. For a Unix-based system, the month names are determined by the user's default locale. How to do this
@@ -811,7 +811,7 @@ class Bibdata(object):
 
         ## For the "definition_pattern", rather than matching the initial string up to the first whitespace character,
         ## we match a whitespace-equals-whitespace
-        definition_pattern = re.compile(r'\s=\s', re.UNICODE)
+        definition_pattern = re.compile(r'\s=\s')
         section = 'TEMPLATES'
         continuation = False        ## whether the current line is a continuation of the previous
         abort_script = False        ## if an unsafe object is being used, abort the user_script eval
@@ -854,23 +854,23 @@ class Bibdata(object):
                     bib_warning('Warning 026a: Python script line #' + str(i) + ' of file "' + filename + '" contains'\
                          ' an invalid use of "__".\nAborting script evaluation ...', self.disable)
                     abort_script = True
-                if re.search(r'\sos.\S', line, re.UNICODE):
+                if re.search(r'\sos.\S', line):
                     bib_warning('Warning 026b: Python script line #' + str(i) + ' of file "' + filename + '" contains'\
                          ' an invalid call to the "os" module.\nAborting script evaluation ...', self.disable)
                     abort_script = True
-                if re.search(r'\ssys.\S', line, re.UNICODE):
+                if re.search(r'\ssys.\S', line):
                     bib_warning('Warning 026c: Python script line #' + str(i) + ' of file "' + filename + '" contains'\
                          ' an invalid call to the "sys" module.\nAborting script evaluation ...', self.disable)
                     abort_script = True
-                if re.search(r'\scodecs.\S', line, re.UNICODE):
+                if re.search(r'\scodecs.\S', line):
                     bib_warning('Warning 026c: Python script line #' + str(i) + ' of file "' + filename + '" contains'\
                          ' an invalid call to the "codecs" module.\nAborting script evaluation ...', self.disable)
                     abort_script = True
-                if re.search(r'^import\s', line, re.UNICODE):
+                if re.search(r'^import\s', line):
                     bib_warning('Warning 026d: Python script line #' + str(i) + ' of file "' + filename + '" contains'\
                          ' an invalid call to "import".\nAborting script evaluation ...', self.disable)
                     abort_script = True
-                if re.search(r'^import\s', line, re.UNICODE):
+                if re.search(r'^import\s', line):
                     bib_warning('Warning 026e: Python script line #' + str(i) + ' of file "' + filename + '" contains'\
                          ' an invalid call to the "open()" function.\nAborting script evaluation ...', self.disable)
                     abort_script = True
@@ -2108,7 +2108,7 @@ class Bibdata(object):
             ## In order to check if all of the variables use din an implicit loop are undefined, we make a template
             ## string in which all of the variables are replaced with "???", and check to see if the result equals
             ## that.
-            templatestr_all_undef = re.sub(r'<.*?>', self.options['undefstr'], templatestr, re.UNICODE)
+            templatestr_all_undef = re.sub(r'<.*?>', self.options['undefstr'], templatestr)
 
         templatestr = self.fillout_implicit_indices(templatestr, entrykey, templatekey)
 
@@ -2634,7 +2634,7 @@ class Bibdata(object):
             elif indexer.startswith('.null()'):
                 return(None)
             elif indexer.startswith('.zfill('):
-                match = re.search(r'.zfill\(.*\)', indexer, re.UNICODE)
+                match = re.search(r'.zfill\(.*\)', indexer)
                 end_idx = match.end(0)
                 result = match.group(0)[7:-1]
                 if result:
@@ -2651,7 +2651,7 @@ class Bibdata(object):
                 else:
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
             elif indexer.startswith('.replace('):
-                match = re.search(r'.replace\(.*\)', indexer, re.UNICODE)
+                match = re.search(r'.replace\(.*\)', indexer)
                 end_idx = match.end(0)
                 result = match.group(0)[9:-1]
                 (old, new) = result.split(',')
@@ -2717,7 +2717,7 @@ class Bibdata(object):
                     newindexer = '.'.join(index_elements[1:])
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
             elif indexer.startswith('.if_singular('):
-                match = re.search(r'.if_singular\(.*\)', indexer, re.UNICODE)
+                match = re.search(r'.if_singular\(.*\)', indexer)
                 end_idx = match.end(0)
                 result = match.group(0)[13:-1]      ## remove function name and parentheses
                 (variable_to_eval, res1, res2) = result.split(',')
@@ -2735,7 +2735,7 @@ class Bibdata(object):
                 else:
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
             elif indexer.startswith('.if_str_equal('):
-                match = re.search(r'.if_str_equal(\(.*\)', indexer, re.UNICODE)
+                match = re.search(r'.if_str_equal(\(.*\)', indexer)
                 end_idx = match.end(0)
                 result = match.group(0)[14:-1]      ## remove function name and parentheses
                 (test_str, then_form, else_form) = result.split(',')
@@ -2765,7 +2765,7 @@ class Bibdata(object):
                 else:
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
             elif indexer.startswith('.if_num_equals('):
-                match = re.search(r'.if_num_equals\(.*\)', indexer, re.UNICODE)
+                match = re.search(r'.if_num_equals\(.*\)', indexer)
                 end_idx = match.end(0)
                 result = match.group(0)[18:-1]                  ## remove function name and parentheses
                 (variable_to_eval, test_length, return_if_equal, return_if_unequal) = result.split(',')
@@ -2783,7 +2783,7 @@ class Bibdata(object):
                 else:
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
             elif indexer.startswith('.if_less_than('):
-                match = re.search(r'.if_less_than\(.*\)', indexer, re.UNICODE)
+                match = re.search(r'.if_less_than\(.*\)', indexer)
                 end_idx = match.end(0)
                 result = match.group(0)[14:-1]      ## remove function name and parentheses
                 (variable_to_eval, test_length, res1, res2) = result.split(',')
@@ -2802,7 +2802,7 @@ class Bibdata(object):
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
             elif indexer.startswith('.if_greater_than('):
                 #print('>>>')
-                match = re.search(r'.if_greater_than\(.*\)', indexer, re.UNICODE)
+                match = re.search(r'.if_greater_than\(.*\)', indexer)
                 end_idx = match.end(0)
                 result = match.group(0)[17:-1]      ## remove function name and parentheses
                 (variable_to_eval, test_length, res1, res2) = result.split(',')
@@ -2834,9 +2834,9 @@ class Bibdata(object):
                 return(None)
 
         ## If the indexer is a numerical range...
-        if re.search(r'^.-?\d*:-?\d*', indexer, re.UNICODE):
+        if re.search(r'^.-?\d*:-?\d*', indexer):
             indexer = indexer[1:]   ## remove the leading period
-            match = re.search(r'^.-?\d*:-?\d*', indexer, re.UNICODE)
+            match = re.search(r'^.-?\d*:-?\d*', indexer)
             (start_idx,end_idx) = match.group(0).split(':')
             start_idx = int(start_idx)
             end_idx = int(end_idx)
@@ -2970,7 +2970,7 @@ def sentence_case(s):
     ## characters in the LaTeX command to lower case. To facilitate that, add one to the brace level for each of those
     ## character positions.
     brlevel = get_delim_levels(s)
-    for match in re.finditer(r'\\\w+', s, re.UNICODE):
+    for match in re.finditer(r'\\\w+', s):
         (start,stop) = match.span()
         brlevel[start:stop] = [level+1 for level in brlevel[start:stop]]
 
@@ -3058,20 +3058,20 @@ def namefield_to_namelist(namefield, key=None, sep='and', disable=None):
 
     namefield = namefield.strip()
     namelist = []
-    sep_pattern = re.compile(r'\s'+sep+'\s', re.UNICODE)
+    sep_pattern = re.compile(r'\s'+sep+'\s')
 
     ## Look for common typos.
-    if re.search(r'\s'+sep+',\s', namefield, re.UNICODE):
+    if re.search(r'\s'+sep+',\s', namefield):
         bib_warning('Warning 017a: The name string in entry "' + key + '" has " '+sep+', ", which is likely a'
              ' typo. Continuing on anyway ...', disable)
-    if re.search(r', '+sep, namefield, re.UNICODE):
+    if re.search(r', '+sep, namefield):
         bib_warning('Warning 017b: The name string in entry "' + key + '" has ", '+sep+'", which is likely a'
              ' typo. Continuing on anyway ...', disable)
-    if re.search(r'\s'+sep+'\s+'+sep+'\s', namefield, re.UNICODE):
+    if re.search(r'\s'+sep+'\s+'+sep+'\s', namefield):
         bib_warning('Warning 017c: The name string in entry "' + key + '" has two "'+sep+'"s separated by spaces, '
              'which is likely a typo. Continuing on anyway ...', disable)
         ## Replace the two "and"s with just one "and".
-        namefield = re.sub(r'(?<=\s)'+sep+'\s+'+sep+'(?=\s)', namefield, sep, re.UNICODE)
+        namefield = re.sub(r'(?<=\s)'+sep+'\s+'+sep+'(?=\s)', namefield, sep)
 
     ## Split the string of names into individual strings, one for each complete name. Here we can split on whitespace
     ## surround the word "and" so that "{and}" and "word~and~word" will not allow the split. Need to treat the case of a
@@ -3696,8 +3696,8 @@ def purify_string(s):
     ## don't want to run "purify" on mathematics --- it's not as easy as simply replacing math markup with unicode
     ## equivalents. So, if we find math markup then we split the string into math parts and non-math parts, purify the
     ## non-math ones, and then piece it back together. Messy.
-    mathpattern = re.compile(r'(?<!\\)\$.*?(?<!\\)\$', re.UNICODE)
-    matchobj = re.search(r'(?<!\\)\$.*?(?<!\\)\$', s, re.UNICODE)
+    mathpattern = re.compile(r'(?<!\\)\$.*?(?<!\\)\$')
+    matchobj = re.search(r'(?<!\\)\$.*?(?<!\\)\$', s)
 
     if matchobj:
         start_idx = []
@@ -3727,16 +3727,16 @@ def purify_string(s):
         ## Next we look for LaTeX commands. LaTeX variables will have the form "\variable" followed by either
         ## whitespace, '{', or '}'. A function will have the form "\functionname{...}" where the ellipsis can be
         ## anything.
-        match = re.compile(r'\\\w+', re.UNICODE)
+        match = re.compile(r'\\\w+')
         p = match.sub('', p)
 
         ## Finally, remove the braces used for LaTeX commands. We can't just replace '{' and '}' wholesale, since the
         ## syntax allows '\{' and '\}' to produce text braces. So first we remove the command braces, and then we swap
         ## '\{' for '{' etc at the end.
-        match = re.compile(r'(?<!\\){', re.UNICODE)
-        p = match.sub('', p, re.UNICODE)
-        match = re.compile(r'(?<!\\)}', re.UNICODE)
-        p = match.sub('', p, re.UNICODE)
+        match = re.compile(r'(?<!\\){')
+        p = match.sub('', p)
+        match = re.compile(r'(?<!\\)}')
+        p = match.sub('', p)
         p = p.replace('\\{', '{')
         p = p.replace('\\}', '}')
 
@@ -3909,8 +3909,8 @@ def latex_to_utf8(s):
              r'\TH':u'Þ', r'\th':u'þ'}
 
     for c in trans:
-        match = re.compile(c.replace('\\','\\\\')+r'(?!\w)', re.UNICODE)
-        s = match.sub(trans[c], s, re.UNICODE)
+        match = re.compile(c.replace('\\','\\\\')+r'(?!\w)')
+        s = match.sub(trans[c], s)
 
     return(s)
 
@@ -3921,7 +3921,7 @@ def brace_split(string, splitter=" "):
     ## ' and ' is at brace level 0. This requires replacing re.split() with a bunch of low-level code.
     z = get_delim_levels(string, ('{','}'))
     separators = []
-    sep_pattern = re.compile(splitter, re.UNICODE)
+    sep_pattern = re.compile(splitter)
 
     for match in re.finditer(sep_pattern, string):
         (i,j) = match.span()
@@ -4364,8 +4364,8 @@ def filter_script(line):
     '''
 
     line = line.strip()
-    os_pattern = re.compile(r'\Wos.', re.UNICODE)
-    sys_pattern = re.compile(r'\Wsys.', re.UNICODE)
+    os_pattern = re.compile(r'\Wos.')
+    sys_pattern = re.compile(r'\Wsys.')
 
     if line.startswith('import') or re.search(os_pattern, line) or re.search(sys_pattern, line):
         filtered = ''
@@ -4374,10 +4374,10 @@ def filter_script(line):
 
     ## Replace any use of "entry", "options", "citedict", or "bstdict" with the needed identifier
     ## for the namespace inside format_bibitem().
-    filtered = re.sub(r'(?<=\W)entry(?=\W)', 'self.bibdata[c]', line, re.UNICODE)
-    filtered = re.sub(r'(?<=\W)options(?=\W)', 'self.options', line, re.UNICODE)
-    filtered = re.sub(r'(?<=\W)citedict(?=\W)', 'self.citedict', line, re.UNICODE)
-    filtered = re.sub(r'(?<=\W)bstdict(?=\W)', 'self.bstdict', line, re.UNICODE)
+    filtered = re.sub(r'(?<=\W)entry(?=\W)', 'self.bibdata[c]', line)
+    filtered = re.sub(r'(?<=\W)options(?=\W)', 'self.options', line)
+    filtered = re.sub(r'(?<=\W)citedict(?=\W)', 'self.citedict', line)
+    filtered = re.sub(r'(?<=\W)bstdict(?=\W)', 'self.bstdict', line)
 
     return(filtered)
 
