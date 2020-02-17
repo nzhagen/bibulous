@@ -379,8 +379,6 @@ class Bibdata(object):
             The filename of the .bib file to parse.
         '''
 
-        ## Need to use the "codecs" module to handle UTF8 encoding/decoding properly. Using mode='rU' with the common
-        ## "open()" file function doesn't do this properly, though I don't know why.
         self.filename = filename
         filehandle = open(os.path.normpath(self.filename), 'r', encoding='utf8')
 
@@ -742,8 +740,6 @@ class Bibdata(object):
         if filename in self.auxfile_list:
             return
 
-        ## Need to use the "codecs" module to handle UTF8 encoding/decoding properly. Using mode='rU' with the common
-        ## "open()" file function doesn't do this properly, though I don't know why.
         self.filename = filename
         filehandle = open(os.path.normpath(filename), 'r', encoding='utf8')
         self.auxfile_list.append(filename)
