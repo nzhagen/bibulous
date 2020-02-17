@@ -1644,7 +1644,7 @@ class Bibdata(object):
             auxfile = os.path.normpath(os.path.abspath(filename))
             path = os.path.normpath(os.path.dirname(auxfile))
 
-            s = open(filename, 'rU', encoding='utf8')
+            s = open(filename, 'r', encoding='utf8')
             for line in s.readlines():
                 line = line.strip()
                 if line.startswith('%'): continue

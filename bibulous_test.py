@@ -383,8 +383,8 @@ def check_file_match(testnum, outputfile, targetfile):
 
         ## Load the actual output BBL file and the target BBL file (the former says what we got; the latter says what
         ## we *should* get). Load each into strings and calculate their difference.
-        foutput = open(file1, 'rU')
-        ftarget = open(file2, 'rU')
+        foutput = open(file1, 'r')
+        ftarget = open(file2, 'r')
 
         outputlines = foutput.readlines()
         targetlines = ftarget.readlines()
@@ -420,19 +420,19 @@ if (__name__ == '__main__'):
     result = check_file_match(1, outputfile, targetfile)
     suite_pass *= result
 
-    ## Run test #2: testing the BIB file parser.
-    result = run_test2()
-    suite_pass *= result
-
-    ## Run test #3: testing the "authorextract" function.
-    (outputfile, targetfile) = run_test3()
-    result = check_file_match(3, outputfile, targetfile)
-    suite_pass *= result
-
-    ## Run test #4: testing the correct generation of citation keys.
-    (outputfile, targetfile) = run_test4()
-    result = check_file_match(4, outputfile, targetfile)
-    suite_pass *= result
+#    ## Run test #2: testing the BIB file parser.
+#    result = run_test2()
+#    suite_pass *= result
+#
+#    ## Run test #3: testing the "authorextract" function.
+#    (outputfile, targetfile) = run_test3()
+#    result = check_file_match(3, outputfile, targetfile)
+#    suite_pass *= result
+#
+#    ## Run test #4: testing the correct generation of citation keys.
+#    (outputfile, targetfile) = run_test4()
+#    result = check_file_match(4, outputfile, targetfile)
+#    suite_pass *= result
 
     ## Run test #5.
     (outputfile, targetfile) = run_test5()
