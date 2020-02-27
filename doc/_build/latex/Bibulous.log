@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2019/dev/Debian) (preloaded format=pdflatex 2019.7.16)  28 FEB 2020 08:23
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2019/dev/Debian) (preloaded format=pdflatex 2019.7.16)  28 FEB 2020 08:50
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -782,7 +782,7 @@ LaTeX Info: Redefining \nameref on input line 66.
 \openout5 = `Bibulous.out'.
 
 Package hyperref Info: Option `pageanchor' set `false' on input line 69.
-<banner.pdf, id=185, 1882.71153pt x 493.97911pt>
+<banner.pdf, id=206, 1882.71153pt x 493.97911pt>
 LaTeX Font Info:    Try loading font information for T1+pcr on input line 69.
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1pcr.fd
@@ -847,13 +847,13 @@ LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <10> not available
 
 ]
 Chapter 1.
-<screenshot_for_kile_instructions.png, id=277, 765.6103pt x 552.82825pt>
+<screenshot_for_kile_instructions.png, id=302, 765.6103pt x 552.82825pt>
 File: screenshot_for_kile_instructions.png Graphic file (type png)
 <use screenshot_for_kile_instructions.png>
 Package pdftex.def Info: screenshot_for_kile_instructions.png  used on input li
 ne 98.
 (pdftex.def)             Requested size: 230.18253pt x 166.20404pt.
-<screenshot_for_kile_instructions2.png, id=279, 765.6103pt x 552.82825pt>
+<screenshot_for_kile_instructions2.png, id=304, 765.6103pt x 552.82825pt>
 File: screenshot_for_kile_instructions2.png Graphic file (type png)
 <use screenshot_for_kile_instructions2.png>
 Package pdftex.def Info: screenshot_for_kile_instructions2.png  used on input l
@@ -868,57 +868,57 @@ LaTeX Font Info:    Try loading font information for TS1+pcr on input line 112.
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1pcr.fd
 File: ts1pcr.fd 2001/06/04 font definitions for TS1/pcr.
 )
-<original_Winedt5_setup.png, id=289, 708.6475pt x 558.085pt>
+<original_Winedt5_setup.png, id=314, 708.6475pt x 558.085pt>
 File: original_Winedt5_setup.png Graphic file (type png)
 <use original_Winedt5_setup.png>
 Package pdftex.def Info: original_Winedt5_setup.png  used on input line 126.
 (pdftex.def)             Requested size: 230.18253pt x 181.27328pt.
-<modified_Winedt5_setup.png, id=290, 708.6475pt x 558.085pt>
+<modified_Winedt5_setup.png, id=315, 708.6475pt x 558.085pt>
 File: modified_Winedt5_setup.png Graphic file (type png)
 <use modified_Winedt5_setup.png>
 Package pdftex.def Info: modified_Winedt5_setup.png  used on input line 128.
 (pdftex.def)             Requested size: 230.18253pt x 181.27328pt.
  [4 <./screenshot_for_kile_instructions2.png> <./original_Winedt5_setup.png>]
-<original_texmaker_setup.png, id=300, 750.55406pt x 512.66531pt>
+<original_texmaker_setup.png, id=325, 750.55406pt x 512.66531pt>
 File: original_texmaker_setup.png Graphic file (type png)
 <use original_texmaker_setup.png>
 Package pdftex.def Info: original_texmaker_setup.png  used on input line 152.
 (pdftex.def)             Requested size: 230.18253pt x 157.22708pt.
-<modified_texmaker_setup.png, id=301, 750.55406pt x 512.66531pt>
+<modified_texmaker_setup.png, id=326, 750.55406pt x 512.66531pt>
 File: modified_texmaker_setup.png Graphic file (type png)
 <use modified_texmaker_setup.png>
 Package pdftex.def Info: modified_texmaker_setup.png  used on input line 154.
 (pdftex.def)             Requested size: 230.18253pt x 157.22708pt.
  [5 <./modified_Winedt5_setup.png> <./original_texmaker_setup.png>]
-<original_texstudio_setup.png, id=311, 844.65562pt x 527.72156pt>
+<original_texstudio_setup.png, id=336, 844.65562pt x 527.72156pt>
 File: original_texstudio_setup.png Graphic file (type png)
 <use original_texstudio_setup.png>
 Package pdftex.def Info: original_texstudio_setup.png  used on input line 163.
 (pdftex.def)             Requested size: 230.18253pt x 143.80731pt.
-<modified_texstudio_setup.png, id=312, 844.65562pt x 527.72156pt>
+<modified_texstudio_setup.png, id=337, 844.65562pt x 527.72156pt>
 File: modified_texstudio_setup.png Graphic file (type png)
 <use modified_texstudio_setup.png>
 Package pdftex.def Info: modified_texstudio_setup.png  used on input line 165.
 (pdftex.def)             Requested size: 230.18253pt x 143.80731pt.
  [6 <./modified_texmaker_setup.png> <./original_texstudio_setup.png> <./modifie
 d_texstudio_setup.png>]
-<original_texworks_setup.png, id=323, 901.11656pt x 636.87938pt>
+<original_texworks_setup.png, id=349, 901.11656pt x 636.87938pt>
 File: original_texworks_setup.png Graphic file (type png)
 <use original_texworks_setup.png>
 Package pdftex.def Info: original_texworks_setup.png  used on input line 174.
 (pdftex.def)             Requested size: 230.18253pt x 162.67905pt.
-<modified_texworks_setup.png, id=324, 901.11656pt x 636.87938pt>
+<modified_texworks_setup.png, id=350, 901.11656pt x 636.87938pt>
 File: modified_texworks_setup.png Graphic file (type png)
 <use modified_texworks_setup.png>
 Package pdftex.def Info: modified_texworks_setup.png  used on input line 176.
 (pdftex.def)             Requested size: 230.18253pt x 162.67905pt.
-<original_lyx_setup.png, id=327, 579.66562pt x 408.02437pt>
+<original_lyx_setup.png, id=353, 579.66562pt x 408.02437pt>
 File: original_lyx_setup.png Graphic file (type png)
 <use original_lyx_setup.png>
 Package pdftex.def Info: original_lyx_setup.png  used on input line 185.
 (pdftex.def)             Requested size: 230.18253pt x 162.02393pt.
  [7 <./original_texworks_setup.png> <./modified_texworks_setup.png>]
-<modified_lyx_setup.png, id=335, 716.6775pt x 408.02437pt>
+<modified_lyx_setup.png, id=360, 716.6775pt x 408.02437pt>
 File: modified_lyx_setup.png Graphic file (type png)
 <use modified_lyx_setup.png>
 Package pdftex.def Info: modified_lyx_setup.png  used on input line 187.
@@ -1005,18 +1005,18 @@ Underfull \hbox (badness 10000) in paragraph at lines 1088--1089
 
 ]
 Chapter 6.
-<example1a.png, id=539, 501.875pt x 216.81pt>
+<example1a.png, id=559, 501.875pt x 216.81pt>
 File: example1a.png Graphic file (type png)
 <use example1a.png>
 Package pdftex.def Info: example1a.png  used on input line 1181.
 (pdftex.def)             Requested size: 234.8775pt x 101.46733pt.
 [35 <./example1a.png>]
-<example1b.png, id=545, 1190.19656pt x 376.99608pt>
+<example1b.png, id=566, 1190.19656pt x 376.99608pt>
 File: example1b.png Graphic file (type png)
 <use example1b.png>
 Package pdftex.def Info: example1b.png  used on input line 1251.
 (pdftex.def)             Requested size: 281.85587pt x 89.27287pt.
-<example2a.png, id=546, 336.2964pt x 257.763pt>
+<example2a.png, id=567, 336.2964pt x 257.763pt>
 File: example2a.png Graphic file (type png)
 <use example2a.png>
 Package pdftex.def Info: example2a.png  used on input line 1262.
@@ -1034,12 +1034,12 @@ Overfull \vbox (2.68169pt too high) detected at line 1388
  []
 
 [38]
-<example2b.png, id=560, 1169.87062pt x 668.31123pt>
+<example2b.png, id=581, 1169.87062pt x 668.31123pt>
 File: example2b.png Graphic file (type png)
 <use example2b.png>
 Package pdftex.def Info: example2b.png  used on input line 1392.
 (pdftex.def)             Requested size: 281.85587pt x 161.00983pt.
-<example3.png, id=561, 923.11887pt x 643.72453pt>
+<example3.png, id=582, 923.11887pt x 643.72453pt>
 File: example3.png Graphic file (type png)
 <use example3.png>
 Package pdftex.def Info: example3.png  used on input line 1403.
@@ -1065,7 +1065,7 @@ Overfull \vbox (2.68169pt too high) detected at line 1593
  []
 
 [43]
-<example4.png, id=586, 943.23526pt x 643.72453pt>
+<example4.png, id=606, 943.23526pt x 643.72453pt>
 File: example4.png Graphic file (type png)
 <use example4.png>
 Package pdftex.def Info: example4.png  used on input line 1604.
@@ -1091,7 +1091,7 @@ Overfull \vbox (2.68169pt too high) detected at line 1793
  []
 
 [47]
-<example5a.png, id=605, 728.7225pt x 303.1325pt>
+<example5a.png, id=625, 728.7225pt x 303.1325pt>
 File: example5a.png Graphic file (type png)
 <use example5a.png>
 Package pdftex.def Info: example5a.png  used on input line 1804.
@@ -1101,24 +1101,24 @@ Underfull \vbox (badness 10000) detected at line 1868
  []
 
 [49]
-<example5b.png, id=614, 803.25093pt x 366.61969pt>
+<example5b.png, id=634, 803.25093pt x 366.61969pt>
 File: example5b.png Graphic file (type png)
 <use example5b.png>
 Package pdftex.def Info: example5b.png  used on input line 1872.
 (pdftex.def)             Requested size: 281.85587pt x 128.64886pt.
-<example6.png, id=615, 800.9925pt x 156.585pt>
+<example6.png, id=635, 800.9925pt x 156.585pt>
 File: example6.png Graphic file (type png)
 <use example6.png>
 Package pdftex.def Info: example6.png  used on input line 1915.
 (pdftex.def)             Requested size: 281.85587pt x 55.09944pt.
  [50 <./example5b.png>] [51 <./example6.png>]
-<example7.png, id=629, 819.8128pt x 603.0028pt>
+<example7.png, id=647, 819.8128pt x 603.0028pt>
 File: example7.png Graphic file (type png)
 <use example7.png>
 Package pdftex.def Info: example7.png  used on input line 2031.
 (pdftex.def)             Requested size: 281.85587pt x 207.3185pt.
  [52] [53 <./example7.png (PNG copy)>] [54]
-<example8.png, id=643, 980.91469pt x 593.96906pt>
+<example8.png, id=660, 980.91469pt x 593.96906pt>
 File: example8.png Graphic file (type png)
 <use example8.png>
 Package pdftex.def Info: example8.png  used on input line 2166.
@@ -1134,19 +1134,19 @@ Overfull \vbox (0.7258pt too high) detected at line 2248
  []
 
 [56]
-<example9.png, id=654, 1061.46562pt x 325.96782pt>
+<example9.png, id=670, 1061.46562pt x 325.96782pt>
 File: example9.png Graphic file (type png)
 <use example9.png>
 Package pdftex.def Info: example9.png  used on input line 2252.
 (pdftex.def)             Requested size: 281.85587pt x 86.55513pt.
  [57 <./example9.png>]
-<example10.png, id=662, 715.92468pt x 542.025pt>
+<example10.png, id=677, 715.92468pt x 542.025pt>
 File: example10.png Graphic file (type png)
 <use example10.png>
 Package pdftex.def Info: example10.png  used on input line 2335.
 (pdftex.def)             Requested size: 281.85587pt x 213.39038pt.
  [58] [59 <./example10.png>]
-<example11.png, id=673, 1115.96925pt x 469.15276pt>
+<example11.png, id=687, 1115.96925pt x 469.15276pt>
 File: example11.png Graphic file (type png)
 <use example11.png>
 Package pdftex.def Info: example11.png  used on input line 2424.
@@ -1155,96 +1155,39 @@ Package pdftex.def Info: example11.png  used on input line 2424.
 Chapter 7.
 [61
 
-] [62]
-
-Package longtable Warning: Column widths have changed
-(longtable)                in table 1 on input line 2522.
-
-(./Bibulous.ind)
-
-Package longtable Warning: Table widths have changed. Rerun LaTeX.
-
+] [62] (./Bibulous.ind)
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 2528.
-[63]
+ [63]
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 2528.
  (./Bibulous.aux)
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 2528.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 2528.
 
-
-
-Package rerunfilecheck Warning: File `Bibulous.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `Bibulous.out':
-(rerunfilecheck)             Before: 3C9A10B99C19B4FD48F57F00DF6FDE51;3025
-(rerunfilecheck)             After:  B9274902A431DB7DCEEBFA3385A97F30;8663.
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
+Package rerunfilecheck Info: File `Bibulous.out' has not changed.
+(rerunfilecheck)             Checksum: B9274902A431DB7DCEEBFA3385A97F30;8663.
  ) 
 Here is how much of TeX's memory you used:
- 14080 strings out of 493967
- 197005 string characters out of 6164636
- 465431 words of memory out of 5000000
- 17362 multiletter control sequences out of 15000+600000
+ 14070 strings out of 493967
+ 196867 string characters out of 6164636
+ 465728 words of memory out of 5000000
+ 17365 multiletter control sequences out of 15000+600000
  52764 words of font info for 75 fonts, out of 8000000 for 9000
  310 hyphenation exceptions out of 8191
  44i,12n,51p,2088b,544s stack positions out of 5000i,500n,10000p,200000b,80000s
-pdfTeX warning (dest): name{section.4.11} has been referenced but does not ex
-ist, replaced by a fixed one
-
-pdfTeX warning (dest): name{section.4.10} has been referenced but does not exis
-t, replaced by a fixed one
-
-pdfTeX warning (dest): name{section.4.9} has been referenced but does not exist
-, replaced by a fixed one
-
-pdfTeX warning (dest): name{section.4.8} has been referenced but does not exist
-, replaced by a fixed one
-
-pdfTeX warning (dest): name{section.4.7} has been referenced but does not exist
-, replaced by a fixed one
-
-pdfTeX warning (dest): name{section.4.6} has been referenced but does not exist
-, replaced by a fixed one
-
-pdfTeX warning (dest): name{section.4.5} has been referenced but does not exist
-, replaced by a fixed one
-
-pdfTeX warning (dest): name{section.4.4} has been referenced but does not exist
-, replaced by a fixed one
-
-pdfTeX warning (dest): name{section.4.3} has been referenced but does not exist
-, replaced by a fixed one
-
-pdfTeX warning (dest): name{section.2.5} has been referenced but does not exist
-, replaced by a fixed one
-
-pdfTeX warning (dest): name{section.2.4} has been referenced but does not exist
-, replaced by a fixed one
-
-pdfTeX warning (dest): name{section.2.3} has been referenced but does not exist
-, replaced by a fixed one
-
-pdfTeX warning (dest): name{section.2.2} has been referenced but does not exist
-, replaced by a fixed one
-
-{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texlive/
-texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/share/texlive/texmf-d
-ist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/share/texlive/texmf-dist/fon
-ts/type1/urw/courier/ucrb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/
-courier/ucrr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/courier/ucrro
-8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr
-/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvbo8a.pfb></usr/share/texl
-ive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/
-fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw
-/times/utmri8a.pfb>
-Output written on Bibulous.pdf (67 pages, 2903555 bytes).
+{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
+e/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/share/texlive/texmf
+-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/share/texlive/texmf-dist/f
+onts/type1/urw/courier/ucrb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/ur
+w/courier/ucrr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/courier/ucr
+ro8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></u
+sr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvbo8a.pfb></usr/share/te
+xlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dis
+t/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/u
+rw/times/utmri8a.pfb>
+Output written on Bibulous.pdf (67 pages, 2904307 bytes).
 PDF statistics:
- 800 PDF objects out of 1000 (max. 8388607)
- 660 compressed objects within 7 object streams
- 211 named destinations out of 1000 (max. 500000)
- 516 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 804 PDF objects out of 1000 (max. 8388607)
+ 664 compressed objects within 7 object streams
+ 198 named destinations out of 1000 (max. 500000)
+ 556 words of extra memory for PDF output out of 10000 (max. 10000000)
 
