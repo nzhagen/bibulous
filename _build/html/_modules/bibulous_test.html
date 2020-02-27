@@ -90,7 +90,6 @@
 <span class="sd">    if there are any differences between the target and actual output BBL files.</span>
 <span class="sd">&#39;&#39;&#39;</span>
 
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">unicode_literals</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">division</span>     <span class="c1">## for Python3 compatibility</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">locale</span>
 <span class="c1">#import traceback    ## for getting full traceback info in exceptions</span>
@@ -180,13 +179,11 @@
     <span class="n">auxfile</span> <span class="o">=</span> <span class="s1">&#39;./test/test4.aux&#39;</span>
     <span class="n">target_bblfile</span> <span class="o">=</span> <span class="s1">&#39;./test/test4_target.bbl&#39;</span>
 
-    <span class="c1">## The default locale will be US english. Ironically, the locale argument needs to use an ASCII string, and since</span>
-    <span class="c1">## the default string encoding here is Unicode, we have to re-encode it manually. Later below, we will try some</span>
-    <span class="c1">## other locale settings.</span>
+    <span class="c1">## The default locale will be US english. Later below, we will try testing some other locale settings.</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;posix&#39;</span><span class="p">):</span>
-        <span class="n">thislocale</span> <span class="o">=</span> <span class="n">locale</span><span class="o">.</span><span class="n">setlocale</span><span class="p">(</span><span class="n">locale</span><span class="o">.</span><span class="n">LC_ALL</span><span class="p">,</span><span class="s1">&#39;en_US.UTF8&#39;</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;ascii&#39;</span><span class="p">,</span><span class="s1">&#39;replace&#39;</span><span class="p">))</span>
+        <span class="n">thislocale</span> <span class="o">=</span> <span class="n">locale</span><span class="o">.</span><span class="n">setlocale</span><span class="p">(</span><span class="n">locale</span><span class="o">.</span><span class="n">LC_ALL</span><span class="p">,</span> <span class="s1">&#39;en_US.UTF8&#39;</span><span class="p">)</span>
     <span class="k">elif</span> <span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;nt&#39;</span><span class="p">):</span>
-        <span class="n">thislocale</span> <span class="o">=</span> <span class="n">locale</span><span class="o">.</span><span class="n">setlocale</span><span class="p">(</span><span class="n">locale</span><span class="o">.</span><span class="n">LC_ALL</span><span class="p">,</span><span class="s1">&#39;usa_usa&#39;</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;ascii&#39;</span><span class="p">,</span><span class="s1">&#39;replace&#39;</span><span class="p">))</span>
+        <span class="n">thislocale</span> <span class="o">=</span> <span class="n">locale</span><span class="o">.</span><span class="n">setlocale</span><span class="p">(</span><span class="n">locale</span><span class="o">.</span><span class="n">LC_ALL</span><span class="p">,</span> <span class="s1">&#39;usa_usa&#39;</span><span class="p">)</span>
 
     <span class="c1">## Need to make a list of all the citation sort options we want to try. Skip &quot;citenum&quot; since that is the default,</span>
     <span class="c1">## and so has been tested already. Note: In the &quot;uniquify&quot; example below, the .upper() operator is needed to force the</span>
@@ -319,13 +316,11 @@
     <span class="n">auxfile</span> <span class="o">=</span> <span class="s1">&#39;./test/test7.aux&#39;</span>
     <span class="n">target_bblfile</span> <span class="o">=</span> <span class="s1">&#39;./test/test7_target.bbl&#39;</span>
 
-    <span class="c1">## The default locale will be US english. Ironically, the locale argument needs to use an ASCII string, and since</span>
-    <span class="c1">## the default string encoding here is Unicode, we have to re-encode it manually. Later below, we will try some</span>
-    <span class="c1">## other locale settings.</span>
+    <span class="c1">## The default locale will be US english. Later below, we will try testing some other locale settings.</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;posix&#39;</span><span class="p">):</span>
-        <span class="n">thislocale</span> <span class="o">=</span> <span class="n">locale</span><span class="o">.</span><span class="n">setlocale</span><span class="p">(</span><span class="n">locale</span><span class="o">.</span><span class="n">LC_ALL</span><span class="p">,</span><span class="s1">&#39;en_US.UTF8&#39;</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;ascii&#39;</span><span class="p">,</span><span class="s1">&#39;replace&#39;</span><span class="p">))</span>
+        <span class="n">thislocale</span> <span class="o">=</span> <span class="n">locale</span><span class="o">.</span><span class="n">setlocale</span><span class="p">(</span><span class="n">locale</span><span class="o">.</span><span class="n">LC_ALL</span><span class="p">,</span> <span class="s1">&#39;en_US.UTF8&#39;</span><span class="p">)</span>
     <span class="k">elif</span> <span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;nt&#39;</span><span class="p">):</span>
-        <span class="n">thislocale</span> <span class="o">=</span> <span class="n">locale</span><span class="o">.</span><span class="n">setlocale</span><span class="p">(</span><span class="n">locale</span><span class="o">.</span><span class="n">LC_ALL</span><span class="p">,</span><span class="s1">&#39;usa_usa&#39;</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;ascii&#39;</span><span class="p">,</span><span class="s1">&#39;replace&#39;</span><span class="p">))</span>
+        <span class="n">thislocale</span> <span class="o">=</span> <span class="n">locale</span><span class="o">.</span><span class="n">setlocale</span><span class="p">(</span><span class="n">locale</span><span class="o">.</span><span class="n">LC_ALL</span><span class="p">,</span> <span class="s1">&#39;usa_usa&#39;</span><span class="p">)</span>
 
     <span class="c1">## Need to make a list of all the citation label options we want to try. Skip &quot;citenum&quot; since that is the default,</span>
     <span class="c1">## and so has been tested already.</span>
@@ -448,8 +443,8 @@
 
         <span class="c1">## Load the actual output BBL file and the target BBL file (the former says what we got; the latter says what</span>
         <span class="c1">## we *should* get). Load each into strings and calculate their difference.</span>
-        <span class="n">foutput</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">file1</span><span class="p">,</span> <span class="s1">&#39;rU&#39;</span><span class="p">)</span>
-        <span class="n">ftarget</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">file2</span><span class="p">,</span> <span class="s1">&#39;rU&#39;</span><span class="p">)</span>
+        <span class="n">foutput</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">file1</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
+        <span class="n">ftarget</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">file2</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
 
         <span class="n">outputlines</span> <span class="o">=</span> <span class="n">foutput</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
         <span class="n">targetlines</span> <span class="o">=</span> <span class="n">ftarget</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>

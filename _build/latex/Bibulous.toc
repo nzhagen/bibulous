@@ -1,0 +1,57 @@
+\babel@toc {english}{}
+\contentsline {chapter}{\numberline {1}Getting started}{3}{chapter.1}% 
+\contentsline {section}{\numberline {1.1}Kile: replacing BibTeX with Bibulous}{3}{section.1.1}% 
+\contentsline {section}{\numberline {1.2}Modifying WinEdt5 to replace BibTeX with Bibulous}{4}{section.1.2}% 
+\contentsline {section}{\numberline {1.3}Modifying Texmaker to replace BibTeX with Bibulous}{5}{section.1.3}% 
+\contentsline {section}{\numberline {1.4}Modifying TeXStudio to replace BibTeX with Bibulous}{6}{section.1.4}% 
+\contentsline {section}{\numberline {1.5}Modifying TeXworks to replace BibTeX with Bibulous}{7}{section.1.5}% 
+\contentsline {section}{\numberline {1.6}Modifying LyX to replace BibTeX with Bibulous}{7}{section.1.6}% 
+\contentsline {chapter}{\numberline {2}Frequently asked questions}{9}{chapter.2}% 
+\contentsline {section}{\numberline {2.1}1. What is the difference between using Bibulous and using BibLatex+Biber?}{9}{section.2.1}% 
+\contentsline {chapter}{\numberline {3}Guidelines for writing bibliography style templates}{11}{chapter.3}% 
+\contentsline {section}{\numberline {3.1}Syntax}{11}{section.3.1}% 
+\contentsline {section}{\numberline {3.2}Default Fields}{13}{section.3.2}% 
+\contentsline {subsection}{\numberline {3.2.1}Operators}{14}{subsection.3.2.1}% 
+\contentsline {section}{\numberline {3.3}Options keywords}{17}{section.3.3}% 
+\contentsline {section}{\numberline {3.4}Implicit loops and examples for namelist formatting}{19}{section.3.4}% 
+\contentsline {section}{\numberline {3.5}Python API}{20}{section.3.5}% 
+\contentsline {chapter}{\numberline {4}Instructions on how to report a bug to the Bibulous development team}{25}{chapter.4}% 
+\contentsline {section}{\numberline {4.1}Where to report a bug}{25}{section.4.1}% 
+\contentsline {section}{\numberline {4.2}How to report a bug}{25}{section.4.2}% 
+\contentsline {chapter}{\numberline {5}Developer guide}{27}{chapter.5}% 
+\contentsline {section}{\numberline {5.1}Guidelines and notes for Python coding style}{27}{section.5.1}% 
+\contentsline {section}{\numberline {5.2}Overall project strategy and code structure}{27}{section.5.2}% 
+\contentsline {section}{\numberline {5.3}Parsing BIB files}{28}{section.5.3}% 
+\contentsline {subsection}{\numberline {5.3.1}parse\_bibfile()}{28}{subsection.5.3.1}% 
+\contentsline {subsection}{\numberline {5.3.2}parse\_bibentry()}{28}{subsection.5.3.2}% 
+\contentsline {subsection}{\numberline {5.3.3}parse\_bibfield()}{28}{subsection.5.3.3}% 
+\contentsline {section}{\numberline {5.4}Parsing AUX files}{29}{section.5.4}% 
+\contentsline {section}{\numberline {5.5}Parsing BST files}{29}{section.5.5}% 
+\contentsline {section}{\numberline {5.6}Writing the BBL file}{30}{section.5.6}% 
+\contentsline {section}{\numberline {5.7}Name formatting}{31}{section.5.7}% 
+\contentsline {subsection}{\numberline {5.7.1}create\_namelist()}{31}{subsection.5.7.1}% 
+\contentsline {subsection}{\numberline {5.7.2}format\_namelist()}{31}{subsection.5.7.2}% 
+\contentsline {section}{\numberline {5.8}Generating sortkeys}{31}{section.5.8}% 
+\contentsline {section}{\numberline {5.9}Testing}{32}{section.5.9}% 
+\contentsline {section}{\numberline {5.10}Generating the documentation}{32}{section.5.10}% 
+\contentsline {section}{\numberline {5.11}Updating the PyPI package}{33}{section.5.11}% 
+\contentsline {section}{\numberline {5.12}Miscellaneous notes}{33}{section.5.12}% 
+\contentsline {chapter}{\numberline {6}Examples}{35}{chapter.6}% 
+\contentsline {section}{\numberline {6.1}Example 1}{35}{section.6.1}% 
+\contentsline {section}{\numberline {6.2}Example 2}{36}{section.6.2}% 
+\contentsline {section}{\numberline {6.3}Example 3}{39}{section.6.3}% 
+\contentsline {section}{\numberline {6.4}Example 4}{44}{section.6.4}% 
+\contentsline {section}{\numberline {6.5}Example 5}{48}{section.6.5}% 
+\contentsline {section}{\numberline {6.6}Example 6}{50}{section.6.6}% 
+\contentsline {section}{\numberline {6.7}Example 7}{51}{section.6.7}% 
+\contentsline {section}{\numberline {6.8}Example 8}{53}{section.6.8}% 
+\contentsline {section}{\numberline {6.9}Example 9}{55}{section.6.9}% 
+\contentsline {section}{\numberline {6.10}Example 10}{57}{section.6.10}% 
+\contentsline {section}{\numberline {6.11}Example 11}{59}{section.6.11}% 
+\contentsline {chapter}{\numberline {7}Bibulous Overview}{61}{chapter.7}% 
+\contentsline {section}{\numberline {7.1}Installation}{61}{section.7.1}% 
+\contentsline {section}{\numberline {7.2}Example}{61}{section.7.2}% 
+\contentsline {section}{\numberline {7.3}Developers}{62}{section.7.3}% 
+\contentsline {section}{\numberline {7.4}Contact}{62}{section.7.4}% 
+\contentsline {section}{\numberline {7.5}License}{62}{section.7.5}% 
+\contentsline {section}{\numberline {7.6}Indices and tables}{62}{section.7.6}% 
