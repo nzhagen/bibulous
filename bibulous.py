@@ -230,7 +230,8 @@ class Bibdata(object):
         self.options['replace_newlines'] = True
         self.options['sort_order'] = 'Forward'
         self.options['wrap_nested_quotes'] = False
-        self.options['autocomplete_doi'] = False
+        self.options['autocomplete_doi'] = True
+        self.options['autocomplete_url'] = False
         self.options['name_separator'] = 'and'
 
         ## These options all relate to the default name formatting (the more rigid namelist formatting that does not use
@@ -1825,6 +1826,10 @@ class Bibdata(object):
             if not entry['doi'].startswith('http://dx.doi.org/'):
                 entry['doi'] = 'http://dx.doi.org/' + entry['doi']
 
+        if ('url' in entry) and self.options['autocomplete_url']:
+            if not entry['url'].startswith('http://') and not entry['url'].startswith('https://'):
+                entry['url'] = 'http://' + entry['url']
+
         ## Define the variables "citekey" and "citenum".
         self.bibdata[entrykey]['citekey'] = entrykey
         if self.citedict:
@@ -2631,6 +2636,13 @@ class Bibdata(object):
                     return(newfield)
                 else:
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
+            #elif indexer.startswith('.exists()'):
+            #    newfield = '{}'
+            #    newindexer = indexer[9:]
+            #    if (nelements == 1) or (newindexer == ''):
+            #        return(newfield)
+            #    else:
+            #        return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
             elif indexer.startswith('.null()'):
                 return(None)
             elif indexer.startswith('.zfill('):
@@ -2758,7 +2770,7 @@ class Bibdata(object):
                 else:
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
             elif indexer.startswith('.len()'):
-                newfield = len(field)
+                newfield = str(len(field))
                 newindexer = indexer[6:]
                 if (nelements == 1) or (newindexer == ''):
                     return(newfield)
