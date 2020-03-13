@@ -2636,13 +2636,13 @@ class Bibdata(object):
                     return(newfield)
                 else:
                     return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
-            #elif indexer.startswith('.exists()'):
-            #    newfield = '{}'
-            #    newindexer = indexer[9:]
-            #    if (nelements == 1) or (newindexer == ''):
-            #        return(newfield)
-            #    else:
-            #        return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
+            elif indexer.startswith('.exists()'):
+                newfield = '{}'
+                newindexer = indexer[9:]
+                if (nelements == 1) or (newindexer == ''):
+                    return(newfield)
+                else:
+                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
             elif indexer.startswith('.null()'):
                 return(None)
             elif indexer.startswith('.zfill('):
