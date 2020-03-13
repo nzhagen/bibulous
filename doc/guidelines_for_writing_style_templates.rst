@@ -124,6 +124,7 @@ The complete list of operators available is:::
     .#
     .##:##
     .compress()
+    .exists()
     .format_authorlist()
     .format_editorlist()
     .frenchinitial()
@@ -133,7 +134,7 @@ The complete list of operators available is:::
     .if_str_equal(test_str,then_var,else_var)
     .if_singular(var1,var2,var3)
     .initial()
-	.len()
+    .len()
     .lower()
     .monthabbrev()
     .monthname()
@@ -161,6 +162,8 @@ The function of each operator is summarized below.
     <authorlist.0.first><authorlist.0.middle.initial().compress()> <authorlist.0.last>
 
 Without the ``.compress()`` operator, the name would come out as "RM A Azzam", since the two middle name initials "M" and "A" are spaced apart from one another by default.
+
+**.exists()** returns empty braces ``{}`` if the variable is defined (i.e. "do nothing --- just check for existence"), else evaluate as "undefined".
 
 **.format_authorlist()** operates on a list of dictionaries type of variable (a namelist), and uses the keyword-based default formatting scheme to create a formatted string of names. The complete list keywords that it looks for is: ``etal_message``, ``maxauthors``, ``minauthors``, ``namelist_format``, ``period_after_initial``, ``terse_inits``, ``use_firstname_initials``, ``use_name_ties``. The default formatter, while fast, is not very flexible, so that users looking for more customizability will want to make use of Bibulous' implicit-index and implicit-loop based definitions. See the *Example definitions for namelist formatting* section below.
 
