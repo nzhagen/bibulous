@@ -37,7 +37,6 @@ procspie_as_journal = True                ## treat SPIE conference proceedings l
 sort_case = False                         ## whether to use case-sensitive citation sorting (default is False)
 use_abbrevs = True                        ## whether to use the abbreviation strings (mainly useful for debugging)
 french_initials = False                   ## whether to use French initials (i.e. Jean-Paul -> J.-P. and not J., also Philippe -> Ph. not P.)
-bibitemsep = 0pt                          ## the extra vertical separation between each bibliography entry. Defining this option *overrides* LaTeX's existing definition for \bibitemsep.
 etal_message = , \textit{et~al.}          ## what text to place at the end of an authorlist when there are too many
 edmsg1 = , ed.                            ## the label to use after the editor namelist when only one editor is present
 edmsg2 = , eds                            ## the label to use after the editor namelist when multiple editors are present
@@ -47,7 +46,7 @@ undefstr = ???                            ## what string to replace undefined re
 replace_newlines = True                   ## whether to replace newline characters inside fields with spaces
 allow_scripts = False                     ## whether to allow user scripts in BST files
 case_sensitive_field_names = False        ## whether to allow field names to be case sensitive (i.e. so that "BOOK" will not be the same entrytype as "book")
-use_citeextract = True                    ## whether to automatically perform citation extraction each time Bibulous is run
+use_citeextract = False                    ## whether to automatically perform citation extraction each time Bibulous is run
 name_separator = and                      ## the string used to separate names in a BibTeX-format field of names
 
 VARIABLES:
