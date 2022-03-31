@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # pylint: disable-msg=C0321
 # pylint: max-line-length=120
 # pylint: max-module-lines=10000
@@ -223,7 +223,7 @@ class Bibdata(object):
         self.options['bibitemsep'] = None
         self.options['allow_scripts'] = False
         self.options['case_sensitive_field_names'] = False
-        self.options['use_citeextract'] = True
+        self.options['use_citeextract'] = False
         self.options['etal_message'] = ', \\textit{et al.}'
         self.options['edmsg1'] = ', ed.'
         self.options['edmsg2'] = ', eds'
@@ -687,7 +687,7 @@ class Bibdata(object):
                                 bib_warning('Warning 006: cannot find the abbreviation key "' +
                                             abbrevkey + '" for the bib file entry ending on line #' + str(self.i) + \
                                             ' of file "' + self.filename + '", . Skipping ...', self.disable)
-                                resultstr = self.options['undefstr']
+                                resultstr = self.options['']
                         fieldstr = ''
                         end_of_field = True
                     else:
@@ -1055,7 +1055,8 @@ class Bibdata(object):
         ## message. If not okay, then replace the offending template with self.options['undefstr'].
         for key in self.specials:
             okay = self.validate_templatestr(self.specials[key], key)
-            if not okay: self.specials[key] = self.options['undefstr']
+            if not okay:
+                self.specials[key] = self.options['undefstr']
 
         if self.debug:
             ## When displaying the BST dictionary, show it in sorted form.
@@ -2110,7 +2111,7 @@ class Bibdata(object):
         template_has_implicit_index = True if re.search(self.implicit_index_pattern, templatestr) else False
         template_has_implicit_loop = True if '...' in templatestr else False
         if template_has_implicit_loop:
-            ## In order to check if all of the variables use din an implicit loop are undefined, we make a template
+            ## In order to check if all of the variables used in an implicit loop are undefined, we make a template
             ## string in which all of the variables are replaced with "???", and check to see if the result equals
             ## that.
             templatestr_all_undef = re.sub(r'<.*?>', self.options['undefstr'], templatestr)
