@@ -70,6 +70,7 @@ nofirstname = <au>, \enquote{<title>} (<year>).
 any_namelist = <au> (<year>): <title>. In: <bau>/<ed>: <booktitle>.
 bad_comma1 = <au>, \enquote{<title>} \textbf{<volume>}: <startpage>--<endpage> (<year>).
 bad_comma2 = <au>, \enquote{<title>} \textbf{<volume>}: <startpage>--<endpage> (<year>).
+template_ends_with_title = Here is the title: <title>
 
 
 SPECIAL-TEMPLATES:
