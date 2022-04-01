@@ -104,7 +104,7 @@ def run_test3():
 ## =================================================================================================
 def run_test4():
     '''
-    Test #4 checks the operation of generating citation keys.
+    Test #4 checks the operation of generating citation keys and using different locales for sorting.
     '''
 
     ## Although three of these files were copied from "test1", it is a bad idea to use the "test1.*" files here because

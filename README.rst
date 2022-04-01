@@ -23,7 +23,7 @@ Instructions for installing Bibulous, and for seamlessly integrating it into you
 Users can also consult the `guidelines for writing style templates <https://github.com/nzhagen/bibulous/blob/master/doc/guidelines_for_writing_style_templates.rst>`_ for further information, and the `examples <https://github.com/nzhagen/bibulous/blob/master/doc/examples.rst>`_ section. A `FAQ <https://github.com/nzhagen/bibulous/blob/master/doc/faq.rst>`_ page is also available.
 
 Another approach is to clone the git repository `<https://github.com/nzhagen/bibulous>`_ and place it into your Python path.
-For compiling bibliographies, the only file needed within the project is ``bibulous.py``, so that going to `<https://github.com/nzhagen/bibulous>`_ and copying `bibulous.py <https://github.com/nzhagen/bibulous/raw/master/bibulous.py>`_ from there is sufficient.
+For compiling bibliographies, the only file needed within the project is ``bibulous.py``, so that going to `<https://github.com/nzhagen/bibulous>`_ and simply copying `bibulous.py <https://github.com/nzhagen/bibulous/raw/master/bibulous.py>`_ from there is sufficient.
 
 Example
 =======
