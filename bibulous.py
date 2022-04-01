@@ -2237,10 +2237,12 @@ class Bibdata(object):
 
         ## If the template string has punctuation right after the title, and the title itself also has punctuation,
         ## then you may get something like "Title?," where the two punctuation marks conflict. In that case, keep
-        ## the title's punctuation and drop the template's.
-        if title.endswith(('?','!')):
+        ## the title's punctuation and drop the template's. The exception to this is when the template uses the title
+        ## variable as the very last thing in the reference format, with no punctuation to follow it.
+        punct = (',','.','!','?',';',':')
+        if title.endswith(('?','!')) and (templatestr[-1] != '>'):
             idx = templatestr.index(title_var)
-            if (templatestr[idx + len(title_var)] in (',','.','!','?',';',':')):
+            if (templatestr[idx + len(title_var)] in punct):
                 templatestr = templatestr[:idx+len(title_var)] + templatestr[idx+1+len(title_var):]
 
         templatestr = templatestr.replace(title_var, title)
