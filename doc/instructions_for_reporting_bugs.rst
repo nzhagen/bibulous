@@ -1,5 +1,5 @@
-Instructions on how to report a bug to the Bibulous development team
-====================================================================
+Instructions on how to report a bug
+===================================
 
 Where to report a bug
 ---------------------

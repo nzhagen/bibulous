@@ -188,6 +188,9 @@ class Bibdata(object):
         else:
             self.locale = locale.setlocale(locale.LC_ALL,uselocale)    ## set the locale as requested
 
+        if not silent:
+            print('Sorting with locale = ' + repr(self.locale))
+
         ## Not only do we need a dictionary for "special templates" but we also need to be able to iterate through it
         ## in the order given in the file. Thus, we have a "specials list" too.
         self.specials_list = []
