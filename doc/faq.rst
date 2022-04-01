@@ -84,3 +84,16 @@ For BibLatex+Biber, we can compare to Bibulous by using the answer provided on t
         {\printfield[eprint:\strfield{eprinttype}]{eprint}}}
 
 The template approach is clearly more compact, easier to read, and easier to customize.
+
+2. How does Bibulous define the alphabetic sorting order?
+=========================================================
+
+The default setup for Bibulous is to adopt the user's locale to determine the sorting order of alphabetically sorted entries. If the user wants a different behavior, such as a user in Sweden wanting to force the bibliography to sort as in US English, then one can replace the default call to the bibulous program
+
+    bibulous.py file.aux
+
+with a call that adds an option for the locale,
+
+    bibulous.py --locale='en_US.UTF-8' file.aux
+
+
