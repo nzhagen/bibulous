@@ -2240,7 +2240,7 @@ class Bibdata(object):
         ## the title's punctuation and drop the template's. The exception to this is when the template uses the title
         ## variable as the very last thing in the reference format, with no punctuation to follow it.
         punct = (',','.','!','?',';',':')
-        if title.endswith(('?','!')) and (templatestr[-1] != '>'):
+        if title.endswith(('?','!')) and not templatestr.endswith('<title>'):
             idx = templatestr.index(title_var)
             if (templatestr[idx + len(title_var)] in punct):
                 templatestr = templatestr[:idx+len(title_var)] + templatestr[idx+1+len(title_var):]
