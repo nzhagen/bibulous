@@ -10020,7 +10020,7 @@ A. Lann and R. Falk, ``Tell Me the Method, {I}'ll Give You the Mean,'' \textit{T
 A. Gelman and H. Stern, ``The Difference Between ``Significant'' and ``Not Significant'' is not Itself Statistically Significant,'' \textit{The American Statistician} \textbf{60}: 328--331 (2006).
 
 \bibitem[3287]{Wilkinson:2006:RPC}
-L. Wilkinson, ``\href{http://dx.doi.org/http://pubs.amstat.org/doi/pdfplus/10.1198/000313006X152243}{Revising the {Pareto} Chart},'' \textit{The American Statistician} \textbf{60}: 332--334 (2006).
+L. Wilkinson, ``\href{https://doi.org/http://pubs.amstat.org/doi/pdfplus/10.1198/000313006X152243}{Revising the {Pareto} Chart},'' \textit{The American Statistician} \textbf{60}: 332--334 (2006).
 
 \bibitem[3288]{Langsrud:2006:ECP}
 Ø. Langsrud, ``Explaining Correlations by Plotting Orthogonal Contrasts,'' \textit{The American Statistician} \textbf{60}: 335--339 (2006).
@@ -23634,7 +23634,7 @@ L.-Y. Deng, R. Guo, D. K. J. Lin, and F. Bai, ``Improving Random Number Generato
 L.-Y. Deng, H. Li, and J.-J. H. Shiau, ``Scalable parallel multiple recursive generators of large order,'' \textit{Parallel Computing} \textbf{35}: 29--37 (2009).
 
 \bibitem[7825]{rDEN11a}
-L.-Y. Deng, J.-J. H. Shiau, and H. H.-S. Lu, ``\href{http://dx.doi.org/10.1287/ijoc.1110.0477}{Large-Order Multiple Recursive Generators with Modulus $2^{31}-1$},'' \textit{INFORMS Journal on Computing} \textbf{???}: ??? (2011). to appear
+L.-Y. Deng, J.-J. H. Shiau, and H. H.-S. Lu, ``\href{https://doi.org/10.1287/ijoc.1110.0477}{Large-Order Multiple Recursive Generators with Modulus $2^{31}-1$},'' \textit{INFORMS Journal on Computing} \textbf{???}: ??? (2011). to appear
 
 \bibitem[7826]{rDEN12b}
 L.-Y. Deng, J.-J. H. Shiau, and H. H.-S. Lu, ``Efficient Computer Search of Large-Order Multiple Recursive Pseudo-Random Number Generators,'' \textit{Journal of Computational and Applied Mathematics} \textbf{236}: 3228--3237 (2012).
@@ -25137,7 +25137,7 @@ J. Passerat-Palmbach, C. Mazel, and D. R. C. Hill, ``Pseudo-Random Number Genera
 J. Passerat-Palmbach, J. Caux, P. Siregar, and D. R. C. Hill, ``Warp-level parallelism: Enabling multiple replications in parallel on {GPU},'' in \textit{Proceedings of the European Simulation and Modeling Conference 2011}, pp.~76--83 (2011). 
 
 \bibitem[8326]{rPAS12a}
-J. Passerat-Palmbach, C. Mazel, and D. R. C. Hill, ``\href{http://dx.doi.org/10.1057/jos.2012.8}{Pseudo-random streams for distributed and parallel stochastic simulations on {GP-GPU}},'' \textit{Journal of Simulation} \textbf{6}: 141--151 (2012).
+J. Passerat-Palmbach, C. Mazel, and D. R. C. Hill, ``\href{https://doi.org/10.1057/jos.2012.8}{Pseudo-random streams for distributed and parallel stochastic simulations on {GP-GPU}},'' \textit{Journal of Simulation} \textbf{6}: 141--151 (2012).
 
 \bibitem[8327]{rPAT92a}
 T. Patti, ``The Enhanced Ranger Device,'' \textit{Cryptosystems Journal} \textbf{2}: 38--72 (1992).
@@ -25197,7 +25197,7 @@ I. Reidler, Y. Aviad, M. Rosenbluh, and I. Kanter, ``Ultrahigh-Speed Random Numb
 J. H. Reif and J. D. Tygar, ``Efficient Parallel Pseudorandom Number Generation,'' \textit{SIAM Journal on Computing} \textbf{17}: 404--411 (1988).
 
 \bibitem[8346]{rREU12a}
-R. Reuillon, M. K. Traore, J. Passerat-Palmbach, and D. R. C. Hill, ``\href{http://dx.doi.org/10.1002/cpe.1883}{Parallel Stochastic Simulations with Rigorous Distribution of Pseudo-Random Numbers with {DistMe}: Application to Life Science Simulation},'' \textit{Concurrency and Computation: Practice and Experience} \textbf{24}: 723--738 (2012).
+R. Reuillon, M. K. Traore, J. Passerat-Palmbach, and D. R. C. Hill, ``\href{https://doi.org/10.1002/cpe.1883}{Parallel Stochastic Simulations with Rigorous Distribution of Pseudo-Random Numbers with {DistMe}: Application to Life Science Simulation},'' \textit{Concurrency and Computation: Practice and Experience} \textbf{24}: 723--738 (2012).
 
 \bibitem[8347]{rREY98a}
 W. J. J. Rey, ``On generating random numbers, with help of $y = [(a + x) sin (b x)]$ mod 1'' (1998).
@@ -28449,7 +28449,7 @@ D. I. A. Cohen, ``An explanation of the first digit phenomenon,'' \textit{Journa
 B. Davis, ``\href{http://www.fq.math.ca/Scanned/14-1/davis.pdf}{Some Remarks on Initial Digits},'' \textit{Fibonacci Quarterly} \textbf{14}: 13--14 (1976).
 
 \bibitem[9430]{Feldstein:1976:CED}
-A. Feldstein and R. Goodman, ``\href{http://dx.doi.org/http://doi.acm.org/10.1145/321941.321948}{Convergence Estimates for the Distribution of Trailing Digits},'' \textit{Journal of the ACM} \textbf{23}: 287--297 (1976).
+A. Feldstein and R. Goodman, ``\href{https://doi.org/http://doi.acm.org/10.1145/321941.321948}{Convergence Estimates for the Distribution of Trailing Digits},'' \textit{Journal of the ACM} \textbf{23}: 287--297 (1976).
 
 \bibitem[9431]{Orlov:1976:CBP}
 J. K. Orlov, ``The connection between the {Pareto} distribution and the generalized {Zipf--Mandelbrot} law,'' \textit{Sakharthvelos SSR Mecnierebatha Akademiis Moambe} \textbf{83}: 57--60 (1976).
@@ -28491,7 +28491,7 @@ B. C. Brookes and J. M. Griffiths, ``\href{http://onlinelibrary.wiley.com/doi/10
 W.-C. Chen, ``On {Zipf}'s law,'' Ph.D. dissertation (University of Michigan, 1978).
 
 \bibitem[9444]{Elshoff:1978:SSC}
-J. L. Elshoff, ``\href{http://dx.doi.org/http://doi.acm.org/10.1145/987515.987518}{A study of the structural composition of {PL/I} programs},'' \textit{ACM SIG{\-}PLAN Notices} \textbf{13}: 29--37 (1978).
+J. L. Elshoff, ``\href{https://doi.org/http://doi.acm.org/10.1145/987515.987518}{A study of the structural composition of {PL/I} programs},'' \textit{ACM SIG{\-}PLAN Notices} \textbf{13}: 29--37 (1978).
 
 \bibitem[9445]{Heaps:1978:IRC}
 H. S. Heaps, \textit{Information retrieval, computational and theoretical aspects} (Academic Press, 1978).
@@ -28509,7 +28509,7 @@ W. B. Samson and R. H. Davis, ``\href{http://www3.oup.co.uk/computer_journal/hdb
 P. Diaconis and D. Freedman, ``\href{http://www.jstor.org/stable/2284288}{On Rounding Percentages},'' \textit{Journal of the American Statistical Association} \textbf{74}: 359--364 (1979). The authors extend prior work on correctness of sums of rounded percentages \cite{Mosteller:1967:DSR}, and criticize biased rounding practices in \cite{Benford:1938:LAN}.
 
 \bibitem[9450]{Mohanty:1979:MMQ}
-S. N. Mohanty, ``\href{http://dx.doi.org/http://doi.acm.org/10.1145/356778.356783}{Models and Measurements for Quality Assessment of Software},'' \textit{ACM Computing Surveys} \textbf{11}: 251--275 (1979). See also \cite{Dunn:1980:SFW,Mohanty:1980:SFW}.
+S. N. Mohanty, ``\href{https://doi.org/http://doi.acm.org/10.1145/356778.356783}{Models and Measurements for Quality Assessment of Software},'' \textit{ACM Computing Surveys} \textbf{11}: 251--275 (1979). See also \cite{Dunn:1980:SFW,Mohanty:1980:SFW}.
 
 \bibitem[9451]{Radhakrishnan:1979:LLC}
 T. Radhakrishnan and R. Kernizan, ``\href{http://dx.doi.org/10.1002/asi.4630300109}{{Lotka's Law} and Computer Science Literature},'' \textit{Journal of the American Society for Information Science} \textbf{30}: 51--54 (1979).
@@ -28530,7 +28530,7 @@ B. C. Brookes, ``\href{http://jis.sagepub.com/content/2/6/269.abstract}{The foun
 W. C. Chen, ``\href{http://www.jstor.org/stable/3212955}{On the weak form of {Zipf}'s law},'' \textit{Journal of Applied Probability} \textbf{17}: 611--622 (1980).
 
 \bibitem[9457]{Dunn:1980:SFW}
-S. Dunn, ``\href{http://dx.doi.org/http://doi.acm.org/10.1145/356810.356817}{Surveyor's Forum: {Working} on Interpretations},'' \textit{ACM Computing Surveys} \textbf{12}: 255 (1980). See \cite{Mohanty:1979:MMQ,Mohanty:1980:SFW}.
+S. Dunn, ``\href{https://doi.org/http://doi.acm.org/10.1145/356810.356817}{Surveyor's Forum: {Working} on Interpretations},'' \textit{ACM Computing Surveys} \textbf{12}: 255 (1980). See \cite{Mohanty:1979:MMQ,Mohanty:1980:SFW}.
 
 \bibitem[9458]{Leimkuhler:1980:EFB}
 F. F. Leimkuhler, ``\href{http://dx.doi.org/10.1108/eb026699}{An Exact Formulation of {Bradford's Law}},'' \textit{Journal of Documentation} \textbf{36}: 285--292 (1980).
@@ -28539,7 +28539,7 @@ F. F. Leimkuhler, ``\href{http://dx.doi.org/10.1108/eb026699}{An Exact Formulati
 A. F. McKee, ``\href{http://dx.doi.org/10.1108/eb013878}{The {Pareto} Optimum: Reconcilable with Social Thought?},'' \textit{International Journal of Social Economics} \textbf{7}: 366--375 (1980).
 
 \bibitem[9460]{Mohanty:1980:SFW}
-S. Mohanty, ``\href{http://dx.doi.org/http://doi.acm.org/10.1145/356810.356818}{Surveyor's Forum: {Working} on Interpretations},'' \textit{ACM Computing Surveys} \textbf{12}: 256 (1980). See \cite{Mohanty:1979:MMQ,Dunn:1980:SFW}.
+S. Mohanty, ``\href{https://doi.org/http://doi.acm.org/10.1145/356810.356818}{Surveyor's Forum: {Working} on Interpretations},'' \textit{ACM Computing Surveys} \textbf{12}: 256 (1980). See \cite{Mohanty:1979:MMQ,Dunn:1980:SFW}.
 
 \bibitem[9461]{Brookes:1981:FIS}
 B. C. Brookes, ``\href{http://jis.sagepub.com/content/3/1/3}{The foundations of information science. {Part IV}. {Information} science: the changing paradigm},'' \textit{Journal of Information Science, Principles and Practice} \textbf{3}: 3--12 (1981).
@@ -28620,7 +28620,7 @@ M. G. Boroda and A. A. Polikarpov, ``The {Zipf--Mandelbrot} law and units of dif
 B. C. Brookes, ``\href{http://www.sciencedirect.com/science/article/pii/0306457384900384}{Ranking techniques and the empirical log law},'' \textit{Information Processing and Management} \textbf{20}: 37--46 (1984).
 
 \bibitem[9487]{Bunt:1984:MPL}
-R. B. Bunt, J. M. Murphy, and S. Majumdar, ``\href{http://dx.doi.org/http://doi.acm.org/10.1145/1031382.809311}{A measure of program locality and its application},'' \textit{ACM SIGMETRICS Performance Evaluation Review} \textbf{12}: 28--40 (1984).
+R. B. Bunt, J. M. Murphy, and S. Majumdar, ``\href{https://doi.org/http://doi.acm.org/10.1145/1031382.809311}{A measure of program locality and its application},'' \textit{ACM SIGMETRICS Performance Evaluation Review} \textbf{12}: 28--40 (1984).
 
 \bibitem[9488]{Cohen:1984:PNF}
 D. I. A. Cohen and T. M. Katz, ``\href{http://dx.doi.org/10.1016/0022-314X(84)90061-1}{Prime numbers and the first digit phenomenon},'' \textit{Journal of Number Theory} \textbf{18}: 261--268 (1984).
@@ -29217,7 +29217,7 @@ M. J. Nigrini, ``Continuous Auditing,'' Ernst \& Young Center for Auditing Resea
 M. J. Nigrini, \textit{Digital analysis using {Benford}'s law: tests and statistics for auditors} (Global Audit Publications, 2000).
 
 \bibitem[9686]{Padmanabhan:2000:CAD}
-V. N. Padmanabhan and L. Qiu, ``\href{http://dx.doi.org/http://doi.acm.org/10.1145/339331.339405}{The content and access dynamics of a busy {Web} server (poster session)},'' \textit{ACM SIGMETRICS Performance Evaluation Review} \textbf{28}: 122--123 (2000).
+V. N. Padmanabhan and L. Qiu, ``\href{https://doi.org/http://doi.acm.org/10.1145/339331.339405}{The content and access dynamics of a busy {Web} server (poster session)},'' \textit{ACM SIGMETRICS Performance Evaluation Review} \textbf{28}: 122--123 (2000).
 
 \bibitem[9687]{Sole:2000:SLH}
 R. V. Sol{\'e} and B. Goodwin, \textit{Signs of Life: How Complexity Pervades Biology} (Basic Books, 2000).
@@ -29475,7 +29475,7 @@ D. Swanson, M. J. Cho, and J. Eltinge, ``Detecting possibly fraudulent or error-
 S.-J. Wu and C.-T. Chang, ``Inference in the {Pareto} distribution based on progressive {Type II} censoring with random removals,'' \textit{Journal of Applied Statistics} \textbf{30}: 163--172 (2003).
 
 \bibitem[9773]{Wu:2003:PDC}
-W. B. Wu and C. V. Ravishankar, ``\href{http://dx.doi.org/http://doi.acm.org/10.1145/876638.876641}{The performance of difference coding for sets and relational tables},'' \textit{Journal of the ACM} \textbf{50}: 665--693 (2003).
+W. B. Wu and C. V. Ravishankar, ``\href{https://doi.org/http://doi.acm.org/10.1145/876638.876641}{The performance of difference coding for sets and relational tables},'' \textit{Journal of the ACM} \textbf{50}: 665--693 (2003).
 
 \bibitem[9774]{Aoyama:2004:KDP}
 H. Aoyama, Y. Fujiwara, and W. Souma, ``\href{http://www.sciencedirect.com/science/article/pii/S0378437104009185}{Kinematics and dynamics of {Pareto--Zipf}'s law and {Gibrat}'s law},'' \textit{Physica A: Statistical Mechanics and its Applications} \textbf{344}: 117--121 (2004).
@@ -29589,7 +29589,7 @@ C. J. Skousen, L. Guan, and T. S. Wetzel, ``\href{http://dx.doi.org/10.1111/j.14
 H. C. Tijms, \textit{Understanding probability: chance rules in everyday life} (Cambridge University Press, 2004).
 
 \bibitem[9811]{Vanichpun:2004:OCU}
-S. Vanichpun and A. M. Makowski, ``\href{http://dx.doi.org/http://doi.acm.org/10.1145/1012888.1005722}{The output of a cache under the independent reference model: where did the locality of reference go?},'' \textit{ACM SIGMETRICS Performance Evaluation Review} \textbf{32}: 295--306 (2004).
+S. Vanichpun and A. M. Makowski, ``\href{https://doi.org/http://doi.acm.org/10.1145/1012888.1005722}{The output of a cache under the independent reference model: where did the locality of reference go?},'' \textit{ACM SIGMETRICS Performance Evaluation Review} \textbf{32}: 295--306 (2004).
 
 \bibitem[9812]{Anonymous:2005:UZL}
 Anonymous, ``\href{http://www.sciencedirect.com/science/article/pii/S0003347204003471}{The use of {Zipf}'s law in animal communication analysis},'' \textit{Animal Behaviour} \textbf{69}: ?? (2005).
@@ -29628,7 +29628,7 @@ M. Ciofalo, ``Entropy, {Benford}'s first digit law, and the distribution of ever
 R. Cleary and J. C. Thibodeau, ``\href{http://aaapubs.org/loi/ajpt; http://link.aip.org/link/AJPTXX/v24/i1/p77/s1}{Applying Digital Analysis Using {Benford's Law} to Detect Fraud: The Dangers of Type {I} Errors},'' \textit{Auditing: A Journal of Practice \& Theory} \textbf{24}: 77--81 (2005).
 
 \bibitem[9824]{Cohen:2005:PCL}
-E. Cohen and C. Lund, ``\href{http://dx.doi.org/http://doi.acm.org/10.1145/1064212.1064222}{Packet classification in large {ISPs}: design and evaluation of decision tree classifiers},'' \textit{ACM SIGMETRICS Performance Evaluation Review} \textbf{33}: 73--84 (2005).
+E. Cohen and C. Lund, ``\href{https://doi.org/http://doi.acm.org/10.1145/1064212.1064222}{Packet classification in large {ISPs}: design and evaluation of decision tree classifiers},'' \textit{ACM SIGMETRICS Performance Evaluation Review} \textbf{33}: 73--84 (2005).
 
 \bibitem[9825]{Dahui:2005:TRZ}
 W. Dahui, L. Menghui, and D. Zengru, ``\href{http://www.sciencedirect.com/science/article/pii/S0378437105004085}{True reason for {Zipf}'s law in language},'' \textit{Physica A: Statistical Mechanics and its Applications} \textbf{358}: 545--550 (2005).
@@ -29790,7 +29790,7 @@ J. Gaite, ``\href{http://www.sciencedirect.com/science/article/pii/S016727890600
 L. Gan, D. Li, and S. Song, ``\href{http://www.sciencedirect.com/science/article/pii/S0165176506000772}{Is the {Zipf} law spurious in explaining city-size distributions?},'' \textit{Economics Letters} \textbf{92}: 256--262 (2006).
 
 \bibitem[9878]{Handurukande:2006:PSB}
-S. B. Handurukande, A.-M. Kermarrec, F. {Le Fessant}, L. Massouli{\'e}, and S. Patarin, ``\href{http://dx.doi.org/http://doi.acm.org/10.1145/1218063.1217970}{Peer sharing behaviour in the {eDonkey} network, and implications for the design of server-less file sharing systems},'' \textit{Operating Systems Review} \textbf{40}: 359--371 (2006).
+S. B. Handurukande, A.-M. Kermarrec, F. {Le Fessant}, L. Massouli{\'e}, and S. Patarin, ``\href{https://doi.org/http://doi.acm.org/10.1145/1218063.1217970}{Peer sharing behaviour in the {eDonkey} network, and implications for the design of server-less file sharing systems},'' \textit{Operating Systems Review} \textbf{40}: 359--371 (2006).
 
 \bibitem[9879]{Harremoes:2006:ZLH}
 P. Harremo{\"e}s and F. Topsoe, ``{Zipf}'s law, hyperbolic distributions and entropy loss,'' in \textit{General theory of information transfer and combinatorics}, vol.~4123, R. Ahlswede, ed., Lecture Notes in Computer Science, pp.~788--792 (Spring{\-}er-Ver{\-}lag, 2006).
@@ -29874,7 +29874,7 @@ W. R. {Mebane, Jr.}, ``Election Forensics: Vote Counts and {Benford's Law},'' in
 A. Mellor, ``\href{http://www.sciencedirect.com/science/article/pii/S0346251X06000674}{Book Review: {G. K. Zipf, \booktitle The Psycho-biology of Language (1935) MIT Press, Cambridge, MA}},'' \textit{System} \textbf{34}: 455--457 (2006).
 
 \bibitem[9906]{Metwally:2006:IES}
-A. Metwally, D. Agrawal, and A. {El Abbadi}, ``\href{http://dx.doi.org/http://doi.acm.org/10.1145/1166074.1166084}{An integrated efficient solution for computing frequent and top-$k$ elements in data streams},'' \textit{ACM Transactions on Database Systems} \textbf{31}: 1095--1133 (2006). See comments in \cite{Liu:2010:CIE}.
+A. Metwally, D. Agrawal, and A. {El Abbadi}, ``\href{https://doi.org/http://doi.acm.org/10.1145/1166074.1166084}{An integrated efficient solution for computing frequent and top-$k$ elements in data streams},'' \textit{ACM Transactions on Database Systems} \textbf{31}: 1095--1133 (2006). See comments in \cite{Liu:2010:CIE}.
 
 \bibitem[9907]{Miller:2006:MCL}
 S. J. Miller and M. J. Nigrini, ``\href{http://adsabs.harvard.edu/abs/2006math......7686M; http://arxiv.org/abs/math/0607686}{The {Modulo 1 Central Limit Theorem} and {Benford's Law} for Products},'' \textit{International Journal of Algebra} \textbf{3}: 119--130 (2006).
@@ -29985,7 +29985,7 @@ D. E. Giles, ``\href{http://www.tandfonline.com/toc/rael20/current}{{Benford's L
 M. Grendar, G. Judge, and L. Schechter, ``\href{http://adsabs.harvard.edu/abs/2007PhyA..380..429G; http://www.sciencedirect.com/science/article/pii/S0378437107001963}{An empirical non-parametric likelihood family of data-based {Benford}-like distributions},'' \textit{Physica A: Statistical Mechanics and its Applications} \textbf{380}: 429--438 (2007).
 
 \bibitem[9943]{Guo:2007:DIM}
-L. Guo, E. Tan, S. Chen, Z. Xiao, and X. Zhang, ``\href{http://dx.doi.org/http://doi.acm.org/10.1145/1254882.1254929}{Does {Internet} media traffic really follow {Zipf}-like distribution?},'' \textit{ACM SIGMETRICS Performance Evaluation Review} \textbf{35}: 359--360 (2007).
+L. Guo, E. Tan, S. Chen, Z. Xiao, and X. Zhang, ``\href{https://doi.org/http://doi.acm.org/10.1145/1254882.1254929}{Does {Internet} media traffic really follow {Zipf}-like distribution?},'' \textit{ACM SIGMETRICS Performance Evaluation Review} \textbf{35}: 359--360 (2007).
 
 \bibitem[9944]{Gupta:2007:IMS}
 A. K. Gupta and S. Nadarajah, ``Information matrices for some bivariate {Pareto} distributions,'' \textit{Applied Mathematics and Computation} \textbf{184}: 1069--1079 (2007).
@@ -30078,7 +30078,7 @@ S.-M. Huang, D. C. Yen, L.-W. Yang, and J.-S. Hua, ``\href{http://www.sciencedir
 H. Humenberger, ``\href{http://www.oemg.ac.at/DK/Didaktikhefte/2008%2520Band%252041/VortragHumenberger.pdf}{{Eine elementarmathematische Begr{\"u}ndung des Benford-Gesetzes}. ({German}) [{An} elementary mathematical derivation of the {Benford Law}]},'' \textit{Der Mathematikunterricht} \textbf{54}: 24--34 (2008).
 
 \bibitem[9974]{Ipeirotis:2008:CAH}
-P. G. Ipeirotis and L. Gravano, ``\href{http://dx.doi.org/http://doi.acm.org/10.1145/1344411.1344412}{Classification-aware hidden-web text database selection},'' \textit{ACM Transactions on Information Systems} \textbf{26}: 6:1--6:?? (2008).
+P. G. Ipeirotis and L. Gravano, ``\href{https://doi.org/http://doi.acm.org/10.1145/1344411.1344412}{Classification-aware hidden-web text database selection},'' \textit{ACM Transactions on Information Systems} \textbf{26}: 6:1--6:?? (2008).
 
 \bibitem[9975]{Jager:2008:DAD}
 H. Jager and P. Liardet, ``\href{http://www.sciencedirect.com/science/article/pii/S138572588880026X}{Distributions arithm{\'e}tiques des d{\'e}nominateurs de convergents de fractions continues. ({French}) [Arithmetic distributions of the denominators of continued fractions]},'' \textit{Proceedings of the Koninklijke Nederlandse Akademie van Wetenschappen, Series A, Indagationes mathematicae} \textbf{91}: 181--197 (2008).
@@ -30087,7 +30087,7 @@ H. Jager and P. Liardet, ``\href{http://www.sciencedirect.com/science/article/pi
 D. Jang, J. U. Kang, A. Kruckman, J. Kudo, and S. J. Miller, ``\href{http://adsabs.harvard.edu/abs/2008arXiv0805.4226J; http://arxiv.org/abs/0805.4226}{Chains of distributions, hierarchical {Bayesian} models and {Benford's Law}},'' \textit{ArXiv e-prints} \textbf{???}: ??? (2008).
 
 \bibitem[9977]{Jelenkovic:2008:CMS}
-P. R. Jelenkovi{\'c} and X. Kang, ``\href{http://dx.doi.org/http://doi.acm.org/10.1145/1453175.1453203}{Characterizing the miss sequence of the {LRU} cache},'' \textit{ACM SIGMETRICS Performance Evaluation Review} \textbf{36}: 119--121 (2008).
+P. R. Jelenkovi{\'c} and X. Kang, ``\href{https://doi.org/http://doi.acm.org/10.1145/1453175.1453203}{Characterizing the miss sequence of the {LRU} cache},'' \textit{ACM SIGMETRICS Performance Evaluation Review} \textbf{36}: 119--121 (2008).
 
 \bibitem[9978]{Kafri:2008:SIS}
 O. Kafri, ``\href{http://arxiv.org/abs/0805.3206}{Sociological Inequality and the {Second Law}},'' \textit{ArXiv e-prints} \textbf{???}: ??? (2008).
@@ -30165,7 +30165,7 @@ C. Watrin, R. Struffert, and R. Ullmann, ``\href{http://dx.doi.org/10.1007/s1184
 C. Altamirano and A. Robledo, ``Generalized Thermodynamics Underlying the Laws of {Zipf} and {Benford},'' in \textit{Complex Sciences}, J. Zhou, ed. \textbf{5}, pp.~2232--?? (2009). 
 
 \bibitem[10003]{Anderson:2009:CRC}
-T. Anderson, ``\href{http://dx.doi.org/http://doi.acm.org/10.1145/1531793.1531815}{Conference reviewing considered harmful},'' \textit{Operating Systems Review} \textbf{43}: 108--116 (2009).
+T. Anderson, ``\href{https://doi.org/http://doi.acm.org/10.1145/1531793.1531815}{Conference reviewing considered harmful},'' \textit{Operating Systems Review} \textbf{43}: 108--116 (2009).
 
 \bibitem[10004]{Battersby:2009:SAH}
 S. Battersby, ``\href{http://www.sciencedirect.com/science/article/pii/S0262407909616821}{Statistical analyses hint at fraud in {Iranian} election},'' \textit{New Scientist} \textbf{202}: 10--?? (2009).
@@ -30195,7 +30195,7 @@ S. Chakravorty and V. Sridharan, ``\href{http://www.sciencedirect.com/science/ar
 M. C. Chou, Q. Kong, C.-P. Teo, Z. Wang, and H. Zheng, ``\href{http://link.springer.com/article/10.1007/s10899-009-9145-9}{{Benford's Law} and Number Selection in Fixed-Odds Numbers Game},'' \textit{Journal of Gambling Studies} \textbf{25}: 503--521 (2009).
 
 \bibitem[10013]{Chuang:2009:FPS}
-K.-T. Chuang, H.-L. Chen, and M.-S. Chen, ``\href{http://dx.doi.org/http://doi.acm.org/10.1145/1460797.1460798}{Feature-preserved sampling over streaming data},'' \textit{ACM Transactions on Knowledge Discovery from Data (TKDD)} \textbf{2}: 15:1--15:?? (2009).
+K.-T. Chuang, H.-L. Chen, and M.-S. Chen, ``\href{https://doi.org/http://doi.acm.org/10.1145/1460797.1460798}{Feature-preserved sampling over streaming data},'' \textit{ACM Transactions on Knowledge Discovery from Data (TKDD)} \textbf{2}: 15:1--15:?? (2009).
 
 \bibitem[10014]{Clauset:2009:PLDb}
 A. Clauset, C. R. Shalizi, and M. E. J. Newman, ``\href{http://dx.doi.org/10.1137/070710111}{Power-Law Distributions in Empirical Data},'' \textit{SIAM Review} \textbf{51}: 661--703 (2009).
@@ -30315,7 +30315,7 @@ T. Tao, ``{Benford}'s law, {Zipf}'s law, and the {Pareto} distribution'' (2009).
 K.-H. T{\"o}dter, ``\href{http://dx.doi.org/10.1111/j.1468-0475.2009.00475.x}{{Benford's Law} as an Indicator of Fraud in Economics},'' \textit{German Economic Review} \textbf{10}: 339--351 (2009).
 
 \bibitem[10053]{Xie:2009:FAS}
-T. Xie and Y. Sun, ``\href{http://dx.doi.org/http://doi.acm.org/10.1145/1629075.1629079}{A file assignment strategy independent of workload characteristic assumptions},'' \textit{ACM Transactions on Storage} \textbf{5}: 10:1--10:?? (2009).
+T. Xie and Y. Sun, ``\href{https://doi.org/http://doi.acm.org/10.1145/1629075.1629079}{A file assignment strategy independent of workload characteristic assumptions},'' \textit{ACM Transactions on Storage} \textbf{5}: 10:1--10:?? (2009).
 
 \bibitem[10054]{Zhang:2009:ZDT}
 J. Zhang, Q. Chen, and Y. Wang, ``\href{http://www.sciencedirect.com/science/article/pii/S0378437109000806}{{Zipf} distribution in top {Chinese} firms and an economic explanation},'' \textit{Physica A: Statistical Mechanics and its Applications} \textbf{388}: 2020--2024 (2009).
@@ -30438,7 +30438,7 @@ E. Kriel, ``\href{http://www.sciencedirect.com/science/article/pii/S146708951000
 J. Lee, W. K. T. Cho, and G. G. Judge, ``\href{http://www.sciencedirect.com/science/article/pii/S0167715209003563}{{Stigler}'s approach to recovering the distribution of first significant digits in natural data sets},'' \textit{Statistics \& Probability Letters} \textbf{80}: 82--88 (2010).
 
 \bibitem[10094]{Liu:2010:CIE}
-H. Liu, X. Wang, and Y. Yang, ``\href{http://dx.doi.org/http://doi.acm.org/10.1145/1735886.1735894}{Comments on {``An integrated efficient solution for computing frequent and top-$k$ elements in data streams''}},'' \textit{ACM Transactions on Database Systems} \textbf{35}: 15:1--15:?? (2010). See \cite{Metwally:2006:IES}.
+H. Liu, X. Wang, and Y. Yang, ``\href{https://doi.org/http://doi.acm.org/10.1145/1735886.1735894}{Comments on {``An integrated efficient solution for computing frequent and top-$k$ elements in data streams''}},'' \textit{ACM Transactions on Database Systems} \textbf{35}: 15:1--15:?? (2010). See \cite{Metwally:2006:IES}.
 
 \bibitem[10095]{Lu:2010:BLP}
 O. F. Lu and D. E. Giles, ``\href{http://www.tandfonline.com/doi/abs/10.1080/13504850802631814}{{Benford's Law} and psychological barriers in certain {eBay} auctions},'' \textit{Applied Economics Letters} \textbf{17}: 1005--1008 (2010).
@@ -33072,13 +33072,13 @@ I. Hickson, ``Web Storage,'' World Wide Web Consortium, Tech.\ Report ??? (2009)
 D. B. Terry and D. G. Baker, ``Active tioga documents: an exploration of two paradigms,'' \textit{Electronic Publishing---Origination, Dissemination, and Design} \textbf{3}: 105--122 (1990).
 
 \bibitem[11022]{Bier:EmbeddedButtons}
-E. A. Bier, ``\href{http://dx.doi.org/http://doi.acm.org/10.1145/146486.146547}{EmbeddedButtons: supporting buttons in documents},'' \textit{ACM Trans. Inf. Syst.} \textbf{10}: 381--407 (1992).
+E. A. Bier, ``\href{https://doi.org/http://doi.acm.org/10.1145/146486.146547}{EmbeddedButtons: supporting buttons in documents},'' \textit{ACM Trans. Inf. Syst.} \textbf{10}: 381--407 (1992).
 
 \bibitem[11023]{Brandt:OpportunisticProgramming}
 J. Brandt, P. J. Guo, J. Lewenstein, M. Dontcheva, and S. R. Klemmer, ``Two studies of opportunistic programming: interleaving web foraging, learning, and writing code,'' in \textit{Proceedings of the SIGCHI Conference on Human Factors in Computing Systems}, in CHI '09, pp.~1589--1598 (2009). 
 
 \bibitem[11024]{Karger:VizStandards}
-D. R. Karger, ``\href{http://dx.doi.org/http://doi.acm.org/10.1098/rsta.2012.0381}{Standards Opportunities around Data-bearing Web Pages},'' \textit{Philosophical Transactions of the Royal Society A} \textbf{371}: -- (2013).
+D. R. Karger, ``\href{https://doi.org/http://doi.acm.org/10.1098/rsta.2012.0381}{Standards Opportunities around Data-bearing Web Pages},'' \textit{Philosophical Transactions of the Royal Society A} \textbf{371}: -- (2013).
 
 \bibitem[11025]{Karger:Disks}
 T. Jones and D. R. Karger, ``Linear-Time Poisson-Disk Patterns,'' \textit{Journal of Graphics, GPU, and Game Tools} \textbf{15}: 177--182 (2011).
@@ -33153,7 +33153,7 @@ R. Miller, V. Chou, M. Bernstein, G. Little, M. Van Kleek, D. Karger, and m. sch
 M. Van Kleek, P. Andre, M. Perttunen, D. Karger, R. Miller, and m. schraefel, ``AtomsMasher: Personal Reactive Automation for the Web'' (2008). Poster.
 
 \bibitem[11050]{Karger:Scraps}
-M. Bernstein, M. Van Kleek, D. R. Karger, and m. schraefel, ``\href{http://dx.doi.org/http://doi.acm.org/10.1145/1402256.1402263}{Information Scraps: How and Why Information Eludes our Personal Information Management Tools},'' \textit{ACM Transactions on Information Systems} \textbf{26}: 1--46 (2008). special issue on PIM
+M. Bernstein, M. Van Kleek, D. R. Karger, and m. schraefel, ``\href{https://doi.org/http://doi.acm.org/10.1145/1402256.1402263}{Information Scraps: How and Why Information Eludes our Personal Information Management Tools},'' \textit{ACM Transactions on Information Systems} \textbf{26}: 1--46 (2008). special issue on PIM
 
 \bibitem[11051]{Karger:FixedPrecisionBinPacking}
 D. R. Karger and J. Scott, ``Efficient Algorithms for Fixed-Precision Instances of Bin Packing and Euclidean TSP,'' in \textit{11th International Workshop on Approximation Algorithms for Combinatorial Optimization Problems (RANDOM/APPROX)} (2008). 
@@ -33348,7 +33348,7 @@ D. R. Karger, R. Motwani, and M. Sudan, ``Approximate Graph Coloring by Semidefi
 A. Blum and D. R. Karger, ``Improved approximation for graph coloring,'' \textit{Information Processing Letters} \textbf{61}: 49--53 (1997).
 
 \bibitem[11115]{Karger:Contraction}
-D. R. Karger and C. Stein, ``\href{http://dx.doi.org/http://doi.acm.org/10.1145/234533.234534}{A New Approach to the Minimum Cut Problem},'' \textit{Journal of the ACM} \textbf{43}: 601--640 (1996). Preliminary portions appeared in SODA 1992 and STOC 1993
+D. R. Karger and C. Stein, ``\href{https://doi.org/http://doi.acm.org/10.1145/234533.234534}{A New Approach to the Minimum Cut Problem},'' \textit{Journal of the ACM} \textbf{43}: 601--640 (1996). Preliminary portions appeared in SODA 1992 and STOC 1993
 
 \bibitem[11116]{Karger:Connectivity-Conf}
 D. R. Karger, N. Nisan, and M. Parnas, ``Fast Connected Components Algorithms for the {EREW} {PRAM},'' in \textit{Proceedings of the  {$4^{th}$} Annual {ACM}-{SIAM} Symposium on Parallel Algorithms and Architectures}, pp.~562--572 (1992). 
@@ -33657,7 +33657,7 @@ D. R. Karger and D. Panigrahi, ``A near-linear time algorithm for constructing a
 R. Hariharan, T. Kavitha, D. Panigrahi, and A. Bhalgat, ``An {O}(mn) Gomory-Hu tree construction algorithm for unweighted graphs,'' in \textit{STOC '07: Proceedings of the thirty-ninth annual ACM symposium on Theory of computing}, pp.~605--614 (2007). 
 
 \bibitem[11218]{Karger:CACM-Data}
-D. R. Karger and W. Jones, ``\href{http://dx.doi.org/http://doi.acm.org/10.1145/1107458.1107496}{Data Unification in Personal Information Management},'' \textit{Communications of the ACM} \textbf{49}: 77--82 (2006).
+D. R. Karger and W. Jones, ``\href{https://doi.org/http://doi.acm.org/10.1145/1107458.1107496}{Data Unification in Personal Information Management},'' \textit{Communications of the ACM} \textbf{49}: 77--82 (2006).
 
 \bibitem[11219]{Ho:RandomLinearCoding}
 T. Ho, M. M\'{e}dard, R. Koetter, D. R. Karger, M. Effros, J. Shi, and B. Leong, ``A Random Linear Network Coding Approach to Multicast,'' \textit{IEEE Transactions on Information Theory} \textbf{52}: 4413--4430 (2006).
@@ -33837,7 +33837,7 @@ M. S. Bernstein, A. Marcus, D. R. Karger, and R. C. Miller, ``Enhancing directed
 M. Van Kleek, B. Moore, C. Xu, and D. R. Karger, ``Eyebrowse: real-time web activity sharing and visualization'' (2010). Poster
 
 \bibitem[11279]{Karger:Speakup-journal}
-M. Walfish, M. Vutukuru, H. Balakrishnan, D. Karger, and S. Shenker, ``\href{http://dx.doi.org/http://doi.acm.org/10.1145/1731060.1731063}{DDoS defense by offense},'' \textit{ACM Trans. Comput. Syst.} \textbf{28}: 1--54 (2010).
+M. Walfish, M. Vutukuru, H. Balakrishnan, D. Karger, and S. Shenker, ``\href{https://doi.org/http://doi.acm.org/10.1145/1731060.1731063}{DDoS defense by offense},'' \textit{ACM Trans. Comput. Syst.} \textbf{28}: 1--54 (2010).
 
 \bibitem[11280]{Lucani:Gossip}
 D. E. Lucani, M. M\'{e}dard, M. Stojanovic, and D. R. Karger, ``Sharing information in time-division duplexing channels: a network coding approach,'' in \textit{Allerton'09: Proceedings of the 47th annual Allerton conference on Communication, control, and computing}, pp.~1403--1410 (2009). 
@@ -34926,7 +34926,7 @@ A. Recski, \textit{Matroid Theory and its Applications In Electric Network Theor
 J. H. Reif and P. Spirakis, ``Random Matroids,'' in \textit{Proceedings of the  {$12^{th}$} {ACM} Symposium on Theory of Computing}, pp.~385--397 (1980). 
 
 \bibitem[11642]{Ravasio:Desktops}
-P. Ravasio, S. G. Sch\"ar, and H. Krueger, ``\href{http://dx.doi.org/http://doi.acm.org/10.1145/1005361.1005363}{In pursuit of desktop evolution: User problems and practices with modern desktop systems},'' \textit{ACM Trans. Comput.-Hum. Interact.} \textbf{11}: 156--180 (2004).
+P. Ravasio, S. G. Sch\"ar, and H. Krueger, ``\href{https://doi.org/http://doi.acm.org/10.1145/1005361.1005363}{In pursuit of desktop evolution: User problems and practices with modern desktop systems},'' \textit{ACM Trans. Comput.-Hum. Interact.} \textbf{11}: 156--180 (2004).
 
 \bibitem[11643]{Resnick:GroupLens}
 P. Resnick, N. Iacovou, M. S. andPeter Bergstrom, and J. Riedl, ``GroupLens: An Open Architecture for Collaborative Filtering of Netnews,'' in \textit{ACM 1994 Conference on Computer Supported Cooperative Work}, pp.~175--186 (1994). server at {\tt http://www.cs.umn.edu/Research/GroupLens/}
@@ -35151,7 +35151,7 @@ E. F. Codd, ``A Relational Model of Data for Large Shared Data Banks,'' \textit{
 C. R. Anderson and E. Horvitz, ``Web montage: a dynamic personalized start page,'' in \textit{WWW '02: Proceedings of the 11th international conference on World Wide Web}, pp.~704--712 (2002). 
 
 \bibitem[11717]{Rooms}
-D. A. Henderson, Jr. and S. Card, ``\href{http://dx.doi.org/http://doi.acm.org/10.1145/24054.24056}{Rooms: the use of multiple virtual workspaces to reduce space contention in a window-based graphical user interface},'' \textit{ACM Trans. Graph.} \textbf{5}: 211--243 (1986).
+D. A. Henderson, Jr. and S. Card, ``\href{https://doi.org/http://doi.acm.org/10.1145/24054.24056}{Rooms: the use of multiple virtual workspaces to reduce space contention in a window-based graphical user interface},'' \textit{ACM Trans. Graph.} \textbf{5}: 211--243 (1986).
 
 \bibitem[11718]{Eriksson:Protege}
 and, ``Automatic Generation of Ontology Editors,'' in \textit{Proceedings of the 12th Banff Knowledge Acquisition Workshop} (1999). 
@@ -35358,7 +35358,7 @@ S. Dumais, E. Cutrell, and H. Chen, ``Optimizing search by showing results in co
 J. English, M. Hearst, R. Sinha, K. Searingen, and K.-P. Yee, ``Hierarchical Faceted Metadata in Site Search Interfaces,'' in \textit{CHI 2002, Minneapolis, Minnesota, USA} (2002). 
 
 \bibitem[11786]{Hearst02}
-M. Hearst, A. Elliott, J. English, R. Sinha, K. Swearingen, and K.-P. Yee, ``\href{http://dx.doi.org/http://doi.acm.org/10.1145/567498.567525}{Finding the flow in web site search},'' \textit{Communications of the ACM} \textbf{45}: 42--49 (2002).
+M. Hearst, A. Elliott, J. English, R. Sinha, K. Swearingen, and K.-P. Yee, ``\href{https://doi.org/http://doi.acm.org/10.1145/567498.567525}{Finding the flow in web site search},'' \textit{Communications of the ACM} \textbf{45}: 42--49 (2002).
 
 \bibitem[11787]{Hearst03}
 K.-P. Yee, K. Swearingen, K. Li, and M. Hearst, ``Faceted metadata for image search and browsing,'' in \textit{CHI '03: Proceedings of the SIGCHI conference on Human factors in computing systems}, pp.~401--408 (2003). 
@@ -35454,7 +35454,7 @@ G. W. Furnas and S. J. Rauch, ``Considerations for Information Environments and 
 P. Pirolli and S. Card, ``Information foraging in information access environments,'' in \textit{Conference proceedings on Human factors in computing systems}, pp.~51--58 (1995). 
 
 \bibitem[11818]{Previews99}
-C. Plaisant, B. Shneiderman, K. Doan, and T. Bruns, ``\href{http://dx.doi.org/http://doi.acm.org/10.1145/314516.314522}{Interface and data architecture for query preview in networked information systems},'' \textit{ACM Transactions on Information Systems (TOIS)} \textbf{17}: 320--341 (1999).
+C. Plaisant, B. Shneiderman, K. Doan, and T. Bruns, ``\href{https://doi.org/http://doi.acm.org/10.1145/314516.314522}{Interface and data architecture for query preview in networked information systems},'' \textit{ACM Transactions on Information Systems (TOIS)} \textbf{17}: 320--341 (1999).
 
 \bibitem[11819]{Pesto96}
 M. J. Carey, L. M. Haas, V. Maganty, and J. H. Williams, ``{PESTO}: An Integrated Query/Browser for Object Databases,'' in \textit{VLDB'96, Proceedings of 22th International Conference on Very Large Data Bases, September 3-6, 1996, Mumbai (Bombay), India}, T. M. Vijayaraman, A. P. Buchmann, C. Mohan, and N. L. Sarda, eds, pp.~203--214 (1996). 
@@ -35508,10 +35508,10 @@ S. Whittaker and C. Sidner, ``Email overload: exploring personal information man
 P. Buneman, ``Semistructured data,'' in \textit{Proceedings of the sixteenth ACM SIGACT-SIGMOD-SIGART symposium on Principles of database systems}, pp.~117--121 (1997). 
 
 \bibitem[11836]{Shneiderman98}
-B. Shneiderman, D. Byrd, and W. B. Croft, ``\href{http://dx.doi.org/http://doi.acm.org/10.1145/273035.273069}{Sorting out searching: a user-interface framework for text searches},'' \textit{Communications of the ACM} \textbf{41}: 95--98 (1998).
+B. Shneiderman, D. Byrd, and W. B. Croft, ``\href{https://doi.org/http://doi.acm.org/10.1145/273035.273069}{Sorting out searching: a user-interface framework for text searches},'' \textit{Communications of the ACM} \textbf{41}: 95--98 (1998).
 
 \bibitem[11837]{suciu98overview}
-D. Suciu, ``\href{http://dx.doi.org/http://doi.acm.org/10.1145/306198.306204}{An overview of semistructured data},'' \textit{ACM SIGACT News} \textbf{29}: 28--38 (1998).
+D. Suciu, ``\href{https://doi.org/http://doi.acm.org/10.1145/306198.306204}{An overview of semistructured data},'' \textit{ACM SIGACT News} \textbf{29}: 28--38 (1998).
 
 \bibitem[11838]{lore97}
 J. McHugh, S. Abiteboul, R. Goldman, D. Quass, and J. Widom, ``\href{citeseer.nj.nec.com/mchugh97lore.html}{Lore: A Database Management System for Semistructured Data},'' \textit{SIGMOD Record} \textbf{26}: 54--66 (1997).
@@ -35550,7 +35550,7 @@ J. J. Rocchio, ``Relevance feedback in information retrieval,'' in \textit{???},
 J. Hammer, J. McHugh, and H. Garcia-Molina, ``Semistructured Data: The Tsimmis Experience,'' in \textit{Advances in Databases and Information Systems}, pp.~1--8 (1997). 
 
 \bibitem[11850]{DonNormanHumanError}
-D. A. Norman, ``\href{http://dx.doi.org/http://doi.acm.org/10.1145/2163.358092}{Design rules based on analyses of human error},'' \textit{Communications of the ACM} \textbf{26}: 254--258 (1983).
+D. A. Norman, ``\href{https://doi.org/http://doi.acm.org/10.1145/2163.358092}{Design rules based on analyses of human error},'' \textit{Communications of the ACM} \textbf{26}: 254--258 (1983).
 
 \bibitem[11851]{XMLFrag}
 D. Carmel, Y. S. Maarek, M. Mandelbrod, Y. Mass, and A. Soffer, ``Searching {XML} documents via {XML} fragments,'' in \textit{Proceedings of the 26th annual international ACM SIGIR conference on Research and development in informaion retrieval}, pp.~151--158 (2003). 
@@ -35661,10 +35661,10 @@ B. L. Somberg, ``A comparison of rule-based and positionally constant arrangemen
 H. Liu and H. Lieberman, ``Metafor: visualizing stories as code,'' in \textit{IUI '05: Proceedings of the 10th international conference on Intelligent user interfaces}, pp.~305--307 (2005). 
 
 \bibitem[11887]{Sears94}
-A. Sears and B. Shneiderman, ``\href{http://dx.doi.org/http://doi.acm.org/10.1145/174630.174632}{Split menus: effectively using selection frequency to organize menus},'' \textit{ACM Trans. Comput.-Hum. Interact.} \textbf{1}: 27--51 (1994).
+A. Sears and B. Shneiderman, ``\href{https://doi.org/http://doi.acm.org/10.1145/174630.174632}{Split menus: effectively using selection frequency to organize menus},'' \textit{ACM Trans. Comput.-Hum. Interact.} \textbf{1}: 27--51 (1994).
 
 \bibitem[11888]{Mitchell89}
-J. Mitchell and B. Shneiderman, ``\href{http://dx.doi.org/http://doi.acm.org/10.1145/67243.67247}{Dynamic versus static menus: an exploratory comparison},'' \textit{SIGCHI Bull.} \textbf{20}: 33--37 (1989).
+J. Mitchell and B. Shneiderman, ``\href{https://doi.org/http://doi.acm.org/10.1145/67243.67247}{Dynamic versus static menus: an exploratory comparison},'' \textit{SIGCHI Bull.} \textbf{20}: 33--37 (1989).
 
 \bibitem[11889]{pane01studying}
 J. F. Pane, C. Ratanamahatana, and B. A. Myers, ``\href{citeseer.ist.psu.edu/pane00studying.html}{Studying the language and structure in non-programmers' solutions to programming problems},'' \textit{International Journal of Human Computer Studies} \textbf{54}: 237--264 (2001).
@@ -35685,7 +35685,7 @@ J. Kleinberg, S. R. Kumar, P. Raghavan, S. Rajagopalan, and A. Tomkins, ``The We
 A. Broder, R. Kumar, F. Maghoul, P. Raghavan, S. Rajagopalan, R. Stata, A. Tomkins, and J. Wiener, ``Graph structure in the Web,'' in \textit{Proceedings of the 9th international World Wide Web conference on Computer networks : the international journal of computer and telecommunications netowrking}, pp.~309--320 (2000). 
 
 \bibitem[11895]{Hearst:Clustering}
-M. A. Hearst, ``\href{http://dx.doi.org/http://doi.acm.org/10.1145/1121949.1121983}{Clustering versus faceted categories for information exploration},'' \textit{Communications of the ACM} \textbf{49}: 59--61 (2006).
+M. A. Hearst, ``\href{https://doi.org/http://doi.acm.org/10.1145/1121949.1121983}{Clustering versus faceted categories for information exploration},'' \textit{Communications of the ACM} \textbf{49}: 59--61 (2006).
 
 \bibitem[11896]{Kalyanpur:Swoop}
 A. Kalyanpur, B. Parsia, E. Sirin, B. Cuenca-Grau, and J. Hendler, ``Swoop: A 'Web' Ontology Editing Browser,'' \textit{Journal of Web Semantics} \textbf{4}: ??? (2005).

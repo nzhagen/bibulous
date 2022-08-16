@@ -1827,8 +1827,8 @@ class Bibdata(object):
             entry['endpage'] = endpage
 
         if ('doi' in entry) and self.options['autocomplete_doi']:
-            if not entry['doi'].startswith('http://dx.doi.org/'):
-                entry['doi'] = 'http://dx.doi.org/' + entry['doi']
+            if not entry['doi'].startswith('http://dx.doi.org/') and not entry['doi'].startswith('https://doi.org/'):
+                entry['doi'] = 'https://doi.org/' + entry['doi']
 
         if ('url' in entry) and self.options['autocomplete_url']:
             if not entry['url'].startswith('http://') and not entry['url'].startswith('https://'):
