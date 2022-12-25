@@ -25,8 +25,54 @@ Users can also consult the `guidelines for writing style templates <https://gith
 Another approach is to clone the git repository `<https://github.com/nzhagen/bibulous>`_ and place it into your Python path.
 For compiling bibliographies, the only file needed within the project is ``bibulous.py``, so that going to `<https://github.com/nzhagen/bibulous>`_ and simply copying `bibulous.py <https://github.com/nzhagen/bibulous/raw/master/bibulous.py>`_ from there is sufficient.
 
-Example
-=======
+Example of generating a LaTeX bibliography
+==========================================
+
+For a very basic LaTeX file such as the following (``test.tex``)::
+
+    \documentclass{article}
+    \begin{document}
+    \nocite{*}
+    \bibliographystyle{test}
+    \bibliography{test}
+    \end{document}
+
+and a database file (``test.bib``)::
+
+    @article {Aribi2018,
+        AUTHOR = {Aribi, Amine and Dragomir, Sorin},
+        TITLE = {Dirichlet and {N}eumann eigenvalue problems on {CR} manifolds},
+        JOURNAL = {Ric. Mat.},
+        VOLUME = {67},
+        YEAR = {2018},
+        NUMBER = {2},
+        PAGES = {285--320},
+        DOI = {10.1007/s11587-018-0420-x},
+    }
+
+we can try using the following style template file::
+
+    article = <au>, \enquote{<title>,} \textit{<journal>} \textbf{<volume>}: ...
+                [<startpage>--<endpage>|<startpage>|<eid>|] (<year>).[ <note>]
+    book = [<au>|<ed>|], \textit{<title>} (<publisher>, <year>)...
+                [, pp.~<startpage>--<endpage>].[ <note>]
+
+In order to generate the bibliography, we first compile the tex\latex file::
+
+    latex test.tex
+
+and then run Bibulous on the aux file::
+
+    bibulous.py test.aux
+
+which generates the file ``test.bbl`` based on ``test.bib`` and ``test.bst``. Finally, we recompile the tex\latex file::
+
+    latex test.tex
+
+which will now have the bibliography included.
+                
+Example of creating a custom bibliography style
+===============================================
 
 For a very simple bibliography, consisting of only journal articles and books, a complete style template file may consist of just two (wrapped) lines::
 
