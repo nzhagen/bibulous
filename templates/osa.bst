@@ -15,6 +15,7 @@ manual = [<au>|<ed>|<organization>|<institution>|], \textit{<title>}[, vol.~<vol
         [, pp.~<startpage>--<endpage>|, p.~<startpage>].[ <note>]
 mastersthesis = <au>, \enquote{<title>,} M.S. dissertation (<school>, <year>).[ <note>]
 misc = [<au>, ][\enquote{<title>}][ (<organization>, <year>)| (<year>)].[ <note>][ (url: \url{<url>})]
+note = <note>
 patent = <au>, \enquote{<title>,} <nationality> patent <number> (<year>).[ <note>]
 phdthesis = <au>, \enquote{<title>,} Ph.D. dissertation (<school>, <year>).[ <note>]
 poster = <au>, \enquote{<title>}, poster [presented at <conference>]([<month> ]<year>).[ <note>]
