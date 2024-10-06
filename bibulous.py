@@ -3653,7 +3653,7 @@ def enwrap_nested_quotes(s, disable=None, debug=False):
                 s = s[:left] + newstr + s[right:]
                 t += len(newstr) - len('}')
         else:
-            if (i < len('r\enquote{')-1) or (qlevels[i-1] < level):
+            if (i < len(r'\enquote{')-1) or (qlevels[i-1] < level):
                 left = i + t - len(r'\enquote{') + 1
                 right = i + t + 1
                 if (i > len(even_operators[0])):
