@@ -3814,10 +3814,10 @@ def latex_to_utf8(s):
     ## Characters with breve above. Note that the "\u" is problematic when using raw strings, so we use
     ## double-backslashes instead.
     if ('\\u' in s):
-        trans = {'\\u{A}':'Ă', '{\\u A}':'Ă', '\\u{a}':'ă',  '{\\u a}':'ă', '\\u{E}':'Ĕ', '{\\u E}':'Ĕ',
-                 '\\u{e}':'ĕ', '{\\u e}':'ĕ', '\\u{G}':'Ğ',  '{\\u G}':'Ğ', '\\u{g}':'ğ', '{\\u g}':'ğ',
-                 '\\u{I}':'Ĭ', '{\\u I}':'Ĭ', '\\u{\i}':'ĭ', '{\\u\i}':'ĭ', '\\u{O}':'Ŏ', '{\\u O}':'Ŏ',
-                 '\\u{o}':'ŏ', '{\\u o}':'ŏ', '\\u{U}':'Ŭ',  '{\\u U}':'Ŭ', '\\u{u}':'ŭ', '{\\u u}':'ŭ'}
+        trans = {'\\u{A}':'Ă', '{\\u A}':'Ă', '\\u{a}':'ă',   '{\\u a}':'ă',  '\\u{E}':'Ĕ', '{\\u E}':'Ĕ',
+                 '\\u{e}':'ĕ', '{\\u e}':'ĕ', '\\u{G}':'Ğ',   '{\\u G}':'Ğ',  '\\u{g}':'ğ', '{\\u g}':'ğ',
+                 '\\u{I}':'Ĭ', '{\\u I}':'Ĭ', '\\u{\\i}':'ĭ', '{\\u\\i}':'ĭ', '\\u{O}':'Ŏ', '{\\u O}':'Ŏ',
+                 '\\u{o}':'ŏ', '{\\u o}':'ŏ', '\\u{U}':'Ŭ',   '{\\u U}':'Ŭ',  '\\u{u}':'ŭ', '{\\u u}':'ŭ'}
 
         for c in trans:
             if c in s: s = s.replace(c, trans[c])
