@@ -2479,8 +2479,6 @@ class Bibdata(object):
                 return(self.options[option_name])
             else:
                 return(self.options['undefstr'])
-        else:
-            result = varname
         return(varname)
 
     ## =============================
