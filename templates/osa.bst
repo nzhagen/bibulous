@@ -13,11 +13,11 @@ inproceedings = <au>, \enquote{<title>,} in \textit{<booktitle>}[, <ed>][, in <s
 manual = [<au>|<ed>|<organization>|<institution>|], \textit{<title>}[, vol.~<volume>]...
         [, <edition.ordinal()>~ed.|, ver.~<version>][, <ed>] (<organization>, <year>)[, Chap.~<chapter>]...
         [, pp.~<startpage>--<endpage>|, p.~<startpage>].[ <note>]
-mastersthesis = <au>, \enquote{<title>,} M.S. dissertation (<school>, <year>).[ <note>]
-misc = [<au>, ][\enquote{<title>}][ (<organization>, <year>)| (<year>)].[ <note>][ (url: \url{<url>})]
+mastersthesis = <au>, \enquote{<title>,} M.S. dissertation ([<school>|<institution>|], <year>).[ <note>]
+misc = [<au>, ][\enquote{<title>}][ ([<organization>|<institution>|], <year>)| (<year>)].[ <note>][ (url: \url{<url>})]
 note = <note>
 patent = <au>, \enquote{<title>,} <nationality> patent <number> (<year>).[ <note>]
-phdthesis = <au>, \enquote{<title>,} Ph.D. dissertation (<school>, <year>).[ <note>]
+phdthesis = <au>, \enquote{<title>,} Ph.D. dissertation ([<school>|<institution>|], <year>).[ <note>]
 poster = <au>, \enquote{<title>}, poster [presented at <conference>]([<month> ]<year>).[ <note>]
 presentation = <au>, \enquote{<title>}, presentation [presented at <conference>]([<month> ]<year>).[ <note>]
 proceedings = <ed>, \textit{<title>}, [vol.~<volume>][, <edition.ordinal()>~ed.] (<year>).[ <note>]
@@ -47,7 +47,7 @@ undefstr = ???                            ## what string to replace undefined re
 replace_newlines = True                   ## whether to replace newline characters inside fields with spaces
 allow_scripts = False                     ## whether to allow user scripts in BST files
 case_sensitive_field_names = False        ## whether to allow field names to be case sensitive (i.e. so that "BOOK" will not be the same entrytype as "book")
-use_citeextract = False                    ## whether to automatically perform citation extraction each time Bibulous is run
+use_citeextract = False                   ## whether to automatically perform citation extraction each time Bibulous is run
 name_separator = and                      ## the string used to separate names in a BibTeX-format field of names
 
 VARIABLES:
