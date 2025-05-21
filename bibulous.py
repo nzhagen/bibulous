@@ -2691,15 +2691,7 @@ class Bibdata(object):
             elif (index_elements[0] == 'uniquify(1)'):
                 if (options['varname'] not in self.uniquify_vars):
                     self.uniquify_vars[options['varname']] = []
-
-                newfield = field + '1'
-                if (field+'1' in self.uniquify_vars[options['varname']]):
-                    q = 2
-                    while True:
-                        newfield = field + str(q)
-                        q += 1
-                        if (newfield not in self.uniquify_vars[options['varname']]):
-                            break
+                newfield = generate_unique_name(field, self.uniquify_vars[options['varname']], extension_type='1')
                 self.uniquify_vars[options['varname']].append(newfield)
                 #print('varname=%s, field=%s, newfield=%s' % (options['varname'], field, newfield))
                 if (nelements == 1):
@@ -2710,21 +2702,18 @@ class Bibdata(object):
             elif (index_elements[0] == 'uniquify(a)'):
                 if (options['varname'] not in self.uniquify_vars):
                     self.uniquify_vars[options['varname']] = []
-
-                newfield = field
-                if (field in self.uniquify_vars[options['varname']]):
-                    q = 1
-                    while True:
-                        if (i < 27):
-                            newfield = field + chr(q+96)               ## 97 == 'a', 98 == 'b', etc.
-                        elif (i < 52):
-                            newfield = field + chr(q+96) + chr(q+96)   ## double up if a single append doesn't work
-                        elif (i < 78):
-                            newfield = field + chr(q+96) + chr(q+96) + chr(q+96)   ## triple up if necessary
-                        newfield += str(q)
-                        q += 1
-                        if (newfield not in self.uniquify_vars[options['varname']]):
-                            break
+                newfield = generate_unique_name(field, self.uniquify_vars[options['varname']], extension_type='a')
+                self.uniquify_vars[options['varname']].append(newfield)
+                #print('varname=%s, field=%s, newfield=%s' % (options['varname'], field, newfield))
+                if (nelements == 1):
+                    return(newfield)
+                else:
+                    newindexer = '.'.join(index_elements[1:])
+                    return(self.get_indexed_variable(newfield, newindexer, entrykey, options=options))
+            elif (index_elements[0] == 'uniquify(A)'):
+                if (options['varname'] not in self.uniquify_vars):
+                    self.uniquify_vars[options['varname']] = []
+                newfield = generate_unique_name(field, self.uniquify_vars[options['varname']], extension_type='A')
                 self.uniquify_vars[options['varname']].append(newfield)
                 #print('varname=%s, field=%s, newfield=%s' % (options['varname'], field, newfield))
                 if (nelements == 1):
@@ -3963,7 +3952,6 @@ def brace_split(string, splitter=" "):
     return splits
 
 ## =============================
-
 def namestr_to_namedict(namestr, disable=None):
     '''
     Take a BibTeX string representing a single person's name and parse it into its first, middle, last, etc pieces.
@@ -4933,6 +4921,50 @@ def natural_keys(text):
     '''
     keys = [to_int_or_locale(c) for c in re.split('(-?\d+)', text)]
     return(keys)
+
+## =============================
+def generate_unique_name(name, namelist, extension_type='a'):
+    if (extension_type == '1'):
+        newname = name + '1'
+        if name+'1' in namelist:
+            q = 2
+            while True:
+                newname = name + str(q)
+                q += 1
+                if (newname not in namelist) or (q > 10000):
+                    break
+    elif (extension_type == 'a'):
+        newname = name
+        if name in namelist:
+            q = 1
+            while True:
+                if (q < 27):
+                    newname = name + chr(q+96)               ## 97 == 'a', 98 == 'b', etc.
+                elif (q < 52):
+                    ## Double up the tag if a single append doesn't work.
+                    newname = generate_unique_name(name+chr(q+96), namelist, extension_type=extension_type)
+                elif (q < 78):
+                    break
+                q += 1
+                if (newname not in namelist):
+                    break
+    elif (extension_type == 'A'):
+        newname = name
+        if name in namelist:
+            q = 1
+            while True:
+                if (q < 27):
+                    newname = name + chr(q+65)               ## 65 == 'A', 66 == 'B', etc.
+                elif (q < 52):
+                    ## Double up the tag if a single append doesn't work.
+                    newname = generate_unique_name(name+chr(q+65), namelist, extension_type=extension_type)
+                elif (q >= 78):
+                    break
+                q += 1
+                if (newname not in namelist):
+                    break
+
+    return(newname)
 
 ## ==================================================================================================
 
