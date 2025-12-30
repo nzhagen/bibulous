@@ -1063,12 +1063,12 @@ class Bibdata(object):
 
         if self.debug:
             ## When displaying the BST dictionary, show it in sorted form.
-            for key in sorted(self.bstdict, key=self.bstdict.get):
-                print('entrytype.' + key + ': ' + str(self.bstdict[key]))
-            for key in sorted(self.options, key=self.options.get):
-                print('options.' + key + ': ' + str(self.options[key]))
-            for key in sorted(self.specials, key=self.specials.get):
-                print('specials.' + key + ': ' + str(self.specials[key]))
+            for k, v in sorted(self.bstdict.items()):
+                print('entrytype.' + k + ': ' + str(v))
+            for k, v in sorted(self.options.items()):
+                print('options.' + k + ': ' + str(v))
+            for k, v in sorted(self.specials.items()):
+                print('specials.' + k + ': ' + str(v))
 
         return
 
