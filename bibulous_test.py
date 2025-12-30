@@ -115,10 +115,13 @@ def run_test4():
     target_bblfile = './test/test4_target.bbl'
 
     ## The default locale will be US english. Later below, we will try testing some other locale settings.
-    if (os.name == 'posix'):
-        thislocale = locale.setlocale(locale.LC_ALL, 'en_US.UTF8')
-    elif (os.name == 'nt'):
-        thislocale = locale.setlocale(locale.LC_ALL, 'usa_usa')
+    try:
+        if (os.name == 'posix'):
+            thislocale = locale.setlocale(locale.LC_ALL, 'en_US.UTF8')
+        elif (os.name == 'nt'):
+            thislocale = locale.setlocale(locale.LC_ALL, 'usa_usa')
+    except:
+        thislocale = 'default'
 
     ## Need to make a list of all the citation sort options we want to try. Skip "citenum" since that is the default,
     ## and so has been tested already. Note: In the "uniquify" example below, the .upper() operator is needed to force the
@@ -252,10 +255,13 @@ def run_test7():
     target_bblfile = './test/test7_target.bbl'
 
     ## The default locale will be US english. Later below, we will try testing some other locale settings.
-    if (os.name == 'posix'):
-        thislocale = locale.setlocale(locale.LC_ALL, 'en_US.UTF8')
-    elif (os.name == 'nt'):
-        thislocale = locale.setlocale(locale.LC_ALL, 'usa_usa')
+    try:
+        if (os.name == 'posix'):
+            thislocale = locale.setlocale(locale.LC_ALL, 'en_US.UTF8')
+        elif (os.name == 'nt'):
+            thislocale = locale.setlocale(locale.LC_ALL, 'usa_usa')
+    except:
+        thislocale = 'default'
 
     ## Need to make a list of all the citation label options we want to try. Skip "citenum" since that is the default,
     ## and so has been tested already.
