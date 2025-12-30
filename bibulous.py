@@ -4970,24 +4970,27 @@ def generate_unique_name(name, namelist, extension_type='a'):
 
 if (__name__ == '__main__'):
     print('sys.argv=', sys.argv)
+    debug = False
     uselocale = None
-    if (len(sys.argv) > 1):
-        try:
-            (opts, args) = getopt.getopt(sys.argv[1:], '', ['locale='])
-        except getopt.GetoptError as err:
-            ## Print help information and exit.
-            print(err)              ## this will print something like "option -a not recognized"
-            print('Bibulous can be called with')
-            print('    bibulous.py --locale=mylocale myfile.aux')
-            print('where "locale" is an optional variable.')
-            sys.exit(2)
+    try:
+        (opts, args) = getopt.getopt(sys.argv[1:], '', ['debug', 'locale='])
+    except getopt.GetoptError as err:
+        ## Print help information and exit.
+        print(err)              ## this will print something like "option -a not recognized"
+        print('Bibulous can be called with')
+        print('    bibulous.py [--debug] [--locale=mylocale] myfile.aux')
+        sys.exit(2)
 
+    if (len(opts) > 0):
         for o,a in opts:
-            if (o == '--locale'):
+            if (o == '--debug'):
+                debug = True
+            elif (o == '--locale'):
                 uselocale = a
             else:
-                assert False, "unhandled option"
+                assert False, f'Unhandled option "{o}"'
 
+    if (len(args) > 0):
         arg_auxfile = args[0]
         files = arg_auxfile
     else:
