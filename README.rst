@@ -1,3 +1,7 @@
+.. image:: doc/logo.svg
+   :alt: Bibulous logo
+   :width: 200 px
+
 =================
 Bibulous Overview
 =================
@@ -70,7 +74,7 @@ which generates the file ``test.bbl`` based on ``test.bib`` and ``test.bst``. Fi
     latex test.tex
 
 which will now have the bibliography included.
-                
+
 Example of creating a custom bibliography style
 ===============================================
 
