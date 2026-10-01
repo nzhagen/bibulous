@@ -726,7 +726,7 @@ class Bibdata(object):
     ## =============================
     def parse_auxfile(self, filename, recursive_call=False, debug=False):
         '''
-        Read in an `.aux` file and convert the `\citation{}` entries found there into a dictionary of citekeys and
+        Read in an `.aux` file and convert the `\\citation{}` entries found there into a dictionary of citekeys and
         citation order number.
 
         Parameters
@@ -1005,12 +1005,12 @@ class Bibdata(object):
                     ## Find out if the template contains an implicit index. If so then add it to the list of such.
                     ## Also, if the variable has an implicit index, then it must also have a corresponding list that
                     ## goes with it. Find out what list that is and put it into the implicit_loop_pairs dictionary.
-                    if re.search('\.n\.', value) or re.search('\.n>', value):
+                    if re.search(r'\.n\.', value) or re.search(r'\.n>', value):
                         (varname,_) = var.split('.',1)
                         if (varname not in self.implicitly_indexed_vars):
                             self.implicitly_indexed_vars.append(varname)
                         if (varname not in self.implicit_loop_pairs):
-                            implicit_matchobj = re.search('\.n\.|\.n>', value)
+                            implicit_matchobj = re.search(r'\.n\.|\.n>', value)
                             (new_start,new_end) = implicit_matchobj.span()
                             self.implicit_loop_pairs[varname] = value[:new_start].strip('[<').strip()
 
@@ -1079,7 +1079,7 @@ class Bibdata(object):
         bibliography style template `bstdict` write the LaTeX-format file for the formatted bibliography.
 
         Start with the preamble and then loop over the citations one by one, formatting each entry one at a time, and
-        put `\end{thebibliography}` at the end when done.
+        put `\\end{thebibliography}` at the end when done.
 
         Parameters
         ----------
@@ -1866,7 +1866,7 @@ class Bibdata(object):
             ## index too (i.e. "name.n" and not "name"), and so the strings in the "implicitly_indexed_vars" list
             ## are not quite what we have in our keys here.
             template_has_implicit_index = True if re.search(self.implicit_index_pattern, templatestr) else False
-            if re.search('\.n\.', key) or re.search('\.n$', key) or template_has_implicit_index:
+            if re.search(r'\.n\.', key) or re.search(r'\.n$', key) or template_has_implicit_index:
                 continue
 
             ## Substitute other entry fields into the template to generate the formatted result. Note that if the
@@ -2170,6 +2170,7 @@ class Bibdata(object):
 
             ## Get the result of querying the variable in the entry. This will replace the template variable.
             res = self.get_variable(bibentry, varname, options=var_options)
+            print(varname, res)    #yyy
 
             if (res == None):
                 templatestr = templatestr.replace(var, self.options['undefstr'])
@@ -3063,20 +3064,20 @@ def namefield_to_namelist(namefield, key=None, sep='and', disable=None):
 
     namefield = namefield.strip()
     namelist = []
-    sep_pattern = re.compile(r'\s'+sep+'\s')
+    sep_pattern = re.compile(r'\s'+sep+r'\s')
 
     ## Look for common typos.
-    if re.search(r'\s'+sep+',\s', namefield):
+    if re.search(r'\s'+sep+r',\s', namefield):
         bib_warning('Warning 017a: The name string in entry "' + key + '" has " '+sep+', ", which is likely a'
              ' typo. Continuing on anyway ...', disable)
     if re.search(r', '+sep, namefield):
         bib_warning('Warning 017b: The name string in entry "' + key + '" has ", '+sep+'", which is likely a'
              ' typo. Continuing on anyway ...', disable)
-    if re.search(r'\s'+sep+'\s+'+sep+'\s', namefield):
+    if re.search(r'\s'+sep+r'\s+'+sep+r'\s', namefield):
         bib_warning('Warning 017c: The name string in entry "' + key + '" has two "'+sep+'"s separated by spaces, '
              'which is likely a typo. Continuing on anyway ...', disable)
         ## Replace the two "and"s with just one "and".
-        namefield = re.sub(r'(?<=\s)'+sep+'\s+'+sep+'(?=\s)', namefield, sep)
+        namefield = re.sub(r'(?<=\s)'+sep+r'\s+'+sep+r'(?=\s)', namefield, sep)
 
     ## Split the string of names into individual strings, one for each complete name. Here we can split on whitespace
     ## surround the word "and" so that "{and}" and "word~and~word" will not allow the split. Need to treat the case of a
@@ -3519,7 +3520,7 @@ def enwrap_nested_quotes(s, disable=None, debug=False):
     if ("```" in s) or ("'''" in s):
         bib_warning('Warning 020: the input string ["' + s + '"] contains multiple unseparated quote characters.'
              ' Bibulous cannot unnest the single and double quotes from this set, so the separate quotations must be '
-             ' physically separated like ``{\:}``, for example. Ignoring the quotation marks and continuing ...',
+             r' physically separated like ``{\:}``, for example. Ignoring the quotation marks and continuing ...',
              disable)
         return(s)
 
@@ -4919,7 +4920,7 @@ def natural_keys(text):
     If the sortkeys all begin with numbers, then sort numerically (i.e. -100 before -99, 99 before 100, 10 after 2, etc).
     http://nedbatchelder.com/blog/200712/human_sorting.html
     '''
-    keys = [to_int_or_locale(c) for c in re.split('(-?\d+)', text)]
+    keys = [to_int_or_locale(c) for c in re.split(r'(-?\d+)', text)]
     return(keys)
 
 ## =============================
