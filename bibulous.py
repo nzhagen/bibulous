@@ -2170,7 +2170,7 @@ class Bibdata(object):
 
             ## Get the result of querying the variable in the entry. This will replace the template variable.
             res = self.get_variable(bibentry, varname, options=var_options)
-            print(varname, res)    #yyy
+            #print(varname, res)    #yyy
 
             if (res == None):
                 templatestr = templatestr.replace(var, self.options['undefstr'])

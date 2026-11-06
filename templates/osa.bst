@@ -1,6 +1,7 @@
 TEMPLATES:
 article = <au>, \enquote{[\href{<url>}{<title>}|\href{<doi>}{<title>}|<title>],} <journal> \textbf{<volume>},{ }...
         [<startpage>--<endpage>|<startpage>|<eid>|] (<year>).[ <note>]
+arxiv = <au>, \enquote{<title>,} arXiv:<number> (<year>).
 book = [<au>|<ed>|<organization>|<institution>|], \textit{<title>}[, <edition.ordinal()>~ed.][, vol.~<volume>]{ }...
         (<publisher>, <year>)[ Chap.~<chapter>][, pp.~<startpage>--<endpage>|, p.~<startpage>].[ <note>]
 electronic = [<au>, ] \enquote{<title>}\url{ [<url>|<doi>]}.
